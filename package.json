@@ -1,0 +1,35 @@
+{
+  "name": "mazzaroth-xdr",
+  "version": "0.1.0",
+  "description": "Serialization code for mazzaroth.",
+  "main": "js/xdr_generated.js",
+  "scripts": {
+    "clean": "rm -rf ./xdr && rm -rf ./js && mkdir xdr && mkdir js",
+    "build-go": "./xdrgen/bin/xdrgen -o ./xdr/ -l go -n xdr ./idl/transaction.x",
+    "build-js": "./xdrgen/bin/xdrgen -o ./js/ -l javascript -n xdr ./idl/transaction.x && babel js -d js",
+    "build": "npm run clean && npm run build-js && npm run build-go"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kochavalabs/mazzaroth-proto.git"
+  },
+  "keywords": [
+    "xdr",
+    "mazzaroth"
+  ],
+  "author": "Kyle Bartush",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kochavalabs/mazzaroth-proto/issues"
+  },
+  "homepage": "https://github.com/kochavalabs/mazzaroth-proto#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0"
+  },
+  "dependencies": {
+    "js-xdr": "^1.1.1"
+  }
+}

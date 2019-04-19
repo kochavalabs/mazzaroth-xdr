@@ -1,0 +1,3 @@
+[submodule "xdrgen"]
+	path = xdrgen
+	url = https://github.com/stellar/xdrgen.git
