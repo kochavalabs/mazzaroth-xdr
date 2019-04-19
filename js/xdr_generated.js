@@ -30,7 +30,7 @@ var types = XDR.config(xdr => {
   //
   //   struct Call
   //     {
-  //       string function<256>;    
+  //       string function<256>;
   //   
   //       opaque parameters<>;
   //     };
@@ -67,9 +67,9 @@ var types = XDR.config(xdr => {
   //   union Action switch (ActionType type)
   //     {
   //       case ACTION_TYPE_CALL:
-  //           Call call; 
+  //           Call call;
   //       case ACTION_TYPE_UPDATE:
-  //           Update update; 
+  //           Update update;
   //     };
   //
   // ===========================================================================
@@ -90,11 +90,13 @@ var types = XDR.config(xdr => {
   //       Signature signature;
   //   
   //       ID address;
+  //   
+  //       Action action;
   //     };
   //
   // ===========================================================================
-  xdr.struct("Transaction", [["signature", xdr.lookup("Signature")], ["address", xdr.lookup("Id")]]);
-}); // Automatically generated on 2019-04-17T16:50:58-07:00
+  xdr.struct("Transaction", [["signature", xdr.lookup("Signature")], ["address", xdr.lookup("Id")], ["action", xdr.lookup("Action")]]);
+}); // Automatically generated on 2019-04-19T07:20:22-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */

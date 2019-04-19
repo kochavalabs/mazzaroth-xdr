@@ -34,5 +34,7 @@ namespace mazzaroth
     Signature signature;
 
     ID address;
+
+    Action action;
   };
 }
