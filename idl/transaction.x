@@ -2,6 +2,7 @@ namespace mazzaroth
 {
   typedef opaque Signature[64];
   typedef opaque ID[32];
+  typedef unsigned hyper uint64;
 
   struct Call
   {
@@ -15,18 +16,28 @@ namespace mazzaroth
     opaque contract<>;
   };
 
-  enum ActionType
+  enum ActionCategoryType
   {
-    ACTION_TYPE_CALL = 0,
-    ACTION_TYPE_UPDATE = 1
+    CALL = 0,
+    UPDATE = 1
   };
 
-  union Action switch (ActionType type)
+  union ActionCategory switch (ActionCategoryType type)
   {
-    case ACTION_TYPE_CALL:
+    case CALL:
         Call call;
-    case ACTION_TYPE_UPDATE:
+    case UPDATE:
         Update update;
+  };
+
+  struct Action 
+  {
+    ID channelID;    
+
+    uint64 nonce;
+
+    ActionCategory category;
+
   };
 
   struct Transaction

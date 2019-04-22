@@ -28,6 +28,13 @@ var types = XDR.config(xdr => {
 
   // === xdr source ============================================================
   //
+  //   typedef unsigned hyper uint64;
+  //
+  // ===========================================================================
+  xdr.typedef("Uint64", xdr.uhyper());
+
+  // === xdr source ============================================================
+  //
   //   struct Call
   //     {
   //       string function<256>;
@@ -50,38 +57,53 @@ var types = XDR.config(xdr => {
 
   // === xdr source ============================================================
   //
-  //   enum ActionType
+  //   enum ActionCategoryType
   //     {
-  //       ACTION_TYPE_CALL = 0,
-  //       ACTION_TYPE_UPDATE = 1
+  //       CALL = 0,
+  //       UPDATE = 1
   //     };
   //
   // ===========================================================================
-  xdr.enum("ActionType", {
-    actionTypeCall: 0,
-    actionTypeUpdate: 1
+  xdr.enum("ActionCategoryType", {
+    call: 0,
+    update: 1
   });
 
   // === xdr source ============================================================
   //
-  //   union Action switch (ActionType type)
+  //   union ActionCategory switch (ActionCategoryType type)
   //     {
-  //       case ACTION_TYPE_CALL:
+  //       case CALL:
   //           Call call;
-  //       case ACTION_TYPE_UPDATE:
+  //       case UPDATE:
   //           Update update;
   //     };
   //
   // ===========================================================================
-  xdr.union("Action", {
-    switchOn: xdr.lookup("ActionType"),
+  xdr.union("ActionCategory", {
+    switchOn: xdr.lookup("ActionCategoryType"),
     switchName: "type",
-    switches: [["actionTypeCall", "call"], ["actionTypeUpdate", "update"]],
+    switches: [["call", "call"], ["update", "update"]],
     arms: {
       call: xdr.lookup("Call"),
       update: xdr.lookup("Update")
     }
   });
+
+  // === xdr source ============================================================
+  //
+  //   struct Action 
+  //     {
+  //       ID channelID;    
+  //   
+  //       uint64 nonce;
+  //   
+  //       ActionCategory category;
+  //   
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("Action", [["channelId", xdr.lookup("Id")], ["nonce", xdr.lookup("Uint64")], ["category", xdr.lookup("ActionCategory")]]);
 
   // === xdr source ============================================================
   //
@@ -96,7 +118,7 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.struct("Transaction", [["signature", xdr.lookup("Signature")], ["address", xdr.lookup("Id")], ["action", xdr.lookup("Action")]]);
-}); // Automatically generated on 2019-04-19T07:20:22-07:00
+}); // Automatically generated on 2019-04-22T07:32:04-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */

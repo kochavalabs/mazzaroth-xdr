@@ -82,6 +82,30 @@ var (
   _ encoding.BinaryUnmarshaler = (*Id)(nil)
 )
 
+// Uint64 is an XDR Typedef defines as:
+//
+//   typedef unsigned hyper uint64;
+//
+type Uint64 uint64
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Uint64) MarshalBinary() ([]byte, error) {
+  b := new(bytes.Buffer)
+  _, err := Marshal(b, s)
+  return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Uint64) UnmarshalBinary(inp []byte) error {
+  _, err := Unmarshal(bytes.NewReader(inp), s)
+  return err
+}
+
+var (
+  _ encoding.BinaryMarshaler   = (*Uint64)(nil)
+  _ encoding.BinaryUnmarshaler = (*Uint64)(nil)
+)
+
 // Call is an XDR Struct defines as:
 //
 //   struct Call
@@ -143,100 +167,100 @@ var (
   _ encoding.BinaryUnmarshaler = (*Update)(nil)
 )
 
-// ActionType is an XDR Enum defines as:
+// ActionCategoryType is an XDR Enum defines as:
 //
-//   enum ActionType
+//   enum ActionCategoryType
 //      {
-//        ACTION_TYPE_CALL = 0,
-//        ACTION_TYPE_UPDATE = 1
+//        CALL = 0,
+//        UPDATE = 1
 //      };
 //
-type ActionType int32
+type ActionCategoryType int32
 const (
-  ActionTypeActionTypeCall ActionType = 0
-  ActionTypeActionTypeUpdate ActionType = 1
+  ActionCategoryTypeCall ActionCategoryType = 0
+  ActionCategoryTypeUpdate ActionCategoryType = 1
 )
-var actionTypeMap = map[int32]string{
-  0: "ActionTypeActionTypeCall",
-  1: "ActionTypeActionTypeUpdate",
+var actionCategoryTypeMap = map[int32]string{
+  0: "ActionCategoryTypeCall",
+  1: "ActionCategoryTypeUpdate",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for ActionType
-func (e ActionType) ValidEnum(v int32) bool {
-  _, ok := actionTypeMap[v]
+// the Enum interface for ActionCategoryType
+func (e ActionCategoryType) ValidEnum(v int32) bool {
+  _, ok := actionCategoryTypeMap[v]
   return ok
 }
 // String returns the name of `e`
-func (e ActionType) String() string {
-  name, _ := actionTypeMap[int32(e)]
+func (e ActionCategoryType) String() string {
+  name, _ := actionCategoryTypeMap[int32(e)]
   return name
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ActionType) MarshalBinary() ([]byte, error) {
+func (s ActionCategoryType) MarshalBinary() ([]byte, error) {
   b := new(bytes.Buffer)
   _, err := Marshal(b, s)
   return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ActionType) UnmarshalBinary(inp []byte) error {
+func (s *ActionCategoryType) UnmarshalBinary(inp []byte) error {
   _, err := Unmarshal(bytes.NewReader(inp), s)
   return err
 }
 
 var (
-  _ encoding.BinaryMarshaler   = (*ActionType)(nil)
-  _ encoding.BinaryUnmarshaler = (*ActionType)(nil)
+  _ encoding.BinaryMarshaler   = (*ActionCategoryType)(nil)
+  _ encoding.BinaryUnmarshaler = (*ActionCategoryType)(nil)
 )
 
-// Action is an XDR Union defines as:
+// ActionCategory is an XDR Union defines as:
 //
-//   union Action switch (ActionType type)
+//   union ActionCategory switch (ActionCategoryType type)
 //      {
-//        case ACTION_TYPE_CALL:
+//        case CALL:
 //            Call call;
-//        case ACTION_TYPE_UPDATE:
+//        case UPDATE:
 //            Update update;
 //      };
 //
-type Action struct{
-  Type ActionType
+type ActionCategory struct{
+  Type ActionCategoryType
   Call *Call 
   Update *Update 
 }
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (u Action) SwitchFieldName() string {
+func (u ActionCategory) SwitchFieldName() string {
   return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
-// the value for an instance of Action
-func (u Action) ArmForSwitch(sw int32) (string, bool) {
-switch ActionType(sw) {
-    case ActionTypeActionTypeCall:
+// the value for an instance of ActionCategory
+func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
+switch ActionCategoryType(sw) {
+    case ActionCategoryTypeCall:
       return "Call", true
-    case ActionTypeActionTypeUpdate:
+    case ActionCategoryTypeUpdate:
       return "Update", true
 }
 return "-", false
 }
 
-// NewAction creates a new  Action.
-func NewAction(aType ActionType, value interface{}) (result Action, err error) {
+// NewActionCategory creates a new  ActionCategory.
+func NewActionCategory(aType ActionCategoryType, value interface{}) (result ActionCategory, err error) {
   result.Type = aType
-switch ActionType(aType) {
-    case ActionTypeActionTypeCall:
+switch ActionCategoryType(aType) {
+    case ActionCategoryTypeCall:
                   tv, ok := value.(Call)
             if !ok {
               err = fmt.Errorf("invalid value, must be Call")
               return
             }
             result.Call = &tv
-    case ActionTypeActionTypeUpdate:
+    case ActionCategoryTypeUpdate:
                   tv, ok := value.(Update)
             if !ok {
               err = fmt.Errorf("invalid value, must be Update")
@@ -248,7 +272,7 @@ switch ActionType(aType) {
 }
 // MustCall retrieves the Call value from the union,
 // panicing if the value is not set.
-func (u Action) MustCall() Call {
+func (u ActionCategory) MustCall() Call {
   val, ok := u.GetCall()
 
   if !ok {
@@ -260,7 +284,7 @@ func (u Action) MustCall() Call {
 
 // GetCall retrieves the Call value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Action) GetCall() (result Call, ok bool) {
+func (u ActionCategory) GetCall() (result Call, ok bool) {
   armName, _ := u.ArmForSwitch(int32(u.Type))
 
   if armName == "Call" {
@@ -272,7 +296,7 @@ func (u Action) GetCall() (result Call, ok bool) {
 }
 // MustUpdate retrieves the Update value from the union,
 // panicing if the value is not set.
-func (u Action) MustUpdate() Update {
+func (u ActionCategory) MustUpdate() Update {
   val, ok := u.GetUpdate()
 
   if !ok {
@@ -284,7 +308,7 @@ func (u Action) MustUpdate() Update {
 
 // GetUpdate retrieves the Update value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Action) GetUpdate() (result Update, ok bool) {
+func (u ActionCategory) GetUpdate() (result Update, ok bool) {
   armName, _ := u.ArmForSwitch(int32(u.Type))
 
   if armName == "Update" {
@@ -293,6 +317,42 @@ func (u Action) GetUpdate() (result Update, ok bool) {
   }
 
   return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ActionCategory) MarshalBinary() ([]byte, error) {
+  b := new(bytes.Buffer)
+  _, err := Marshal(b, s)
+  return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ActionCategory) UnmarshalBinary(inp []byte) error {
+  _, err := Unmarshal(bytes.NewReader(inp), s)
+  return err
+}
+
+var (
+  _ encoding.BinaryMarshaler   = (*ActionCategory)(nil)
+  _ encoding.BinaryUnmarshaler = (*ActionCategory)(nil)
+)
+
+// Action is an XDR Struct defines as:
+//
+//   struct Action 
+//      {
+//        ID channelID;    
+//    
+//        uint64 nonce;
+//    
+//        ActionCategory category;
+//    
+//      };
+//
+type Action struct {
+  ChannelId Id 
+  Nonce Uint64 
+  Category ActionCategory 
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
