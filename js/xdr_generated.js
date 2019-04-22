@@ -78,6 +78,40 @@ var types = XDR.config(xdr => {
 
   // === xdr source ============================================================
   //
+  //   struct Receipt
+  //     {
+  //       // Status failure or success
+  //       ReceiptStatus status;
+  //    
+  //       // The state root after execution of the transaction
+  //       Hash stateRoot;
+  //    
+  //       // The list of events fired during execution of this transaction
+  //       Event events<>;
+  //    
+  //       // Return results of execution if there is one for function called
+  //       opaque result<>;
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("Receipt", [["status", xdr.lookup("ReceiptStatus")], ["stateRoot", xdr.lookup("Hash")], ["events", xdr.varArray(xdr.lookup("Event"), 2147483647)], ["result", xdr.varOpaque()]]);
+
+  // === xdr source ============================================================
+  //
+  //   enum ReceiptStatus
+  //     {
+  //       FAILURE = 0,
+  //       SUCCESS = 1
+  //     };
+  //
+  // ===========================================================================
+  xdr.enum("ReceiptStatus", {
+    failure: 0,
+    success: 1
+  });
+
+  // === xdr source ============================================================
+  //
   //   struct Call
   //     {
   //       // Contract function to execute.
@@ -193,7 +227,7 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.lookup("Uint64")], ["receiptId", xdr.lookup("Id")], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
-}); // Automatically generated on 2019-04-22T12:49:06-07:00
+}); // Automatically generated on 2019-04-22T13:07:25-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */

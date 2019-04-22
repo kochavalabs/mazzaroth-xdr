@@ -3,6 +3,7 @@
           //  ./idl/block.x
 //  ./idl/common.x
 //  ./idl/event.x
+//  ./idl/receipt.x
 //  ./idl/transaction.x
           //
           // DO NOT EDIT or your changes may be overwritten
@@ -216,6 +217,96 @@ func (s *Event) UnmarshalBinary(inp []byte) error {
 var (
   _ encoding.BinaryMarshaler   = (*Event)(nil)
   _ encoding.BinaryUnmarshaler = (*Event)(nil)
+)
+
+// Receipt is an XDR Struct defines as:
+//
+//   struct Receipt
+//      {
+//        // Status failure or success
+//        ReceiptStatus status;
+//     
+//        // The state root after execution of the transaction
+//        Hash stateRoot;
+//     
+//        // The list of events fired during execution of this transaction
+//        Event events<>;
+//     
+//        // Return results of execution if there is one for function called
+//        opaque result<>;
+//      };
+//
+type Receipt struct {
+  Status ReceiptStatus 
+  StateRoot Hash 
+  Events []Event 
+  Result []byte 
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Receipt) MarshalBinary() ([]byte, error) {
+  b := new(bytes.Buffer)
+  _, err := Marshal(b, s)
+  return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Receipt) UnmarshalBinary(inp []byte) error {
+  _, err := Unmarshal(bytes.NewReader(inp), s)
+  return err
+}
+
+var (
+  _ encoding.BinaryMarshaler   = (*Receipt)(nil)
+  _ encoding.BinaryUnmarshaler = (*Receipt)(nil)
+)
+
+// ReceiptStatus is an XDR Enum defines as:
+//
+//   enum ReceiptStatus
+//      {
+//        FAILURE = 0,
+//        SUCCESS = 1
+//      };
+//
+type ReceiptStatus int32
+const (
+  ReceiptStatusFailure ReceiptStatus = 0
+  ReceiptStatusSuccess ReceiptStatus = 1
+)
+var receiptStatusMap = map[int32]string{
+  0: "ReceiptStatusFailure",
+  1: "ReceiptStatusSuccess",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ReceiptStatus
+func (e ReceiptStatus) ValidEnum(v int32) bool {
+  _, ok := receiptStatusMap[v]
+  return ok
+}
+// String returns the name of `e`
+func (e ReceiptStatus) String() string {
+  name, _ := receiptStatusMap[int32(e)]
+  return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ReceiptStatus) MarshalBinary() ([]byte, error) {
+  b := new(bytes.Buffer)
+  _, err := Marshal(b, s)
+  return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ReceiptStatus) UnmarshalBinary(inp []byte) error {
+  _, err := Unmarshal(bytes.NewReader(inp), s)
+  return err
+}
+
+var (
+  _ encoding.BinaryMarshaler   = (*ReceiptStatus)(nil)
+  _ encoding.BinaryUnmarshaler = (*ReceiptStatus)(nil)
 )
 
 // Call is an XDR Struct defines as:
