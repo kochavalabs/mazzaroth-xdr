@@ -112,6 +112,266 @@ var types = XDR.config(xdr => {
 
   // === xdr source ============================================================
   //
+  //   typedef string StatusInfo<256>;
+  //
+  // ===========================================================================
+  xdr.typedef("StatusInfo", xdr.string(256));
+
+  // === xdr source ============================================================
+  //
+  //   enum IdentifierType
+  //     {
+  //       NUMBER = 0,
+  //       HASH = 1
+  //     };
+  //
+  // ===========================================================================
+  xdr.enum("IdentifierType", {
+    number: 0,
+    hash: 1
+  });
+
+  // === xdr source ============================================================
+  //
+  //   union Identifier switch (IdentifierType type)
+  //     {
+  //       case NUMBER:
+  //         uint64 number;
+  //       case HASH:
+  //         Hash hash;
+  //     };
+  //
+  // ===========================================================================
+  xdr.union("Identifier", {
+    switchOn: xdr.lookup("IdentifierType"),
+    switchName: "type",
+    switches: [["number", "number"], ["hash", "hash"]],
+    arms: {
+      number: xdr.lookup("Uint64"),
+      hash: xdr.lookup("Hash")
+    }
+  });
+
+  // === xdr source ============================================================
+  //
+  //   struct BlockLookupRequest
+  //     {
+  //       Identifier id; 
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("BlockLookupRequest", [["id", xdr.lookup("Identifier")]]);
+
+  // === xdr source ============================================================
+  //
+  //   struct BlockHeaderLookupRequest
+  //     {
+  //       Identifier id; 
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("BlockHeaderLookupRequest", [["id", xdr.lookup("Identifier")]]);
+
+  // === xdr source ============================================================
+  //
+  //   struct BlockLookupResponse
+  //     {
+  //   
+  //       // Block that was requested if status is found.
+  //       Block block;
+  //   
+  //       // Status for the requested block.
+  //       BlockStatus status;
+  //   
+  //       // Human readable information to help understand the block status.
+  //       StatusInfo statusInfo;
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("BlockLookupResponse", [["block", xdr.lookup("Block")], ["status", xdr.lookup("BlockStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
+
+  // === xdr source ============================================================
+  //
+  //   struct BlockHeaderLookupResponse
+  //     {
+  //   
+  //       // Block header that was requested if status is found.
+  //       BlockHeader header;
+  //   
+  //       // Status for the requested block.
+  //       BlockStatus status;
+  //   
+  //       // Human readable information to help understand the block status.
+  //       StatusInfo statusInfo;
+  //   
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("BlockHeaderLookupResponse", [["header", xdr.lookup("BlockHeader")], ["status", xdr.lookup("BlockStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
+
+  // === xdr source ============================================================
+  //
+  //   enum BlockStatus
+  //     {
+  //   
+  //       // Status of the block is unkown.
+  //       UNKNOWN = 0,
+  //   
+  //       // This block has been created.
+  //       CREATED = 1,
+  //   
+  //       // This block has not been created yet.
+  //       FUTURE = 2,
+  //   
+  //       // The block that was looked up was not found.
+  //       NOT_FOUND = 3
+  //     };
+  //
+  // ===========================================================================
+  xdr.enum("BlockStatus", {
+    unknown: 0,
+    created: 1,
+    future: 2,
+    notFound: 3
+  });
+
+  // === xdr source ============================================================
+  //
+  //   struct TransactionLookupRequest 
+  //     {
+  //       // Unique transaction identifier.
+  //       ID transactionId;
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("TransactionLookupRequest", [["transactionId", xdr.lookup("Id")]]);
+
+  // === xdr source ============================================================
+  //
+  //   struct TransactionLookupResponse
+  //     {
+  //       // Final transaction written to the blockchain.
+  //       Transaction transaction;
+  //   
+  //       // Current status of the transaction.
+  //       TransactionStatus status;
+  //   
+  //       // Human readable information to help understand the transaction status.
+  //       StatusInfo statusInfo;
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("TransactionLookupResponse", [["transaction", xdr.lookup("Transaction")], ["status", xdr.lookup("TransactionStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
+
+  // === xdr source ============================================================
+  //
+  //   struct TransactionSubmitRequest
+  //     {
+  //       Transaction transaction;
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("TransactionSubmitRequest", [["transaction", xdr.lookup("Transaction")]]);
+
+  // === xdr source ============================================================
+  //
+  //   struct TransactionSubmitResponse
+  //     {
+  //       // Final transaction written to the blockchain. (if successful)
+  //       ID transactionId;
+  //   
+  //       // Current status of the transaction.
+  //       TransactionStatus status;
+  //   
+  //       // Human readable information to help understand the transaction status.
+  //       StatusInfo statusInfo;
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("TransactionSubmitResponse", [["transactionId", xdr.lookup("Id")], ["status", xdr.lookup("TransactionStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
+
+  // === xdr source ============================================================
+  //
+  //   enum TransactionStatus
+  //     {
+  //   
+  //       // The transaction status is either not known or not set.
+  //       UNKNOWN = 0,
+  //   
+  //       // The transaction has been accepted by a node and is in the process of being
+  //       // submitted to the blockchain.
+  //       ACCEPTED = 1,
+  //   
+  //       // This transaction was not accepted by the blockchain.
+  //       REJECTED = 2,
+  //   
+  //       // The transaction has succesfully been added to the blockchain.
+  //       CONFIRMED = 3,
+  //   
+  //       // This transaction was not found.
+  //       NOT_FOUND = 4
+  //     };
+  //
+  // ===========================================================================
+  xdr.enum("TransactionStatus", {
+    unknown: 0,
+    accepted: 1,
+    rejected: 2,
+    confirmed: 3,
+    notFound: 4
+  });
+
+  // === xdr source ============================================================
+  //
+  //   struct ReceiptLookupRequest 
+  //     {
+  //       // Unique receipt identifier.
+  //       ID recepitId;
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("ReceiptLookupRequest", [["recepitId", xdr.lookup("Id")]]);
+
+  // === xdr source ============================================================
+  //
+  //   struct ReceiptLookupResponse
+  //     {
+  //       // Final receipt written to the blockchain.
+  //       Receipt receipt; 
+  //   
+  //       // Current status of the receipt
+  //       ReceiptStatus status;
+  //   
+  //       // Human readable information to help understand the receipt status.
+  //       StatusInfo statusInfo;
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("ReceiptLookupResponse", [["receipt", xdr.lookup("Receipt")], ["status", xdr.lookup("ReceiptStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
+
+  // === xdr source ============================================================
+  //
+  //   enum ReceiptLookupStatus
+  //     {
+  //       // The receipt status is either not known or not set.
+  //       UNKNOWN = 0,
+  //   
+  //       // The transaction receipt was found
+  //       FOUND = 1,
+  //   
+  //       // This transaction receipt was not found.
+  //       NOT_FOUND = 2
+  //     };
+  //
+  // ===========================================================================
+  xdr.enum("ReceiptLookupStatus", {
+    unknown: 0,
+    found: 1,
+    notFound: 2
+  });
+
+  // === xdr source ============================================================
+  //
   //   struct Call
   //     {
   //       // Contract function to execute.
@@ -227,7 +487,7 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.lookup("Uint64")], ["receiptId", xdr.lookup("Id")], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
-}); // Automatically generated on 2019-04-22T13:07:25-07:00
+}); // Automatically generated on 2019-04-22T16:49:49-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */
