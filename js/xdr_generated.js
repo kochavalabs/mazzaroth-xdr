@@ -118,7 +118,7 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.struct("Transaction", [["signature", xdr.lookup("Signature")], ["address", xdr.lookup("Id")], ["action", xdr.lookup("Action")]]);
-}); // Automatically generated on 2019-04-22T07:32:04-07:00
+}); // Automatically generated on 2019-04-22T09:58:16-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */
