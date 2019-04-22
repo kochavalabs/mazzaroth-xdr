@@ -1,30 +1,81 @@
-// Package xdr is generated from:
-//
+          // Package xdr is generated from:
+          //
+          //  ./idl/block.x
+//  ./idl/common.x
 //  ./idl/transaction.x
+          //
+          // DO NOT EDIT or your changes may be overwritten
+          package xdr
+
+          import (
+            "bytes"
+            "encoding"
+            "io"
+            "fmt"
+
+            "github.com/stellar/go-xdr/xdr3"
+          )
+
+          // Unmarshal reads an xdr element from `r` into `v`.
+          func Unmarshal(r io.Reader, v interface{}) (int, error) {
+            // delegate to xdr package's Unmarshal
+          	return xdr.Unmarshal(r, v)
+          }
+
+          // Marshal writes an xdr element `v` into `w`.
+          func Marshal(w io.Writer, v interface{}) (int, error) {
+            // delegate to xdr package's Marshal
+            return xdr.Marshal(w, v)
+          }
+
+// BlockHeader is an XDR Struct defines as:
 //
-// DO NOT EDIT or your changes may be overwritten
-package xdr
+//   struct BlockHeader
+//      {
+//    
+//        string timestamp<256>; 
+//    
+//        uint64 blockHeight;
+//    
+//        Hash txMerkleRoot;
+//    
+//        Hash txReceiptRoot;
+//    
+//        Hash stateRoot;
+//    
+//        Hash previousHeader;
+//    
+//        ID blockProducerAddress;
+//        
+//      };
+//
+type BlockHeader struct {
+  Timestamp string `xdrmaxsize:"256"`
+  BlockHeight Uint64 
+  TxMerkleRoot Hash 
+  TxReceiptRoot Hash 
+  StateRoot Hash 
+  PreviousHeader Hash 
+  BlockProducerAddress Id 
+}
 
-import (
-  "bytes"
-  "encoding"
-  "io"
-  "fmt"
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s BlockHeader) MarshalBinary() ([]byte, error) {
+  b := new(bytes.Buffer)
+  _, err := Marshal(b, s)
+  return b.Bytes(), err
+}
 
-  "github.com/stellar/go-xdr/xdr3"
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *BlockHeader) UnmarshalBinary(inp []byte) error {
+  _, err := Unmarshal(bytes.NewReader(inp), s)
+  return err
+}
+
+var (
+  _ encoding.BinaryMarshaler   = (*BlockHeader)(nil)
+  _ encoding.BinaryUnmarshaler = (*BlockHeader)(nil)
 )
-
-// Unmarshal reads an xdr element from `r` into `v`.
-func Unmarshal(r io.Reader, v interface{}) (int, error) {
-  // delegate to xdr package's Unmarshal
-	return xdr.Unmarshal(r, v)
-}
-
-// Marshal writes an xdr element `v` into `w`.
-func Marshal(w io.Writer, v interface{}) (int, error) {
-  // delegate to xdr package's Marshal
-  return xdr.Marshal(w, v)
-}
 
 // Signature is an XDR Typedef defines as:
 //
@@ -80,6 +131,34 @@ func (s *Id) UnmarshalBinary(inp []byte) error {
 var (
   _ encoding.BinaryMarshaler   = (*Id)(nil)
   _ encoding.BinaryUnmarshaler = (*Id)(nil)
+)
+
+// Hash is an XDR Typedef defines as:
+//
+//   typedef opaque Hash[32];
+//
+type Hash [32]byte
+// XDRMaxSize implements the Sized interface for Hash
+func (e Hash) XDRMaxSize() int {
+  return 32
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Hash) MarshalBinary() ([]byte, error) {
+  b := new(bytes.Buffer)
+  _, err := Marshal(b, s)
+  return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Hash) UnmarshalBinary(inp []byte) error {
+  _, err := Unmarshal(bytes.NewReader(inp), s)
+  return err
+}
+
+var (
+  _ encoding.BinaryMarshaler   = (*Hash)(nil)
+  _ encoding.BinaryUnmarshaler = (*Hash)(nil)
 )
 
 // Uint64 is an XDR Typedef defines as:
@@ -431,7 +510,7 @@ var (
 //        ID receiptId;
 //    
 //        // The transaction merkle root after adding this transaction to the merkle tree, for validation
-//        ID currentTransactionRoot;
+//        Hash currentTransactionRoot;
 //    
 //         // Consensus signatures
 //        Signature signatures<>;
@@ -441,7 +520,7 @@ type CommittedTransaction struct {
   Transaction Transaction 
   SequenceNumber Uint64 
   ReceiptId Id 
-  CurrentTransactionRoot Id 
+  CurrentTransactionRoot Hash 
   Signatures []Signature 
 }
 

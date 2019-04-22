@@ -14,6 +14,30 @@ var types = XDR.config(xdr => {
 
   // === xdr source ============================================================
   //
+  //   struct BlockHeader
+  //     {
+  //   
+  //       string timestamp<256>; 
+  //   
+  //       uint64 blockHeight;
+  //   
+  //       Hash txMerkleRoot;
+  //   
+  //       Hash txReceiptRoot;
+  //   
+  //       Hash stateRoot;
+  //   
+  //       Hash previousHeader;
+  //   
+  //       ID blockProducerAddress;
+  //       
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("BlockHeader", [["timestamp", xdr.string(256)], ["blockHeight", xdr.lookup("Uint64")], ["txMerkleRoot", xdr.lookup("Hash")], ["txReceiptRoot", xdr.lookup("Hash")], ["stateRoot", xdr.lookup("Hash")], ["previousHeader", xdr.lookup("Hash")], ["blockProducerAddress", xdr.lookup("Id")]]);
+
+  // === xdr source ============================================================
+  //
   //   typedef opaque Signature[64];
   //
   // ===========================================================================
@@ -25,6 +49,13 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.typedef("Id", xdr.opaque(32));
+
+  // === xdr source ============================================================
+  //
+  //   typedef opaque Hash[32];
+  //
+  // ===========================================================================
+  xdr.typedef("Hash", xdr.opaque(32));
 
   // === xdr source ============================================================
   //
@@ -142,15 +173,15 @@ var types = XDR.config(xdr => {
   //       ID receiptId;
   //   
   //       // The transaction merkle root after adding this transaction to the merkle tree, for validation
-  //       ID currentTransactionRoot;
+  //       Hash currentTransactionRoot;
   //   
   //        // Consensus signatures
   //       Signature signatures<>;
   //     };
   //
   // ===========================================================================
-  xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.lookup("Uint64")], ["receiptId", xdr.lookup("Id")], ["currentTransactionRoot", xdr.lookup("Id")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
-}); // Automatically generated on 2019-04-22T12:15:59-07:00
+  xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.lookup("Uint64")], ["receiptId", xdr.lookup("Id")], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
+}); // Automatically generated on 2019-04-22T12:41:35-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */

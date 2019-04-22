@@ -1,9 +1,8 @@
+
+%#include "common.x"
+
 namespace mazzaroth
 {
-  typedef opaque Signature[64];
-  typedef opaque ID[32];
-  typedef unsigned hyper uint64;
-
   // A transaction that calls a function on a user defined contract.
   struct Call
   {
@@ -78,11 +77,9 @@ namespace mazzaroth
     ID receiptId;
 
     // The transaction merkle root after adding this transaction to the merkle tree, for validation
-    ID currentTransactionRoot;
+    Hash currentTransactionRoot;
 
      // Consensus signatures
     Signature signatures<>;
   };
 }
-
-
