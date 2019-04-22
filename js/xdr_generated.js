@@ -66,6 +66,18 @@ var types = XDR.config(xdr => {
 
   // === xdr source ============================================================
   //
+  //   struct Event {
+  //       // Name of Event (Function Name)
+  //       string key<256>;
+  //   
+  //       opaque values<>;
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("Event", [["key", xdr.string(256)], ["values", xdr.varOpaque()]]);
+
+  // === xdr source ============================================================
+  //
   //   struct Call
   //     {
   //       // Contract function to execute.
@@ -181,7 +193,7 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.lookup("Uint64")], ["receiptId", xdr.lookup("Id")], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
-}); // Automatically generated on 2019-04-22T12:41:35-07:00
+}); // Automatically generated on 2019-04-22T12:49:06-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */

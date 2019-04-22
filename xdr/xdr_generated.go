@@ -2,6 +2,7 @@
           //
           //  ./idl/block.x
 //  ./idl/common.x
+//  ./idl/event.x
 //  ./idl/transaction.x
           //
           // DO NOT EDIT or your changes may be overwritten
@@ -183,6 +184,38 @@ func (s *Uint64) UnmarshalBinary(inp []byte) error {
 var (
   _ encoding.BinaryMarshaler   = (*Uint64)(nil)
   _ encoding.BinaryUnmarshaler = (*Uint64)(nil)
+)
+
+// Event is an XDR Struct defines as:
+//
+//   struct Event {
+//        // Name of Event (Function Name)
+//        string key<256>;
+//    
+//        opaque values<>;
+//      };
+//
+type Event struct {
+  Key string `xdrmaxsize:"256"`
+  Values []byte 
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Event) MarshalBinary() ([]byte, error) {
+  b := new(bytes.Buffer)
+  _, err := Marshal(b, s)
+  return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Event) UnmarshalBinary(inp []byte) error {
+  _, err := Unmarshal(bytes.NewReader(inp), s)
+  return err
+}
+
+var (
+  _ encoding.BinaryMarshaler   = (*Event)(nil)
+  _ encoding.BinaryUnmarshaler = (*Event)(nil)
 )
 
 // Call is an XDR Struct defines as:
