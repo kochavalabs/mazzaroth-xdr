@@ -4,7 +4,7 @@
   "description": "Serialization code for mazzaroth.",
   "main": "js/xdr_generated.js",
   "scripts": {
-    "clean": "rm -rf ./xdr && rm -rf ./js && mkdir xdr && mkdir js",
+    "clean": "rm -f ./xdr/xdr_generated.go && rm -rf ./js && mkdir js",
     "build-go": "./xdrgen/bin/xdrgen -o ./xdr/ -l go -n xdr ./idl/*.x",
     "build-js": "./xdrgen/bin/xdrgen -o ./js/ -l javascript -n xdr ./idl/*.x && babel js -d js",
     "build": "npm run clean && npm run build-js && npm run build-go",
