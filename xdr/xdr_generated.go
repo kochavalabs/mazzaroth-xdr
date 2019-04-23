@@ -31,6 +31,38 @@
             return xdr.Marshal(w, v)
           }
 
+// Block is an XDR Struct defines as:
+//
+//   struct Block
+//      {
+//        // Order is preserved in repeated fields
+//        BlockHeader header;
+//        Transaction transactions<>;
+//      };
+//
+type Block struct {
+  Header BlockHeader 
+  Transactions []Transaction 
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Block) MarshalBinary() ([]byte, error) {
+  b := new(bytes.Buffer)
+  _, err := Marshal(b, s)
+  return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Block) UnmarshalBinary(inp []byte) error {
+  _, err := Unmarshal(bytes.NewReader(inp), s)
+  return err
+}
+
+var (
+  _ encoding.BinaryMarshaler   = (*Block)(nil)
+  _ encoding.BinaryUnmarshaler = (*Block)(nil)
+)
+
 // BlockHeader is an XDR Struct defines as:
 //
 //   struct BlockHeader

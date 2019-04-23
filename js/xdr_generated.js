@@ -14,6 +14,18 @@ var types = XDR.config(xdr => {
 
   // === xdr source ============================================================
   //
+  //   struct Block
+  //     {
+  //       // Order is preserved in repeated fields
+  //       BlockHeader header;
+  //       Transaction transactions<>;
+  //     };
+  //
+  // ===========================================================================
+  xdr.struct("Block", [["header", xdr.lookup("BlockHeader")], ["transactions", xdr.varArray(xdr.lookup("Transaction"), 2147483647)]]);
+
+  // === xdr source ============================================================
+  //
   //   struct BlockHeader
   //     {
   //   
@@ -487,7 +499,7 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.lookup("Uint64")], ["receiptId", xdr.lookup("Id")], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
-}); // Automatically generated on 2019-04-22T16:49:49-07:00
+}); // Automatically generated on 2019-04-23T05:30:59-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */
