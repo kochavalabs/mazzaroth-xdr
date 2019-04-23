@@ -149,7 +149,7 @@ namespace mazzaroth
     Receipt receipt; 
 
     // Current status of the receipt
-    ReceiptStatus status;
+    ReceiptLookupStatus status;
 
     // Human readable information to help understand the receipt status.
     StatusInfo statusInfo;

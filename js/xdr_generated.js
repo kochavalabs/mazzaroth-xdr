@@ -345,14 +345,14 @@ var types = XDR.config(xdr => {
   //       Receipt receipt; 
   //   
   //       // Current status of the receipt
-  //       ReceiptStatus status;
+  //       ReceiptLookupStatus status;
   //   
   //       // Human readable information to help understand the receipt status.
   //       StatusInfo statusInfo;
   //     };
   //
   // ===========================================================================
-  xdr.struct("ReceiptLookupResponse", [["receipt", xdr.lookup("Receipt")], ["status", xdr.lookup("ReceiptStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
+  xdr.struct("ReceiptLookupResponse", [["receipt", xdr.lookup("Receipt")], ["status", xdr.lookup("ReceiptLookupStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
 
   // === xdr source ============================================================
   //
@@ -492,7 +492,7 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.uhyper()], ["receiptId", xdr.lookup("Id")], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
-}); // Automatically generated on 2019-04-23T11:35:35-07:00
+}); // Automatically generated on 2019-04-23T11:47:19-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */
