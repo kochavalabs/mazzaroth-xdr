@@ -138,8 +138,8 @@ namespace mazzaroth
   // Request for a node to look up a transaction receipt.
   struct ReceiptLookupRequest 
   {
-    // Unique receipt identifier.
-    ID recepitId;
+    // Unique transaction identifier.
+    ID transactionId;
   };
 
   // Response to receipt lookup request.

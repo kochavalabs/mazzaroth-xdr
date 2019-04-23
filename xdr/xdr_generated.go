@@ -922,12 +922,12 @@ var (
 //
 //   struct ReceiptLookupRequest 
 //      {
-//        // Unique receipt identifier.
-//        ID recepitId;
+//        // Unique transaction identifier.
+//        ID transactionId;
 //      };
 //
 type ReceiptLookupRequest struct {
-  RecepitId Id 
+  TransactionId Id 
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
