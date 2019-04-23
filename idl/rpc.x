@@ -16,7 +16,7 @@ namespace mazzaroth
   union Identifier switch (IdentifierType type)
   {
     case NUMBER:
-      uint64 number;
+      unsigned hyper number;
     case HASH:
       Hash hash;
   };

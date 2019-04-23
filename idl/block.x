@@ -18,7 +18,7 @@ namespace mazzaroth
 
     string timestamp<256>; 
 
-    uint64 blockHeight;
+    unsigned hyper blockHeight;
 
     Hash txMerkleRoot;
 
