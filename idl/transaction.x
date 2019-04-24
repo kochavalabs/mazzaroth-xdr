@@ -11,7 +11,7 @@ namespace mazzaroth
 
     // Parameters to the contract function. The serialization format is defined
     // by the contract itself.
-    opaque parameters<>;
+    Parameter parameters<>;
   };
 
   // A transaction that provides a contract as a wasm binary.

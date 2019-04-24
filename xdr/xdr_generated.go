@@ -196,6 +196,30 @@ var (
   _ encoding.BinaryUnmarshaler = (*Hash)(nil)
 )
 
+// Parameter is an XDR Typedef defines as:
+//
+//   typedef opaque Parameter<>;
+//
+type Parameter []byte
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Parameter) MarshalBinary() ([]byte, error) {
+  b := new(bytes.Buffer)
+  _, err := Marshal(b, s)
+  return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Parameter) UnmarshalBinary(inp []byte) error {
+  _, err := Unmarshal(bytes.NewReader(inp), s)
+  return err
+}
+
+var (
+  _ encoding.BinaryMarshaler   = (*Parameter)(nil)
+  _ encoding.BinaryUnmarshaler = (*Parameter)(nil)
+)
+
 // Event is an XDR Struct defines as:
 //
 //   struct Event {
@@ -1051,12 +1075,12 @@ var (
 //    
 //        // Parameters to the contract function. The serialization format is defined
 //        // by the contract itself.
-//        opaque parameters<>;
+//        Parameter parameters<>;
 //      };
 //
 type Call struct {
   Function string `xdrmaxsize:"256"`
-  Parameters []byte 
+  Parameters []Parameter 
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
