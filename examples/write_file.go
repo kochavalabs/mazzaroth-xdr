@@ -1,14 +1,11 @@
 package main
 
 import (
-	"github.com/golang/protobuf/proto"
-	"github.com/kochavalabs/mazzaroth-proto/pb"
 	"github.com/kochavalabs/mazzaroth-xdr/xdr"
 	"os"
 )
 
 const (
-	protoFile = "pbout"
 	xdrFile   = "xdrout"
 	txWritten = 10000
 )
@@ -19,8 +16,7 @@ func check(e error) {
 	}
 }
 
-// Write a transaction XDR file with txWritten TXs and an equicalent proto file
-// for comparison
+// Write a transaction XDR file with txWritten TXs
 func main() {
 	signature := [64]byte{1, 2, 3}
 	address := [32]byte{6, 7, 8}
@@ -42,32 +38,11 @@ func main() {
 		},
 	}
 
-	txPb := pb.Transaction{
-		Signature: signature[:],
-		Address:   address[:],
-		Action: &pb.Action{
-			ChannelId: channelID[:],
-			Nonce:     4,
-			ActionCategory: &pb.Action_Update{
-				Update: &pb.Update{
-					Contract: contract,
-				},
-			},
-		},
-	}
-
-	pF, err := os.Create(protoFile)
-	check(err)
-	defer pF.Close()
-
 	xF, err := os.Create(xdrFile)
 	check(err)
 	defer xF.Close()
 
 	for i := 0; i < txWritten; i++ {
-		pbBytes, _ := proto.Marshal(&txPb)
-		pF.Write(pbBytes)
-
 		xdr.Marshal(xF, txXdr)
 	}
 }
