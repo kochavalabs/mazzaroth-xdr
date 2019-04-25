@@ -374,18 +374,21 @@ var (
 //
 //   enum IdentifierType
 //      {
-//        NUMBER = 0,
-//        HASH = 1
+//        NONE = 0, 
+//        NUMBER = 1,
+//        HASH = 2
 //      };
 //
 type IdentifierType int32
 const (
-  IdentifierTypeNumber IdentifierType = 0
-  IdentifierTypeHash IdentifierType = 1
+  IdentifierTypeNone IdentifierType = 0
+  IdentifierTypeNumber IdentifierType = 1
+  IdentifierTypeHash IdentifierType = 2
 )
 var identifierTypeMap = map[int32]string{
-  0: "IdentifierTypeNumber",
-  1: "IdentifierTypeHash",
+  0: "IdentifierTypeNone",
+  1: "IdentifierTypeNumber",
+  2: "IdentifierTypeHash",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -422,6 +425,8 @@ var (
 //
 //   union Identifier switch (IdentifierType type)
 //      {
+//        case NONE:
+//          void;
 //        case NUMBER:
 //          unsigned hyper number;
 //        case HASH:
@@ -444,6 +449,8 @@ func (u Identifier) SwitchFieldName() string {
 // the value for an instance of Identifier
 func (u Identifier) ArmForSwitch(sw int32) (string, bool) {
 switch IdentifierType(sw) {
+    case IdentifierTypeNone:
+      return "", true
     case IdentifierTypeNumber:
       return "Number", true
     case IdentifierTypeHash:
@@ -456,6 +463,8 @@ return "-", false
 func NewIdentifier(aType IdentifierType, value interface{}) (result Identifier, err error) {
   result.Type = aType
 switch IdentifierType(aType) {
+    case IdentifierTypeNone:
+      // void
     case IdentifierTypeNumber:
                   tv, ok := value.(uint64)
             if !ok {
@@ -1189,9 +1198,9 @@ var (
 //        case NONE:
 //          void;
 //        case CALL:
-//            Call call;
+//          Call call;
 //        case UPDATE:
-//            Update update;
+//          Update update;
 //      };
 //
 type ActionCategory struct{

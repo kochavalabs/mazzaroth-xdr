@@ -33,9 +33,9 @@ namespace mazzaroth
     case NONE:
       void;
     case CALL:
-        Call call;
+      Call call;
     case UPDATE:
-        Update update;
+      Update update;
   };
 
   // The Action data of a transaction

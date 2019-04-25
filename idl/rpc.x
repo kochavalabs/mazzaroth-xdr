@@ -9,12 +9,15 @@ namespace mazzaroth
 
   enum IdentifierType
   {
-    NUMBER = 0,
-    HASH = 1
+    NONE = 0, 
+    NUMBER = 1,
+    HASH = 2
   };
 
   union Identifier switch (IdentifierType type)
   {
+    case NONE:
+      void;
     case NUMBER:
       unsigned hyper number;
     case HASH:

@@ -133,20 +133,24 @@ var types = XDR.config(xdr => {
   //
   //   enum IdentifierType
   //     {
-  //       NUMBER = 0,
-  //       HASH = 1
+  //       NONE = 0, 
+  //       NUMBER = 1,
+  //       HASH = 2
   //     };
   //
   // ===========================================================================
   xdr.enum("IdentifierType", {
-    number: 0,
-    hash: 1
+    none: 0,
+    number: 1,
+    hash: 2
   });
 
   // === xdr source ============================================================
   //
   //   union Identifier switch (IdentifierType type)
   //     {
+  //       case NONE:
+  //         void;
   //       case NUMBER:
   //         unsigned hyper number;
   //       case HASH:
@@ -157,7 +161,7 @@ var types = XDR.config(xdr => {
   xdr.union("Identifier", {
     switchOn: xdr.lookup("IdentifierType"),
     switchName: "type",
-    switches: [["number", "number"], ["hash", "hash"]],
+    switches: [["none", xdr.void()], ["number", "number"], ["hash", "hash"]],
     arms: {
       number: xdr.uhyper(),
       hash: xdr.lookup("Hash")
@@ -431,9 +435,9 @@ var types = XDR.config(xdr => {
   //       case NONE:
   //         void;
   //       case CALL:
-  //           Call call;
+  //         Call call;
   //       case UPDATE:
-  //           Update update;
+  //         Update update;
   //     };
   //
   // ===========================================================================
@@ -503,7 +507,7 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.uhyper()], ["receiptId", xdr.lookup("Id")], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
-}); // Automatically generated on 2019-04-25T13:31:56-07:00
+}); // Automatically generated on 2019-04-25T13:36:52-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */
