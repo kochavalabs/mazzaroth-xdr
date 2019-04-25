@@ -82,11 +82,11 @@ var types = XDR.config(xdr => {
   //       // Name of Event (Function Name)
   //       string key<256>;
   //   
-  //       opaque values<>;
+  //       Parameter parameters<>;
   //     };
   //
   // ===========================================================================
-  xdr.struct("Event", [["key", xdr.string(256)], ["values", xdr.varOpaque()]]);
+  xdr.struct("Event", [["key", xdr.string(256)], ["parameters", xdr.varArray(xdr.lookup("Parameter"), 2147483647)]]);
 
   // === xdr source ============================================================
   //
@@ -499,7 +499,7 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.uhyper()], ["receiptId", xdr.lookup("Id")], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
-}); // Automatically generated on 2019-04-24T08:04:28-07:00
+}); // Automatically generated on 2019-04-25T06:50:29-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */

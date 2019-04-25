@@ -226,12 +226,12 @@ var (
 //        // Name of Event (Function Name)
 //        string key<256>;
 //    
-//        opaque values<>;
+//        Parameter parameters<>;
 //      };
 //
 type Event struct {
   Key string `xdrmaxsize:"256"`
-  Values []byte 
+  Parameters []Parameter 
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.

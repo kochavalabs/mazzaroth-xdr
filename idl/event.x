@@ -6,6 +6,6 @@ namespace mazzaroth
     // Name of Event (Function Name)
     string key<256>;
 
-    opaque values<>;
+    Parameter parameters<>;
   };
 }
