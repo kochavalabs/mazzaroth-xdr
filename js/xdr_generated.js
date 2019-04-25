@@ -412,20 +412,24 @@ var types = XDR.config(xdr => {
   //
   //   enum ActionCategoryType
   //     {
-  //       CALL = 0,
-  //       UPDATE = 1
+  //       NONE = 0,
+  //       CALL = 1,
+  //       UPDATE = 2
   //     };
   //
   // ===========================================================================
   xdr.enum("ActionCategoryType", {
-    call: 0,
-    update: 1
+    none: 0,
+    call: 1,
+    update: 2
   });
 
   // === xdr source ============================================================
   //
   //   union ActionCategory switch (ActionCategoryType type)
   //     {
+  //       case NONE:
+  //         void;
   //       case CALL:
   //           Call call;
   //       case UPDATE:
@@ -436,7 +440,7 @@ var types = XDR.config(xdr => {
   xdr.union("ActionCategory", {
     switchOn: xdr.lookup("ActionCategoryType"),
     switchName: "type",
-    switches: [["call", "call"], ["update", "update"]],
+    switches: [["none", xdr.void()], ["call", "call"], ["update", "update"]],
     arms: {
       call: xdr.lookup("Call"),
       update: xdr.lookup("Update")
@@ -499,7 +503,7 @@ var types = XDR.config(xdr => {
   //
   // ===========================================================================
   xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.uhyper()], ["receiptId", xdr.lookup("Id")], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
-}); // Automatically generated on 2019-04-25T06:50:29-07:00
+}); // Automatically generated on 2019-04-25T13:31:56-07:00
 // DO NOT EDIT or your changes may be overwritten
 
 /* jshint maxstatements:2147483647  */

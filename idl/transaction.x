@@ -23,12 +23,15 @@ namespace mazzaroth
 
   enum ActionCategoryType
   {
-    CALL = 0,
-    UPDATE = 1
+    NONE = 0,
+    CALL = 1,
+    UPDATE = 2
   };
 
   union ActionCategory switch (ActionCategoryType type)
   {
+    case NONE:
+      void;
     case CALL:
         Call call;
     case UPDATE:

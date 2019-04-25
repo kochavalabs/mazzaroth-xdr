@@ -1135,18 +1135,21 @@ var (
 //
 //   enum ActionCategoryType
 //      {
-//        CALL = 0,
-//        UPDATE = 1
+//        NONE = 0,
+//        CALL = 1,
+//        UPDATE = 2
 //      };
 //
 type ActionCategoryType int32
 const (
-  ActionCategoryTypeCall ActionCategoryType = 0
-  ActionCategoryTypeUpdate ActionCategoryType = 1
+  ActionCategoryTypeNone ActionCategoryType = 0
+  ActionCategoryTypeCall ActionCategoryType = 1
+  ActionCategoryTypeUpdate ActionCategoryType = 2
 )
 var actionCategoryTypeMap = map[int32]string{
-  0: "ActionCategoryTypeCall",
-  1: "ActionCategoryTypeUpdate",
+  0: "ActionCategoryTypeNone",
+  1: "ActionCategoryTypeCall",
+  2: "ActionCategoryTypeUpdate",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -1183,6 +1186,8 @@ var (
 //
 //   union ActionCategory switch (ActionCategoryType type)
 //      {
+//        case NONE:
+//          void;
 //        case CALL:
 //            Call call;
 //        case UPDATE:
@@ -1205,6 +1210,8 @@ func (u ActionCategory) SwitchFieldName() string {
 // the value for an instance of ActionCategory
 func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
 switch ActionCategoryType(sw) {
+    case ActionCategoryTypeNone:
+      return "", true
     case ActionCategoryTypeCall:
       return "Call", true
     case ActionCategoryTypeUpdate:
@@ -1217,6 +1224,8 @@ return "-", false
 func NewActionCategory(aType ActionCategoryType, value interface{}) (result ActionCategory, err error) {
   result.Type = aType
 switch ActionCategoryType(aType) {
+    case ActionCategoryTypeNone:
+      // void
     case ActionCategoryTypeCall:
                   tv, ok := value.(Call)
             if !ok {
