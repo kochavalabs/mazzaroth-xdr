@@ -5,7 +5,7 @@
   "main": "js/xdr_generated.js",
   "scripts": {
     "clean": "rm -f ./xdr/xdr_generated.go && rm -rf ./js && mkdir js",
-    "build-go": "./xdrgen/bin/xdrgen -o ./xdr/ -l go -n xdr ./idl/*.x",
+    "build-go": "cargo run --manifest-path=xdrgen/Cargo.toml ./idl/*.x | gofmt > ./xdr/xdr_generated.go",
     "build-js": "./xdrgen/bin/xdrgen -o ./js/ -l javascript -n xdr ./idl/*.x && babel js -d js",
     "build": "npm run clean && npm run build-js && npm run build-go",
     "write": "npm run build-js && node ./examples/write_file.js"

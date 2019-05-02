@@ -1,0 +1,3 @@
+[submodule "xdrgen"]
+	path = xdrgen
+	url = git@github.com:kochavalabs/xdrgen.git
