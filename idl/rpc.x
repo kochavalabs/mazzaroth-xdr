@@ -14,7 +14,7 @@ namespace mazzaroth
     HASH = 2
   };
 
-  union Identifier switch (IdentifierType type)
+  union Identifier switch (IdentifierType Type)
   {
     case NONE:
       void;
@@ -26,12 +26,12 @@ namespace mazzaroth
 
   struct BlockLookupRequest
   {
-    Identifier id; 
+    Identifier ID;
   };
 
   struct BlockHeaderLookupRequest
   {
-    Identifier id; 
+    Identifier ID;
   };
 
   struct BlockLookupResponse
@@ -82,7 +82,7 @@ namespace mazzaroth
   struct TransactionLookupRequest 
   {
     // Unique transaction identifier.
-    ID transactionId;
+    ID transactionID;
   };
 
   // Response to lookup request.
@@ -108,7 +108,7 @@ namespace mazzaroth
   struct TransactionSubmitResponse
   {
     // Final transaction written to the blockchain. (if successful)
-    ID transactionId;
+    ID transactionID;
 
     // Current status of the transaction.
     TransactionStatus status;
@@ -142,7 +142,7 @@ namespace mazzaroth
   struct ReceiptLookupRequest 
   {
     // Unique transaction identifier.
-    ID transactionId;
+    ID transactionID;
   };
 
   // Response to receipt lookup request.

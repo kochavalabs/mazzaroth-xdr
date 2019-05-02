@@ -1,4 +1,4 @@
-package xdr
+package xdr_old
 
 import (
 	"errors"
@@ -25,7 +25,7 @@ func fromSlice64(slice []byte) ([64]byte, error) {
 }
 
 // IdFromSlice gets an Id from a byte slice.
-func IdFromSlice(slice []byte) (ID, error) {
+func IdFromSlice(slice []byte) (Id, error) {
 	return fromSlice32(slice)
 }
 
