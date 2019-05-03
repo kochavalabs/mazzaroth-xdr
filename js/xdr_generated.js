@@ -18,7 +18,7 @@ var types = XDR.config(xdr => {
 
   // Start struct section
   xdr.struct("Block", [["header", xdr.lookup("BlockHeader")], ["transactions", xdr.array(xdr.lookup("Transaction"), 2147483647)]]);
-  xdr.struct("BlockHeader", [["timestamp", xdr.string(256)], ["blockHeight", xdr.hyper()], ["txMerkleRoot", xdr.lookup("Hash")], ["txReceiptRoot", xdr.lookup("Hash")], ["stateRoot", xdr.lookup("Hash")], ["previousHeader", xdr.lookup("Hash")], ["blockProducerAddress", xdr.lookup("ID")]]);
+  xdr.struct("BlockHeader", [["timestamp", xdr.string(256)], ["blockHeight", xdr.uhyper()], ["txMerkleRoot", xdr.lookup("Hash")], ["txReceiptRoot", xdr.lookup("Hash")], ["stateRoot", xdr.lookup("Hash")], ["previousHeader", xdr.lookup("Hash")], ["blockProducerAddress", xdr.lookup("ID")]]);
 
   // End struct section
 
@@ -186,7 +186,7 @@ var types = XDR.config(xdr => {
     switches: [["NONE", xdr.void()], ["NUMBER", "NUMBER"], ["HASH", "HASH"]],
     arms: {
 
-      NUMBER: xdr.hyper(),
+      NUMBER: xdr.uhyper(),
 
       HASH: xdr.lookup("Hash")
 
@@ -204,9 +204,9 @@ var types = XDR.config(xdr => {
   // Start struct section
   xdr.struct("Call", [["function", xdr.string(256)], ["parameters", xdr.array(xdr.lookup("Parameter"), 2147483647)]]);
   xdr.struct("Update", [["contract", xdr.opaque(2147483647)]]);
-  xdr.struct("Action", [["channelID", xdr.lookup("ID")], ["nonce", xdr.hyper()], ["category", xdr.lookup("ActionCategory")]]);
+  xdr.struct("Action", [["channelID", xdr.lookup("ID")], ["nonce", xdr.uhyper()], ["category", xdr.lookup("ActionCategory")]]);
   xdr.struct("Transaction", [["signature", xdr.lookup("Signature")], ["address", xdr.lookup("ID")], ["action", xdr.lookup("Action")]]);
-  xdr.struct("CommittedTransaction", [["transaction", xdr.varArray(xdr.lookup("Transaction"), 25)], ["sequenceNumber", xdr.hyper()], ["receiptID", xdr.array(xdr.lookup("ID"), 25)], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.array(xdr.lookup("Signature"), 2147483647)]]);
+  xdr.struct("CommittedTransaction", [["transaction", xdr.varArray(xdr.lookup("Transaction"), 25)], ["sequenceNumber", xdr.uhyper()], ["receiptID", xdr.array(xdr.lookup("ID"), 25)], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.array(xdr.lookup("Signature"), 2147483647)]]);
 
   // End struct section
 
