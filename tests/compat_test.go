@@ -47,10 +47,21 @@ func getXdr() xdr.Transaction {
 }
 
 func TestOldVsNew(t *testing.T) {
+	txXdr := xdr.Transaction{}
+	txXdrOld := xdr_old.Transaction{}
 	bytes, _ := getXdr().MarshalBinary()
 	oldBytes, _ := getXdrOld().MarshalBinary()
 
 	if !reflect.DeepEqual(bytes, oldBytes) {
-		t.Errorf("Got %d, want %d", bytes, oldBytes)
+		t.Errorf("Got %x, want %x", bytes, oldBytes)
+	}
+
+	txXdr.UnmarshalBinary(bytes)
+	txXdrOld.UnmarshalBinary(bytes)
+	marBytes, _ := txXdr.MarshalBinary()
+	marBytesOld, _ := txXdrOld.MarshalBinary()
+
+	if !reflect.DeepEqual(marBytes, marBytesOld) {
+		t.Errorf("Got %x, want %x", marBytes, marBytesOld)
 	}
 }

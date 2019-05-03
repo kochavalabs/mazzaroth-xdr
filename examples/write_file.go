@@ -27,10 +27,10 @@ func main() {
 		Signature: signature,
 		Address:   address,
 		Action: xdr.Action{
-			ChannelId: channelID,
+			ChannelID: channelID,
 			Nonce:     4,
 			Category: xdr.ActionCategory{
-				Type: xdr.ActionCategoryTypeUpdate,
+				Type: xdr.ActionCategoryTypeUPDATE,
 				Update: &xdr.Update{
 					Contract: contract,
 				},
