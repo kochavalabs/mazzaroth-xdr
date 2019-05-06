@@ -17,7 +17,7 @@ var types = XDR.config(xdr => {
   // End typedef section
 
   // Start struct section
-  xdr.struct("Block", [["header", xdr.lookup("BlockHeader")], ["transactions", xdr.array(xdr.lookup("Transaction"), 2147483647)]]);
+  xdr.struct("Block", [["header", xdr.lookup("BlockHeader")], ["transactions", xdr.varArray(xdr.lookup("Transaction"), 2147483647)]]);
   xdr.struct("BlockHeader", [["timestamp", xdr.string(256)], ["blockHeight", xdr.uhyper()], ["txMerkleRoot", xdr.lookup("Hash")], ["txReceiptRoot", xdr.lookup("Hash")], ["stateRoot", xdr.lookup("Hash")], ["previousHeader", xdr.lookup("Hash")], ["blockProducerAddress", xdr.lookup("ID")]]);
 
   // End struct section
@@ -68,7 +68,7 @@ var types = XDR.config(xdr => {
   // End typedef section
 
   // Start struct section
-  xdr.struct("Event", [["key", xdr.string(256)], ["parameters", xdr.array(xdr.lookup("Parameter"), 2147483647)]]);
+  xdr.struct("Event", [["key", xdr.string(256)], ["parameters", xdr.varArray(xdr.lookup("Parameter"), 2147483647)]]);
 
   // End struct section
 
@@ -89,7 +89,7 @@ var types = XDR.config(xdr => {
   // End typedef section
 
   // Start struct section
-  xdr.struct("Receipt", [["status", xdr.lookup("ReceiptStatus")], ["stateRoot", xdr.lookup("Hash")], ["events", xdr.array(xdr.lookup("Event"), 2147483647)], ["result", xdr.varOpaque()]]);
+  xdr.struct("Receipt", [["status", xdr.lookup("ReceiptStatus")], ["stateRoot", xdr.lookup("Hash")], ["events", xdr.varArray(xdr.lookup("Event"), 2147483647)], ["result", xdr.varOpaque()]]);
 
   // End struct section
 
@@ -202,11 +202,11 @@ var types = XDR.config(xdr => {
   // End typedef section
 
   // Start struct section
-  xdr.struct("Call", [["function", xdr.string(256)], ["parameters", xdr.array(xdr.lookup("Parameter"), 2147483647)]]);
+  xdr.struct("Call", [["function", xdr.string(256)], ["parameters", xdr.varArray(xdr.lookup("Parameter"), 2147483647)]]);
   xdr.struct("Update", [["contract", xdr.varOpaque()]]);
   xdr.struct("Action", [["channelID", xdr.lookup("ID")], ["nonce", xdr.uhyper()], ["category", xdr.lookup("ActionCategory")]]);
   xdr.struct("Transaction", [["signature", xdr.lookup("Signature")], ["address", xdr.lookup("ID")], ["action", xdr.lookup("Action")]]);
-  xdr.struct("CommittedTransaction", [["transaction", xdr.varArray(xdr.lookup("Transaction"), 25)], ["sequenceNumber", xdr.uhyper()], ["receiptID", xdr.array(xdr.lookup("ID"), 25)], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.array(xdr.lookup("Signature"), 2147483647)]]);
+  xdr.struct("CommittedTransaction", [["transaction", xdr.array(xdr.lookup("Transaction"), 25)], ["sequenceNumber", xdr.uhyper()], ["receiptID", xdr.varArray(xdr.lookup("ID"), 25)], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
 
   // End struct section
 
