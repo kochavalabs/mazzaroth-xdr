@@ -206,7 +206,7 @@ var types = XDR.config(xdr => {
   xdr.struct("Update", [["contract", xdr.varOpaque()]]);
   xdr.struct("Action", [["channelID", xdr.lookup("ID")], ["nonce", xdr.uhyper()], ["category", xdr.lookup("ActionCategory")]]);
   xdr.struct("Transaction", [["signature", xdr.lookup("Signature")], ["address", xdr.lookup("ID")], ["action", xdr.lookup("Action")]]);
-  xdr.struct("CommittedTransaction", [["transaction", xdr.array(xdr.lookup("Transaction"), 25)], ["sequenceNumber", xdr.uhyper()], ["receiptID", xdr.varArray(xdr.lookup("ID"), 25)], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
+  xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.uhyper()], ["receiptID", xdr.varArray(xdr.lookup("ID"), 25)], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
 
   // End struct section
 

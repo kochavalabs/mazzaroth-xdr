@@ -1061,7 +1061,7 @@ var (
 )
 
 type CommittedTransaction struct {
-	Transaction [25]Transaction
+	Transaction Transaction
 
 	SequenceNumber uint64
 

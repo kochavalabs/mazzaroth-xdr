@@ -71,7 +71,7 @@ namespace mazzaroth
   struct CommittedTransaction
   {
     // The transaction itself
-    Transaction transaction[25];
+    Transaction transaction;
 
     // The execution ordering of the transaction, provided by consensus
     unsigned hyper sequenceNumber;
