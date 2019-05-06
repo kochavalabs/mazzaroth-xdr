@@ -31,7 +31,7 @@ func Marshal(w io.Writer, v interface{}) (int, error) {
 type Block struct {
 	Header BlockHeader
 
-	Transactions []Transaction `xdrmaxsize:"2147483647"`
+	Transactions []Transaction
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -177,11 +177,6 @@ var (
 
 type Parameter []byte
 
-// XDRMaxSize implements the Sized interface for Parameter
-func (s Parameter) XDRMaxSize() int {
-	return 2147483647
-}
-
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (s Parameter) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
@@ -222,7 +217,7 @@ var (
 type Event struct {
 	Key string `xdrmaxsize:"256"`
 
-	Parameters []Parameter `xdrmaxsize:"2147483647"`
+	Parameters []Parameter
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -264,9 +259,9 @@ type Receipt struct {
 
 	StateRoot Hash
 
-	Events []Event `xdrmaxsize:"2147483647"`
+	Events []Event
 
-	Result []byte `xdrmaxsize:"2147483647"`
+	Result []byte
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -348,11 +343,6 @@ var (
 // Start typedef section
 
 type StatusInfo string
-
-// XDRMaxSize implements the Sized interface for StatusInfo
-func (s StatusInfo) XDRMaxSize() int {
-	return 256
-}
 
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (s StatusInfo) MarshalBinary() ([]byte, error) {
@@ -975,7 +965,7 @@ var (
 type Call struct {
 	Function string `xdrmaxsize:"256"`
 
-	Parameters []Parameter `xdrmaxsize:"2147483647"`
+	Parameters []Parameter
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -997,7 +987,7 @@ var (
 )
 
 type Update struct {
-	Contract []byte `xdrmaxsize:"2147483647"`
+	Contract []byte
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1079,7 +1069,7 @@ type CommittedTransaction struct {
 
 	CurrentTransactionRoot Hash
 
-	Signatures []Signature `xdrmaxsize:"2147483647"`
+	Signatures []Signature
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
