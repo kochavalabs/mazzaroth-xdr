@@ -36,13 +36,13 @@ var types = XDR.config(xdr => {
   // Namspace start mazzaroth
 
   // Start typedef section
-  xdr.typedef("Signature", xdr.opaque(32));
+  xdr.typedef("Signature", xdr.opaque(64));
 
   xdr.typedef("ID", xdr.opaque(32));
 
   xdr.typedef("Hash", xdr.opaque(32));
 
-  xdr.typedef("Parameter", xdr.opaque(32));
+  xdr.typedef("Parameter", xdr.varOpaque());
 
   // End typedef section
 
@@ -89,7 +89,7 @@ var types = XDR.config(xdr => {
   // End typedef section
 
   // Start struct section
-  xdr.struct("Receipt", [["status", xdr.lookup("ReceiptStatus")], ["stateRoot", xdr.lookup("Hash")], ["events", xdr.array(xdr.lookup("Event"), 2147483647)], ["result", xdr.opaque(2147483647)]]);
+  xdr.struct("Receipt", [["status", xdr.lookup("ReceiptStatus")], ["stateRoot", xdr.lookup("Hash")], ["events", xdr.array(xdr.lookup("Event"), 2147483647)], ["result", xdr.varOpaque()]]);
 
   // End struct section
 
@@ -113,7 +113,7 @@ var types = XDR.config(xdr => {
   // Namspace start mazzaroth
 
   // Start typedef section
-  xdr.typedef("StatusInfo", xdr.string(32));
+  xdr.typedef("StatusInfo", xdr.string(256));
 
   // End typedef section
 
@@ -203,7 +203,7 @@ var types = XDR.config(xdr => {
 
   // Start struct section
   xdr.struct("Call", [["function", xdr.string(256)], ["parameters", xdr.array(xdr.lookup("Parameter"), 2147483647)]]);
-  xdr.struct("Update", [["contract", xdr.opaque(2147483647)]]);
+  xdr.struct("Update", [["contract", xdr.varOpaque()]]);
   xdr.struct("Action", [["channelID", xdr.lookup("ID")], ["nonce", xdr.uhyper()], ["category", xdr.lookup("ActionCategory")]]);
   xdr.struct("Transaction", [["signature", xdr.lookup("Signature")], ["address", xdr.lookup("ID")], ["action", xdr.lookup("Action")]]);
   xdr.struct("CommittedTransaction", [["transaction", xdr.varArray(xdr.lookup("Transaction"), 25)], ["sequenceNumber", xdr.uhyper()], ["receiptID", xdr.array(xdr.lookup("ID"), 25)], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.array(xdr.lookup("Signature"), 2147483647)]]);
