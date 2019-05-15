@@ -28,6 +28,48 @@ func Marshal(w io.Writer, v interface{}) (int, error) {
 // End typedef section
 
 // Start struct section
+type Account struct {
+	Name string
+
+	Nonce uint64
+
+	Value uint64
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Account) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Account) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Account)(nil)
+	_ encoding.BinaryUnmarshaler = (*Account)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+// End enum section
+//
+// Start union section
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
 type Block struct {
 	Header BlockHeader
 
