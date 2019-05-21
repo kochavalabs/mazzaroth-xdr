@@ -17,6 +17,27 @@ var types = XDR.config(xdr => {
   // End typedef section
 
   // Start struct section
+  xdr.struct("Account", [["name", xdr.string(0)], ["nonce", xdr.uhyper()], ["value", xdr.uhyper()]]);
+
+  // End struct section
+
+  // Start enum section
+
+
+  // End enum section
+
+  // Start union section
+
+
+  // End union section
+
+  // End namespace mazzaroth
+  // Namspace start mazzaroth
+
+  // Start typedef section
+  // End typedef section
+
+  // Start struct section
   xdr.struct("Block", [["header", xdr.lookup("BlockHeader")], ["transactions", xdr.varArray(xdr.lookup("Transaction"), 2147483647)]]);
   xdr.struct("BlockHeader", [["timestamp", xdr.string(256)], ["blockHeight", xdr.uhyper()], ["txMerkleRoot", xdr.lookup("Hash")], ["txReceiptRoot", xdr.lookup("Hash")], ["stateRoot", xdr.lookup("Hash")], ["previousHeader", xdr.lookup("Hash")], ["blockProducerAddress", xdr.lookup("ID")]]);
 
