@@ -149,6 +149,8 @@ var types = XDR.config(xdr => {
   xdr.struct("TransactionSubmitResponse", [["transactionID", xdr.lookup("ID")], ["status", xdr.lookup("TransactionStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
   xdr.struct("ReceiptLookupRequest", [["transactionID", xdr.lookup("ID")]]);
   xdr.struct("ReceiptLookupResponse", [["receipt", xdr.lookup("Receipt")], ["status", xdr.lookup("ReceiptLookupStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
+  xdr.struct("AccountNonceLookupRequest", [["account", xdr.lookup("ID")]]);
+  xdr.struct("AccountNonceLookupResponse", [["nonce", xdr.uhyper()], ["status", xdr.lookup("NonceLookupStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
 
   // End struct section
 
@@ -188,6 +190,15 @@ var types = XDR.config(xdr => {
   });
 
   xdr.enum("ReceiptLookupStatus", {
+
+    UNKNOWN: 0,
+
+    FOUND: 1,
+
+    NOT_FOUND: 2
+  });
+
+  xdr.enum("NonceLookupStatus", {
 
     UNKNOWN: 0,
 
