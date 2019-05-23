@@ -647,6 +647,54 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReceiptLookupResponse)(nil)
 )
 
+type AccountNonceLookupRequest struct {
+	Account ID
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s AccountNonceLookupRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *AccountNonceLookupRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*AccountNonceLookupRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupRequest)(nil)
+)
+
+type AccountNonceLookupResponse struct {
+	Nonce uint64
+
+	Status NonceLookupStatus
+
+	StatusInfo StatusInfo
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s AccountNonceLookupResponse) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *AccountNonceLookupResponse) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*AccountNonceLookupResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupResponse)(nil)
+)
+
 // End struct section
 
 // Start enum section
@@ -861,6 +909,56 @@ func (s *ReceiptLookupStatus) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*ReceiptLookupStatus)(nil)
 	_ encoding.BinaryUnmarshaler = (*ReceiptLookupStatus)(nil)
+)
+
+type NonceLookupStatus int32
+
+const (
+	NonceLookupStatusUNKNOWN NonceLookupStatus = 0
+
+	NonceLookupStatusFOUND NonceLookupStatus = 1
+
+	NonceLookupStatusNOT_FOUND NonceLookupStatus = 2
+)
+
+var NonceLookupStatusMap = map[int32]string{
+
+	0: "NonceLookupStatusUNKNOWN",
+
+	1: "NonceLookupStatusFOUND",
+
+	2: "NonceLookupStatusNOT_FOUND",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for NonceLookupStatus
+func (s NonceLookupStatus) ValidEnum(v int32) bool {
+	_, ok := NonceLookupStatusMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s NonceLookupStatus) String() string {
+	name, _ := NonceLookupStatusMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s NonceLookupStatus) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *NonceLookupStatus) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*NonceLookupStatus)(nil)
+	_ encoding.BinaryUnmarshaler = (*NonceLookupStatus)(nil)
 )
 
 // End enum section
