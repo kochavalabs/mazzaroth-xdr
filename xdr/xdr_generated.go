@@ -256,6 +256,48 @@ var (
 // End typedef section
 
 // Start struct section
+type ContractMetadata struct {
+	Name string
+
+	Owner ID
+
+	Version uint64
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ContractMetadata) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ContractMetadata) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ContractMetadata)(nil)
+	_ encoding.BinaryUnmarshaler = (*ContractMetadata)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+// End enum section
+//
+// Start union section
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
 type Event struct {
 	Key string `xdrmaxsize:"256"`
 

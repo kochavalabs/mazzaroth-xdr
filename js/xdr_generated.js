@@ -89,6 +89,27 @@ var types = XDR.config(xdr => {
   // End typedef section
 
   // Start struct section
+  xdr.struct("ContractMetadata", [["name", xdr.string(0)], ["owner", xdr.lookup("ID")], ["version", xdr.uhyper()]]);
+
+  // End struct section
+
+  // Start enum section
+
+
+  // End enum section
+
+  // Start union section
+
+
+  // End union section
+
+  // End namespace mazzaroth
+  // Namspace start mazzaroth
+
+  // Start typedef section
+  // End typedef section
+
+  // Start struct section
   xdr.struct("Event", [["key", xdr.string(256)], ["parameters", xdr.varArray(xdr.lookup("Parameter"), 2147483647)]]);
 
   // End struct section
