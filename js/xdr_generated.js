@@ -89,7 +89,7 @@ var types = XDR.config(xdr => {
   // End typedef section
 
   // Start struct section
-  xdr.struct("ContractMetadata", [["name", xdr.string(0)], ["owner", xdr.lookup("ID")], ["version", xdr.uhyper()]]);
+  xdr.struct("ContractMetadata", [["hash", xdr.lookup("Hash")], ["owner", xdr.lookup("ID")], ["version", xdr.uhyper()]]);
 
   // End struct section
 

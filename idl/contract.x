@@ -6,7 +6,7 @@ namespace mazzaroth
   // ContractMetadata stores contract metadata in state for a contract
   struct ContractMetadata
   {
-    string name;
+    Hash hash;
     ID owner;
     unsigned hyper version;
   };

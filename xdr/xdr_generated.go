@@ -257,7 +257,7 @@ var (
 
 // Start struct section
 type ContractMetadata struct {
-	Name string
+	Hash Hash
 
 	Owner ID
 
