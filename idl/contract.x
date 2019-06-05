@@ -7,7 +7,6 @@ namespace mazzaroth
   struct ContractMetadata
   {
     Hash hash;
-    ID owner;
     unsigned hyper version;
   };
 }

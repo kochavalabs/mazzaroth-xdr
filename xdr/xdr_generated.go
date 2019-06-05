@@ -259,8 +259,6 @@ var (
 type ContractMetadata struct {
 	Hash Hash
 
-	Owner ID
-
 	Version uint64
 }
 
