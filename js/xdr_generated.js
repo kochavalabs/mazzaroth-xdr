@@ -57,6 +57,45 @@ var types = XDR.config(xdr => {
   // Namspace start mazzaroth
 
   // Start typedef section
+  // End typedef section
+
+  // Start struct section
+  xdr.struct("ChannelConfig", [["owner", xdr.lookup("ID")], ["validators", xdr.varArray(xdr.lookup("ID"), 2147483647)], ["consensusConfig", xdr.lookup("ConsensusConfig")]]);
+  xdr.struct("PBFTConfig", [["checkpointPeriod", xdr.uhyper()]]);
+
+  // End struct section
+
+  // Start enum section
+
+  xdr.enum("ConsensusConfigType", {
+
+    NONE: 0,
+
+    PBFT: 1
+  });
+
+  // End enum section
+
+  // Start union section
+
+
+  xdr.union("ConsensusConfig", {
+    switchOn: xdr.lookup("ConsensusConfigType"),
+    switchName: "Type",
+    switches: [["NONE", xdr.void()], ["PBFT", "PBFT"]],
+    arms: {
+
+      PBFT: xdr.lookup("PBFTConfig")
+
+    }
+  });
+
+  // End union section
+
+  // End namespace mazzaroth
+  // Namspace start mazzaroth
+
+  // Start typedef section
   xdr.typedef("Signature", xdr.opaque(64));
 
   xdr.typedef("ID", xdr.opaque(32));
