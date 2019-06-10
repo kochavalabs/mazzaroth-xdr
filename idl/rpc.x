@@ -127,7 +127,13 @@ namespace mazzaroth
   struct TransactionReadonlyResponse
   {
     // Receipt from execution of the transaction.
-    Receipt receipt; 
+    Receipt receipt;
+
+    // Status of the transaction.
+    TransactionStatus status;
+
+    // Human readable information to help understand the transaction status.
+    StatusInfo statusInfo;
   };
 
   // Status of a transaction.

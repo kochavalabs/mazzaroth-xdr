@@ -863,6 +863,10 @@ var (
 
 type TransactionReadonlyResponse struct {
 	Receipt Receipt
+
+	Status TransactionStatus
+
+	StatusInfo StatusInfo
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
