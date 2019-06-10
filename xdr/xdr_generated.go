@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 
-	xdr "github.com/stellar/go-xdr/xdr3"
+	"github.com/stellar/go-xdr/xdr3"
 )
 
 // Unmarshal reads an xdr element from `r` into `v`.
@@ -837,6 +837,50 @@ func (s *TransactionSubmitResponse) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*TransactionSubmitResponse)(nil)
 	_ encoding.BinaryUnmarshaler = (*TransactionSubmitResponse)(nil)
+)
+
+type TransactionReadonlyRequest struct {
+	Transaction Transaction
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s TransactionReadonlyRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *TransactionReadonlyRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*TransactionReadonlyRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*TransactionReadonlyRequest)(nil)
+)
+
+type TransactionReadonlyResponse struct {
+	Receipt Receipt
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s TransactionReadonlyResponse) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *TransactionReadonlyResponse) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*TransactionReadonlyResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*TransactionReadonlyResponse)(nil)
 )
 
 type ReceiptLookupRequest struct {

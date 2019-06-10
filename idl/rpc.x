@@ -117,6 +117,19 @@ namespace mazzaroth
     StatusInfo statusInfo;
   };
 
+  // Message sent to a node to submit a readonly transaction.
+  struct TransactionReadonlyRequest
+  {
+    Transaction transaction;
+  };
+
+  // Response from a node for a readonly transaction Request.
+  struct TransactionReadonlyResponse
+  {
+    // Receipt from execution of the transaction.
+    Receipt receipt; 
+  };
+
   // Status of a transaction.
   enum TransactionStatus
   {
