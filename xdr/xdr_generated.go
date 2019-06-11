@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/stellar/go-xdr/xdr3"
+	xdr "github.com/stellar/go-xdr/xdr3"
 )
 
 // Unmarshal reads an xdr element from `r` into `v`.
@@ -135,6 +135,206 @@ var (
 // End enum section
 //
 // Start union section
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
+type ChannelConfig struct {
+	Owner ID
+
+	Validators []ID
+
+	ConsensusConfig ConsensusConfig
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ChannelConfig) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ChannelConfig) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ChannelConfig)(nil)
+	_ encoding.BinaryUnmarshaler = (*ChannelConfig)(nil)
+)
+
+type PBFTConfig struct {
+	CheckpointPeriod uint64
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s PBFTConfig) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *PBFTConfig) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*PBFTConfig)(nil)
+	_ encoding.BinaryUnmarshaler = (*PBFTConfig)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+type ConsensusConfigType int32
+
+const (
+	ConsensusConfigTypeNONE ConsensusConfigType = 0
+
+	ConsensusConfigTypePBFT ConsensusConfigType = 1
+)
+
+var ConsensusConfigTypeMap = map[int32]string{
+
+	0: "ConsensusConfigTypeNONE",
+
+	1: "ConsensusConfigTypePBFT",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ConsensusConfigType
+func (s ConsensusConfigType) ValidEnum(v int32) bool {
+	_, ok := ConsensusConfigTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s ConsensusConfigType) String() string {
+	name, _ := ConsensusConfigTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ConsensusConfigType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ConsensusConfigType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ConsensusConfigType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ConsensusConfigType)(nil)
+)
+
+// End enum section
+//
+// Start union section
+
+type ConsensusConfig struct {
+	Type ConsensusConfigType
+
+	PbftConfig *PBFTConfig
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u ConsensusConfig) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of ConsensusConfig
+func (u ConsensusConfig) ArmForSwitch(sw int32) (string, bool) {
+	switch ConsensusConfigType(sw) {
+
+	case ConsensusConfigTypeNONE:
+		return "", true
+
+	case ConsensusConfigTypePBFT:
+		return "PbftConfig", true
+	}
+	return "-", false
+}
+
+// NewConsensusConfig creates a new  ConsensusConfig.
+func NewConsensusConfig(aType ConsensusConfigType, value interface{}) (result ConsensusConfig, err error) {
+	result.Type = aType
+	switch aType {
+
+	case ConsensusConfigTypeNONE:
+
+	case ConsensusConfigTypePBFT:
+
+		tv, ok := value.(PBFTConfig)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.PbftConfig = &tv
+
+	}
+	return
+}
+
+// MustPbftConfig retrieves the PbftConfig value from the union,
+// panicing if the value is not set.
+func (u ConsensusConfig) MustPbftConfig() PBFTConfig {
+	val, ok := u.GetPbftConfig()
+
+	if !ok {
+		panic("arm PbftConfig is not set")
+	}
+
+	return val
+}
+
+// GetPbftConfig retrieves the PbftConfig value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ConsensusConfig) GetPbftConfig() (result PBFTConfig, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "PbftConfig" {
+		result = *u.PbftConfig
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ConsensusConfig) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ConsensusConfig) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ConsensusConfig)(nil)
+	_ encoding.BinaryUnmarshaler = (*ConsensusConfig)(nil)
+)
+
 // End union section
 
 // Namspace end mazzaroth
