@@ -120,6 +120,10 @@ namespace mazzaroth
   // Message sent to a node to submit a readonly transaction.
   struct TransactionReadonlyRequest
   {
+    // Byte array representing the id of the sender
+    // Provided for readonly transactions that use sender id.
+    ID sender;
+
     // Reaonly Request can only be a call
     Call call;
   };
