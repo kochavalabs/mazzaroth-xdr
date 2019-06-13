@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io"
 
-	xdr "github.com/stellar/go-xdr/xdr3"
+	"github.com/stellar/go-xdr/xdr3"
 )
 
 // Unmarshal reads an xdr element from `r` into `v`.
@@ -840,7 +840,7 @@ var (
 )
 
 type TransactionReadonlyRequest struct {
-	Transaction Transaction
+	Call Call
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -862,7 +862,9 @@ var (
 )
 
 type TransactionReadonlyResponse struct {
-	Receipt Receipt
+	Result []byte
+
+	StateRoot Hash
 
 	Status TransactionStatus
 

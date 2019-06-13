@@ -120,14 +120,18 @@ namespace mazzaroth
   // Message sent to a node to submit a readonly transaction.
   struct TransactionReadonlyRequest
   {
-    Transaction transaction;
+    // Reaonly Request can only be a call
+    Call call;
   };
 
   // Response from a node for a readonly transaction Request.
   struct TransactionReadonlyResponse
   {
-    // Receipt from execution of the transaction.
-    Receipt receipt;
+    // Return results of execution
+    opaque result<>;
+
+    // The state root
+    Hash stateRoot;
 
     // Status of the transaction.
     TransactionStatus status;
