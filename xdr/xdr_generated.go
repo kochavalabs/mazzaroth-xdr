@@ -840,8 +840,6 @@ var (
 )
 
 type TransactionReadonlyRequest struct {
-	Sender ID
-
 	Call Call
 }
 

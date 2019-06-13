@@ -207,7 +207,7 @@ var types = XDR.config(xdr => {
   xdr.struct("TransactionLookupResponse", [["transaction", xdr.lookup("Transaction")], ["status", xdr.lookup("TransactionStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
   xdr.struct("TransactionSubmitRequest", [["transaction", xdr.lookup("Transaction")]]);
   xdr.struct("TransactionSubmitResponse", [["transactionID", xdr.lookup("ID")], ["status", xdr.lookup("TransactionStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
-  xdr.struct("TransactionReadonlyRequest", [["sender", xdr.lookup("ID")], ["call", xdr.lookup("Call")]]);
+  xdr.struct("TransactionReadonlyRequest", [["call", xdr.lookup("Call")]]);
   xdr.struct("TransactionReadonlyResponse", [["result", xdr.varOpaque()], ["stateRoot", xdr.lookup("Hash")], ["status", xdr.lookup("TransactionStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
   xdr.struct("ReceiptLookupRequest", [["transactionID", xdr.lookup("ID")]]);
   xdr.struct("ReceiptLookupResponse", [["receipt", xdr.lookup("Receipt")], ["status", xdr.lookup("ReceiptLookupStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
