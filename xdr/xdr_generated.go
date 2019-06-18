@@ -1759,3 +1759,4 @@ var (
 // End union section
 
 // Namspace end mazzaroth
+var fmtTest = fmt.Sprint("this is a dummy usage of fmt")
