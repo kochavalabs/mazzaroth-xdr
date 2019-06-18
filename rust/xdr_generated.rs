@@ -318,7 +318,7 @@ pub struct TransactionSubmitResponse {
 
 #[derive(Default, Debug, XDROut, XDRIn)]
 pub struct ReadonlyRequest {
-    pub call: Call,
+    pub input: Input,
 }
 
 #[derive(Default, Debug, XDROut, XDRIn)]
