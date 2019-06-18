@@ -840,7 +840,7 @@ var (
 )
 
 type ReadonlyRequest struct {
-	Call Call
+	Input Input
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
