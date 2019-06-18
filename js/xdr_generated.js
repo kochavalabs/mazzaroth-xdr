@@ -305,7 +305,7 @@ var types = XDR.config(xdr => {
   // End typedef section
 
   // Start struct section
-  xdr.struct("Call", [["function", xdr.string(256)], ["parameters", xdr.varArray(xdr.lookup("Parameter"), 2147483647)]]);
+  xdr.struct("Input", [["inputType", xdr.lookup("InputType")], ["function", xdr.string(256)], ["parameters", xdr.varArray(xdr.lookup("Parameter"), 2147483647)]]);
   xdr.struct("Update", [["contract", xdr.varOpaque()]]);
   xdr.struct("Action", [["channelID", xdr.lookup("ID")], ["nonce", xdr.uhyper()], ["category", xdr.lookup("ActionCategory")]]);
   xdr.struct("Transaction", [["signature", xdr.lookup("Signature")], ["address", xdr.lookup("ID")], ["action", xdr.lookup("Action")]]);
@@ -314,6 +314,15 @@ var types = XDR.config(xdr => {
   // End struct section
 
   // Start enum section
+
+  xdr.enum("InputType", {
+
+    NONE: 0,
+
+    READONLY: 1,
+
+    WRITE: 2
+  });
 
   xdr.enum("ActionCategoryType", {
 
@@ -335,7 +344,7 @@ var types = XDR.config(xdr => {
     switches: [["NONE", xdr.void()], ["CALL", "CALL"], ["UPDATE", "UPDATE"]],
     arms: {
 
-      CALL: xdr.lookup("Call"),
+      CALL: xdr.lookup("Input"),
 
       UPDATE: xdr.lookup("Update")
 

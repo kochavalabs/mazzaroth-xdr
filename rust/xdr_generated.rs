@@ -471,7 +471,9 @@ impl Default for Identifier {
 // Start struct section
 
 #[derive(Default, Debug, XDROut, XDRIn)]
-pub struct Call {
+pub struct Input {
+    pub inputType: InputType,
+
     #[array(var = 256)]
     pub function: String,
 
@@ -521,6 +523,19 @@ pub struct CommittedTransaction {
 // End struct section
 
 #[derive(Debug, XDROut, XDRIn)]
+pub enum InputType {
+    NONE = 0,
+    READONLY = 1,
+    WRITE = 2,
+}
+
+impl Default for InputType {
+    fn default() -> Self {
+        InputType::NONE
+    }
+}
+
+#[derive(Debug, XDROut, XDRIn)]
 pub enum ActionCategoryType {
     NONE = 0,
     CALL = 1,
@@ -538,7 +553,7 @@ impl Default for ActionCategoryType {
 pub enum ActionCategory {
     NONE(()),
 
-    CALL(Call),
+    CALL(Input),
 
     UPDATE(Update),
 }
