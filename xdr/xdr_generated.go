@@ -64,8 +64,6 @@ var (
 // End union section
 
 // Namspace end mazzaroth
-var fmtTest = fmt.Sprint("this is a dummy usage of fmt")
-
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -140,8 +138,6 @@ var (
 // End union section
 
 // Namspace end mazzaroth
-var fmtTest = fmt.Sprint("this is a dummy usage of fmt")
-
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -342,8 +338,6 @@ var (
 // End union section
 
 // Namspace end mazzaroth
-var fmtTest = fmt.Sprint("this is a dummy usage of fmt")
-
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -456,8 +450,6 @@ var (
 // End union section
 
 // Namspace end mazzaroth
-var fmtTest = fmt.Sprint("this is a dummy usage of fmt")
-
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -498,8 +490,6 @@ var (
 // End union section
 
 // Namspace end mazzaroth
-var fmtTest = fmt.Sprint("this is a dummy usage of fmt")
-
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -540,8 +530,6 @@ var (
 // End union section
 
 // Namspace end mazzaroth
-var fmtTest = fmt.Sprint("this is a dummy usage of fmt")
-
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -632,8 +620,6 @@ var (
 // End union section
 
 // Namspace end mazzaroth
-var fmtTest = fmt.Sprint("this is a dummy usage of fmt")
-
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -1450,8 +1436,6 @@ var (
 // End union section
 
 // Namspace end mazzaroth
-var fmtTest = fmt.Sprint("this is a dummy usage of fmt")
-
 // Namspace start mazzaroth
 
 // Start typedef section
