@@ -117,15 +117,15 @@ namespace mazzaroth
     StatusInfo statusInfo;
   };
 
-  // Message sent to a node to submit a readonly transaction.
-  struct TransactionReadonlyRequest
+  // Message sent to a node to submit a readonly request.
+  struct ReadonlyRequest
   {
     // Reaonly Request can only be a call
     Call call;
   };
 
-  // Response from a node for a readonly transaction Request.
-  struct TransactionReadonlyResponse
+  // Response from a node for a readonly request.
+  struct ReadonlyResponse
   {
     // Return results of execution
     opaque result<>;
@@ -133,8 +133,8 @@ namespace mazzaroth
     // The state root
     Hash stateRoot;
 
-    // Status of the transaction.
-    TransactionStatus status;
+    // Status of the request.
+    ReadonlyStatus status;
 
     // Human readable information to help understand the transaction status.
     StatusInfo statusInfo;
@@ -143,7 +143,6 @@ namespace mazzaroth
   // Status of a transaction.
   enum TransactionStatus
   {
-
     // The transaction status is either not known or not set.
     UNKNOWN = 0,
 
@@ -159,6 +158,19 @@ namespace mazzaroth
 
     // This transaction was not found.
     NOT_FOUND = 4
+  };
+
+  // Status of a readonly request.
+  enum ReadonlyStatus
+  {
+    // The status is either not known or not set.
+    UNKNOWN = 0,
+
+    // Readonly request was successfully executed.
+    SUCCESS = 1,
+
+    // Readonly request did not execute successfully.
+    FAILURE = 2,
   };
 
   // Request for a node to look up a transaction receipt.

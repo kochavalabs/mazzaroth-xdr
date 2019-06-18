@@ -839,54 +839,54 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionSubmitResponse)(nil)
 )
 
-type TransactionReadonlyRequest struct {
+type ReadonlyRequest struct {
 	Call Call
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s TransactionReadonlyRequest) MarshalBinary() ([]byte, error) {
+func (s ReadonlyRequest) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *TransactionReadonlyRequest) UnmarshalBinary(inp []byte) error {
+func (s *ReadonlyRequest) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*TransactionReadonlyRequest)(nil)
-	_ encoding.BinaryUnmarshaler = (*TransactionReadonlyRequest)(nil)
+	_ encoding.BinaryMarshaler   = (*ReadonlyRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReadonlyRequest)(nil)
 )
 
-type TransactionReadonlyResponse struct {
+type ReadonlyResponse struct {
 	Result []byte
 
 	StateRoot Hash
 
-	Status TransactionStatus
+	Status ReadonlyStatus
 
 	StatusInfo StatusInfo
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s TransactionReadonlyResponse) MarshalBinary() ([]byte, error) {
+func (s ReadonlyResponse) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *TransactionReadonlyResponse) UnmarshalBinary(inp []byte) error {
+func (s *ReadonlyResponse) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*TransactionReadonlyResponse)(nil)
-	_ encoding.BinaryUnmarshaler = (*TransactionReadonlyResponse)(nil)
+	_ encoding.BinaryMarshaler   = (*ReadonlyResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReadonlyResponse)(nil)
 )
 
 type ReceiptLookupRequest struct {
@@ -1149,6 +1149,56 @@ func (s *TransactionStatus) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*TransactionStatus)(nil)
 	_ encoding.BinaryUnmarshaler = (*TransactionStatus)(nil)
+)
+
+type ReadonlyStatus int32
+
+const (
+	ReadonlyStatusUNKNOWN ReadonlyStatus = 0
+
+	ReadonlyStatusSUCCESS ReadonlyStatus = 1
+
+	ReadonlyStatusFAILURE ReadonlyStatus = 2
+)
+
+var ReadonlyStatusMap = map[int32]string{
+
+	0: "ReadonlyStatusUNKNOWN",
+
+	1: "ReadonlyStatusSUCCESS",
+
+	2: "ReadonlyStatusFAILURE",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ReadonlyStatus
+func (s ReadonlyStatus) ValidEnum(v int32) bool {
+	_, ok := ReadonlyStatusMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s ReadonlyStatus) String() string {
+	name, _ := ReadonlyStatusMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ReadonlyStatus) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ReadonlyStatus) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ReadonlyStatus)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReadonlyStatus)(nil)
 )
 
 type ReceiptLookupStatus int32
