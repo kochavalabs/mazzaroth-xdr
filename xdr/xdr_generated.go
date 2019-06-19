@@ -840,7 +840,7 @@ var (
 )
 
 type ReadonlyRequest struct {
-	Input Input
+	Call Call
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1442,30 +1442,28 @@ var (
 // End typedef section
 
 // Start struct section
-type Input struct {
-	InputType InputType
-
+type Call struct {
 	Function string `xdrmaxsize:"256"`
 
 	Parameters []Parameter
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s Input) MarshalBinary() ([]byte, error) {
+func (s Call) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Input) UnmarshalBinary(inp []byte) error {
+func (s *Call) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*Input)(nil)
-	_ encoding.BinaryUnmarshaler = (*Input)(nil)
+	_ encoding.BinaryMarshaler   = (*Call)(nil)
+	_ encoding.BinaryUnmarshaler = (*Call)(nil)
 )
 
 type Update struct {
@@ -1572,59 +1570,35 @@ var (
 	_ encoding.BinaryUnmarshaler = (*CommittedTransaction)(nil)
 )
 
-// End struct section
+type Input struct {
+	InputType InputType
 
-// Start enum section
+	Function string `xdrmaxsize:"256"`
 
-type InputType int32
-
-const (
-	InputTypeNONE InputType = 0
-
-	InputTypeREADONLY InputType = 1
-
-	InputTypeWRITE InputType = 2
-)
-
-var InputTypeMap = map[int32]string{
-
-	0: "InputTypeNONE",
-
-	1: "InputTypeREADONLY",
-
-	2: "InputTypeWRITE",
-}
-
-// ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for InputType
-func (s InputType) ValidEnum(v int32) bool {
-	_, ok := InputTypeMap[v]
-	return ok
-}
-
-// String returns the name of `e`
-func (s InputType) String() string {
-	name, _ := InputTypeMap[int32(s)]
-	return name
+	Parameters []Parameter
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s InputType) MarshalBinary() ([]byte, error) {
+func (s Input) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *InputType) UnmarshalBinary(inp []byte) error {
+func (s *Input) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*InputType)(nil)
-	_ encoding.BinaryUnmarshaler = (*InputType)(nil)
+	_ encoding.BinaryMarshaler   = (*Input)(nil)
+	_ encoding.BinaryUnmarshaler = (*Input)(nil)
 )
+
+// End struct section
+
+// Start enum section
 
 type ActionCategoryType int32
 
@@ -1676,6 +1650,60 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ActionCategoryType)(nil)
 )
 
+type InputType int32
+
+const (
+	InputTypeNONE InputType = 0
+
+	InputTypeREADONLY InputType = 1
+
+	InputTypeEXECUTE InputType = 2
+
+	InputTypeCONSTRUCTOR InputType = 3
+)
+
+var InputTypeMap = map[int32]string{
+
+	0: "InputTypeNONE",
+
+	1: "InputTypeREADONLY",
+
+	2: "InputTypeEXECUTE",
+
+	3: "InputTypeCONSTRUCTOR",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for InputType
+func (s InputType) ValidEnum(v int32) bool {
+	_, ok := InputTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s InputType) String() string {
+	name, _ := InputTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s InputType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *InputType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*InputType)(nil)
+	_ encoding.BinaryUnmarshaler = (*InputType)(nil)
+)
+
 // End enum section
 //
 // Start union section
@@ -1683,7 +1711,7 @@ var (
 type ActionCategory struct {
 	Type ActionCategoryType
 
-	Call *Input
+	Call *Call
 
 	Update *Update
 }
@@ -1720,7 +1748,7 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 
 	case ActionCategoryTypeCALL:
 
-		tv, ok := value.(Input)
+		tv, ok := value.(Call)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -1742,7 +1770,7 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 
 // MustCall retrieves the Call value from the union,
 // panicing if the value is not set.
-func (u ActionCategory) MustCall() Input {
+func (u ActionCategory) MustCall() Call {
 	val, ok := u.GetCall()
 
 	if !ok {
@@ -1754,7 +1782,7 @@ func (u ActionCategory) MustCall() Input {
 
 // GetCall retrieves the Call value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetCall() (result Input, ok bool) {
+func (u ActionCategory) GetCall() (result Call, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Call" {

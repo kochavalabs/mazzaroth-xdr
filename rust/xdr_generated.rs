@@ -318,7 +318,7 @@ pub struct TransactionSubmitResponse {
 
 #[derive(Default, Debug, XDROut, XDRIn)]
 pub struct ReadonlyRequest {
-    pub input: Input,
+    pub call: Call,
 }
 
 #[derive(Default, Debug, XDROut, XDRIn)]
@@ -471,9 +471,7 @@ impl Default for Identifier {
 // Start struct section
 
 #[derive(Default, Debug, XDROut, XDRIn)]
-pub struct Input {
-    pub inputType: InputType,
-
+pub struct Call {
     #[array(var = 256)]
     pub function: String,
 
@@ -520,20 +518,18 @@ pub struct CommittedTransaction {
     pub signatures: Vec<Signature>,
 }
 
+#[derive(Default, Debug, XDROut, XDRIn)]
+pub struct Input {
+    pub inputType: InputType,
+
+    #[array(var = 256)]
+    pub function: String,
+
+    #[array(var = 2147483647)]
+    pub parameters: Vec<Parameter>,
+}
+
 // End struct section
-
-#[derive(Debug, XDROut, XDRIn)]
-pub enum InputType {
-    NONE = 0,
-    READONLY = 1,
-    WRITE = 2,
-}
-
-impl Default for InputType {
-    fn default() -> Self {
-        InputType::NONE
-    }
-}
 
 #[derive(Debug, XDROut, XDRIn)]
 pub enum ActionCategoryType {
@@ -547,13 +543,27 @@ impl Default for ActionCategoryType {
         ActionCategoryType::NONE
     }
 }
+
+#[derive(Debug, XDROut, XDRIn)]
+pub enum InputType {
+    NONE = 0,
+    READONLY = 1,
+    EXECUTE = 2,
+    CONSTRUCTOR = 3,
+}
+
+impl Default for InputType {
+    fn default() -> Self {
+        InputType::NONE
+    }
+}
 // Start union section
 
 #[derive(Debug, XDROut, XDRIn)]
 pub enum ActionCategory {
     NONE(()),
 
-    CALL(Input),
+    CALL(Call),
 
     UPDATE(Update),
 }

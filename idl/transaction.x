@@ -3,25 +3,15 @@
 
 namespace mazzaroth
 {
-  // Input for execution in a user defined contract.
-  struct Input
+  // A transaction that calls a function on a user defined contract.
+  struct Call
   {
-    // Type of input: readonly or write transaction
-    InputType inputType;
-
     // Contract function to execute.
     string function<256>;
 
     // Parameters to the contract function. The serialization format is defined
     // by the contract itself.
     Parameter parameters<>;
-  };
-
-  enum InputType
-  {
-    NONE = 0,
-    READONLY = 1,
-    WRITE = 2
   };
 
   // A transaction that provides a contract as a wasm binary.
@@ -43,7 +33,7 @@ namespace mazzaroth
     case NONE:
       void;
     case CALL:
-      Input call;
+      Call call;
     case UPDATE:
       Update update;
   };
@@ -94,5 +84,27 @@ namespace mazzaroth
 
      // Consensus signatures
     Signature signatures<>;
+  };
+
+  // Input for execution in a user defined contract.
+  struct Input
+  {
+    // Type of input: readonly or write transaction
+    InputType inputType;
+
+    // Contract function to execute.
+    string function<256>;
+
+    // Parameters to the contract function. The serialization format is defined
+    // by the contract itself.
+    Parameter parameters<>;
+  };
+
+  enum InputType
+  {
+    NONE = 0,
+    READONLY = 1,
+    EXECUTE = 2,
+    CONSTRUCTOR = 3
   };
 }
