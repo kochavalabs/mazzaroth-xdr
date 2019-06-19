@@ -4,10 +4,11 @@
   "description": "Serialization code for mazzaroth.",
   "main": "js/xdr_generated.js",
   "scripts": {
-    "clean": "rm -f ./xdr/xdr_generated.go && rm -rf ./js && mkdir js",
+    "clean": "rm -f ./xdr/xdr_generated.go && rm -rf ./js && mkdir js && cargo clean",
     "build-go": "cargo run --manifest-path=xdrgen/Cargo.toml ./idl/*.x | gofmt > ./xdr/xdr_generated.go",
+    "build-rust": "cargo run --manifest-path=xdrgen/Cargo.toml ./idl/*.x --language rust | rustfmt > ./rust/xdr_generated.rs",
     "build-js": "cargo run --manifest-path=xdrgen/Cargo.toml ./idl/*.x --language js > ./js/xdr_generated.js && babel js -d js",
-    "build": "npm run clean && npm run build-js && npm run build-go",
+    "build": "npm run clean && npm run build-js && npm run build-go && npm run build-rust",
     "write": "npm run build-js && node ./examples/write_file.js"
   },
   "repository": {
@@ -32,6 +33,6 @@
     "eslint": "^5.16.0"
   },
   "dependencies": {
-    "js-xdr": "^1.1.1"
+    "js-xdr": "git+ssh://git@github.com/kochavalabs/js-xdr.git"
   }
 }
