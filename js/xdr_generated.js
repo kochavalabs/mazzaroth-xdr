@@ -17,7 +17,8 @@ var types = XDR.config(xdr => {
   // End typedef section
 
   // Start struct section
-  xdr.struct("Account", [["name", xdr.string(0)], ["nonce", xdr.uhyper()], ["value", xdr.uhyper()]]);
+  xdr.struct("Account", [["name", xdr.string(0)], ["nonce", xdr.uhyper()], ["storage", xdr.varArray(xdr.lookup("StorageItem"), 2147483647)]]);
+  xdr.struct("StorageItem", [["key", xdr.string(0)], ["value", xdr.varOpaque()]]);
 
   // End struct section
 
