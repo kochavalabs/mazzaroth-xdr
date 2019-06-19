@@ -33,6 +33,6 @@
     "eslint": "^5.16.0"
   },
   "dependencies": {
-    "js-xdr": "^1.1.1"
+    "js-xdr": "git+ssh://git@github.com/kochavalabs/js-xdr.git"
   }
 }
