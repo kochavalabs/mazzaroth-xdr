@@ -1,362 +1,468 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
+exports.Account = Account;
+exports.StorageItem = StorageItem;
+exports.Block = Block;
+exports.BlockHeader = BlockHeader;
+exports.ChannelConfig = ChannelConfig;
+exports.PBFTConfig = PBFTConfig;
+exports.ConsensusConfigType = ConsensusConfigType;
+exports.ConsensusConfig = ConsensusConfig;
+exports.Signature = Signature;
+exports.ID = ID;
+exports.Hash = Hash;
+exports.Parameter = Parameter;
+exports.ContractMetadata = ContractMetadata;
+exports.Event = Event;
+exports.Receipt = Receipt;
+exports.ReceiptStatus = ReceiptStatus;
+exports.StatusInfo = StatusInfo;
+exports.BlockLookupRequest = BlockLookupRequest;
+exports.BlockHeaderLookupRequest = BlockHeaderLookupRequest;
+exports.BlockLookupResponse = BlockLookupResponse;
+exports.BlockHeaderLookupResponse = BlockHeaderLookupResponse;
+exports.TransactionLookupRequest = TransactionLookupRequest;
+exports.TransactionLookupResponse = TransactionLookupResponse;
+exports.TransactionSubmitRequest = TransactionSubmitRequest;
+exports.TransactionSubmitResponse = TransactionSubmitResponse;
+exports.ReadonlyRequest = ReadonlyRequest;
+exports.ReadonlyResponse = ReadonlyResponse;
+exports.ReceiptLookupRequest = ReceiptLookupRequest;
+exports.ReceiptLookupResponse = ReceiptLookupResponse;
+exports.AccountNonceLookupRequest = AccountNonceLookupRequest;
+exports.AccountNonceLookupResponse = AccountNonceLookupResponse;
+exports.IdentifierType = IdentifierType;
+exports.BlockStatus = BlockStatus;
+exports.TransactionStatus = TransactionStatus;
+exports.ReadonlyStatus = ReadonlyStatus;
+exports.ReceiptLookupStatus = ReceiptLookupStatus;
+exports.NonceLookupStatus = NonceLookupStatus;
+exports.Identifier = Identifier;
+exports.Call = Call;
+exports.Update = Update;
+exports.Action = Action;
+exports.Transaction = Transaction;
+exports.CommittedTransaction = CommittedTransaction;
+exports.Input = Input;
+exports.ActionCategoryType = ActionCategoryType;
+exports.InputType = InputType;
+exports.ActionCategory = ActionCategory;
 
 var _jsXdr = require("js-xdr");
 
-var XDR = _interopRequireWildcard(_jsXdr);
+var _jsXdr2 = _interopRequireDefault(_jsXdr);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var types = XDR.config(xdr => {
-  // Namspace start mazzaroth
+// Namespace start mazzaroth
 
-  // Start typedef section
-  // End typedef section
+// Start typedef section
+// End typedef section
 
-  // Start struct section
-  xdr.struct("Account", [["name", xdr.string(0)], ["nonce", xdr.uhyper()], ["storage", xdr.varArray(xdr.lookup("StorageItem"), 2147483647)]]);
-  xdr.struct("StorageItem", [["key", xdr.string(0)], ["value", xdr.varOpaque()]]);
+// Start struct section
+function Account() {
+    return new _jsXdr2.default.Struct(["name", "nonce", "storage"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(2147483647, StorageItem)]);
+}
+function StorageItem() {
+    return new _jsXdr2.default.Struct(["key", "value"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.VarOpaque(0)]);
+}
 
-  // End struct section
+// End struct section
 
-  // Start enum section
+// Start enum section
 
 
-  // End enum section
+// End enum section
 
-  // Start union section
+// Start union section
 
 
-  // End union section
+// End union section
 
-  // End namespace mazzaroth
-  // Namspace start mazzaroth
+// End namespace mazzaroth
+// Namespace start mazzaroth
 
-  // Start typedef section
-  // End typedef section
+// Start typedef section
+// End typedef section
 
-  // Start struct section
-  xdr.struct("Block", [["header", xdr.lookup("BlockHeader")], ["transactions", xdr.varArray(xdr.lookup("Transaction"), 2147483647)]]);
-  xdr.struct("BlockHeader", [["timestamp", xdr.string(256)], ["blockHeight", xdr.uhyper()], ["txMerkleRoot", xdr.lookup("Hash")], ["txReceiptRoot", xdr.lookup("Hash")], ["stateRoot", xdr.lookup("Hash")], ["previousHeader", xdr.lookup("Hash")], ["blockProducerAddress", xdr.lookup("ID")]]);
+// Start struct section
+function Block() {
+    return new _jsXdr2.default.Struct(["header", "transactions"], [BlockHeader(), new _jsXdr2.default.VarArray(2147483647, Transaction)]);
+}
+function BlockHeader() {
+    return new _jsXdr2.default.Struct(["timestamp", "blockHeight", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _jsXdr2.default.Str(256), new _jsXdr2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
+}
 
-  // End struct section
+// End struct section
 
-  // Start enum section
+// Start enum section
 
 
-  // End enum section
+// End enum section
 
-  // Start union section
+// Start union section
 
 
-  // End union section
+// End union section
 
-  // End namespace mazzaroth
-  // Namspace start mazzaroth
+// End namespace mazzaroth
+// Namespace start mazzaroth
 
-  // Start typedef section
-  // End typedef section
+// Start typedef section
+// End typedef section
 
-  // Start struct section
-  xdr.struct("ChannelConfig", [["owner", xdr.lookup("ID")], ["validators", xdr.varArray(xdr.lookup("ID"), 2147483647)], ["consensusConfig", xdr.lookup("ConsensusConfig")]]);
-  xdr.struct("PBFTConfig", [["checkpointPeriod", xdr.uhyper()]]);
+// Start struct section
+function ChannelConfig() {
+    return new _jsXdr2.default.Struct(["owner", "validators", "consensusConfig"], [ID(), new _jsXdr2.default.VarArray(2147483647, ID), ConsensusConfig()]);
+}
+function PBFTConfig() {
+    return new _jsXdr2.default.Struct(["checkpointPeriod"], [new _jsXdr2.default.UHyper()]);
+}
 
-  // End struct section
+// End struct section
 
-  // Start enum section
+// Start enum section
 
-  xdr.enum("ConsensusConfigType", {
+function ConsensusConfigType() {
+    return new _jsXdr2.default.Enum({
+        0: "NONE",
+        1: "PBFT"
 
-    NONE: 0,
+    });
+}
 
-    PBFT: 1
-  });
+// End enum section
 
-  // End enum section
+// Start union section
 
-  // Start union section
 
+function ConsensusConfig() {
+    return new _jsXdr2.default.Union(ConsensusConfigType(), {
 
-  xdr.union("ConsensusConfig", {
-    switchOn: xdr.lookup("ConsensusConfigType"),
-    switchName: "Type",
-    switches: [["NONE", xdr.void()], ["PBFT", "PBFT"]],
-    arms: {
+        "NONE": new _jsXdr2.default.Void(),
 
-      PBFT: xdr.lookup("PBFTConfig")
+        "PBFT": PBFTConfig()
 
-    }
-  });
+    });
+}
 
-  // End union section
+// End union section
 
-  // End namespace mazzaroth
-  // Namspace start mazzaroth
+// End namespace mazzaroth
+// Namespace start mazzaroth
 
-  // Start typedef section
-  xdr.typedef("Signature", xdr.opaque(64));
+// Start typedef section
 
-  xdr.typedef("ID", xdr.opaque(32));
+function Signature() {
+    return new _jsXdr2.default.FixedOpaque(64);
+}
 
-  xdr.typedef("Hash", xdr.opaque(32));
+function ID() {
+    return new _jsXdr2.default.FixedOpaque(32);
+}
 
-  xdr.typedef("Parameter", xdr.varOpaque());
+function Hash() {
+    return new _jsXdr2.default.FixedOpaque(32);
+}
 
-  // End typedef section
+function Parameter() {
+    return new _jsXdr2.default.VarOpaque(2147483647);
+}
+// End typedef section
 
-  // Start struct section
+// Start struct section
 
+// End struct section
 
-  // End struct section
+// Start enum section
 
-  // Start enum section
 
+// End enum section
 
-  // End enum section
+// Start union section
 
-  // Start union section
 
+// End union section
 
-  // End union section
+// End namespace mazzaroth
+// Namespace start mazzaroth
 
-  // End namespace mazzaroth
-  // Namspace start mazzaroth
+// Start typedef section
+// End typedef section
 
-  // Start typedef section
-  // End typedef section
+// Start struct section
+function ContractMetadata() {
+    return new _jsXdr2.default.Struct(["hash", "version"], [Hash(), new _jsXdr2.default.UHyper()]);
+}
 
-  // Start struct section
-  xdr.struct("ContractMetadata", [["hash", xdr.lookup("Hash")], ["version", xdr.uhyper()]]);
+// End struct section
 
-  // End struct section
+// Start enum section
 
-  // Start enum section
 
+// End enum section
 
-  // End enum section
+// Start union section
 
-  // Start union section
 
+// End union section
 
-  // End union section
+// End namespace mazzaroth
+// Namespace start mazzaroth
 
-  // End namespace mazzaroth
-  // Namspace start mazzaroth
+// Start typedef section
+// End typedef section
 
-  // Start typedef section
-  // End typedef section
+// Start struct section
+function Event() {
+    return new _jsXdr2.default.Struct(["key", "parameters"], [new _jsXdr2.default.Str(256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+}
 
-  // Start struct section
-  xdr.struct("Event", [["key", xdr.string(256)], ["parameters", xdr.varArray(xdr.lookup("Parameter"), 2147483647)]]);
+// End struct section
 
-  // End struct section
+// Start enum section
 
-  // Start enum section
 
+// End enum section
 
-  // End enum section
+// Start union section
 
-  // Start union section
 
+// End union section
 
-  // End union section
+// End namespace mazzaroth
+// Namespace start mazzaroth
 
-  // End namespace mazzaroth
-  // Namspace start mazzaroth
+// Start typedef section
+// End typedef section
 
-  // Start typedef section
-  // End typedef section
+// Start struct section
+function Receipt() {
+    return new _jsXdr2.default.Struct(["status", "stateRoot", "events", "result"], [ReceiptStatus(), Hash(), new _jsXdr2.default.VarArray(2147483647, Event), new _jsXdr2.default.VarOpaque(2147483647)]);
+}
 
-  // Start struct section
-  xdr.struct("Receipt", [["status", xdr.lookup("ReceiptStatus")], ["stateRoot", xdr.lookup("Hash")], ["events", xdr.varArray(xdr.lookup("Event"), 2147483647)], ["result", xdr.varOpaque()]]);
+// End struct section
 
-  // End struct section
+// Start enum section
 
-  // Start enum section
+function ReceiptStatus() {
+    return new _jsXdr2.default.Enum({
+        0: "FAILURE",
+        1: "SUCCESS"
 
-  xdr.enum("ReceiptStatus", {
+    });
+}
 
-    FAILURE: 0,
+// End enum section
 
-    SUCCESS: 1
-  });
+// Start union section
 
-  // End enum section
 
-  // Start union section
+// End union section
 
+// End namespace mazzaroth
+// Namespace start mazzaroth
 
-  // End union section
+// Start typedef section
 
-  // End namespace mazzaroth
-  // Namspace start mazzaroth
+function StatusInfo() {
+    return new _jsXdr2.default.Str(256);
+}
+// End typedef section
 
-  // Start typedef section
-  xdr.typedef("StatusInfo", xdr.string(256));
+// Start struct section
+function BlockLookupRequest() {
+    return new _jsXdr2.default.Struct(["ID"], [Identifier()]);
+}
+function BlockHeaderLookupRequest() {
+    return new _jsXdr2.default.Struct(["ID"], [Identifier()]);
+}
+function BlockLookupResponse() {
+    return new _jsXdr2.default.Struct(["block", "status", "statusInfo"], [Block(), BlockStatus(), StatusInfo()]);
+}
+function BlockHeaderLookupResponse() {
+    return new _jsXdr2.default.Struct(["header", "status", "statusInfo"], [BlockHeader(), BlockStatus(), StatusInfo()]);
+}
+function TransactionLookupRequest() {
+    return new _jsXdr2.default.Struct(["transactionID"], [ID()]);
+}
+function TransactionLookupResponse() {
+    return new _jsXdr2.default.Struct(["transaction", "status", "statusInfo"], [Transaction(), TransactionStatus(), StatusInfo()]);
+}
+function TransactionSubmitRequest() {
+    return new _jsXdr2.default.Struct(["transaction"], [Transaction()]);
+}
+function TransactionSubmitResponse() {
+    return new _jsXdr2.default.Struct(["transactionID", "status", "statusInfo"], [ID(), TransactionStatus(), StatusInfo()]);
+}
+function ReadonlyRequest() {
+    return new _jsXdr2.default.Struct(["call"], [Call()]);
+}
+function ReadonlyResponse() {
+    return new _jsXdr2.default.Struct(["result", "stateRoot", "status", "statusInfo"], [new _jsXdr2.default.VarOpaque(2147483647), Hash(), ReadonlyStatus(), StatusInfo()]);
+}
+function ReceiptLookupRequest() {
+    return new _jsXdr2.default.Struct(["transactionID"], [ID()]);
+}
+function ReceiptLookupResponse() {
+    return new _jsXdr2.default.Struct(["receipt", "status", "statusInfo"], [Receipt(), ReceiptLookupStatus(), StatusInfo()]);
+}
+function AccountNonceLookupRequest() {
+    return new _jsXdr2.default.Struct(["account"], [ID()]);
+}
+function AccountNonceLookupResponse() {
+    return new _jsXdr2.default.Struct(["nonce", "status", "statusInfo"], [new _jsXdr2.default.UHyper(), NonceLookupStatus(), StatusInfo()]);
+}
 
-  // End typedef section
+// End struct section
 
-  // Start struct section
-  xdr.struct("BlockLookupRequest", [["ID", xdr.lookup("Identifier")]]);
-  xdr.struct("BlockHeaderLookupRequest", [["ID", xdr.lookup("Identifier")]]);
-  xdr.struct("BlockLookupResponse", [["block", xdr.lookup("Block")], ["status", xdr.lookup("BlockStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
-  xdr.struct("BlockHeaderLookupResponse", [["header", xdr.lookup("BlockHeader")], ["status", xdr.lookup("BlockStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
-  xdr.struct("TransactionLookupRequest", [["transactionID", xdr.lookup("ID")]]);
-  xdr.struct("TransactionLookupResponse", [["transaction", xdr.lookup("Transaction")], ["status", xdr.lookup("TransactionStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
-  xdr.struct("TransactionSubmitRequest", [["transaction", xdr.lookup("Transaction")]]);
-  xdr.struct("TransactionSubmitResponse", [["transactionID", xdr.lookup("ID")], ["status", xdr.lookup("TransactionStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
-  xdr.struct("ReadonlyRequest", [["call", xdr.lookup("Call")]]);
-  xdr.struct("ReadonlyResponse", [["result", xdr.varOpaque()], ["stateRoot", xdr.lookup("Hash")], ["status", xdr.lookup("ReadonlyStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
-  xdr.struct("ReceiptLookupRequest", [["transactionID", xdr.lookup("ID")]]);
-  xdr.struct("ReceiptLookupResponse", [["receipt", xdr.lookup("Receipt")], ["status", xdr.lookup("ReceiptLookupStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
-  xdr.struct("AccountNonceLookupRequest", [["account", xdr.lookup("ID")]]);
-  xdr.struct("AccountNonceLookupResponse", [["nonce", xdr.uhyper()], ["status", xdr.lookup("NonceLookupStatus")], ["statusInfo", xdr.lookup("StatusInfo")]]);
+// Start enum section
 
-  // End struct section
+function IdentifierType() {
+    return new _jsXdr2.default.Enum({
+        0: "NONE",
+        1: "NUMBER",
+        2: "HASH"
 
-  // Start enum section
+    });
+}
 
-  xdr.enum("IdentifierType", {
+function BlockStatus() {
+    return new _jsXdr2.default.Enum({
+        0: "UNKNOWN",
+        1: "CREATED",
+        2: "FUTURE",
+        3: "NOT_FOUND"
 
-    NONE: 0,
+    });
+}
 
-    NUMBER: 1,
+function TransactionStatus() {
+    return new _jsXdr2.default.Enum({
+        0: "UNKNOWN",
+        1: "ACCEPTED",
+        2: "REJECTED",
+        3: "CONFIRMED",
+        4: "NOT_FOUND"
 
-    HASH: 2
-  });
+    });
+}
 
-  xdr.enum("BlockStatus", {
+function ReadonlyStatus() {
+    return new _jsXdr2.default.Enum({
+        0: "UNKNOWN",
+        1: "SUCCESS",
+        2: "FAILURE"
 
-    UNKNOWN: 0,
+    });
+}
 
-    CREATED: 1,
+function ReceiptLookupStatus() {
+    return new _jsXdr2.default.Enum({
+        0: "UNKNOWN",
+        1: "FOUND",
+        2: "NOT_FOUND"
 
-    FUTURE: 2,
+    });
+}
 
-    NOT_FOUND: 3
-  });
+function NonceLookupStatus() {
+    return new _jsXdr2.default.Enum({
+        0: "UNKNOWN",
+        1: "FOUND",
+        2: "NOT_FOUND"
 
-  xdr.enum("TransactionStatus", {
+    });
+}
 
-    UNKNOWN: 0,
+// End enum section
 
-    ACCEPTED: 1,
+// Start union section
 
-    REJECTED: 2,
 
-    CONFIRMED: 3,
+function Identifier() {
+    return new _jsXdr2.default.Union(IdentifierType(), {
 
-    NOT_FOUND: 4
-  });
+        "NONE": new _jsXdr2.default.Void(),
 
-  xdr.enum("ReadonlyStatus", {
+        "NUMBER": new _jsXdr2.default.UHyper(),
 
-    UNKNOWN: 0,
+        "HASH": Hash()
 
-    SUCCESS: 1,
+    });
+}
 
-    FAILURE: 2
-  });
+// End union section
 
-  xdr.enum("ReceiptLookupStatus", {
+// End namespace mazzaroth
+// Namespace start mazzaroth
 
-    UNKNOWN: 0,
+// Start typedef section
+// End typedef section
 
-    FOUND: 1,
+// Start struct section
+function Call() {
+    return new _jsXdr2.default.Struct(["function", "parameters"], [new _jsXdr2.default.Str(256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+}
+function Update() {
+    return new _jsXdr2.default.Struct(["contract"], [new _jsXdr2.default.VarOpaque(2147483647)]);
+}
+function Action() {
+    return new _jsXdr2.default.Struct(["channelID", "nonce", "category"], [ID(), new _jsXdr2.default.UHyper(), ActionCategory()]);
+}
+function Transaction() {
+    return new _jsXdr2.default.Struct(["signature", "address", "action"], [Signature(), ID(), Action()]);
+}
+function CommittedTransaction() {
+    return new _jsXdr2.default.Struct(["transaction", "sequenceNumber", "receiptID", "currentTransactionRoot", "signatures"], [Transaction(), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(25, ID), Hash(), new _jsXdr2.default.VarArray(2147483647, Signature)]);
+}
+function Input() {
+    return new _jsXdr2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _jsXdr2.default.Str(256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+}
 
-    NOT_FOUND: 2
-  });
+// End struct section
 
-  xdr.enum("NonceLookupStatus", {
+// Start enum section
 
-    UNKNOWN: 0,
+function ActionCategoryType() {
+    return new _jsXdr2.default.Enum({
+        0: "NONE",
+        1: "CALL",
+        2: "UPDATE"
 
-    FOUND: 1,
+    });
+}
 
-    NOT_FOUND: 2
-  });
+function InputType() {
+    return new _jsXdr2.default.Enum({
+        0: "NONE",
+        1: "READONLY",
+        2: "EXECUTE",
+        3: "CONSTRUCTOR"
 
-  // End enum section
+    });
+}
 
-  // Start union section
+// End enum section
 
+// Start union section
 
-  xdr.union("Identifier", {
-    switchOn: xdr.lookup("IdentifierType"),
-    switchName: "Type",
-    switches: [["NONE", xdr.void()], ["NUMBER", "NUMBER"], ["HASH", "HASH"]],
-    arms: {
 
-      NUMBER: xdr.uhyper(),
+function ActionCategory() {
+    return new _jsXdr2.default.Union(ActionCategoryType(), {
 
-      HASH: xdr.lookup("Hash")
+        "NONE": new _jsXdr2.default.Void(),
 
-    }
-  });
+        "CALL": Call(),
 
-  // End union section
+        "UPDATE": Update()
 
-  // End namespace mazzaroth
-  // Namspace start mazzaroth
+    });
+}
 
-  // Start typedef section
-  // End typedef section
+// End union section
 
-  // Start struct section
-  xdr.struct("Call", [["function", xdr.string(256)], ["parameters", xdr.varArray(xdr.lookup("Parameter"), 2147483647)]]);
-  xdr.struct("Update", [["contract", xdr.varOpaque()]]);
-  xdr.struct("Action", [["channelID", xdr.lookup("ID")], ["nonce", xdr.uhyper()], ["category", xdr.lookup("ActionCategory")]]);
-  xdr.struct("Transaction", [["signature", xdr.lookup("Signature")], ["address", xdr.lookup("ID")], ["action", xdr.lookup("Action")]]);
-  xdr.struct("CommittedTransaction", [["transaction", xdr.lookup("Transaction")], ["sequenceNumber", xdr.uhyper()], ["receiptID", xdr.varArray(xdr.lookup("ID"), 25)], ["currentTransactionRoot", xdr.lookup("Hash")], ["signatures", xdr.varArray(xdr.lookup("Signature"), 2147483647)]]);
-  xdr.struct("Input", [["inputType", xdr.lookup("InputType")], ["function", xdr.string(256)], ["parameters", xdr.varArray(xdr.lookup("Parameter"), 2147483647)]]);
-
-  // End struct section
-
-  // Start enum section
-
-  xdr.enum("ActionCategoryType", {
-
-    NONE: 0,
-
-    CALL: 1,
-
-    UPDATE: 2
-  });
-
-  xdr.enum("InputType", {
-
-    NONE: 0,
-
-    READONLY: 1,
-
-    EXECUTE: 2,
-
-    CONSTRUCTOR: 3
-  });
-
-  // End enum section
-
-  // Start union section
-
-
-  xdr.union("ActionCategory", {
-    switchOn: xdr.lookup("ActionCategoryType"),
-    switchName: "Type",
-    switches: [["NONE", xdr.void()], ["CALL", "CALL"], ["UPDATE", "UPDATE"]],
-    arms: {
-
-      CALL: xdr.lookup("Call"),
-
-      UPDATE: xdr.lookup("Update")
-
-    }
-  });
-
-  // End union section
-
-  // End namespace mazzaroth
-});
-exports.default = types;
+// End namespace mazzaroth
