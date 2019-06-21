@@ -15,6 +15,6 @@ namespace mazzaroth
   struct StorageItem
   {
     string key;
-    opaque value;
+    opaque value<>;
   }
 }

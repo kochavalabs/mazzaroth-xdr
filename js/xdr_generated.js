@@ -67,7 +67,7 @@ function Account() {
     return new _jsXdr2.default.Struct(["name", "nonce", "storage"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(2147483647, StorageItem)]);
 }
 function StorageItem() {
-    return new _jsXdr2.default.Struct(["key", "value"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.VarOpaque(0)]);
+    return new _jsXdr2.default.Struct(["key", "value"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.VarOpaque(2147483647)]);
 }
 
 // End struct section

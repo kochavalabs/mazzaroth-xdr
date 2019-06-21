@@ -29,7 +29,8 @@ pub struct Account {
 pub struct StorageItem {
     pub key: String,
 
-    pub value: u8,
+    #[array(var = 2147483647)]
+    pub value: Vec<u8>,
 }
 
 // End struct section

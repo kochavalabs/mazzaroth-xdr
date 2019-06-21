@@ -57,7 +57,7 @@ var (
 type StorageItem struct {
 	Key string
 
-	Value byte
+	Value []byte
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
