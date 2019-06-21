@@ -6,6 +6,5 @@ namespace mazzaroth
   {
     string name;
     unsigned hyper nonce;
-    unsigned hyper value;
   };
 }

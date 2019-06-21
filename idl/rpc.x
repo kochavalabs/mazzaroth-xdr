@@ -120,7 +120,7 @@ namespace mazzaroth
   // Message sent to a node to submit a readonly request.
   struct ReadonlyRequest
   {
-    // Reaonly Request can only be a call
+    // Reaonly Request just takes call
     Call call;
   };
 

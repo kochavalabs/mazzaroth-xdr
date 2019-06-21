@@ -32,8 +32,6 @@ type Account struct {
 	Name string
 
 	Nonce uint64
-
-	Value uint64
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1570,6 +1568,32 @@ var (
 	_ encoding.BinaryUnmarshaler = (*CommittedTransaction)(nil)
 )
 
+type Input struct {
+	InputType InputType
+
+	Function string `xdrmaxsize:"256"`
+
+	Parameters []Parameter
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Input) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Input) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Input)(nil)
+	_ encoding.BinaryUnmarshaler = (*Input)(nil)
+)
+
 // End struct section
 
 // Start enum section
@@ -1622,6 +1646,60 @@ func (s *ActionCategoryType) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*ActionCategoryType)(nil)
 	_ encoding.BinaryUnmarshaler = (*ActionCategoryType)(nil)
+)
+
+type InputType int32
+
+const (
+	InputTypeNONE InputType = 0
+
+	InputTypeREADONLY InputType = 1
+
+	InputTypeEXECUTE InputType = 2
+
+	InputTypeCONSTRUCTOR InputType = 3
+)
+
+var InputTypeMap = map[int32]string{
+
+	0: "InputTypeNONE",
+
+	1: "InputTypeREADONLY",
+
+	2: "InputTypeEXECUTE",
+
+	3: "InputTypeCONSTRUCTOR",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for InputType
+func (s InputType) ValidEnum(v int32) bool {
+	_, ok := InputTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s InputType) String() string {
+	name, _ := InputTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s InputType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *InputType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*InputType)(nil)
+	_ encoding.BinaryUnmarshaler = (*InputType)(nil)
 )
 
 // End enum section

@@ -85,4 +85,26 @@ namespace mazzaroth
      // Consensus signatures
     Signature signatures<>;
   };
+
+  // Input for execution in a user defined contract.
+  struct Input
+  {
+    // Type of input: readonly or write transaction
+    InputType inputType;
+
+    // Contract function to execute.
+    string function<256>;
+
+    // Parameters to the contract function. The serialization format is defined
+    // by the contract itself.
+    Parameter parameters<>;
+  };
+
+  enum InputType
+  {
+    NONE = 0,
+    READONLY = 1,
+    EXECUTE = 2,
+    CONSTRUCTOR = 3
+  };
 }

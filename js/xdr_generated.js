@@ -45,7 +45,9 @@ exports.Update = Update;
 exports.Action = Action;
 exports.Transaction = Transaction;
 exports.CommittedTransaction = CommittedTransaction;
+exports.Input = Input;
 exports.ActionCategoryType = ActionCategoryType;
+exports.InputType = InputType;
 exports.ActionCategory = ActionCategory;
 
 var _jsXdr = require("js-xdr");
@@ -54,14 +56,14 @@ var _jsXdr2 = _interopRequireDefault(_jsXdr);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// Namspace start mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 // End typedef section
 
 // Start struct section
 function Account() {
-    return new _jsXdr2.default.Struct(["name", "nonce", "value"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.UHyper(), new _jsXdr2.default.UHyper()]);
+    return new _jsXdr2.default.Struct(["name", "nonce"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.UHyper()]);
 }
 
 // End struct section
@@ -77,7 +79,7 @@ function Account() {
 // End union section
 
 // End namespace mazzaroth
-// Namspace start mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 // End typedef section
@@ -103,7 +105,7 @@ function BlockHeader() {
 // End union section
 
 // End namespace mazzaroth
-// Namspace start mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 // End typedef section
@@ -146,7 +148,7 @@ function ConsensusConfig() {
 // End union section
 
 // End namespace mazzaroth
-// Namspace start mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 
@@ -182,7 +184,7 @@ function Parameter() {
 // End union section
 
 // End namespace mazzaroth
-// Namspace start mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 // End typedef section
@@ -205,7 +207,7 @@ function ContractMetadata() {
 // End union section
 
 // End namespace mazzaroth
-// Namspace start mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 // End typedef section
@@ -228,7 +230,7 @@ function Event() {
 // End union section
 
 // End namespace mazzaroth
-// Namspace start mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 // End typedef section
@@ -258,7 +260,7 @@ function ReceiptStatus() {
 // End union section
 
 // End namespace mazzaroth
-// Namspace start mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 
@@ -392,7 +394,7 @@ function Identifier() {
 // End union section
 
 // End namespace mazzaroth
-// Namspace start mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 // End typedef section
@@ -413,6 +415,9 @@ function Transaction() {
 function CommittedTransaction() {
     return new _jsXdr2.default.Struct(["transaction", "sequenceNumber", "receiptID", "currentTransactionRoot", "signatures"], [Transaction(), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(25, ID), Hash(), new _jsXdr2.default.VarArray(2147483647, Signature)]);
 }
+function Input() {
+    return new _jsXdr2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _jsXdr2.default.Str(256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+}
 
 // End struct section
 
@@ -423,6 +428,16 @@ function ActionCategoryType() {
         0: "NONE",
         1: "CALL",
         2: "UPDATE"
+
+    });
+}
+
+function InputType() {
+    return new _jsXdr2.default.Enum({
+        0: "NONE",
+        1: "READONLY",
+        2: "EXECUTE",
+        3: "CONSTRUCTOR"
 
     });
 }
