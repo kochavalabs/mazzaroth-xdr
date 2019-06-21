@@ -20,6 +20,17 @@ pub struct Account {
     pub name: String,
 
     pub nonce: u64,
+
+    #[array(var = 2147483647)]
+    pub storage: Vec<StorageItem>,
+}
+
+#[derive(Default, Debug, XDROut, XDRIn)]
+pub struct StorageItem {
+    pub key: String,
+
+    #[array(var = 2147483647)]
+    pub value: Vec<u8>,
 }
 
 // End struct section
