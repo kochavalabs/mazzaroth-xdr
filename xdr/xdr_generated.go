@@ -32,8 +32,6 @@ type Account struct {
 	Name string
 
 	Nonce uint64
-
-	Storage []StorageItem
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -52,30 +50,6 @@ func (s *Account) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*Account)(nil)
 	_ encoding.BinaryUnmarshaler = (*Account)(nil)
-)
-
-type StorageItem struct {
-	Key string
-
-	Value []byte
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s StorageItem) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *StorageItem) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*StorageItem)(nil)
-	_ encoding.BinaryUnmarshaler = (*StorageItem)(nil)
 )
 
 // End struct section
