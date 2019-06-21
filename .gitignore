@@ -3,3 +3,4 @@ examples/xdrout
 examples/pbout
 examples/xdroutjs
 target/
+xdrgen/
