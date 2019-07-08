@@ -5,7 +5,6 @@ extern crate ex_dee_derive;
 use ex_dee::de::{read_fixed_array, read_var_array, read_var_string, XDRIn};
 use ex_dee::error::Error;
 use ex_dee::ser::{write_fixed_array, write_var_array, write_var_string, XDROut};
-use std::io::{Read, Write};
 
 // Namspace start mazzaroth
 
@@ -196,6 +195,32 @@ pub struct Event {
 
     #[array(var = 2147483647)]
     pub parameters: Vec<Parameter>,
+}
+
+// End struct section
+
+// Start union section
+
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+#[derive(Default, Debug, XDROut, XDRIn)]
+pub struct ExecutionPlan {
+    #[array(var = 256)]
+    pub host: String,
+
+    pub channelID: ID,
+
+    #[array(var = 100)]
+    pub calls: Vec<Call>,
 }
 
 // End struct section
