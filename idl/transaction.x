@@ -21,11 +21,19 @@ namespace mazzaroth
     opaque contract<>;
   };
 
+  struct Permission
+  {
+    ID granted_key;
+
+    int duration_blocks;
+  };
+
   enum ActionCategoryType
   {
     NONE = 0,
     CALL = 1,
-    UPDATE = 2
+    UPDATE = 2,
+    PERMISSION = 3
   };
 
   union ActionCategory switch (ActionCategoryType Type)
@@ -36,6 +44,8 @@ namespace mazzaroth
       Call call;
     case UPDATE:
       Update update;
+    case PERMISSION:
+      Permission permission;
   };
 
   // The Action data of a transaction

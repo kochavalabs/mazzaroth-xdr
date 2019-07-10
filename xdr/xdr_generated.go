@@ -1486,6 +1486,30 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Update)(nil)
 )
 
+type Permission struct {
+	Granted_key ID
+
+	Duration_blocks int32
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Permission) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Permission) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Permission)(nil)
+	_ encoding.BinaryUnmarshaler = (*Permission)(nil)
+)
+
 type Action struct {
 	ChannelID ID
 
@@ -1606,6 +1630,8 @@ const (
 	ActionCategoryTypeCALL ActionCategoryType = 1
 
 	ActionCategoryTypeUPDATE ActionCategoryType = 2
+
+	ActionCategoryTypePERMISSION ActionCategoryType = 3
 )
 
 var ActionCategoryTypeMap = map[int32]string{
@@ -1615,6 +1641,8 @@ var ActionCategoryTypeMap = map[int32]string{
 	1: "ActionCategoryTypeCALL",
 
 	2: "ActionCategoryTypeUPDATE",
+
+	3: "ActionCategoryTypePERMISSION",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -1712,6 +1740,8 @@ type ActionCategory struct {
 	Call *Call
 
 	Update *Update
+
+	Permission *Permission
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -1733,6 +1763,9 @@ func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
 
 	case ActionCategoryTypeUPDATE:
 		return "Update", true
+
+	case ActionCategoryTypePERMISSION:
+		return "Permission", true
 	}
 	return "-", false
 }
@@ -1761,6 +1794,15 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 			return
 		}
 		result.Update = &tv
+
+	case ActionCategoryTypePERMISSION:
+
+		tv, ok := value.(Permission)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Permission = &tv
 
 	}
 	return
@@ -1810,6 +1852,31 @@ func (u ActionCategory) GetUpdate() (result Update, ok bool) {
 
 	if armName == "Update" {
 		result = *u.Update
+		ok = true
+	}
+
+	return
+}
+
+// MustPermission retrieves the Permission value from the union,
+// panicing if the value is not set.
+func (u ActionCategory) MustPermission() Permission {
+	val, ok := u.GetPermission()
+
+	if !ok {
+		panic("arm Permission is not set")
+	}
+
+	return val
+}
+
+// GetPermission retrieves the Permission value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ActionCategory) GetPermission() (result Permission, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Permission" {
+		result = *u.Permission
 		ok = true
 	}
 

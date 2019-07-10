@@ -5,7 +5,6 @@ extern crate ex_dee_derive;
 use ex_dee::de::{read_fixed_array, read_var_array, read_var_string, XDRIn};
 use ex_dee::error::Error;
 use ex_dee::ser::{write_fixed_array, write_var_array, write_var_string, XDROut};
-use std::io::{Read, Write};
 
 // Namspace start mazzaroth
 
@@ -484,6 +483,13 @@ pub struct Update {
 }
 
 #[derive(Default, Debug, XDROut, XDRIn)]
+pub struct Permission {
+    pub granted_key: ID,
+
+    pub duration_blocks: i32,
+}
+
+#[derive(Default, Debug, XDROut, XDRIn)]
 pub struct Action {
     pub channelID: ID,
 
@@ -534,6 +540,7 @@ pub enum ActionCategoryType {
     NONE = 0,
     CALL = 1,
     UPDATE = 2,
+    PERMISSION = 3,
 }
 
 impl Default for ActionCategoryType {
@@ -564,6 +571,8 @@ pub enum ActionCategory {
     CALL(Call),
 
     UPDATE(Update),
+
+    PERMISSION(Permission),
 }
 
 impl Default for ActionCategory {

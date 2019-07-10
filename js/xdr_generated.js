@@ -42,6 +42,7 @@ exports.NonceLookupStatus = NonceLookupStatus;
 exports.Identifier = Identifier;
 exports.Call = Call;
 exports.Update = Update;
+exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
 exports.CommittedTransaction = CommittedTransaction;
@@ -406,6 +407,9 @@ function Call() {
 function Update() {
     return new _jsXdr2.default.Struct(["contract"], [new _jsXdr2.default.VarOpaque(2147483647)]);
 }
+function Permission() {
+    return new _jsXdr2.default.Struct(["granted_key", "duration_blocks"], [ID(), new _jsXdr2.default.Int()]);
+}
 function Action() {
     return new _jsXdr2.default.Struct(["channelID", "nonce", "category"], [ID(), new _jsXdr2.default.UHyper(), ActionCategory()]);
 }
@@ -427,7 +431,8 @@ function ActionCategoryType() {
     return new _jsXdr2.default.Enum({
         0: "NONE",
         1: "CALL",
-        2: "UPDATE"
+        2: "UPDATE",
+        3: "PERMISSION"
 
     });
 }
@@ -454,7 +459,9 @@ function ActionCategory() {
 
         "CALL": Call(),
 
-        "UPDATE": Update()
+        "UPDATE": Update(),
+
+        "PERMISSION": Permission()
 
     });
 }
