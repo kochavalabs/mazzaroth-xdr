@@ -1627,16 +1627,16 @@ var (
 type PermissionAction int32
 
 const (
-	PermissionActionGRANT PermissionAction = 0
+	PermissionActionREVOKE PermissionAction = 0
 
-	PermissionActionREVOKE PermissionAction = 1
+	PermissionActionGRANT PermissionAction = 1
 )
 
 var PermissionActionMap = map[int32]string{
 
-	0: "PermissionActionGRANT",
+	0: "PermissionActionREVOKE",
 
-	1: "PermissionActionREVOKE",
+	1: "PermissionActionGRANT",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements

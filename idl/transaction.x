@@ -23,8 +23,8 @@ namespace mazzaroth
 
   enum PermissionAction
   {
-    GRANT = 0,
-    REVOKE = 1
+    REVOKE = 0,
+    GRANT = 1,
   };
 
   struct Permission

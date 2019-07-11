@@ -430,8 +430,8 @@ function Input() {
 
 function PermissionAction() {
     return new _jsXdr2.default.Enum({
-        0: "GRANT",
-        1: "REVOKE"
+        0: "REVOKE",
+        1: "GRANT"
 
     });
 }

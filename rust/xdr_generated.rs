@@ -539,13 +539,13 @@ pub struct Input {
 
 #[derive(Debug, XDROut, XDRIn)]
 pub enum PermissionAction {
-    GRANT = 0,
-    REVOKE = 1,
+    REVOKE = 0,
+    GRANT = 1,
 }
 
 impl Default for PermissionAction {
     fn default() -> Self {
-        PermissionAction::GRANT
+        PermissionAction::REVOKE
     }
 }
 
