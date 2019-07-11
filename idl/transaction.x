@@ -32,8 +32,6 @@ namespace mazzaroth
     ID key;
 
     PermissionAction action;
-
-    int duration_blocks;
   };
 
   enum ActionCategoryType
