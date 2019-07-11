@@ -1490,8 +1490,6 @@ type Permission struct {
 	Key ID
 
 	Action PermissionAction
-
-	Duration_blocks int32
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.

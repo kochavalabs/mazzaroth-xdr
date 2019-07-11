@@ -409,7 +409,7 @@ function Update() {
     return new _jsXdr2.default.Struct(["contract"], [new _jsXdr2.default.VarOpaque(2147483647)]);
 }
 function Permission() {
-    return new _jsXdr2.default.Struct(["key", "action", "duration_blocks"], [ID(), PermissionAction(), new _jsXdr2.default.Int()]);
+    return new _jsXdr2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
 }
 function Action() {
     return new _jsXdr2.default.Struct(["channelID", "nonce", "category"], [ID(), new _jsXdr2.default.UHyper(), ActionCategory()]);

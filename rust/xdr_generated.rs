@@ -487,8 +487,6 @@ pub struct Permission {
     pub key: ID,
 
     pub action: PermissionAction,
-
-    pub duration_blocks: i32,
 }
 
 #[derive(Default, Debug, XDROut, XDRIn)]
