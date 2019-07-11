@@ -484,7 +484,9 @@ pub struct Update {
 
 #[derive(Default, Debug, XDROut, XDRIn)]
 pub struct Permission {
-    pub granted_key: ID,
+    pub key: ID,
+
+    pub action: PermissionAction,
 
     pub duration_blocks: i32,
 }
@@ -534,6 +536,18 @@ pub struct Input {
 }
 
 // End struct section
+
+#[derive(Debug, XDROut, XDRIn)]
+pub enum PermissionAction {
+    GRANT = 0,
+    REVOKE = 1,
+}
+
+impl Default for PermissionAction {
+    fn default() -> Self {
+        PermissionAction::GRANT
+    }
+}
 
 #[derive(Debug, XDROut, XDRIn)]
 pub enum ActionCategoryType {

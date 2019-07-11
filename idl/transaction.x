@@ -21,9 +21,17 @@ namespace mazzaroth
     opaque contract<>;
   };
 
+  enum PermissionAction
+  {
+    GRANT = 0,
+    REVOKE = 1
+  };
+
   struct Permission
   {
-    ID granted_key;
+    ID key;
+
+    PermissionAction action;
 
     int duration_blocks;
   };

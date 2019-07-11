@@ -1487,7 +1487,9 @@ var (
 )
 
 type Permission struct {
-	Granted_key ID
+	Key ID
+
+	Action PermissionAction
 
 	Duration_blocks int32
 }
@@ -1621,6 +1623,52 @@ var (
 // End struct section
 
 // Start enum section
+
+type PermissionAction int32
+
+const (
+	PermissionActionGRANT PermissionAction = 0
+
+	PermissionActionREVOKE PermissionAction = 1
+)
+
+var PermissionActionMap = map[int32]string{
+
+	0: "PermissionActionGRANT",
+
+	1: "PermissionActionREVOKE",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for PermissionAction
+func (s PermissionAction) ValidEnum(v int32) bool {
+	_, ok := PermissionActionMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s PermissionAction) String() string {
+	name, _ := PermissionActionMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s PermissionAction) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *PermissionAction) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*PermissionAction)(nil)
+	_ encoding.BinaryUnmarshaler = (*PermissionAction)(nil)
+)
 
 type ActionCategoryType int32
 

@@ -47,6 +47,7 @@ exports.Action = Action;
 exports.Transaction = Transaction;
 exports.CommittedTransaction = CommittedTransaction;
 exports.Input = Input;
+exports.PermissionAction = PermissionAction;
 exports.ActionCategoryType = ActionCategoryType;
 exports.InputType = InputType;
 exports.ActionCategory = ActionCategory;
@@ -408,7 +409,7 @@ function Update() {
     return new _jsXdr2.default.Struct(["contract"], [new _jsXdr2.default.VarOpaque(2147483647)]);
 }
 function Permission() {
-    return new _jsXdr2.default.Struct(["granted_key", "duration_blocks"], [ID(), new _jsXdr2.default.Int()]);
+    return new _jsXdr2.default.Struct(["key", "action", "duration_blocks"], [ID(), PermissionAction(), new _jsXdr2.default.Int()]);
 }
 function Action() {
     return new _jsXdr2.default.Struct(["channelID", "nonce", "category"], [ID(), new _jsXdr2.default.UHyper(), ActionCategory()]);
@@ -426,6 +427,14 @@ function Input() {
 // End struct section
 
 // Start enum section
+
+function PermissionAction() {
+    return new _jsXdr2.default.Enum({
+        0: "GRANT",
+        1: "REVOKE"
+
+    });
+}
 
 function ActionCategoryType() {
     return new _jsXdr2.default.Enum({
