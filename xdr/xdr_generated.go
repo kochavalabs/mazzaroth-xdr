@@ -32,6 +32,8 @@ type Account struct {
 	Name string
 
 	Nonce uint64
+
+	Permissioned_keys []ID
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1539,6 +1541,8 @@ var (
 type Transaction struct {
 	Signature Signature
 
+	OnBehalfOf Authority
+
 	Address ID
 
 	Action Action
@@ -1720,6 +1724,52 @@ func (s *ActionCategoryType) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*ActionCategoryType)(nil)
 	_ encoding.BinaryUnmarshaler = (*ActionCategoryType)(nil)
+)
+
+type AuthortiyType int32
+
+const (
+	AuthortiyTypeNONE AuthortiyType = 0
+
+	AuthortiyTypePERMISSIONED AuthortiyType = 1
+)
+
+var AuthortiyTypeMap = map[int32]string{
+
+	0: "AuthortiyTypeNONE",
+
+	1: "AuthortiyTypePERMISSIONED",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for AuthortiyType
+func (s AuthortiyType) ValidEnum(v int32) bool {
+	_, ok := AuthortiyTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s AuthortiyType) String() string {
+	name, _ := AuthortiyTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s AuthortiyType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *AuthortiyType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*AuthortiyType)(nil)
+	_ encoding.BinaryUnmarshaler = (*AuthortiyType)(nil)
 )
 
 type InputType int32
@@ -1945,6 +1995,95 @@ func (s *ActionCategory) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*ActionCategory)(nil)
 	_ encoding.BinaryUnmarshaler = (*ActionCategory)(nil)
+)
+
+type Authority struct {
+	Type AuthorityType
+
+	Origin *ID
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u Authority) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of Authority
+func (u Authority) ArmForSwitch(sw int32) (string, bool) {
+	switch AuthorityType(sw) {
+
+	case AuthorityTypeNONE:
+		return "", true
+
+	case AuthorityTypePERMISSIONED:
+		return "Origin", true
+	}
+	return "-", false
+}
+
+// NewAuthority creates a new  Authority.
+func NewAuthority(aType AuthorityType, value interface{}) (result Authority, err error) {
+	result.Type = aType
+	switch aType {
+
+	case AuthorityTypeNONE:
+
+	case AuthorityTypePERMISSIONED:
+
+		tv, ok := value.(ID)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Origin = &tv
+
+	}
+	return
+}
+
+// MustOrigin retrieves the Origin value from the union,
+// panicing if the value is not set.
+func (u Authority) MustOrigin() ID {
+	val, ok := u.GetOrigin()
+
+	if !ok {
+		panic("arm Origin is not set")
+	}
+
+	return val
+}
+
+// GetOrigin retrieves the Origin value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Authority) GetOrigin() (result ID, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Origin" {
+		result = *u.Origin
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Authority) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Authority) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Authority)(nil)
+	_ encoding.BinaryUnmarshaler = (*Authority)(nil)
 )
 
 // End union section

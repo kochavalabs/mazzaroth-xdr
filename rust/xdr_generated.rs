@@ -19,6 +19,9 @@ pub struct Account {
     pub name: String,
 
     pub nonce: u64,
+
+    #[array(var = 2147483647)]
+    pub permissioned_keys: Vec<ID>,
 }
 
 // End struct section
@@ -502,6 +505,8 @@ pub struct Action {
 pub struct Transaction {
     pub signature: Signature,
 
+    pub onBehalfOf: Authority,
+
     pub address: ID,
 
     pub action: Action,
@@ -562,6 +567,18 @@ impl Default for ActionCategoryType {
 }
 
 #[derive(Debug, XDROut, XDRIn)]
+pub enum AuthortiyType {
+    NONE = 0,
+    PERMISSIONED = 1,
+}
+
+impl Default for AuthortiyType {
+    fn default() -> Self {
+        AuthortiyType::NONE
+    }
+}
+
+#[derive(Debug, XDROut, XDRIn)]
 pub enum InputType {
     NONE = 0,
     READONLY = 1,
@@ -590,6 +607,19 @@ pub enum ActionCategory {
 impl Default for ActionCategory {
     fn default() -> Self {
         ActionCategory::NONE(())
+    }
+}
+
+#[derive(Debug, XDROut, XDRIn)]
+pub enum Authority {
+    NONE(()),
+
+    PERMISSIONED(ID),
+}
+
+impl Default for Authority {
+    fn default() -> Self {
+        Authority::NONE(())
     }
 }
 // End union section

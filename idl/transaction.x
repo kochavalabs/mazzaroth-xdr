@@ -66,12 +66,31 @@ namespace mazzaroth
 
   };
 
+  enum AuthortiyType
+  {
+    NONE = 0,
+
+    PERMISSIONED = 1,
+  };
+
+  union Authority switch (AuthorityType Type)
+  {
+    case NONE:
+      void;
+    case PERMISSIONED:
+      ID origin;
+  };
+
   // A transaction that calls a function on a user defined contract.
   struct Transaction
   {
     // Byte array signature of the Transaction bytes signed by the Transaction 
     // sender's private key.
     Signature signature;
+
+    // Information on whether this transaction was sent on behalf of another
+    // account.
+    Authority onBehalfOf;
 
     // Byte array representing the id of the sender, this also happens
     // to be the sender's account public key.
