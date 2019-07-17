@@ -687,6 +687,30 @@ var (
 // End typedef section
 
 // Start struct section
+type StateStatus struct {
+	PreviousBlock ID
+
+	TransactionCount uint64
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s StateStatus) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *StateStatus) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*StateStatus)(nil)
+	_ encoding.BinaryUnmarshaler = (*StateStatus)(nil)
+)
+
 type BlockLookupRequest struct {
 	ID Identifier
 }
@@ -734,6 +758,8 @@ var (
 type BlockLookupResponse struct {
 	Block Block
 
+	StateStatus StateStatus
+
 	Status BlockStatus
 
 	StatusInfo StatusInfo
@@ -759,6 +785,8 @@ var (
 
 type BlockHeaderLookupResponse struct {
 	Header BlockHeader
+
+	StateStatus StateStatus
 
 	Status BlockStatus
 
@@ -807,6 +835,8 @@ var (
 
 type TransactionLookupResponse struct {
 	Transaction Transaction
+
+	StateStatus StateStatus
 
 	Status TransactionStatus
 
@@ -904,7 +934,7 @@ var (
 type ReadonlyResponse struct {
 	Result []byte
 
-	StateRoot Hash
+	StateStatus StateStatus
 
 	Status ReadonlyStatus
 
@@ -954,6 +984,8 @@ var (
 type ReceiptLookupResponse struct {
 	Receipt Receipt
 
+	StateStatus StateStatus
+
 	Status ReceiptLookupStatus
 
 	StatusInfo StatusInfo
@@ -1002,6 +1034,8 @@ var (
 type AccountNonceLookupResponse struct {
 	Nonce uint64
 
+	StateStatus StateStatus
+
 	Status NonceLookupStatus
 
 	StatusInfo StatusInfo
@@ -1023,6 +1057,56 @@ func (s *AccountNonceLookupResponse) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*AccountNonceLookupResponse)(nil)
 	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupResponse)(nil)
+)
+
+type AccountInfoLookupRequest struct {
+	Account ID
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s AccountInfoLookupRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *AccountInfoLookupRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*AccountInfoLookupRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*AccountInfoLookupRequest)(nil)
+)
+
+type AccountInfoLookupResponse struct {
+	AccountInfo Account
+
+	StateStatus StateStatus
+
+	Status InfoLookupStatus
+
+	StatusInfo StatusInfo
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s AccountInfoLookupResponse) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *AccountInfoLookupResponse) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*AccountInfoLookupResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*AccountInfoLookupResponse)(nil)
 )
 
 // End struct section
@@ -1339,6 +1423,56 @@ func (s *NonceLookupStatus) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*NonceLookupStatus)(nil)
 	_ encoding.BinaryUnmarshaler = (*NonceLookupStatus)(nil)
+)
+
+type InfoLookupStatus int32
+
+const (
+	InfoLookupStatusUNKNOWN InfoLookupStatus = 0
+
+	InfoLookupStatusFOUND InfoLookupStatus = 1
+
+	InfoLookupStatusNOT_FOUND InfoLookupStatus = 2
+)
+
+var InfoLookupStatusMap = map[int32]string{
+
+	0: "InfoLookupStatusUNKNOWN",
+
+	1: "InfoLookupStatusFOUND",
+
+	2: "InfoLookupStatusNOT_FOUND",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for InfoLookupStatus
+func (s InfoLookupStatus) ValidEnum(v int32) bool {
+	_, ok := InfoLookupStatusMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s InfoLookupStatus) String() string {
+	name, _ := InfoLookupStatusMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s InfoLookupStatus) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *InfoLookupStatus) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*InfoLookupStatus)(nil)
+	_ encoding.BinaryUnmarshaler = (*InfoLookupStatus)(nil)
 )
 
 // End enum section

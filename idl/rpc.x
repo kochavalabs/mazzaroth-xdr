@@ -7,6 +7,14 @@ namespace mazzaroth
 {
   typedef string StatusInfo<256>;
 
+  struct StateStatus
+  {
+    ID previousBlock;
+
+    unsigned hyper transactionCount;
+
+  };
+
   enum IdentifierType
   {
     NONE = 0, 
@@ -40,6 +48,9 @@ namespace mazzaroth
     // Block that was requested if status is found.
     Block block;
 
+    // Current state status
+    StateStatus stateStatus;
+
     // Status for the requested block.
     BlockStatus status;
 
@@ -52,6 +63,9 @@ namespace mazzaroth
 
     // Block header that was requested if status is found.
     BlockHeader header;
+
+    // Current state status
+    StateStatus stateStatus;
 
     // Status for the requested block.
     BlockStatus status;
@@ -90,6 +104,9 @@ namespace mazzaroth
   {
     // Final transaction written to the blockchain.
     Transaction transaction;
+
+    // Current state status
+    StateStatus stateStatus;
 
     // Current status of the transaction.
     TransactionStatus status;
@@ -130,8 +147,8 @@ namespace mazzaroth
     // Return results of execution
     opaque result<>;
 
-    // The state root
-    Hash stateRoot;
+    // Current state status
+    StateStatus stateStatus;
 
     // Status of the request.
     ReadonlyStatus status;
@@ -186,6 +203,9 @@ namespace mazzaroth
     // Final receipt written to the blockchain.
     Receipt receipt; 
 
+    // Current state status
+    StateStatus stateStatus;
+
     // Current status of the receipt
     ReceiptLookupStatus status;
 
@@ -219,6 +239,9 @@ namespace mazzaroth
     // Final receipt written to the blockchain.
     unsigned hyper nonce; 
 
+    // Current state status
+    StateStatus stateStatus;
+
     // Status of the lookup
     NonceLookupStatus status;
 
@@ -238,4 +261,41 @@ namespace mazzaroth
     // The account nonce was not found.
     NOT_FOUND = 2
   };
+
+  // Request for a node to look up account info.
+  struct AccountInfoLookupRequest
+  {
+    // ID of the account
+    ID account;
+  };
+
+  // Response to account info lookup request.
+  struct AccountInfoLookupResponse
+  {
+    // Final receipt written to the blockchain.
+    Account accountInfo;
+
+    // Current state status
+    StateStatus stateStatus;
+
+    // Status of the lookup
+    InfoLookupStatus status;
+
+    // Human readable information to help understand the status.
+    StatusInfo statusInfo;
+  };
+
+  // Status of a info lookup.
+  enum InfoLookupStatus
+  {
+    // The status is either not known or not set.
+    UNKNOWN = 0,
+
+    // The account info was found.
+    FOUND = 1,
+
+    // The account info was not found.
+    NOT_FOUND = 2
+  };
+
 }
