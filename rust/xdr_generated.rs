@@ -216,6 +216,32 @@ pub struct Event {
 // Start struct section
 
 #[derive(Default, Debug, XDROut, XDRIn)]
+pub struct ExecutionPlan {
+    #[array(var = 256)]
+    pub host: String,
+
+    pub channelID: ID,
+
+    #[array(var = 100)]
+    pub calls: Vec<Call>,
+}
+
+// End struct section
+
+// Start union section
+
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+#[derive(Default, Debug, XDROut, XDRIn)]
 pub struct Receipt {
     pub status: ReceiptStatus,
 

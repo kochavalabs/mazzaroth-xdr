@@ -16,6 +16,7 @@ exports.Hash = Hash;
 exports.Parameter = Parameter;
 exports.ContractMetadata = ContractMetadata;
 exports.Event = Event;
+exports.ExecutionPlan = ExecutionPlan;
 exports.Receipt = Receipt;
 exports.ReceiptStatus = ReceiptStatus;
 exports.StatusInfo = StatusInfo;
@@ -219,6 +220,29 @@ function ContractMetadata() {
 // Start struct section
 function Event() {
     return new _jsXdr2.default.Struct(["key", "parameters"], [new _jsXdr2.default.Str(256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+}
+
+// End struct section
+
+// Start enum section
+
+
+// End enum section
+
+// Start union section
+
+
+// End union section
+
+// End namespace mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
+function ExecutionPlan() {
+    return new _jsXdr2.default.Struct(["host", "channelID", "calls"], [new _jsXdr2.default.Str(256), ID(), new _jsXdr2.default.VarArray(100, Call)]);
 }
 
 // End struct section
