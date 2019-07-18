@@ -299,7 +299,7 @@ function StatusInfo() {
 
 // Start struct section
 function StateStatus() {
-    return new _jsXdr2.default.Struct(["previousBlock", "transactionCount"], [Hash(), new _jsXdr2.default.UHyper()]);
+    return new _jsXdr2.default.Struct(["previousBlock", "transactionCount"], [new _jsXdr2.default.UHyper(), new _jsXdr2.default.UHyper()]);
 }
 function BlockLookupRequest() {
     return new _jsXdr2.default.Struct(["ID"], [Identifier()]);

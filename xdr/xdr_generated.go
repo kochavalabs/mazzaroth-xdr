@@ -688,7 +688,7 @@ var (
 
 // Start struct section
 type StateStatus struct {
-	PreviousBlock Hash
+	PreviousBlock uint64
 
 	TransactionCount uint64
 }

@@ -9,7 +9,7 @@ namespace mazzaroth
 
   struct StateStatus
   {
-    Hash previousBlock;
+    unsigned hyper previousBlock;
 
     unsigned hyper transactionCount;
 

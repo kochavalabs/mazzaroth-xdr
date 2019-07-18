@@ -285,7 +285,7 @@ pub struct StatusInfo {
 
 #[derive(Default, Debug, XDROut, XDRIn)]
 pub struct StateStatus {
-    pub previousBlock: Hash,
+    pub previousBlock: u64,
 
     pub transactionCount: u64,
 }
