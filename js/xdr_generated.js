@@ -20,6 +20,7 @@ exports.ExecutionPlan = ExecutionPlan;
 exports.Receipt = Receipt;
 exports.ReceiptStatus = ReceiptStatus;
 exports.StatusInfo = StatusInfo;
+exports.StateStatus = StateStatus;
 exports.BlockLookupRequest = BlockLookupRequest;
 exports.BlockHeaderLookupRequest = BlockHeaderLookupRequest;
 exports.BlockLookupResponse = BlockLookupResponse;
@@ -34,12 +35,15 @@ exports.ReceiptLookupRequest = ReceiptLookupRequest;
 exports.ReceiptLookupResponse = ReceiptLookupResponse;
 exports.AccountNonceLookupRequest = AccountNonceLookupRequest;
 exports.AccountNonceLookupResponse = AccountNonceLookupResponse;
+exports.AccountInfoLookupRequest = AccountInfoLookupRequest;
+exports.AccountInfoLookupResponse = AccountInfoLookupResponse;
 exports.IdentifierType = IdentifierType;
 exports.BlockStatus = BlockStatus;
 exports.TransactionStatus = TransactionStatus;
 exports.ReadonlyStatus = ReadonlyStatus;
 exports.ReceiptLookupStatus = ReceiptLookupStatus;
 exports.NonceLookupStatus = NonceLookupStatus;
+exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
 exports.Call = Call;
 exports.Update = Update;
@@ -294,6 +298,9 @@ function StatusInfo() {
 // End typedef section
 
 // Start struct section
+function StateStatus() {
+    return new _jsXdr2.default.Struct(["previousBlock", "transactionCount"], [new _jsXdr2.default.UHyper(), new _jsXdr2.default.UHyper()]);
+}
 function BlockLookupRequest() {
     return new _jsXdr2.default.Struct(["ID"], [Identifier()]);
 }
@@ -301,16 +308,16 @@ function BlockHeaderLookupRequest() {
     return new _jsXdr2.default.Struct(["ID"], [Identifier()]);
 }
 function BlockLookupResponse() {
-    return new _jsXdr2.default.Struct(["block", "status", "statusInfo"], [Block(), BlockStatus(), StatusInfo()]);
+    return new _jsXdr2.default.Struct(["block", "stateStatus", "status", "statusInfo"], [Block(), StateStatus(), BlockStatus(), StatusInfo()]);
 }
 function BlockHeaderLookupResponse() {
-    return new _jsXdr2.default.Struct(["header", "status", "statusInfo"], [BlockHeader(), BlockStatus(), StatusInfo()]);
+    return new _jsXdr2.default.Struct(["header", "stateStatus", "status", "statusInfo"], [BlockHeader(), StateStatus(), BlockStatus(), StatusInfo()]);
 }
 function TransactionLookupRequest() {
     return new _jsXdr2.default.Struct(["transactionID"], [ID()]);
 }
 function TransactionLookupResponse() {
-    return new _jsXdr2.default.Struct(["transaction", "status", "statusInfo"], [Transaction(), TransactionStatus(), StatusInfo()]);
+    return new _jsXdr2.default.Struct(["transaction", "stateStatus", "status", "statusInfo"], [Transaction(), StateStatus(), TransactionStatus(), StatusInfo()]);
 }
 function TransactionSubmitRequest() {
     return new _jsXdr2.default.Struct(["transaction"], [Transaction()]);
@@ -322,19 +329,25 @@ function ReadonlyRequest() {
     return new _jsXdr2.default.Struct(["call"], [Call()]);
 }
 function ReadonlyResponse() {
-    return new _jsXdr2.default.Struct(["result", "stateRoot", "status", "statusInfo"], [new _jsXdr2.default.VarOpaque(2147483647), Hash(), ReadonlyStatus(), StatusInfo()]);
+    return new _jsXdr2.default.Struct(["result", "stateStatus", "status", "statusInfo"], [new _jsXdr2.default.VarOpaque(2147483647), StateStatus(), ReadonlyStatus(), StatusInfo()]);
 }
 function ReceiptLookupRequest() {
     return new _jsXdr2.default.Struct(["transactionID"], [ID()]);
 }
 function ReceiptLookupResponse() {
-    return new _jsXdr2.default.Struct(["receipt", "status", "statusInfo"], [Receipt(), ReceiptLookupStatus(), StatusInfo()]);
+    return new _jsXdr2.default.Struct(["receipt", "stateStatus", "status", "statusInfo"], [Receipt(), StateStatus(), ReceiptLookupStatus(), StatusInfo()]);
 }
 function AccountNonceLookupRequest() {
     return new _jsXdr2.default.Struct(["account"], [ID()]);
 }
 function AccountNonceLookupResponse() {
-    return new _jsXdr2.default.Struct(["nonce", "status", "statusInfo"], [new _jsXdr2.default.UHyper(), NonceLookupStatus(), StatusInfo()]);
+    return new _jsXdr2.default.Struct(["nonce", "stateStatus", "status", "statusInfo"], [new _jsXdr2.default.UHyper(), StateStatus(), NonceLookupStatus(), StatusInfo()]);
+}
+function AccountInfoLookupRequest() {
+    return new _jsXdr2.default.Struct(["account"], [ID()]);
+}
+function AccountInfoLookupResponse() {
+    return new _jsXdr2.default.Struct(["accountInfo", "stateStatus", "status", "statusInfo"], [Account(), StateStatus(), InfoLookupStatus(), StatusInfo()]);
 }
 
 // End struct section
@@ -390,6 +403,15 @@ function ReceiptLookupStatus() {
 }
 
 function NonceLookupStatus() {
+    return new _jsXdr2.default.Enum({
+        0: "UNKNOWN",
+        1: "FOUND",
+        2: "NOT_FOUND"
+
+    });
+}
+
+function InfoLookupStatus() {
     return new _jsXdr2.default.Enum({
         0: "UNKNOWN",
         1: "FOUND",

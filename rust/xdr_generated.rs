@@ -284,6 +284,13 @@ pub struct StatusInfo {
 // Start struct section
 
 #[derive(Default, Debug, XDROut, XDRIn)]
+pub struct StateStatus {
+    pub previousBlock: u64,
+
+    pub transactionCount: u64,
+}
+
+#[derive(Default, Debug, XDROut, XDRIn)]
 pub struct BlockLookupRequest {
     pub ID: Identifier,
 }
@@ -297,6 +304,8 @@ pub struct BlockHeaderLookupRequest {
 pub struct BlockLookupResponse {
     pub block: Block,
 
+    pub stateStatus: StateStatus,
+
     pub status: BlockStatus,
 
     pub statusInfo: StatusInfo,
@@ -305,6 +314,8 @@ pub struct BlockLookupResponse {
 #[derive(Default, Debug, XDROut, XDRIn)]
 pub struct BlockHeaderLookupResponse {
     pub header: BlockHeader,
+
+    pub stateStatus: StateStatus,
 
     pub status: BlockStatus,
 
@@ -319,6 +330,8 @@ pub struct TransactionLookupRequest {
 #[derive(Default, Debug, XDROut, XDRIn)]
 pub struct TransactionLookupResponse {
     pub transaction: Transaction,
+
+    pub stateStatus: StateStatus,
 
     pub status: TransactionStatus,
 
@@ -349,7 +362,7 @@ pub struct ReadonlyResponse {
     #[array(var = 2147483647)]
     pub result: Vec<u8>,
 
-    pub stateRoot: Hash,
+    pub stateStatus: StateStatus,
 
     pub status: ReadonlyStatus,
 
@@ -365,6 +378,8 @@ pub struct ReceiptLookupRequest {
 pub struct ReceiptLookupResponse {
     pub receipt: Receipt,
 
+    pub stateStatus: StateStatus,
+
     pub status: ReceiptLookupStatus,
 
     pub statusInfo: StatusInfo,
@@ -379,7 +394,25 @@ pub struct AccountNonceLookupRequest {
 pub struct AccountNonceLookupResponse {
     pub nonce: u64,
 
+    pub stateStatus: StateStatus,
+
     pub status: NonceLookupStatus,
+
+    pub statusInfo: StatusInfo,
+}
+
+#[derive(Default, Debug, XDROut, XDRIn)]
+pub struct AccountInfoLookupRequest {
+    pub account: ID,
+}
+
+#[derive(Default, Debug, XDROut, XDRIn)]
+pub struct AccountInfoLookupResponse {
+    pub accountInfo: Account,
+
+    pub stateStatus: StateStatus,
+
+    pub status: InfoLookupStatus,
 
     pub statusInfo: StatusInfo,
 }
@@ -464,6 +497,19 @@ pub enum NonceLookupStatus {
 impl Default for NonceLookupStatus {
     fn default() -> Self {
         NonceLookupStatus::UNKNOWN
+    }
+}
+
+#[derive(Debug, XDROut, XDRIn)]
+pub enum InfoLookupStatus {
+    UNKNOWN = 0,
+    FOUND = 1,
+    NOT_FOUND = 2,
+}
+
+impl Default for InfoLookupStatus {
+    fn default() -> Self {
+        InfoLookupStatus::UNKNOWN
     }
 }
 // Start union section
