@@ -66,7 +66,7 @@ namespace mazzaroth
 
   };
 
-  enum AuthortiyType
+  enum AuthorityType
   {
     NONE = 0,
 
