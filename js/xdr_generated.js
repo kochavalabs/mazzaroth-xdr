@@ -54,7 +54,7 @@ exports.CommittedTransaction = CommittedTransaction;
 exports.Input = Input;
 exports.PermissionAction = PermissionAction;
 exports.ActionCategoryType = ActionCategoryType;
-exports.AuthortiyType = AuthortiyType;
+exports.AuthorityType = AuthorityType;
 exports.InputType = InputType;
 exports.ActionCategory = ActionCategory;
 exports.Authority = Authority;
@@ -494,7 +494,7 @@ function ActionCategoryType() {
     });
 }
 
-function AuthortiyType() {
+function AuthorityType() {
     return new _jsXdr2.default.Enum({
         0: "NONE",
         1: "PERMISSIONED"

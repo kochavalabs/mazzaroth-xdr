@@ -1902,50 +1902,50 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ActionCategoryType)(nil)
 )
 
-type AuthortiyType int32
+type AuthorityType int32
 
 const (
-	AuthortiyTypeNONE AuthortiyType = 0
+	AuthorityTypeNONE AuthorityType = 0
 
-	AuthortiyTypePERMISSIONED AuthortiyType = 1
+	AuthorityTypePERMISSIONED AuthorityType = 1
 )
 
-var AuthortiyTypeMap = map[int32]string{
+var AuthorityTypeMap = map[int32]string{
 
-	0: "AuthortiyTypeNONE",
+	0: "AuthorityTypeNONE",
 
-	1: "AuthortiyTypePERMISSIONED",
+	1: "AuthorityTypePERMISSIONED",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for AuthortiyType
-func (s AuthortiyType) ValidEnum(v int32) bool {
-	_, ok := AuthortiyTypeMap[v]
+// the Enum interface for AuthorityType
+func (s AuthorityType) ValidEnum(v int32) bool {
+	_, ok := AuthorityTypeMap[v]
 	return ok
 }
 
 // String returns the name of `e`
-func (s AuthortiyType) String() string {
-	name, _ := AuthortiyTypeMap[int32(s)]
+func (s AuthorityType) String() string {
+	name, _ := AuthorityTypeMap[int32(s)]
 	return name
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s AuthortiyType) MarshalBinary() ([]byte, error) {
+func (s AuthorityType) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *AuthortiyType) UnmarshalBinary(inp []byte) error {
+func (s *AuthorityType) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*AuthortiyType)(nil)
-	_ encoding.BinaryUnmarshaler = (*AuthortiyType)(nil)
+	_ encoding.BinaryMarshaler   = (*AuthorityType)(nil)
+	_ encoding.BinaryUnmarshaler = (*AuthorityType)(nil)
 )
 
 type InputType int32

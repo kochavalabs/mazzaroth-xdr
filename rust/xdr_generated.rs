@@ -639,14 +639,14 @@ impl Default for ActionCategoryType {
 }
 
 #[derive(Debug, XDROut, XDRIn)]
-pub enum AuthortiyType {
+pub enum AuthorityType {
     NONE = 0,
     PERMISSIONED = 1,
 }
 
-impl Default for AuthortiyType {
+impl Default for AuthorityType {
     fn default() -> Self {
-        AuthortiyType::NONE
+        AuthorityType::NONE
     }
 }
 
