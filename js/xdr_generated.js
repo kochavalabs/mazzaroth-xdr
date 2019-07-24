@@ -72,7 +72,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Start struct section
 function Account() {
-    return new _jsXdr2.default.Struct(["name", "nonce", "permissioned_keys"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(2147483647, ID)]);
+    return new _jsXdr2.default.Struct(["name", "nonce", "permissionedKeys"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(2147483647, ID)]);
 }
 
 // End struct section

@@ -6,6 +6,6 @@ namespace mazzaroth
   {
     string name;
     unsigned hyper nonce;
-    ID permissioned_keys<>;
+    ID permissionedKeys<>;
   };
 }

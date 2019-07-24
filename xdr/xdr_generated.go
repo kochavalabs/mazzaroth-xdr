@@ -33,7 +33,7 @@ type Account struct {
 
 	Nonce uint64
 
-	Permissioned_keys []ID
+	PermissionedKeys []ID
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.

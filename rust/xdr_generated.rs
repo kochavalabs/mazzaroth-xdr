@@ -21,7 +21,7 @@ pub struct Account {
     pub nonce: u64,
 
     #[array(var = 2147483647)]
-    pub permissioned_keys: Vec<ID>,
+    pub permissionedKeys: Vec<ID>,
 }
 
 // End struct section
