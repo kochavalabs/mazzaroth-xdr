@@ -577,7 +577,7 @@ pub struct Action {
 pub struct Transaction {
     pub signature: Signature,
 
-    pub onBehalfOf: Authority,
+    pub signer: Authority,
 
     pub address: ID,
 

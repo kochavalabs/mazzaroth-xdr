@@ -88,9 +88,10 @@ namespace mazzaroth
     // sender's private key.
     Signature signature;
 
-    // Information on whether this transaction was sent on behalf of another
-    // account.
-    Authority onBehalfOf;
+    // Authority of the signer of the transaction. This will indicate if this
+    // transaction is being signed by a key that the original account owner gave
+    // permission to.
+    Authority signer;
 
     // Byte array representing the id of the sender, this also happens
     // to be the sender's account public key.

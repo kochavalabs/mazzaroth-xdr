@@ -1717,7 +1717,7 @@ var (
 type Transaction struct {
 	Signature Signature
 
-	OnBehalfOf Authority
+	Signer Authority
 
 	Address ID
 
