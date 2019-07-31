@@ -460,10 +460,10 @@ function Permission() {
     return new _jsXdr2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
 }
 function Action() {
-    return new _jsXdr2.default.Struct(["channelID", "nonce", "category"], [ID(), new _jsXdr2.default.UHyper(), ActionCategory()]);
+    return new _jsXdr2.default.Struct(["address", "channelID", "nonce", "category"], [ID(), ID(), new _jsXdr2.default.UHyper(), ActionCategory()]);
 }
 function Transaction() {
-    return new _jsXdr2.default.Struct(["signature", "signer", "address", "action"], [Signature(), Authority(), ID(), Action()]);
+    return new _jsXdr2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
 }
 function CommittedTransaction() {
     return new _jsXdr2.default.Struct(["transaction", "sequenceNumber", "receiptID", "currentTransactionRoot", "signatures"], [Transaction(), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(25, ID), Hash(), new _jsXdr2.default.VarArray(2147483647, Signature)]);

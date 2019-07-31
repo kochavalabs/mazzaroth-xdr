@@ -566,6 +566,8 @@ pub struct Permission {
 
 #[derive(Default, Debug, XDROut, XDRIn)]
 pub struct Action {
+    pub address: ID,
+
     pub channelID: ID,
 
     pub nonce: u64,
@@ -578,8 +580,6 @@ pub struct Transaction {
     pub signature: Signature,
 
     pub signer: Authority,
-
-    pub address: ID,
 
     pub action: Action,
 }

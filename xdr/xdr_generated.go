@@ -1689,6 +1689,8 @@ var (
 )
 
 type Action struct {
+	Address ID
+
 	ChannelID ID
 
 	Nonce uint64
@@ -1718,8 +1720,6 @@ type Transaction struct {
 	Signature Signature
 
 	Signer Authority
-
-	Address ID
 
 	Action Action
 }

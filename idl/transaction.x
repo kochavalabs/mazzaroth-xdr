@@ -58,6 +58,10 @@ namespace mazzaroth
   // Set by the client to form a transaction
   struct Action 
   {
+    // Byte array representing the id of the sender, this also happens
+    // to be the sender's account public key.
+    ID address;
+
     ID channelID;
 
     unsigned hyper nonce;
@@ -92,10 +96,6 @@ namespace mazzaroth
     // transaction is being signed by a key that the original account owner gave
     // permission to.
     Authority signer;
-
-    // Byte array representing the id of the sender, this also happens
-    // to be the sender's account public key.
-    ID address;
 
     // The action data for this transaction
     Action action;
