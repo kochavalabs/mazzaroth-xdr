@@ -19,6 +19,9 @@ pub struct Account {
     pub name: String,
 
     pub nonce: u64,
+
+    #[array(var = 2147483647)]
+    pub permissionedKeys: Vec<ID>,
 }
 
 // End struct section
@@ -555,7 +558,16 @@ pub struct Update {
 }
 
 #[derive(Default, Debug, XDROut, XDRIn)]
+pub struct Permission {
+    pub key: ID,
+
+    pub action: PermissionAction,
+}
+
+#[derive(Default, Debug, XDROut, XDRIn)]
 pub struct Action {
+    pub address: ID,
+
     pub channelID: ID,
 
     pub nonce: u64,
@@ -567,7 +579,7 @@ pub struct Action {
 pub struct Transaction {
     pub signature: Signature,
 
-    pub address: ID,
+    pub signer: Authority,
 
     pub action: Action,
 }
@@ -601,15 +613,40 @@ pub struct Input {
 // End struct section
 
 #[derive(Debug, XDROut, XDRIn)]
+pub enum PermissionAction {
+    REVOKE = 0,
+    GRANT = 1,
+}
+
+impl Default for PermissionAction {
+    fn default() -> Self {
+        PermissionAction::REVOKE
+    }
+}
+
+#[derive(Debug, XDROut, XDRIn)]
 pub enum ActionCategoryType {
     NONE = 0,
     CALL = 1,
     UPDATE = 2,
+    PERMISSION = 3,
 }
 
 impl Default for ActionCategoryType {
     fn default() -> Self {
         ActionCategoryType::NONE
+    }
+}
+
+#[derive(Debug, XDROut, XDRIn)]
+pub enum AuthorityType {
+    NONE = 0,
+    PERMISSIONED = 1,
+}
+
+impl Default for AuthorityType {
+    fn default() -> Self {
+        AuthorityType::NONE
     }
 }
 
@@ -635,11 +672,26 @@ pub enum ActionCategory {
     CALL(Call),
 
     UPDATE(Update),
+
+    PERMISSION(Permission),
 }
 
 impl Default for ActionCategory {
     fn default() -> Self {
         ActionCategory::NONE(())
+    }
+}
+
+#[derive(Debug, XDROut, XDRIn)]
+pub enum Authority {
+    NONE(()),
+
+    PERMISSIONED(ID),
+}
+
+impl Default for Authority {
+    fn default() -> Self {
+        Authority::NONE(())
     }
 }
 // End union section

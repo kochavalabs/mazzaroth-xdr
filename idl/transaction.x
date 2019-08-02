@@ -21,11 +21,25 @@ namespace mazzaroth
     opaque contract<>;
   };
 
+  enum PermissionAction
+  {
+    REVOKE = 0,
+    GRANT = 1,
+  };
+
+  struct Permission
+  {
+    ID key;
+
+    PermissionAction action;
+  };
+
   enum ActionCategoryType
   {
     NONE = 0,
     CALL = 1,
-    UPDATE = 2
+    UPDATE = 2,
+    PERMISSION = 3
   };
 
   union ActionCategory switch (ActionCategoryType Type)
@@ -36,18 +50,39 @@ namespace mazzaroth
       Call call;
     case UPDATE:
       Update update;
+    case PERMISSION:
+      Permission permission;
   };
 
   // The Action data of a transaction
   // Set by the client to form a transaction
   struct Action 
   {
+    // Byte array representing the id of the sender, this also happens
+    // to be the sender's account public key.
+    ID address;
+
     ID channelID;
 
     unsigned hyper nonce;
 
     ActionCategory category;
 
+  };
+
+  enum AuthorityType
+  {
+    NONE = 0,
+
+    PERMISSIONED = 1,
+  };
+
+  union Authority switch (AuthorityType Type)
+  {
+    case NONE:
+      void;
+    case PERMISSIONED:
+      ID origin;
   };
 
   // A transaction that calls a function on a user defined contract.
@@ -57,9 +92,10 @@ namespace mazzaroth
     // sender's private key.
     Signature signature;
 
-    // Byte array representing the id of the sender, this also happens
-    // to be the sender's account public key.
-    ID address;
+    // Authority of the signer of the transaction. This will indicate if this
+    // transaction is being signed by a key that the original account owner gave
+    // permission to.
+    Authority signer;
 
     // The action data for this transaction
     Action action;

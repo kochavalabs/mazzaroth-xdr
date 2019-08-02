@@ -47,13 +47,17 @@ exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
 exports.Call = Call;
 exports.Update = Update;
+exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
 exports.CommittedTransaction = CommittedTransaction;
 exports.Input = Input;
+exports.PermissionAction = PermissionAction;
 exports.ActionCategoryType = ActionCategoryType;
+exports.AuthorityType = AuthorityType;
 exports.InputType = InputType;
 exports.ActionCategory = ActionCategory;
+exports.Authority = Authority;
 
 var _jsXdr = require("js-xdr");
 
@@ -68,7 +72,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Start struct section
 function Account() {
-    return new _jsXdr2.default.Struct(["name", "nonce"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.UHyper()]);
+    return new _jsXdr2.default.Struct(["name", "nonce", "permissionedKeys"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(2147483647, ID)]);
 }
 
 // End struct section
@@ -452,11 +456,14 @@ function Call() {
 function Update() {
     return new _jsXdr2.default.Struct(["contract"], [new _jsXdr2.default.VarOpaque(2147483647)]);
 }
+function Permission() {
+    return new _jsXdr2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
+}
 function Action() {
-    return new _jsXdr2.default.Struct(["channelID", "nonce", "category"], [ID(), new _jsXdr2.default.UHyper(), ActionCategory()]);
+    return new _jsXdr2.default.Struct(["address", "channelID", "nonce", "category"], [ID(), ID(), new _jsXdr2.default.UHyper(), ActionCategory()]);
 }
 function Transaction() {
-    return new _jsXdr2.default.Struct(["signature", "address", "action"], [Signature(), ID(), Action()]);
+    return new _jsXdr2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
 }
 function CommittedTransaction() {
     return new _jsXdr2.default.Struct(["transaction", "sequenceNumber", "receiptID", "currentTransactionRoot", "signatures"], [Transaction(), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(25, ID), Hash(), new _jsXdr2.default.VarArray(2147483647, Signature)]);
@@ -469,11 +476,28 @@ function Input() {
 
 // Start enum section
 
+function PermissionAction() {
+    return new _jsXdr2.default.Enum({
+        0: "REVOKE",
+        1: "GRANT"
+
+    });
+}
+
 function ActionCategoryType() {
     return new _jsXdr2.default.Enum({
         0: "NONE",
         1: "CALL",
-        2: "UPDATE"
+        2: "UPDATE",
+        3: "PERMISSION"
+
+    });
+}
+
+function AuthorityType() {
+    return new _jsXdr2.default.Enum({
+        0: "NONE",
+        1: "PERMISSIONED"
 
     });
 }
@@ -500,7 +524,19 @@ function ActionCategory() {
 
         "CALL": Call(),
 
-        "UPDATE": Update()
+        "UPDATE": Update(),
+
+        "PERMISSION": Permission()
+
+    });
+}
+
+function Authority() {
+    return new _jsXdr2.default.Union(AuthorityType(), {
+
+        "NONE": new _jsXdr2.default.Void(),
+
+        "PERMISSIONED": ID()
 
     });
 }
