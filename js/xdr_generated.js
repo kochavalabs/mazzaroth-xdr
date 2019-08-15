@@ -72,7 +72,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Start struct section
 function Account() {
-    return new _jsXdr2.default.Struct(["name", "nonce", "permissionedKeys"], [new _jsXdr2.default.Str(0), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(2147483647, ID)]);
+    return new _jsXdr2.default.Struct(["name", "nonce", "permissionedKeys"], [new _jsXdr2.default.Str('', 0), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(2147483647, ID)]);
 }
 
 // End struct section
@@ -98,7 +98,7 @@ function Block() {
     return new _jsXdr2.default.Struct(["header", "transactions"], [BlockHeader(), new _jsXdr2.default.VarArray(2147483647, Transaction)]);
 }
 function BlockHeader() {
-    return new _jsXdr2.default.Struct(["timestamp", "blockHeight", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _jsXdr2.default.Str(256), new _jsXdr2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
+    return new _jsXdr2.default.Struct(["timestamp", "blockHeight", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _jsXdr2.default.Str('', 256), new _jsXdr2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
 }
 
 // End struct section
@@ -223,7 +223,7 @@ function ContractMetadata() {
 
 // Start struct section
 function Event() {
-    return new _jsXdr2.default.Struct(["key", "parameters"], [new _jsXdr2.default.Str(256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+    return new _jsXdr2.default.Struct(["key", "parameters"], [new _jsXdr2.default.Str('', 256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
 }
 
 // End struct section
@@ -246,7 +246,7 @@ function Event() {
 
 // Start struct section
 function ExecutionPlan() {
-    return new _jsXdr2.default.Struct(["host", "channelID", "calls"], [new _jsXdr2.default.Str(256), ID(), new _jsXdr2.default.VarArray(100, Call)]);
+    return new _jsXdr2.default.Struct(["host", "channelID", "calls"], [new _jsXdr2.default.Str('', 256), ID(), new _jsXdr2.default.VarArray(100, Call)]);
 }
 
 // End struct section
@@ -297,7 +297,7 @@ function ReceiptStatus() {
 // Start typedef section
 
 function StatusInfo() {
-    return new _jsXdr2.default.Str(256);
+    return new _jsXdr2.default.Str('', 256);
 }
 // End typedef section
 
@@ -451,7 +451,7 @@ function Identifier() {
 
 // Start struct section
 function Call() {
-    return new _jsXdr2.default.Struct(["function", "parameters"], [new _jsXdr2.default.Str(256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+    return new _jsXdr2.default.Struct(["function", "parameters"], [new _jsXdr2.default.Str('', 256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
 }
 function Update() {
     return new _jsXdr2.default.Struct(["contract"], [new _jsXdr2.default.VarOpaque(2147483647)]);
@@ -469,7 +469,7 @@ function CommittedTransaction() {
     return new _jsXdr2.default.Struct(["transaction", "sequenceNumber", "receiptID", "currentTransactionRoot", "signatures"], [Transaction(), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(25, ID), Hash(), new _jsXdr2.default.VarArray(2147483647, Signature)]);
 }
 function Input() {
-    return new _jsXdr2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _jsXdr2.default.Str(256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+    return new _jsXdr2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _jsXdr2.default.Str('', 256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
 }
 
 // End struct section
