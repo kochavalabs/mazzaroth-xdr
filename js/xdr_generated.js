@@ -466,7 +466,7 @@ function Transaction() {
     return new _jsXdr2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
 }
 function CommittedTransaction() {
-    return new _jsXdr2.default.Struct(["transaction", "sequenceNumber", "receiptID", "currentTransactionRoot", "signatures"], [Transaction(), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(25, ID), Hash(), new _jsXdr2.default.VarArray(2147483647, Signature)]);
+    return new _jsXdr2.default.Struct(["transaction", "sequenceNumber", "receiptID", "currentTransactionRoot", "signatures"], [Transaction(), new _jsXdr2.default.UHyper(), ID(), Hash(), new _jsXdr2.default.VarArray(2147483647, Signature)]);
 }
 function Input() {
     return new _jsXdr2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _jsXdr2.default.Str('', 256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);

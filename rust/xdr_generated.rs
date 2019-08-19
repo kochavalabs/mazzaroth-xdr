@@ -592,8 +592,7 @@ pub struct CommittedTransaction {
 
     pub sequenceNumber: u64,
 
-    #[array(var = 25)]
-    pub receiptID: Vec<ID>,
+    pub receiptID: ID,
 
     pub currentTransactionRoot: Hash,
 

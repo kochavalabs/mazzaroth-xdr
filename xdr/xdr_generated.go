@@ -1747,7 +1747,7 @@ type CommittedTransaction struct {
 
 	SequenceNumber uint64
 
-	ReceiptID []ID `xdrmaxsize:"25"`
+	ReceiptID ID
 
 	CurrentTransactionRoot Hash
 
