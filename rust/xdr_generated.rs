@@ -587,17 +587,24 @@ pub struct Transaction {
 }
 
 #[derive(Clone, Default, Debug, XDROut, XDRIn)]
+pub struct CommittedBatch {
+    pub sequenceNumber: u64,
+
+    #[array(var = 2147483647)]
+    pub transactions: Vec<CommittedTransaction>,
+
+    pub signer: ID,
+
+    pub signature: Signature,
+}
+
+#[derive(Clone, Default, Debug, XDROut, XDRIn)]
 pub struct CommittedTransaction {
     pub transaction: Transaction,
-
-    pub sequenceNumber: u64,
 
     pub receiptID: ID,
 
     pub currentTransactionRoot: Hash,
-
-    #[array(var = 2147483647)]
-    pub signatures: Vec<Signature>,
 }
 
 #[derive(Clone, Default, Debug, XDROut, XDRIn)]

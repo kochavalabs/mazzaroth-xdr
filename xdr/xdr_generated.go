@@ -1742,16 +1742,40 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Transaction)(nil)
 )
 
+type CommittedBatch struct {
+	SequenceNumber uint64
+
+	Transactions []CommittedTransaction
+
+	Signer ID
+
+	Signature Signature
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s CommittedBatch) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *CommittedBatch) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*CommittedBatch)(nil)
+	_ encoding.BinaryUnmarshaler = (*CommittedBatch)(nil)
+)
+
 type CommittedTransaction struct {
 	Transaction Transaction
-
-	SequenceNumber uint64
 
 	ReceiptID ID
 
 	CurrentTransactionRoot Hash
-
-	Signatures []Signature
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
