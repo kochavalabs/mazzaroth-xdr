@@ -50,7 +50,6 @@ exports.Update = Update;
 exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
-exports.CommittedBatch = CommittedBatch;
 exports.CommittedTransaction = CommittedTransaction;
 exports.Input = Input;
 exports.PermissionAction = PermissionAction;
@@ -466,11 +465,8 @@ function Action() {
 function Transaction() {
     return new _jsXdr2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
 }
-function CommittedBatch() {
-    return new _jsXdr2.default.Struct(["sequenceNumber", "transactions", "signer", "signature"], [new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(2147483647, CommittedTransaction), ID(), Signature()]);
-}
 function CommittedTransaction() {
-    return new _jsXdr2.default.Struct(["transaction", "receiptID", "currentTransactionRoot"], [Transaction(), ID(), Hash()]);
+    return new _jsXdr2.default.Struct(["sequenceNumber", "transaction", "receiptID", "currentTransactionRoot", "signer", "signature"], [new _jsXdr2.default.UHyper(), Transaction(), ID(), Hash(), ID(), Signature()]);
 }
 function Input() {
     return new _jsXdr2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _jsXdr2.default.Str('', 256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);

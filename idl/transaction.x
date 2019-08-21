@@ -101,27 +101,13 @@ namespace mazzaroth
     Action action;
   };
 
-  // A batch of 1 or more committed transactions processed by Consensus
-  // Signed by one of the Consensus nodes
-  struct CommittedBatch
-  {
-    // The execution ordering of the transaction batch, provided by consensus
-    unsigned hyper sequenceNumber;
-
-    // List of committed transactions in this batch
-    CommittedTransaction transactions<>;
-
-    // ID of consensus node that signed this batch
-    ID signer;
-
-    // Signature
-    Signature signature;
-  }
-
   // A transaction that has been executed, contains a receipt, and is
   // ready to be stored in the ledger.
   struct CommittedTransaction
   {
+    // The execution ordering of the transaction batch, provided by consensus
+    unsigned hyper sequenceNumber;
+
     // The transaction itself
     Transaction transaction;
 
@@ -130,6 +116,12 @@ namespace mazzaroth
 
     // The transaction merkle root after adding this transaction to the merkle tree, for validation
     Hash currentTransactionRoot;
+
+    // ID of consensus node that signed this transaction
+    ID signer;
+
+    // Signature of consensus node
+    Signature signature;
   };
 
   // Input for execution in a user defined contract.
