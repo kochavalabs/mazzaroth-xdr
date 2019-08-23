@@ -3,10 +3,15 @@
 #[macro_use]
 extern crate ex_dee_derive;
 #[allow(unused_imports)]
-use ex_dee::de::{read_fixed_array, read_var_array, read_var_string, XDRIn};
+use ex_dee::de::{
+    read_fixed_array, read_fixed_opaque, read_var_array, read_var_opaque, read_var_string, XDRIn,
+};
 use ex_dee::error::Error;
 #[allow(unused_imports)]
-use ex_dee::ser::{write_fixed_array, write_var_array, write_var_string, XDROut};
+use ex_dee::ser::{
+    write_fixed_array, write_fixed_opaque, write_var_array, write_var_opaque, write_var_string,
+    XDROut,
+};
 
 // Namspace start mazzaroth
 
@@ -16,7 +21,7 @@ use ex_dee::ser::{write_fixed_array, write_var_array, write_var_string, XDROut};
 
 // Start struct section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Account {
     pub name: String,
 
@@ -41,7 +46,7 @@ pub struct Account {
 
 // Start struct section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Block {
     pub header: BlockHeader,
 
@@ -49,7 +54,7 @@ pub struct Block {
     pub transactions: Vec<Transaction>,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct BlockHeader {
     #[array(var = 256)]
     pub timestamp: String,
@@ -82,7 +87,7 @@ pub struct BlockHeader {
 
 // Start struct section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ChannelConfig {
     pub owner: ID,
 
@@ -92,14 +97,14 @@ pub struct ChannelConfig {
     pub consensusConfig: ConsensusConfig,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct PBFTConfig {
     pub checkpointPeriod: u64,
 }
 
 // End struct section
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ConsensusConfigType {
     NONE = 0,
     PBFT = 1,
@@ -112,7 +117,7 @@ impl Default for ConsensusConfigType {
 }
 // Start union section
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ConsensusConfig {
     NONE(()),
 
@@ -131,22 +136,22 @@ impl Default for ConsensusConfig {
 
 // Start typedef section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Signature {
     #[array(fixed = 64)]
     pub t: Vec<u8>,
 }
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ID {
     #[array(fixed = 32)]
     pub t: Vec<u8>,
 }
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Hash {
     #[array(fixed = 32)]
     pub t: Vec<u8>,
 }
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Parameter {
     #[array(var = 2147483647)]
     pub t: Vec<u8>,
@@ -171,7 +176,7 @@ pub struct Parameter {
 
 // Start struct section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ContractMetadata {
     pub hash: Hash,
 
@@ -193,7 +198,7 @@ pub struct ContractMetadata {
 
 // Start struct section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Event {
     #[array(var = 256)]
     pub key: String,
@@ -217,7 +222,7 @@ pub struct Event {
 
 // Start struct section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ExecutionPlan {
     #[array(var = 256)]
     pub host: String,
@@ -243,7 +248,7 @@ pub struct ExecutionPlan {
 
 // Start struct section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Receipt {
     pub status: ReceiptStatus,
 
@@ -258,7 +263,7 @@ pub struct Receipt {
 
 // End struct section
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ReceiptStatus {
     FAILURE = 0,
     SUCCESS = 1,
@@ -278,7 +283,7 @@ impl Default for ReceiptStatus {
 
 // Start typedef section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct StatusInfo {
     #[array(var = 256)]
     pub t: String,
@@ -288,24 +293,24 @@ pub struct StatusInfo {
 
 // Start struct section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct StateStatus {
     pub previousBlock: u64,
 
     pub transactionCount: u64,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct BlockLookupRequest {
     pub ID: Identifier,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct BlockHeaderLookupRequest {
     pub ID: Identifier,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct BlockLookupResponse {
     pub block: Block,
 
@@ -316,7 +321,7 @@ pub struct BlockLookupResponse {
     pub statusInfo: StatusInfo,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct BlockHeaderLookupResponse {
     pub header: BlockHeader,
 
@@ -327,12 +332,12 @@ pub struct BlockHeaderLookupResponse {
     pub statusInfo: StatusInfo,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct TransactionLookupRequest {
     pub transactionID: ID,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct TransactionLookupResponse {
     pub transaction: Transaction,
 
@@ -343,12 +348,12 @@ pub struct TransactionLookupResponse {
     pub statusInfo: StatusInfo,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct TransactionSubmitRequest {
     pub transaction: Transaction,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct TransactionSubmitResponse {
     pub transactionID: ID,
 
@@ -357,12 +362,12 @@ pub struct TransactionSubmitResponse {
     pub statusInfo: StatusInfo,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ReadonlyRequest {
     pub call: Call,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ReadonlyResponse {
     #[array(var = 2147483647)]
     pub result: Vec<u8>,
@@ -374,12 +379,12 @@ pub struct ReadonlyResponse {
     pub statusInfo: StatusInfo,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ReceiptLookupRequest {
     pub transactionID: ID,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ReceiptLookupResponse {
     pub receipt: Receipt,
 
@@ -390,12 +395,12 @@ pub struct ReceiptLookupResponse {
     pub statusInfo: StatusInfo,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct AccountNonceLookupRequest {
     pub account: ID,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct AccountNonceLookupResponse {
     pub nonce: u64,
 
@@ -406,12 +411,12 @@ pub struct AccountNonceLookupResponse {
     pub statusInfo: StatusInfo,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct AccountInfoLookupRequest {
     pub account: ID,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct AccountInfoLookupResponse {
     pub accountInfo: Account,
 
@@ -424,7 +429,7 @@ pub struct AccountInfoLookupResponse {
 
 // End struct section
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum IdentifierType {
     NONE = 0,
     NUMBER = 1,
@@ -437,7 +442,7 @@ impl Default for IdentifierType {
     }
 }
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum BlockStatus {
     UNKNOWN = 0,
     CREATED = 1,
@@ -451,7 +456,7 @@ impl Default for BlockStatus {
     }
 }
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum TransactionStatus {
     UNKNOWN = 0,
     ACCEPTED = 1,
@@ -466,7 +471,7 @@ impl Default for TransactionStatus {
     }
 }
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ReadonlyStatus {
     UNKNOWN = 0,
     SUCCESS = 1,
@@ -479,7 +484,7 @@ impl Default for ReadonlyStatus {
     }
 }
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ReceiptLookupStatus {
     UNKNOWN = 0,
     FOUND = 1,
@@ -492,7 +497,7 @@ impl Default for ReceiptLookupStatus {
     }
 }
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum NonceLookupStatus {
     UNKNOWN = 0,
     FOUND = 1,
@@ -505,7 +510,7 @@ impl Default for NonceLookupStatus {
     }
 }
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum InfoLookupStatus {
     UNKNOWN = 0,
     FOUND = 1,
@@ -519,7 +524,7 @@ impl Default for InfoLookupStatus {
 }
 // Start union section
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum Identifier {
     NONE(()),
 
@@ -544,7 +549,7 @@ impl Default for Identifier {
 
 // Start struct section
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Call {
     #[array(var = 256)]
     pub function: String,
@@ -553,20 +558,20 @@ pub struct Call {
     pub parameters: Vec<Parameter>,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Update {
     #[array(var = 2147483647)]
     pub contract: Vec<u8>,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Permission {
     pub key: ID,
 
     pub action: PermissionAction,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Action {
     pub address: ID,
 
@@ -577,7 +582,7 @@ pub struct Action {
     pub category: ActionCategory,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Transaction {
     pub signature: Signature,
 
@@ -586,7 +591,7 @@ pub struct Transaction {
     pub action: Action,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct CommittedTransaction {
     pub transaction: Transaction,
 
@@ -601,7 +606,7 @@ pub struct CommittedTransaction {
     pub signatures: Vec<Signature>,
 }
 
-#[derive(Clone, Default, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Input {
     pub inputType: InputType,
 
@@ -614,7 +619,7 @@ pub struct Input {
 
 // End struct section
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum PermissionAction {
     REVOKE = 0,
     GRANT = 1,
@@ -626,7 +631,7 @@ impl Default for PermissionAction {
     }
 }
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ActionCategoryType {
     NONE = 0,
     CALL = 1,
@@ -640,7 +645,7 @@ impl Default for ActionCategoryType {
     }
 }
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum AuthorityType {
     NONE = 0,
     PERMISSIONED = 1,
@@ -652,7 +657,7 @@ impl Default for AuthorityType {
     }
 }
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum InputType {
     NONE = 0,
     READONLY = 1,
@@ -667,7 +672,7 @@ impl Default for InputType {
 }
 // Start union section
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ActionCategory {
     NONE(()),
 
@@ -684,7 +689,7 @@ impl Default for ActionCategory {
     }
 }
 
-#[derive(Clone, Debug, XDROut, XDRIn)]
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum Authority {
     NONE(()),
 
