@@ -465,7 +465,7 @@ function StructColumn() {
     return new _jsXdr2.default.Struct(["name", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.VarArray(40, Column)]);
 }
 function ArrayColumn() {
-    return new _jsXdr2.default.Struct(["name", "fixed", "length", "column"], [new _jsXdr2.default.Str('', 40), boolean(), new _jsXdr2.default.UInt(), Column()]);
+    return new _jsXdr2.default.Struct(["name", "fixed", "length", "column"], [new _jsXdr2.default.Str('', 40), boolean(), new _jsXdr2.default.UInt(), new _jsXdr2.default.FixedArray(1, Column)]);
 }
 function Table() {
     return new _jsXdr2.default.Struct(["name", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.VarArray(40, Column)]);

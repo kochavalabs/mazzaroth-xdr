@@ -46,7 +46,7 @@ namespace mazzaroth
 
     unsigned int length;  
 
-    Column column;
+    Column column[1];
   };
   
   union Column switch (ColumnType Type)

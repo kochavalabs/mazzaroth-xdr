@@ -575,7 +575,8 @@ pub struct ArrayColumn {
 
     pub length: u32,
 
-    pub column: Column,
+    #[array(fixed = 1)]
+    pub column: Vec<Column>,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]

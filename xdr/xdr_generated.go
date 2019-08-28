@@ -1673,7 +1673,7 @@ type ArrayColumn struct {
 
 	Length uint32
 
-	Column Column
+	Column [1]Column
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
