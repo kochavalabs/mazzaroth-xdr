@@ -550,6 +550,110 @@ impl Default for Identifier {
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct BasicColumn {
+    #[array(var = 40)]
+    pub name: String,
+
+    pub typ: BasicType,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct StructColumn {
+    #[array(var = 40)]
+    pub name: String,
+
+    #[array(var = 40)]
+    pub columns: Vec<Column>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ArrayColumn {
+    #[array(var = 40)]
+    pub name: String,
+
+    pub fixed: bool,
+
+    pub length: u32,
+
+    pub column: Column,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Table {
+    #[array(var = 40)]
+    pub name: String,
+
+    #[array(var = 40)]
+    pub columns: Vec<Column>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Schema {
+    #[array(var = 40)]
+    pub tables: Vec<Table>,
+}
+
+// End struct section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum BasicType {
+    BOOLEAN = 0,
+    STRING = 1,
+    OPAQUE = 2,
+    INT = 3,
+    UNSIGNED_INT = 4,
+    HYPER = 5,
+    UNSIGNED_HYPER = 6,
+    FLOAT = 7,
+    DOUBLE = 8,
+}
+
+impl Default for BasicType {
+    fn default() -> Self {
+        BasicType::BOOLEAN
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ColumnType {
+    BASIC = 0,
+    STRUCT = 1,
+    ARRAY = 2,
+}
+
+impl Default for ColumnType {
+    fn default() -> Self {
+        ColumnType::BASIC
+    }
+}
+// Start union section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum Column {
+    BASIC(BasicColumn),
+
+    ARRAY(ArrayColumn),
+
+    STRUCT(StructColumn),
+}
+
+impl Default for Column {
+    fn default() -> Self {
+        Column::BASIC(BasicColumn::default())
+    }
+}
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Call {
     #[array(var = 256)]
     pub function: String,

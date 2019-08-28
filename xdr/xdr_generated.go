@@ -1618,6 +1618,431 @@ var (
 // End typedef section
 
 // Start struct section
+type BasicColumn struct {
+	Name string `xdrmaxsize:"40"`
+
+	Typ BasicType
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s BasicColumn) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *BasicColumn) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*BasicColumn)(nil)
+	_ encoding.BinaryUnmarshaler = (*BasicColumn)(nil)
+)
+
+type StructColumn struct {
+	Name string `xdrmaxsize:"40"`
+
+	Columns []Column `xdrmaxsize:"40"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s StructColumn) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *StructColumn) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*StructColumn)(nil)
+	_ encoding.BinaryUnmarshaler = (*StructColumn)(nil)
+)
+
+type ArrayColumn struct {
+	Name string `xdrmaxsize:"40"`
+
+	Fixed bool
+
+	Length uint32
+
+	Column Column
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ArrayColumn) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ArrayColumn) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ArrayColumn)(nil)
+	_ encoding.BinaryUnmarshaler = (*ArrayColumn)(nil)
+)
+
+type Table struct {
+	Name string `xdrmaxsize:"40"`
+
+	Columns []Column `xdrmaxsize:"40"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Table) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Table) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Table)(nil)
+	_ encoding.BinaryUnmarshaler = (*Table)(nil)
+)
+
+type Schema struct {
+	Tables []Table `xdrmaxsize:"40"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Schema) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Schema) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Schema)(nil)
+	_ encoding.BinaryUnmarshaler = (*Schema)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+type BasicType int32
+
+const (
+	BasicTypeBOOLEAN BasicType = 0
+
+	BasicTypeSTRING BasicType = 1
+
+	BasicTypeOPAQUE BasicType = 2
+
+	BasicTypeINT BasicType = 3
+
+	BasicTypeUNSIGNED_INT BasicType = 4
+
+	BasicTypeHYPER BasicType = 5
+
+	BasicTypeUNSIGNED_HYPER BasicType = 6
+
+	BasicTypeFLOAT BasicType = 7
+
+	BasicTypeDOUBLE BasicType = 8
+)
+
+var BasicTypeMap = map[int32]string{
+
+	0: "BasicTypeBOOLEAN",
+
+	1: "BasicTypeSTRING",
+
+	2: "BasicTypeOPAQUE",
+
+	3: "BasicTypeINT",
+
+	4: "BasicTypeUNSIGNED_INT",
+
+	5: "BasicTypeHYPER",
+
+	6: "BasicTypeUNSIGNED_HYPER",
+
+	7: "BasicTypeFLOAT",
+
+	8: "BasicTypeDOUBLE",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for BasicType
+func (s BasicType) ValidEnum(v int32) bool {
+	_, ok := BasicTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s BasicType) String() string {
+	name, _ := BasicTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s BasicType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *BasicType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*BasicType)(nil)
+	_ encoding.BinaryUnmarshaler = (*BasicType)(nil)
+)
+
+type ColumnType int32
+
+const (
+	ColumnTypeBASIC ColumnType = 0
+
+	ColumnTypeSTRUCT ColumnType = 1
+
+	ColumnTypeARRAY ColumnType = 2
+)
+
+var ColumnTypeMap = map[int32]string{
+
+	0: "ColumnTypeBASIC",
+
+	1: "ColumnTypeSTRUCT",
+
+	2: "ColumnTypeARRAY",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ColumnType
+func (s ColumnType) ValidEnum(v int32) bool {
+	_, ok := ColumnTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s ColumnType) String() string {
+	name, _ := ColumnTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ColumnType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ColumnType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ColumnType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ColumnType)(nil)
+)
+
+// End enum section
+//
+// Start union section
+
+type Column struct {
+	Type ColumnType
+
+	Basic *BasicColumn
+
+	Array *ArrayColumn
+
+	Struc *StructColumn
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u Column) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of Column
+func (u Column) ArmForSwitch(sw int32) (string, bool) {
+	switch ColumnType(sw) {
+
+	case ColumnTypeBASIC:
+		return "Basic", true
+
+	case ColumnTypeARRAY:
+		return "Array", true
+
+	case ColumnTypeSTRUCT:
+		return "Struc", true
+	}
+	return "-", false
+}
+
+// NewColumn creates a new  Column.
+func NewColumn(aType ColumnType, value interface{}) (result Column, err error) {
+	result.Type = aType
+	switch aType {
+
+	case ColumnTypeBASIC:
+
+		tv, ok := value.(BasicColumn)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Basic = &tv
+
+	case ColumnTypeARRAY:
+
+		tv, ok := value.(ArrayColumn)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Array = &tv
+
+	case ColumnTypeSTRUCT:
+
+		tv, ok := value.(StructColumn)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Struc = &tv
+
+	}
+	return
+}
+
+// MustBasic retrieves the Basic value from the union,
+// panicing if the value is not set.
+func (u Column) MustBasic() BasicColumn {
+	val, ok := u.GetBasic()
+
+	if !ok {
+		panic("arm Basic is not set")
+	}
+
+	return val
+}
+
+// GetBasic retrieves the Basic value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Column) GetBasic() (result BasicColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Basic" {
+		result = *u.Basic
+		ok = true
+	}
+
+	return
+}
+
+// MustArray retrieves the Array value from the union,
+// panicing if the value is not set.
+func (u Column) MustArray() ArrayColumn {
+	val, ok := u.GetArray()
+
+	if !ok {
+		panic("arm Array is not set")
+	}
+
+	return val
+}
+
+// GetArray retrieves the Array value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Column) GetArray() (result ArrayColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Array" {
+		result = *u.Array
+		ok = true
+	}
+
+	return
+}
+
+// MustStruc retrieves the Struc value from the union,
+// panicing if the value is not set.
+func (u Column) MustStruc() StructColumn {
+	val, ok := u.GetStruc()
+
+	if !ok {
+		panic("arm Struc is not set")
+	}
+
+	return val
+}
+
+// GetStruc retrieves the Struc value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Column) GetStruc() (result StructColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Struc" {
+		result = *u.Struc
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Column) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Column) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Column)(nil)
+	_ encoding.BinaryUnmarshaler = (*Column)(nil)
+)
+
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
 type Call struct {
 	Function string `xdrmaxsize:"256"`
 
