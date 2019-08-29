@@ -1643,7 +1643,7 @@ var (
 )
 
 type TypedefColumn struct {
-	Parent [1]Column
+	Name string `xdrmaxsize:"40"`
 
 	Child [1]Column
 }

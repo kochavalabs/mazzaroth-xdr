@@ -559,8 +559,8 @@ pub struct BasicColumn {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct TypedefColumn {
-    #[array(fixed = 1)]
-    pub parent: Vec<Column>,
+    #[array(var = 40)]
+    pub name: String,
 
     #[array(fixed = 1)]
     pub child: Vec<Column>,

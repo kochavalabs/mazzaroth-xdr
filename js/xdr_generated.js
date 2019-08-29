@@ -463,7 +463,7 @@ function BasicColumn() {
     return new _jsXdr2.default.Struct(["name", "typ"], [new _jsXdr2.default.Str('', 40), BasicType()]);
 }
 function TypedefColumn() {
-    return new _jsXdr2.default.Struct(["parent", "child"], [new _jsXdr2.default.FixedArray(1, Column), new _jsXdr2.default.FixedArray(1, Column)]);
+    return new _jsXdr2.default.Struct(["name", "child"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.FixedArray(1, Column)]);
 }
 function StructColumn() {
     return new _jsXdr2.default.Struct(["name", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.VarArray(40, Column)]);
