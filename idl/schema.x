@@ -30,13 +30,19 @@ namespace mazzaroth
     BasicType typ;
   };
 
+  struct TypedefColumn
+  {
+    Column parent[1];
+
+    Column child[1];
+  };
+
   struct StructColumn
   {
     string name<40>;
 
     Column columns<40>;
   };
-
 
   struct ArrayColumn
   {
@@ -57,6 +63,8 @@ namespace mazzaroth
       ArrayColumn array;
     case STRUCT:
       StructColumn struc;
+    case TYPEDEF:
+      TypedefColumn typ;
   };
 
   struct Table

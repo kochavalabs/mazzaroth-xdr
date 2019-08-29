@@ -558,6 +558,15 @@ pub struct BasicColumn {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct TypedefColumn {
+    #[array(fixed = 1)]
+    pub parent: Vec<Column>,
+
+    #[array(fixed = 1)]
+    pub child: Vec<Column>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct StructColumn {
     #[array(var = 40)]
     pub name: String,
@@ -636,6 +645,8 @@ pub enum Column {
     ARRAY(ArrayColumn),
 
     STRUCT(StructColumn),
+
+    TYPEDEF(TypedefColumn),
 }
 
 impl Default for Column {

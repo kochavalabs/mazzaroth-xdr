@@ -46,6 +46,7 @@ exports.NonceLookupStatus = NonceLookupStatus;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
 exports.BasicColumn = BasicColumn;
+exports.TypedefColumn = TypedefColumn;
 exports.StructColumn = StructColumn;
 exports.ArrayColumn = ArrayColumn;
 exports.Table = Table;
@@ -461,6 +462,9 @@ function Identifier() {
 function BasicColumn() {
     return new _jsXdr2.default.Struct(["name", "typ"], [new _jsXdr2.default.Str('', 40), BasicType()]);
 }
+function TypedefColumn() {
+    return new _jsXdr2.default.Struct(["parent", "child"], [new _jsXdr2.default.FixedArray(1, Column), new _jsXdr2.default.FixedArray(1, Column)]);
+}
 function StructColumn() {
     return new _jsXdr2.default.Struct(["name", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.VarArray(40, Column)]);
 }
@@ -514,7 +518,9 @@ function Column() {
 
         "ARRAY": ArrayColumn(),
 
-        "STRUCT": StructColumn()
+        "STRUCT": StructColumn(),
+
+        "TYPEDEF": TypedefColumn()
 
     });
 }

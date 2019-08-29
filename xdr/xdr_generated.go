@@ -1642,6 +1642,30 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BasicColumn)(nil)
 )
 
+type TypedefColumn struct {
+	Parent [1]Column
+
+	Child [1]Column
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s TypedefColumn) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *TypedefColumn) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*TypedefColumn)(nil)
+	_ encoding.BinaryUnmarshaler = (*TypedefColumn)(nil)
+)
+
 type StructColumn struct {
 	Name string `xdrmaxsize:"40"`
 
@@ -1880,6 +1904,8 @@ type Column struct {
 	Array *ArrayColumn
 
 	Struc *StructColumn
+
+	Typ *TypedefColumn
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -1901,6 +1927,9 @@ func (u Column) ArmForSwitch(sw int32) (string, bool) {
 
 	case ColumnTypeSTRUCT:
 		return "Struc", true
+
+	case ColumnTypeTYPEDEF:
+		return "Typ", true
 	}
 	return "-", false
 }
@@ -1936,6 +1965,15 @@ func NewColumn(aType ColumnType, value interface{}) (result Column, err error) {
 			return
 		}
 		result.Struc = &tv
+
+	case ColumnTypeTYPEDEF:
+
+		tv, ok := value.(TypedefColumn)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Typ = &tv
 
 	}
 	return
@@ -2010,6 +2048,31 @@ func (u Column) GetStruc() (result StructColumn, ok bool) {
 
 	if armName == "Struc" {
 		result = *u.Struc
+		ok = true
+	}
+
+	return
+}
+
+// MustTyp retrieves the Typ value from the union,
+// panicing if the value is not set.
+func (u Column) MustTyp() TypedefColumn {
+	val, ok := u.GetTyp()
+
+	if !ok {
+		panic("arm Typ is not set")
+	}
+
+	return val
+}
+
+// GetTyp retrieves the Typ value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Column) GetTyp() (result TypedefColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Typ" {
+		result = *u.Typ
 		ok = true
 	}
 
