@@ -32,7 +32,7 @@ namespace mazzaroth
 
   struct TypedefColumn
   {
-    Column parent[1];
+    string name<40>;
 
     Column child[1];
   };
