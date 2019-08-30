@@ -158,7 +158,9 @@ function ConsensusConfig() {
 
         "NONE": new _jsXdr2.default.Void(),
 
-        "PBFT": PBFTConfig()
+        "PBFT": () => {
+            return PBFTConfig();
+        }
 
     });
 }
@@ -443,9 +445,13 @@ function Identifier() {
 
         "NONE": new _jsXdr2.default.Void(),
 
-        "NUMBER": new _jsXdr2.default.UHyper(),
+        "NUMBER": () => {
+            return new _jsXdr2.default.UHyper();
+        },
 
-        "HASH": Hash()
+        "HASH": () => {
+            return Hash();
+        }
 
     });
 }
@@ -469,7 +475,7 @@ function StructColumn() {
     return new _jsXdr2.default.Struct(["name", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.VarArray(40, Column)]);
 }
 function ArrayColumn() {
-    return new _jsXdr2.default.Struct(["name", "fixed", "length", "column"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.Bool(), new _jsXdr2.default.UInt(), new _jsXdr2.default.FixedArray(1, Column)]);
+    return new _jsXdr2.default.Struct(["name", "fixed", "length", "column"], [new _jsXdr2.default.Str('', 40), boolean(), new _jsXdr2.default.UInt(), new _jsXdr2.default.FixedArray(1, Column)]);
 }
 function Table() {
     return new _jsXdr2.default.Struct(["name", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.VarArray(40, Column)]);
@@ -514,13 +520,21 @@ function ColumnType() {
 function Column() {
     return new _jsXdr2.default.Union(ColumnType(), {
 
-        "BASIC": BasicColumn(),
+        "BASIC": () => {
+            return BasicColumn();
+        },
 
-        "ARRAY": ArrayColumn(),
+        "ARRAY": () => {
+            return ArrayColumn();
+        },
 
-        "STRUCT": StructColumn(),
+        "STRUCT": () => {
+            return StructColumn();
+        },
 
-        "TYPEDEF": TypedefColumn()
+        "TYPEDEF": () => {
+            return TypedefColumn();
+        }
 
     });
 }
@@ -606,11 +620,17 @@ function ActionCategory() {
 
         "NONE": new _jsXdr2.default.Void(),
 
-        "CALL": Call(),
+        "CALL": () => {
+            return Call();
+        },
 
-        "UPDATE": Update(),
+        "UPDATE": () => {
+            return Update();
+        },
 
-        "PERMISSION": Permission()
+        "PERMISSION": () => {
+            return Permission();
+        }
 
     });
 }
@@ -620,7 +640,9 @@ function Authority() {
 
         "NONE": new _jsXdr2.default.Void(),
 
-        "PERMISSIONED": ID()
+        "PERMISSIONED": () => {
+            return ID();
+        }
 
     });
 }
