@@ -629,6 +629,7 @@ pub enum ColumnType {
     BASIC = 0,
     STRUCT = 1,
     ARRAY = 2,
+    TYPEDEF = 3,
 }
 
 impl Default for ColumnType {

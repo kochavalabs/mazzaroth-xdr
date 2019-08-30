@@ -20,7 +20,8 @@ namespace mazzaroth
   {
     BASIC = 0,
     STRUCT = 1,
-    ARRAY = 2
+    ARRAY = 2,
+    TYPEDEF = 3
   };
 
   struct BasicColumn

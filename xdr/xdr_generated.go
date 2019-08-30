@@ -1850,6 +1850,8 @@ const (
 	ColumnTypeSTRUCT ColumnType = 1
 
 	ColumnTypeARRAY ColumnType = 2
+
+	ColumnTypeTYPEDEF ColumnType = 3
 )
 
 var ColumnTypeMap = map[int32]string{
@@ -1859,6 +1861,8 @@ var ColumnTypeMap = map[int32]string{
 	1: "ColumnTypeSTRUCT",
 
 	2: "ColumnTypeARRAY",
+
+	3: "ColumnTypeTYPEDEF",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements

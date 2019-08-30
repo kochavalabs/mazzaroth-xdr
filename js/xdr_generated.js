@@ -507,7 +507,8 @@ function ColumnType() {
     return new _jsXdr2.default.Enum({
         0: "BASIC",
         1: "STRUCT",
-        2: "ARRAY"
+        2: "ARRAY",
+        3: "TYPEDEF"
 
     });
 }
