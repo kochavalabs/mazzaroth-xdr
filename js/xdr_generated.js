@@ -525,12 +525,12 @@ function Column() {
             return BasicColumn();
         },
 
-        "ARRAY": () => {
-            return ArrayColumn();
-        },
-
         "STRUCT": () => {
             return StructColumn();
+        },
+
+        "ARRAY": () => {
+            return ArrayColumn();
         },
 
         "TYPEDEF": () => {

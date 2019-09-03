@@ -643,9 +643,9 @@ impl Default for ColumnType {
 pub enum Column {
     BASIC(BasicColumn),
 
-    ARRAY(ArrayColumn),
-
     STRUCT(StructColumn),
+
+    ARRAY(ArrayColumn),
 
     TYPEDEF(TypedefColumn),
 }

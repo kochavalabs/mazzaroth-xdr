@@ -1905,9 +1905,9 @@ type Column struct {
 
 	Basic *BasicColumn
 
-	Array *ArrayColumn
-
 	Struc *StructColumn
+
+	Array *ArrayColumn
 
 	Typ *TypedefColumn
 }
@@ -1926,11 +1926,11 @@ func (u Column) ArmForSwitch(sw int32) (string, bool) {
 	case ColumnTypeBASIC:
 		return "Basic", true
 
-	case ColumnTypeARRAY:
-		return "Array", true
-
 	case ColumnTypeSTRUCT:
 		return "Struc", true
+
+	case ColumnTypeARRAY:
+		return "Array", true
 
 	case ColumnTypeTYPEDEF:
 		return "Typ", true
@@ -1952,15 +1952,6 @@ func NewColumn(aType ColumnType, value interface{}) (result Column, err error) {
 		}
 		result.Basic = &tv
 
-	case ColumnTypeARRAY:
-
-		tv, ok := value.(ArrayColumn)
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Array = &tv
-
 	case ColumnTypeSTRUCT:
 
 		tv, ok := value.(StructColumn)
@@ -1969,6 +1960,15 @@ func NewColumn(aType ColumnType, value interface{}) (result Column, err error) {
 			return
 		}
 		result.Struc = &tv
+
+	case ColumnTypeARRAY:
+
+		tv, ok := value.(ArrayColumn)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Array = &tv
 
 	case ColumnTypeTYPEDEF:
 
@@ -2008,31 +2008,6 @@ func (u Column) GetBasic() (result BasicColumn, ok bool) {
 	return
 }
 
-// MustArray retrieves the Array value from the union,
-// panicing if the value is not set.
-func (u Column) MustArray() ArrayColumn {
-	val, ok := u.GetArray()
-
-	if !ok {
-		panic("arm Array is not set")
-	}
-
-	return val
-}
-
-// GetArray retrieves the Array value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Column) GetArray() (result ArrayColumn, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Array" {
-		result = *u.Array
-		ok = true
-	}
-
-	return
-}
-
 // MustStruc retrieves the Struc value from the union,
 // panicing if the value is not set.
 func (u Column) MustStruc() StructColumn {
@@ -2052,6 +2027,31 @@ func (u Column) GetStruc() (result StructColumn, ok bool) {
 
 	if armName == "Struc" {
 		result = *u.Struc
+		ok = true
+	}
+
+	return
+}
+
+// MustArray retrieves the Array value from the union,
+// panicing if the value is not set.
+func (u Column) MustArray() ArrayColumn {
+	val, ok := u.GetArray()
+
+	if !ok {
+		panic("arm Array is not set")
+	}
+
+	return val
+}
+
+// GetArray retrieves the Array value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Column) GetArray() (result ArrayColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Array" {
+		result = *u.Array
 		ok = true
 	}
 
