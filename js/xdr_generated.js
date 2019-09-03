@@ -156,7 +156,9 @@ function ConsensusConfigType() {
 function ConsensusConfig() {
     return new _jsXdr2.default.Union(ConsensusConfigType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _jsXdr2.default.Void();
+        },
 
         "PBFT": () => {
             return PBFTConfig();
@@ -443,7 +445,9 @@ function InfoLookupStatus() {
 function Identifier() {
     return new _jsXdr2.default.Union(IdentifierType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _jsXdr2.default.Void();
+        },
 
         "NUMBER": () => {
             return new _jsXdr2.default.UHyper();
@@ -475,7 +479,7 @@ function StructColumn() {
     return new _jsXdr2.default.Struct(["name", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.VarArray(40, Column)]);
 }
 function ArrayColumn() {
-    return new _jsXdr2.default.Struct(["name", "fixed", "length", "column"], [new _jsXdr2.default.Str('', 40), boolean(), new _jsXdr2.default.UInt(), new _jsXdr2.default.FixedArray(1, Column)]);
+    return new _jsXdr2.default.Struct(["name", "fixed", "length", "column"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.Bool(), new _jsXdr2.default.UInt(), new _jsXdr2.default.FixedArray(1, Column)]);
 }
 function Table() {
     return new _jsXdr2.default.Struct(["name", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.VarArray(40, Column)]);
@@ -619,7 +623,9 @@ function InputType() {
 function ActionCategory() {
     return new _jsXdr2.default.Union(ActionCategoryType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _jsXdr2.default.Void();
+        },
 
         "CALL": () => {
             return Call();
@@ -639,7 +645,9 @@ function ActionCategory() {
 function Authority() {
     return new _jsXdr2.default.Union(AuthorityType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _jsXdr2.default.Void();
+        },
 
         "PERMISSIONED": () => {
             return ID();
