@@ -60,10 +60,10 @@ namespace mazzaroth
   {
     case BASIC:
       BasicColumn basic;
-    case ARRAY:
-      ArrayColumn array;
     case STRUCT:
       StructColumn struc;
+    case ARRAY:
+      ArrayColumn array;
     case TYPEDEF:
       TypedefColumn typ;
   };
