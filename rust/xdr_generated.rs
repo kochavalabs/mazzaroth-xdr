@@ -593,6 +593,8 @@ pub struct Table {
     #[array(var = 40)]
     pub name: String,
 
+    pub primary: String,
+
     #[array(var = 40)]
     pub columns: Vec<Column>,
 }

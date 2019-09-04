@@ -1721,6 +1721,8 @@ var (
 type Table struct {
 	Name string `xdrmaxsize:"40"`
 
+	Primary string
+
 	Columns []Column `xdrmaxsize:"40"`
 }
 

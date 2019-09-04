@@ -482,7 +482,7 @@ function ArrayColumn() {
     return new _jsXdr2.default.Struct(["name", "fixed", "length", "column"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.Bool(), new _jsXdr2.default.UInt(), new _jsXdr2.default.FixedArray(1, Column)]);
 }
 function Table() {
-    return new _jsXdr2.default.Struct(["name", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.VarArray(40, Column)]);
+    return new _jsXdr2.default.Struct(["name", "primary", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.Str('', 0), new _jsXdr2.default.VarArray(40, Column)]);
 }
 function Schema() {
     return new _jsXdr2.default.Struct(["tables"], [new _jsXdr2.default.VarArray(40, Table)]);
