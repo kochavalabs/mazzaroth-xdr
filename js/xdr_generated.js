@@ -45,6 +45,15 @@ exports.ReceiptLookupStatus = ReceiptLookupStatus;
 exports.NonceLookupStatus = NonceLookupStatus;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
+exports.BasicColumn = BasicColumn;
+exports.TypedefColumn = TypedefColumn;
+exports.StructColumn = StructColumn;
+exports.ArrayColumn = ArrayColumn;
+exports.Table = Table;
+exports.Schema = Schema;
+exports.BasicType = BasicType;
+exports.ColumnType = ColumnType;
+exports.Column = Column;
 exports.Call = Call;
 exports.Update = Update;
 exports.Permission = Permission;
@@ -147,9 +156,13 @@ function ConsensusConfigType() {
 function ConsensusConfig() {
     return new _jsXdr2.default.Union(ConsensusConfigType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _jsXdr2.default.Void();
+        },
 
-        "PBFT": PBFTConfig()
+        "PBFT": () => {
+            return PBFTConfig();
+        }
 
     });
 }
@@ -432,11 +445,101 @@ function InfoLookupStatus() {
 function Identifier() {
     return new _jsXdr2.default.Union(IdentifierType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _jsXdr2.default.Void();
+        },
 
-        "NUMBER": new _jsXdr2.default.UHyper(),
+        "NUMBER": () => {
+            return new _jsXdr2.default.UHyper();
+        },
 
-        "HASH": Hash()
+        "HASH": () => {
+            return Hash();
+        }
+
+    });
+}
+
+// End union section
+
+// End namespace mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
+function BasicColumn() {
+    return new _jsXdr2.default.Struct(["name", "typ"], [new _jsXdr2.default.Str('', 40), BasicType()]);
+}
+function TypedefColumn() {
+    return new _jsXdr2.default.Struct(["name", "child"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.FixedArray(1, Column)]);
+}
+function StructColumn() {
+    return new _jsXdr2.default.Struct(["name", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.VarArray(40, Column)]);
+}
+function ArrayColumn() {
+    return new _jsXdr2.default.Struct(["name", "fixed", "length", "column"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.Bool(), new _jsXdr2.default.UInt(), new _jsXdr2.default.FixedArray(1, Column)]);
+}
+function Table() {
+    return new _jsXdr2.default.Struct(["name", "primary", "columns"], [new _jsXdr2.default.Str('', 40), new _jsXdr2.default.Str('', 0), new _jsXdr2.default.VarArray(40, Column)]);
+}
+function Schema() {
+    return new _jsXdr2.default.Struct(["tables"], [new _jsXdr2.default.VarArray(40, Table)]);
+}
+
+// End struct section
+
+// Start enum section
+
+function BasicType() {
+    return new _jsXdr2.default.Enum({
+        0: "BOOLEAN",
+        1: "STRING",
+        2: "OPAQUE",
+        3: "INT",
+        4: "UNSIGNED_INT",
+        5: "HYPER",
+        6: "UNSIGNED_HYPER",
+        7: "FLOAT",
+        8: "DOUBLE"
+
+    });
+}
+
+function ColumnType() {
+    return new _jsXdr2.default.Enum({
+        0: "BASIC",
+        1: "STRUCT",
+        2: "ARRAY",
+        3: "TYPEDEF"
+
+    });
+}
+
+// End enum section
+
+// Start union section
+
+
+function Column() {
+    return new _jsXdr2.default.Union(ColumnType(), {
+
+        "BASIC": () => {
+            return BasicColumn();
+        },
+
+        "STRUCT": () => {
+            return StructColumn();
+        },
+
+        "ARRAY": () => {
+            return ArrayColumn();
+        },
+
+        "TYPEDEF": () => {
+            return TypedefColumn();
+        }
 
     });
 }
@@ -520,13 +623,21 @@ function InputType() {
 function ActionCategory() {
     return new _jsXdr2.default.Union(ActionCategoryType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _jsXdr2.default.Void();
+        },
 
-        "CALL": Call(),
+        "CALL": () => {
+            return Call();
+        },
 
-        "UPDATE": Update(),
+        "UPDATE": () => {
+            return Update();
+        },
 
-        "PERMISSION": Permission()
+        "PERMISSION": () => {
+            return Permission();
+        }
 
     });
 }
@@ -534,9 +645,13 @@ function ActionCategory() {
 function Authority() {
     return new _jsXdr2.default.Union(AuthorityType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _jsXdr2.default.Void();
+        },
 
-        "PERMISSIONED": ID()
+        "PERMISSIONED": () => {
+            return ID();
+        }
 
     });
 }
