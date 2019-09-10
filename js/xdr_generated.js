@@ -59,9 +59,9 @@ exports.InputType = InputType;
 exports.ActionCategory = ActionCategory;
 exports.Authority = Authority;
 
-var _jsXdr = require("js-xdr");
+var _xdrJsSerialize = require("xdr-js-serialize");
 
-var _jsXdr2 = _interopRequireDefault(_jsXdr);
+var _xdrJsSerialize2 = _interopRequireDefault(_xdrJsSerialize);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -72,7 +72,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Start struct section
 function Account() {
-    return new _jsXdr2.default.Struct(["name", "nonce", "permissionedKeys"], [new _jsXdr2.default.Str('', 0), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(2147483647, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["name", "nonce", "permissionedKeys"], [new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
 
 // End struct section
@@ -95,10 +95,10 @@ function Account() {
 
 // Start struct section
 function Block() {
-    return new _jsXdr2.default.Struct(["header", "transactions"], [BlockHeader(), new _jsXdr2.default.VarArray(2147483647, Transaction)]);
+    return new _xdrJsSerialize2.default.Struct(["header", "transactions"], [BlockHeader(), new _xdrJsSerialize2.default.VarArray(2147483647, Transaction)]);
 }
 function BlockHeader() {
-    return new _jsXdr2.default.Struct(["timestamp", "blockHeight", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _jsXdr2.default.Str('', 256), new _jsXdr2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
+    return new _xdrJsSerialize2.default.Struct(["timestamp", "blockHeight", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
 }
 
 // End struct section
@@ -121,10 +121,10 @@ function BlockHeader() {
 
 // Start struct section
 function ChannelConfig() {
-    return new _jsXdr2.default.Struct(["owner", "validators", "consensusConfig"], [ID(), new _jsXdr2.default.VarArray(2147483647, ID), ConsensusConfig()]);
+    return new _xdrJsSerialize2.default.Struct(["owner", "validators", "consensusConfig"], [ID(), new _xdrJsSerialize2.default.VarArray(2147483647, ID), ConsensusConfig()]);
 }
 function PBFTConfig() {
-    return new _jsXdr2.default.Struct(["checkpointPeriod"], [new _jsXdr2.default.UHyper()]);
+    return new _xdrJsSerialize2.default.Struct(["checkpointPeriod"], [new _xdrJsSerialize2.default.UHyper()]);
 }
 
 // End struct section
@@ -132,7 +132,7 @@ function PBFTConfig() {
 // Start enum section
 
 function ConsensusConfigType() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "PBFT"
 
@@ -145,11 +145,15 @@ function ConsensusConfigType() {
 
 
 function ConsensusConfig() {
-    return new _jsXdr2.default.Union(ConsensusConfigType(), {
+    return new _xdrJsSerialize2.default.Union(ConsensusConfigType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
 
-        "PBFT": PBFTConfig()
+        "PBFT": () => {
+            return PBFTConfig();
+        }
 
     });
 }
@@ -162,19 +166,19 @@ function ConsensusConfig() {
 // Start typedef section
 
 function Signature() {
-    return new _jsXdr2.default.FixedOpaque(64);
+    return new _xdrJsSerialize2.default.FixedOpaque(64);
 }
 
 function ID() {
-    return new _jsXdr2.default.FixedOpaque(32);
+    return new _xdrJsSerialize2.default.FixedOpaque(32);
 }
 
 function Hash() {
-    return new _jsXdr2.default.FixedOpaque(32);
+    return new _xdrJsSerialize2.default.FixedOpaque(32);
 }
 
 function Parameter() {
-    return new _jsXdr2.default.VarOpaque(2147483647);
+    return new _xdrJsSerialize2.default.VarOpaque(2147483647);
 }
 // End typedef section
 
@@ -200,7 +204,7 @@ function Parameter() {
 
 // Start struct section
 function ContractMetadata() {
-    return new _jsXdr2.default.Struct(["hash", "version"], [Hash(), new _jsXdr2.default.UHyper()]);
+    return new _xdrJsSerialize2.default.Struct(["hash", "version"], [Hash(), new _xdrJsSerialize2.default.UHyper()]);
 }
 
 // End struct section
@@ -223,7 +227,7 @@ function ContractMetadata() {
 
 // Start struct section
 function Event() {
-    return new _jsXdr2.default.Struct(["key", "parameters"], [new _jsXdr2.default.Str('', 256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+    return new _xdrJsSerialize2.default.Struct(["key", "parameters"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
 }
 
 // End struct section
@@ -246,7 +250,7 @@ function Event() {
 
 // Start struct section
 function ExecutionPlan() {
-    return new _jsXdr2.default.Struct(["host", "channelID", "calls"], [new _jsXdr2.default.Str('', 256), ID(), new _jsXdr2.default.VarArray(100, Call)]);
+    return new _xdrJsSerialize2.default.Struct(["host", "channelID", "calls"], [new _xdrJsSerialize2.default.Str('', 256), ID(), new _xdrJsSerialize2.default.VarArray(100, Call)]);
 }
 
 // End struct section
@@ -269,7 +273,7 @@ function ExecutionPlan() {
 
 // Start struct section
 function Receipt() {
-    return new _jsXdr2.default.Struct(["status", "stateRoot", "events", "result"], [ReceiptStatus(), Hash(), new _jsXdr2.default.VarArray(2147483647, Event), new _jsXdr2.default.VarOpaque(2147483647)]);
+    return new _xdrJsSerialize2.default.Struct(["status", "stateRoot", "events", "result"], [ReceiptStatus(), Hash(), new _xdrJsSerialize2.default.VarArray(2147483647, Event), new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
 }
 
 // End struct section
@@ -277,7 +281,7 @@ function Receipt() {
 // Start enum section
 
 function ReceiptStatus() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "FAILURE",
         1: "SUCCESS"
 
@@ -297,61 +301,61 @@ function ReceiptStatus() {
 // Start typedef section
 
 function StatusInfo() {
-    return new _jsXdr2.default.Str('', 256);
+    return new _xdrJsSerialize2.default.Str('', 256);
 }
 // End typedef section
 
 // Start struct section
 function StateStatus() {
-    return new _jsXdr2.default.Struct(["previousBlock", "transactionCount"], [new _jsXdr2.default.UHyper(), new _jsXdr2.default.UHyper()]);
+    return new _xdrJsSerialize2.default.Struct(["previousBlock", "transactionCount"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper()]);
 }
 function BlockLookupRequest() {
-    return new _jsXdr2.default.Struct(["ID"], [Identifier()]);
+    return new _xdrJsSerialize2.default.Struct(["ID"], [Identifier()]);
 }
 function BlockHeaderLookupRequest() {
-    return new _jsXdr2.default.Struct(["ID"], [Identifier()]);
+    return new _xdrJsSerialize2.default.Struct(["ID"], [Identifier()]);
 }
 function BlockLookupResponse() {
-    return new _jsXdr2.default.Struct(["block", "stateStatus", "status", "statusInfo"], [Block(), StateStatus(), BlockStatus(), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["block", "stateStatus", "status", "statusInfo"], [Block(), StateStatus(), BlockStatus(), StatusInfo()]);
 }
 function BlockHeaderLookupResponse() {
-    return new _jsXdr2.default.Struct(["header", "stateStatus", "status", "statusInfo"], [BlockHeader(), StateStatus(), BlockStatus(), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["header", "stateStatus", "status", "statusInfo"], [BlockHeader(), StateStatus(), BlockStatus(), StatusInfo()]);
 }
 function TransactionLookupRequest() {
-    return new _jsXdr2.default.Struct(["transactionID"], [ID()]);
+    return new _xdrJsSerialize2.default.Struct(["transactionID"], [ID()]);
 }
 function TransactionLookupResponse() {
-    return new _jsXdr2.default.Struct(["transaction", "stateStatus", "status", "statusInfo"], [Transaction(), StateStatus(), TransactionStatus(), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["transaction", "stateStatus", "status", "statusInfo"], [Transaction(), StateStatus(), TransactionStatus(), StatusInfo()]);
 }
 function TransactionSubmitRequest() {
-    return new _jsXdr2.default.Struct(["transaction"], [Transaction()]);
+    return new _xdrJsSerialize2.default.Struct(["transaction"], [Transaction()]);
 }
 function TransactionSubmitResponse() {
-    return new _jsXdr2.default.Struct(["transactionID", "status", "statusInfo"], [ID(), TransactionStatus(), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["transactionID", "status", "statusInfo"], [ID(), TransactionStatus(), StatusInfo()]);
 }
 function ReadonlyRequest() {
-    return new _jsXdr2.default.Struct(["call"], [Call()]);
+    return new _xdrJsSerialize2.default.Struct(["call"], [Call()]);
 }
 function ReadonlyResponse() {
-    return new _jsXdr2.default.Struct(["result", "stateStatus", "status", "statusInfo"], [new _jsXdr2.default.VarOpaque(2147483647), StateStatus(), ReadonlyStatus(), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["result", "stateStatus", "status", "statusInfo"], [new _xdrJsSerialize2.default.VarOpaque(2147483647), StateStatus(), ReadonlyStatus(), StatusInfo()]);
 }
 function ReceiptLookupRequest() {
-    return new _jsXdr2.default.Struct(["transactionID"], [ID()]);
+    return new _xdrJsSerialize2.default.Struct(["transactionID"], [ID()]);
 }
 function ReceiptLookupResponse() {
-    return new _jsXdr2.default.Struct(["receipt", "stateStatus", "status", "statusInfo"], [Receipt(), StateStatus(), ReceiptLookupStatus(), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["receipt", "stateStatus", "status", "statusInfo"], [Receipt(), StateStatus(), ReceiptLookupStatus(), StatusInfo()]);
 }
 function AccountNonceLookupRequest() {
-    return new _jsXdr2.default.Struct(["account"], [ID()]);
+    return new _xdrJsSerialize2.default.Struct(["account"], [ID()]);
 }
 function AccountNonceLookupResponse() {
-    return new _jsXdr2.default.Struct(["nonce", "stateStatus", "status", "statusInfo"], [new _jsXdr2.default.UHyper(), StateStatus(), NonceLookupStatus(), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["nonce", "stateStatus", "status", "statusInfo"], [new _xdrJsSerialize2.default.UHyper(), StateStatus(), NonceLookupStatus(), StatusInfo()]);
 }
 function AccountInfoLookupRequest() {
-    return new _jsXdr2.default.Struct(["account"], [ID()]);
+    return new _xdrJsSerialize2.default.Struct(["account"], [ID()]);
 }
 function AccountInfoLookupResponse() {
-    return new _jsXdr2.default.Struct(["accountInfo", "stateStatus", "status", "statusInfo"], [Account(), StateStatus(), InfoLookupStatus(), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["accountInfo", "stateStatus", "status", "statusInfo"], [Account(), StateStatus(), InfoLookupStatus(), StatusInfo()]);
 }
 
 // End struct section
@@ -359,7 +363,7 @@ function AccountInfoLookupResponse() {
 // Start enum section
 
 function IdentifierType() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "NUMBER",
         2: "HASH"
@@ -368,7 +372,7 @@ function IdentifierType() {
 }
 
 function BlockStatus() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "CREATED",
         2: "FUTURE",
@@ -378,7 +382,7 @@ function BlockStatus() {
 }
 
 function TransactionStatus() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "ACCEPTED",
         2: "REJECTED",
@@ -389,7 +393,7 @@ function TransactionStatus() {
 }
 
 function ReadonlyStatus() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "SUCCESS",
         2: "FAILURE"
@@ -398,7 +402,7 @@ function ReadonlyStatus() {
 }
 
 function ReceiptLookupStatus() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "FOUND",
         2: "NOT_FOUND"
@@ -407,7 +411,7 @@ function ReceiptLookupStatus() {
 }
 
 function NonceLookupStatus() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "FOUND",
         2: "NOT_FOUND"
@@ -416,7 +420,7 @@ function NonceLookupStatus() {
 }
 
 function InfoLookupStatus() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "FOUND",
         2: "NOT_FOUND"
@@ -430,13 +434,19 @@ function InfoLookupStatus() {
 
 
 function Identifier() {
-    return new _jsXdr2.default.Union(IdentifierType(), {
+    return new _xdrJsSerialize2.default.Union(IdentifierType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
 
-        "NUMBER": new _jsXdr2.default.UHyper(),
+        "NUMBER": () => {
+            return new _xdrJsSerialize2.default.UHyper();
+        },
 
-        "HASH": Hash()
+        "HASH": () => {
+            return Hash();
+        }
 
     });
 }
@@ -451,25 +461,25 @@ function Identifier() {
 
 // Start struct section
 function Call() {
-    return new _jsXdr2.default.Struct(["function", "parameters"], [new _jsXdr2.default.Str('', 256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+    return new _xdrJsSerialize2.default.Struct(["function", "parameters"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
 }
 function Update() {
-    return new _jsXdr2.default.Struct(["contract"], [new _jsXdr2.default.VarOpaque(2147483647)]);
+    return new _xdrJsSerialize2.default.Struct(["contract"], [new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
 }
 function Permission() {
-    return new _jsXdr2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
+    return new _xdrJsSerialize2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
 }
 function Action() {
-    return new _jsXdr2.default.Struct(["address", "channelID", "nonce", "category"], [ID(), ID(), new _jsXdr2.default.UHyper(), ActionCategory()]);
+    return new _xdrJsSerialize2.default.Struct(["address", "channelID", "nonce", "category"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), ActionCategory()]);
 }
 function Transaction() {
-    return new _jsXdr2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
+    return new _xdrJsSerialize2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
 }
 function CommittedTransaction() {
-    return new _jsXdr2.default.Struct(["transaction", "sequenceNumber", "receiptID", "currentTransactionRoot", "signatures"], [Transaction(), new _jsXdr2.default.UHyper(), new _jsXdr2.default.VarArray(25, ID), Hash(), new _jsXdr2.default.VarArray(2147483647, Signature)]);
+    return new _xdrJsSerialize2.default.Struct(["transaction", "sequenceNumber", "receiptID", "currentTransactionRoot", "signatures"], [Transaction(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.VarArray(25, ID), Hash(), new _xdrJsSerialize2.default.VarArray(2147483647, Signature)]);
 }
 function Input() {
-    return new _jsXdr2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _jsXdr2.default.Str('', 256), new _jsXdr2.default.VarArray(2147483647, Parameter)]);
+    return new _xdrJsSerialize2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
 }
 
 // End struct section
@@ -477,7 +487,7 @@ function Input() {
 // Start enum section
 
 function PermissionAction() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "REVOKE",
         1: "GRANT"
 
@@ -485,7 +495,7 @@ function PermissionAction() {
 }
 
 function ActionCategoryType() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "CALL",
         2: "UPDATE",
@@ -495,7 +505,7 @@ function ActionCategoryType() {
 }
 
 function AuthorityType() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "PERMISSIONED"
 
@@ -503,7 +513,7 @@ function AuthorityType() {
 }
 
 function InputType() {
-    return new _jsXdr2.default.Enum({
+    return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "READONLY",
         2: "EXECUTE",
@@ -518,25 +528,37 @@ function InputType() {
 
 
 function ActionCategory() {
-    return new _jsXdr2.default.Union(ActionCategoryType(), {
+    return new _xdrJsSerialize2.default.Union(ActionCategoryType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
 
-        "CALL": Call(),
+        "CALL": () => {
+            return Call();
+        },
 
-        "UPDATE": Update(),
+        "UPDATE": () => {
+            return Update();
+        },
 
-        "PERMISSION": Permission()
+        "PERMISSION": () => {
+            return Permission();
+        }
 
     });
 }
 
 function Authority() {
-    return new _jsXdr2.default.Union(AuthorityType(), {
+    return new _xdrJsSerialize2.default.Union(AuthorityType(), {
 
-        "NONE": new _jsXdr2.default.Void(),
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
 
-        "PERMISSIONED": ID()
+        "PERMISSIONED": () => {
+            return ID();
+        }
 
     });
 }
