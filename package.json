@@ -4,7 +4,7 @@
   "description": "Serialization code for mazzaroth.",
   "main": "js/xdr_generated.js",
   "scripts": {
-    "get-deps": "git clone git@github.com:kochavalabs/xdrgen.git || true && npm install",
+    "get-deps": "git clone git@github.com:kochavalabs/xdr-codegen.git || true && npm install",
     "clean": "rm -f ./xdr/xdr_generated.go && rm -rf ./js && mkdir js && cargo clean",
     "build-go": "cargo run --manifest-path=xdr-codegen/Cargo.toml ./idl/*.x | gofmt > ./xdr/xdr_generated.go",
     "build-rust": "cargo run --manifest-path=xdr-codegen/Cargo.toml ./idl/*.x --language rust | rustfmt > ./rust/xdr_generated.rs",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/kochavalabs/mazzaroth-proto.git"
+    "url": "git+ssh://git@github.com/kochavalabs/mazzaroth-xdr.git"
   },
   "keywords": [
     "xdr",
@@ -23,9 +23,9 @@
   "author": "Kyle Bartush",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kochavalabs/mazzaroth-proto/issues"
+    "url": "https://github.com/kochavalabs/mazzaroth-xdr/issues"
   },
-  "homepage": "https://github.com/kochavalabs/mazzaroth-proto#readme",
+  "homepage": "https://github.com/kochavalabs/mazzaroth-xdr#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
@@ -34,6 +34,6 @@
     "eslint": "^5.16.0"
   },
   "dependencies": {
-    "js-xdr": "git+ssh://git@github.com/kochavalabs/js-xdr.git"
+    "xdr-js-serialize": "git+ssh://git@github.com/kochavalabs/xdr-js-serialize.git"
   }
 }

@@ -1,5 +1,5 @@
 const types = require('../js/xdr_generated.js').default
-const xdr = require('js-xdr')
+const xdr = require('xdr-js-serialize')
 const fs = require('fs')
 
 const tx = new types.Transaction()
