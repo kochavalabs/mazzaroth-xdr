@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io"
 
-	xdr "github.com/stellar/go-xdr/xdr3"
+	"github.com/stellar/go-xdr/xdr3"
 )
 
 // Unmarshal reads an xdr element from `r` into `v`.
@@ -274,13 +274,13 @@ type ConsensusConfig struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (s ConsensusConfig) SwitchFieldName() string {
+func (u ConsensusConfig) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
 // the value for an instance of ConsensusConfig
-func (s ConsensusConfig) ArmForSwitch(sw int32) (string, bool) {
+func (u ConsensusConfig) ArmForSwitch(sw int32) (string, bool) {
 	switch ConsensusConfigType(sw) {
 
 	case ConsensusConfigTypeNONE:
@@ -314,8 +314,8 @@ func NewConsensusConfig(aType ConsensusConfigType, value interface{}) (result Co
 
 // MustPbftConfig retrieves the PbftConfig value from the union,
 // panicing if the value is not set.
-func (s ConsensusConfig) MustPbftConfig() PBFTConfig {
-	val, ok := s.GetPbftConfig()
+func (u ConsensusConfig) MustPbftConfig() PBFTConfig {
+	val, ok := u.GetPbftConfig()
 
 	if !ok {
 		panic("arm PbftConfig is not set")
@@ -326,11 +326,11 @@ func (s ConsensusConfig) MustPbftConfig() PBFTConfig {
 
 // GetPbftConfig retrieves the PbftConfig value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s ConsensusConfig) GetPbftConfig() (result PBFTConfig, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u ConsensusConfig) GetPbftConfig() (result PBFTConfig, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "PbftConfig" {
-		result = *s.PbftConfig
+		result = *u.PbftConfig
 		ok = true
 	}
 
@@ -338,15 +338,15 @@ func (s ConsensusConfig) GetPbftConfig() (result PBFTConfig, ok bool) {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ConsensusConfig) MarshalBinary() ([]byte, error) {
+func (u ConsensusConfig) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
+	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ConsensusConfig) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
+func (u *ConsensusConfig) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
@@ -1603,13 +1603,13 @@ type Identifier struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (s Identifier) SwitchFieldName() string {
+func (u Identifier) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
 // the value for an instance of Identifier
-func (s Identifier) ArmForSwitch(sw int32) (string, bool) {
+func (u Identifier) ArmForSwitch(sw int32) (string, bool) {
 	switch IdentifierType(sw) {
 
 	case IdentifierTypeNONE:
@@ -1655,8 +1655,8 @@ func NewIdentifier(aType IdentifierType, value interface{}) (result Identifier, 
 
 // MustNumber retrieves the Number value from the union,
 // panicing if the value is not set.
-func (s Identifier) MustNumber() uint64 {
-	val, ok := s.GetNumber()
+func (u Identifier) MustNumber() uint64 {
+	val, ok := u.GetNumber()
 
 	if !ok {
 		panic("arm Number is not set")
@@ -1667,11 +1667,11 @@ func (s Identifier) MustNumber() uint64 {
 
 // GetNumber retrieves the Number value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s Identifier) GetNumber() (result uint64, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u Identifier) GetNumber() (result uint64, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Number" {
-		result = *s.Number
+		result = *u.Number
 		ok = true
 	}
 
@@ -1680,8 +1680,8 @@ func (s Identifier) GetNumber() (result uint64, ok bool) {
 
 // MustHash retrieves the Hash value from the union,
 // panicing if the value is not set.
-func (s Identifier) MustHash() Hash {
-	val, ok := s.GetHash()
+func (u Identifier) MustHash() Hash {
+	val, ok := u.GetHash()
 
 	if !ok {
 		panic("arm Hash is not set")
@@ -1692,11 +1692,11 @@ func (s Identifier) MustHash() Hash {
 
 // GetHash retrieves the Hash value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s Identifier) GetHash() (result Hash, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u Identifier) GetHash() (result Hash, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Hash" {
-		result = *s.Hash
+		result = *u.Hash
 		ok = true
 	}
 
@@ -1704,15 +1704,15 @@ func (s Identifier) GetHash() (result Hash, ok bool) {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s Identifier) MarshalBinary() ([]byte, error) {
+func (u Identifier) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
+	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Identifier) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
+func (u *Identifier) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
@@ -2056,13 +2056,13 @@ type Column struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (s Column) SwitchFieldName() string {
+func (u Column) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
 // the value for an instance of Column
-func (s Column) ArmForSwitch(sw int32) (string, bool) {
+func (u Column) ArmForSwitch(sw int32) (string, bool) {
 	switch ColumnType(sw) {
 
 	case ColumnTypeBASIC:
@@ -2127,8 +2127,8 @@ func NewColumn(aType ColumnType, value interface{}) (result Column, err error) {
 
 // MustBasic retrieves the Basic value from the union,
 // panicing if the value is not set.
-func (s Column) MustBasic() BasicColumn {
-	val, ok := s.GetBasic()
+func (u Column) MustBasic() BasicColumn {
+	val, ok := u.GetBasic()
 
 	if !ok {
 		panic("arm Basic is not set")
@@ -2139,11 +2139,11 @@ func (s Column) MustBasic() BasicColumn {
 
 // GetBasic retrieves the Basic value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s Column) GetBasic() (result BasicColumn, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u Column) GetBasic() (result BasicColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Basic" {
-		result = *s.Basic
+		result = *u.Basic
 		ok = true
 	}
 
@@ -2152,8 +2152,8 @@ func (s Column) GetBasic() (result BasicColumn, ok bool) {
 
 // MustStruc retrieves the Struc value from the union,
 // panicing if the value is not set.
-func (s Column) MustStruc() StructColumn {
-	val, ok := s.GetStruc()
+func (u Column) MustStruc() StructColumn {
+	val, ok := u.GetStruc()
 
 	if !ok {
 		panic("arm Struc is not set")
@@ -2164,11 +2164,11 @@ func (s Column) MustStruc() StructColumn {
 
 // GetStruc retrieves the Struc value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s Column) GetStruc() (result StructColumn, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u Column) GetStruc() (result StructColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Struc" {
-		result = *s.Struc
+		result = *u.Struc
 		ok = true
 	}
 
@@ -2177,8 +2177,8 @@ func (s Column) GetStruc() (result StructColumn, ok bool) {
 
 // MustArray retrieves the Array value from the union,
 // panicing if the value is not set.
-func (s Column) MustArray() ArrayColumn {
-	val, ok := s.GetArray()
+func (u Column) MustArray() ArrayColumn {
+	val, ok := u.GetArray()
 
 	if !ok {
 		panic("arm Array is not set")
@@ -2189,11 +2189,11 @@ func (s Column) MustArray() ArrayColumn {
 
 // GetArray retrieves the Array value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s Column) GetArray() (result ArrayColumn, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u Column) GetArray() (result ArrayColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Array" {
-		result = *s.Array
+		result = *u.Array
 		ok = true
 	}
 
@@ -2202,8 +2202,8 @@ func (s Column) GetArray() (result ArrayColumn, ok bool) {
 
 // MustTyp retrieves the Typ value from the union,
 // panicing if the value is not set.
-func (s Column) MustTyp() TypedefColumn {
-	val, ok := s.GetTyp()
+func (u Column) MustTyp() TypedefColumn {
+	val, ok := u.GetTyp()
 
 	if !ok {
 		panic("arm Typ is not set")
@@ -2214,11 +2214,11 @@ func (s Column) MustTyp() TypedefColumn {
 
 // GetTyp retrieves the Typ value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s Column) GetTyp() (result TypedefColumn, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u Column) GetTyp() (result TypedefColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Typ" {
-		result = *s.Typ
+		result = *u.Typ
 		ok = true
 	}
 
@@ -2226,15 +2226,15 @@ func (s Column) GetTyp() (result TypedefColumn, ok bool) {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s Column) MarshalBinary() ([]byte, error) {
+func (u Column) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
+	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Column) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
+func (u *Column) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
@@ -2686,13 +2686,13 @@ type ActionCategory struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (s ActionCategory) SwitchFieldName() string {
+func (u ActionCategory) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
 // the value for an instance of ActionCategory
-func (s ActionCategory) ArmForSwitch(sw int32) (string, bool) {
+func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
 	switch ActionCategoryType(sw) {
 
 	case ActionCategoryTypeNONE:
@@ -2750,8 +2750,8 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 
 // MustCall retrieves the Call value from the union,
 // panicing if the value is not set.
-func (s ActionCategory) MustCall() Call {
-	val, ok := s.GetCall()
+func (u ActionCategory) MustCall() Call {
+	val, ok := u.GetCall()
 
 	if !ok {
 		panic("arm Call is not set")
@@ -2762,11 +2762,11 @@ func (s ActionCategory) MustCall() Call {
 
 // GetCall retrieves the Call value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s ActionCategory) GetCall() (result Call, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u ActionCategory) GetCall() (result Call, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Call" {
-		result = *s.Call
+		result = *u.Call
 		ok = true
 	}
 
@@ -2775,8 +2775,8 @@ func (s ActionCategory) GetCall() (result Call, ok bool) {
 
 // MustUpdate retrieves the Update value from the union,
 // panicing if the value is not set.
-func (s ActionCategory) MustUpdate() Update {
-	val, ok := s.GetUpdate()
+func (u ActionCategory) MustUpdate() Update {
+	val, ok := u.GetUpdate()
 
 	if !ok {
 		panic("arm Update is not set")
@@ -2787,11 +2787,11 @@ func (s ActionCategory) MustUpdate() Update {
 
 // GetUpdate retrieves the Update value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s ActionCategory) GetUpdate() (result Update, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u ActionCategory) GetUpdate() (result Update, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Update" {
-		result = *s.Update
+		result = *u.Update
 		ok = true
 	}
 
@@ -2800,8 +2800,8 @@ func (s ActionCategory) GetUpdate() (result Update, ok bool) {
 
 // MustPermission retrieves the Permission value from the union,
 // panicing if the value is not set.
-func (s ActionCategory) MustPermission() Permission {
-	val, ok := s.GetPermission()
+func (u ActionCategory) MustPermission() Permission {
+	val, ok := u.GetPermission()
 
 	if !ok {
 		panic("arm Permission is not set")
@@ -2812,11 +2812,11 @@ func (s ActionCategory) MustPermission() Permission {
 
 // GetPermission retrieves the Permission value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s ActionCategory) GetPermission() (result Permission, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u ActionCategory) GetPermission() (result Permission, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Permission" {
-		result = *s.Permission
+		result = *u.Permission
 		ok = true
 	}
 
@@ -2824,15 +2824,15 @@ func (s ActionCategory) GetPermission() (result Permission, ok bool) {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ActionCategory) MarshalBinary() ([]byte, error) {
+func (u ActionCategory) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
+	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ActionCategory) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
+func (u *ActionCategory) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
@@ -2850,13 +2850,13 @@ type Authority struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (s Authority) SwitchFieldName() string {
+func (u Authority) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
 // the value for an instance of Authority
-func (s Authority) ArmForSwitch(sw int32) (string, bool) {
+func (u Authority) ArmForSwitch(sw int32) (string, bool) {
 	switch AuthorityType(sw) {
 
 	case AuthorityTypeNONE:
@@ -2890,8 +2890,8 @@ func NewAuthority(aType AuthorityType, value interface{}) (result Authority, err
 
 // MustOrigin retrieves the Origin value from the union,
 // panicing if the value is not set.
-func (s Authority) MustOrigin() ID {
-	val, ok := s.GetOrigin()
+func (u Authority) MustOrigin() ID {
+	val, ok := u.GetOrigin()
 
 	if !ok {
 		panic("arm Origin is not set")
@@ -2902,11 +2902,11 @@ func (s Authority) MustOrigin() ID {
 
 // GetOrigin retrieves the Origin value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (s Authority) GetOrigin() (result ID, ok bool) {
-	armName, _ := s.ArmForSwitch(int32(s.Type))
+func (u Authority) GetOrigin() (result ID, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Origin" {
-		result = *s.Origin
+		result = *u.Origin
 		ok = true
 	}
 
@@ -2914,15 +2914,15 @@ func (s Authority) GetOrigin() (result ID, ok bool) {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s Authority) MarshalBinary() ([]byte, error) {
+func (u Authority) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
+	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Authority) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
+func (u *Authority) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
