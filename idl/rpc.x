@@ -7,14 +7,17 @@ namespace mazzaroth
 {
   typedef string StatusInfo<256>;
 
+  // StateStatus provides state information about a block in responses
   struct StateStatus
   {
+    // The previous block number
     unsigned hyper previousBlock;
 
+    // Number of transactions in this block
     unsigned hyper transactionCount;
-
   };
 
+  // IdentifierType for a block request, either by number or hash
   enum IdentifierType
   {
     NONE = 0, 
@@ -32,16 +35,21 @@ namespace mazzaroth
       Hash hash;
   };
 
+// BlockLookupRequest used to get a particular block from ledger
   struct BlockLookupRequest
   {
+    // Either the block number of hash
     Identifier ID;
   };
 
+  // BlockHeaderLookupRequest used to get the block header of a particular block from ledger
   struct BlockHeaderLookupRequest
   {
+    // Either the block number of hash
     Identifier ID;
   };
 
+  // BlockLookupResponse returned from BlockLookupRequests
   struct BlockLookupResponse
   {
 
@@ -58,6 +66,7 @@ namespace mazzaroth
     StatusInfo statusInfo;
   };
 
+  // BlockHeaderLookupResponse returned from BlockHeaderLookupRequests
   struct BlockHeaderLookupResponse
   {
 
