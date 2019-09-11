@@ -1,3 +1,4 @@
+// Package xdr is automatically generated
 // DO NOT EDIT or your changes may be overwritten
 package xdr
 
@@ -7,7 +8,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/stellar/go-xdr/xdr3"
+	xdr "github.com/stellar/go-xdr/xdr3"
 )
 
 // Unmarshal reads an xdr element from `r` into `v`.
@@ -25,9 +26,12 @@ func Marshal(w io.Writer, v interface{}) (int, error) {
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// Account generated struct
 type Account struct {
 	Name string
 
@@ -59,17 +63,21 @@ var (
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// Block generated struct
 type Block struct {
 	Header BlockHeader
 
@@ -94,6 +102,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Block)(nil)
 )
 
+// BlockHeader generated struct
 type BlockHeader struct {
 	Timestamp string `xdrmaxsize:"256"`
 
@@ -133,17 +142,21 @@ var (
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// ChannelConfig generated struct
 type ChannelConfig struct {
 	Owner ID
 
@@ -170,6 +183,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ChannelConfig)(nil)
 )
 
+// PBFTConfig generated struct
 type PBFTConfig struct {
 	CheckpointPeriod uint64
 }
@@ -196,14 +210,19 @@ var (
 
 // Start enum section
 
+// ConsensusConfigType generated enum
 type ConsensusConfigType int32
 
 const (
+
+	// ConsensusConfigTypeNONE enum value 0
 	ConsensusConfigTypeNONE ConsensusConfigType = 0
 
+	// ConsensusConfigTypePBFT enum value 1
 	ConsensusConfigTypePBFT ConsensusConfigType = 1
 )
 
+// ConsensusConfigTypeMap generated enum map
 var ConsensusConfigTypeMap = map[int32]string{
 
 	0: "ConsensusConfigTypeNONE",
@@ -243,9 +262,10 @@ var (
 )
 
 // End enum section
-//
+
 // Start union section
 
+// ConsensusConfig generated union
 type ConsensusConfig struct {
 	Type ConsensusConfigType
 
@@ -254,13 +274,13 @@ type ConsensusConfig struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (u ConsensusConfig) SwitchFieldName() string {
+func (s ConsensusConfig) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
 // the value for an instance of ConsensusConfig
-func (u ConsensusConfig) ArmForSwitch(sw int32) (string, bool) {
+func (s ConsensusConfig) ArmForSwitch(sw int32) (string, bool) {
 	switch ConsensusConfigType(sw) {
 
 	case ConsensusConfigTypeNONE:
@@ -294,8 +314,8 @@ func NewConsensusConfig(aType ConsensusConfigType, value interface{}) (result Co
 
 // MustPbftConfig retrieves the PbftConfig value from the union,
 // panicing if the value is not set.
-func (u ConsensusConfig) MustPbftConfig() PBFTConfig {
-	val, ok := u.GetPbftConfig()
+func (s ConsensusConfig) MustPbftConfig() PBFTConfig {
+	val, ok := s.GetPbftConfig()
 
 	if !ok {
 		panic("arm PbftConfig is not set")
@@ -306,11 +326,11 @@ func (u ConsensusConfig) MustPbftConfig() PBFTConfig {
 
 // GetPbftConfig retrieves the PbftConfig value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ConsensusConfig) GetPbftConfig() (result PBFTConfig, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s ConsensusConfig) GetPbftConfig() (result PBFTConfig, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "PbftConfig" {
-		result = *u.PbftConfig
+		result = *s.PbftConfig
 		ok = true
 	}
 
@@ -342,6 +362,7 @@ var (
 
 // Start typedef section
 
+// Signature generated typedef
 type Signature [64]byte
 
 // XDRMaxSize implements the Sized interface for Signature
@@ -367,6 +388,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Signature)(nil)
 )
 
+// ID generated typedef
 type ID [32]byte
 
 // XDRMaxSize implements the Sized interface for ID
@@ -392,6 +414,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ID)(nil)
 )
 
+// Hash generated typedef
 type Hash [32]byte
 
 // XDRMaxSize implements the Sized interface for Hash
@@ -417,6 +440,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Hash)(nil)
 )
 
+// Parameter generated typedef
 type Parameter []byte
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -440,22 +464,27 @@ var (
 // End typedef section
 
 // Start struct section
+
 // End struct section
 
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// ContractMetadata generated struct
 type ContractMetadata struct {
 	Hash Hash
 
@@ -485,17 +514,21 @@ var (
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// Event generated struct
 type Event struct {
 	Key string `xdrmaxsize:"256"`
 
@@ -525,17 +558,21 @@ var (
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// ExecutionPlan generated struct
 type ExecutionPlan struct {
 	Host string `xdrmaxsize:"256"`
 
@@ -567,17 +604,21 @@ var (
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// Receipt generated struct
 type Receipt struct {
 	Status ReceiptStatus
 
@@ -610,14 +651,19 @@ var (
 
 // Start enum section
 
+// ReceiptStatus generated enum
 type ReceiptStatus int32
 
 const (
+
+	// ReceiptStatusFAILURE enum value 0
 	ReceiptStatusFAILURE ReceiptStatus = 0
 
+	// ReceiptStatusSUCCESS enum value 1
 	ReceiptStatusSUCCESS ReceiptStatus = 1
 )
 
+// ReceiptStatusMap generated enum map
 var ReceiptStatusMap = map[int32]string{
 
 	0: "ReceiptStatusFAILURE",
@@ -657,8 +703,9 @@ var (
 )
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
@@ -666,6 +713,7 @@ var (
 
 // Start typedef section
 
+// StatusInfo generated typedef
 type StatusInfo string
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -689,6 +737,8 @@ var (
 // End typedef section
 
 // Start struct section
+
+// StateStatus generated struct
 type StateStatus struct {
 	PreviousBlock uint64
 
@@ -713,6 +763,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*StateStatus)(nil)
 )
 
+// BlockLookupRequest generated struct
 type BlockLookupRequest struct {
 	ID Identifier
 }
@@ -735,6 +786,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockLookupRequest)(nil)
 )
 
+// BlockHeaderLookupRequest generated struct
 type BlockHeaderLookupRequest struct {
 	ID Identifier
 }
@@ -757,6 +809,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockHeaderLookupRequest)(nil)
 )
 
+// BlockLookupResponse generated struct
 type BlockLookupResponse struct {
 	Block Block
 
@@ -785,6 +838,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockLookupResponse)(nil)
 )
 
+// BlockHeaderLookupResponse generated struct
 type BlockHeaderLookupResponse struct {
 	Header BlockHeader
 
@@ -813,6 +867,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockHeaderLookupResponse)(nil)
 )
 
+// TransactionLookupRequest generated struct
 type TransactionLookupRequest struct {
 	TransactionID ID
 }
@@ -835,6 +890,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionLookupRequest)(nil)
 )
 
+// TransactionLookupResponse generated struct
 type TransactionLookupResponse struct {
 	Transaction Transaction
 
@@ -863,6 +919,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionLookupResponse)(nil)
 )
 
+// TransactionSubmitRequest generated struct
 type TransactionSubmitRequest struct {
 	Transaction Transaction
 }
@@ -885,6 +942,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionSubmitRequest)(nil)
 )
 
+// TransactionSubmitResponse generated struct
 type TransactionSubmitResponse struct {
 	TransactionID ID
 
@@ -911,6 +969,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionSubmitResponse)(nil)
 )
 
+// ReadonlyRequest generated struct
 type ReadonlyRequest struct {
 	Call Call
 }
@@ -933,6 +992,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReadonlyRequest)(nil)
 )
 
+// ReadonlyResponse generated struct
 type ReadonlyResponse struct {
 	Result []byte
 
@@ -961,6 +1021,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReadonlyResponse)(nil)
 )
 
+// ReceiptLookupRequest generated struct
 type ReceiptLookupRequest struct {
 	TransactionID ID
 }
@@ -983,6 +1044,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReceiptLookupRequest)(nil)
 )
 
+// ReceiptLookupResponse generated struct
 type ReceiptLookupResponse struct {
 	Receipt Receipt
 
@@ -1011,6 +1073,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReceiptLookupResponse)(nil)
 )
 
+// AccountNonceLookupRequest generated struct
 type AccountNonceLookupRequest struct {
 	Account ID
 }
@@ -1033,6 +1096,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupRequest)(nil)
 )
 
+// AccountNonceLookupResponse generated struct
 type AccountNonceLookupResponse struct {
 	Nonce uint64
 
@@ -1061,6 +1125,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupResponse)(nil)
 )
 
+// AccountInfoLookupRequest generated struct
 type AccountInfoLookupRequest struct {
 	Account ID
 }
@@ -1083,6 +1148,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*AccountInfoLookupRequest)(nil)
 )
 
+// AccountInfoLookupResponse generated struct
 type AccountInfoLookupResponse struct {
 	AccountInfo Account
 
@@ -1115,16 +1181,22 @@ var (
 
 // Start enum section
 
+// IdentifierType generated enum
 type IdentifierType int32
 
 const (
+
+	// IdentifierTypeNONE enum value 0
 	IdentifierTypeNONE IdentifierType = 0
 
+	// IdentifierTypeNUMBER enum value 1
 	IdentifierTypeNUMBER IdentifierType = 1
 
+	// IdentifierTypeHASH enum value 2
 	IdentifierTypeHASH IdentifierType = 2
 )
 
+// IdentifierTypeMap generated enum map
 var IdentifierTypeMap = map[int32]string{
 
 	0: "IdentifierTypeNONE",
@@ -1165,18 +1237,25 @@ var (
 	_ encoding.BinaryUnmarshaler = (*IdentifierType)(nil)
 )
 
+// BlockStatus generated enum
 type BlockStatus int32
 
 const (
+
+	// BlockStatusUNKNOWN enum value 0
 	BlockStatusUNKNOWN BlockStatus = 0
 
+	// BlockStatusCREATED enum value 1
 	BlockStatusCREATED BlockStatus = 1
 
+	// BlockStatusFUTURE enum value 2
 	BlockStatusFUTURE BlockStatus = 2
 
+	// BlockStatusNOT_FOUND enum value 3
 	BlockStatusNOT_FOUND BlockStatus = 3
 )
 
+// BlockStatusMap generated enum map
 var BlockStatusMap = map[int32]string{
 
 	0: "BlockStatusUNKNOWN",
@@ -1219,20 +1298,28 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockStatus)(nil)
 )
 
+// TransactionStatus generated enum
 type TransactionStatus int32
 
 const (
+
+	// TransactionStatusUNKNOWN enum value 0
 	TransactionStatusUNKNOWN TransactionStatus = 0
 
+	// TransactionStatusACCEPTED enum value 1
 	TransactionStatusACCEPTED TransactionStatus = 1
 
+	// TransactionStatusREJECTED enum value 2
 	TransactionStatusREJECTED TransactionStatus = 2
 
+	// TransactionStatusCONFIRMED enum value 3
 	TransactionStatusCONFIRMED TransactionStatus = 3
 
+	// TransactionStatusNOT_FOUND enum value 4
 	TransactionStatusNOT_FOUND TransactionStatus = 4
 )
 
+// TransactionStatusMap generated enum map
 var TransactionStatusMap = map[int32]string{
 
 	0: "TransactionStatusUNKNOWN",
@@ -1277,16 +1364,22 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionStatus)(nil)
 )
 
+// ReadonlyStatus generated enum
 type ReadonlyStatus int32
 
 const (
+
+	// ReadonlyStatusUNKNOWN enum value 0
 	ReadonlyStatusUNKNOWN ReadonlyStatus = 0
 
+	// ReadonlyStatusSUCCESS enum value 1
 	ReadonlyStatusSUCCESS ReadonlyStatus = 1
 
+	// ReadonlyStatusFAILURE enum value 2
 	ReadonlyStatusFAILURE ReadonlyStatus = 2
 )
 
+// ReadonlyStatusMap generated enum map
 var ReadonlyStatusMap = map[int32]string{
 
 	0: "ReadonlyStatusUNKNOWN",
@@ -1327,16 +1420,22 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReadonlyStatus)(nil)
 )
 
+// ReceiptLookupStatus generated enum
 type ReceiptLookupStatus int32
 
 const (
+
+	// ReceiptLookupStatusUNKNOWN enum value 0
 	ReceiptLookupStatusUNKNOWN ReceiptLookupStatus = 0
 
+	// ReceiptLookupStatusFOUND enum value 1
 	ReceiptLookupStatusFOUND ReceiptLookupStatus = 1
 
+	// ReceiptLookupStatusNOT_FOUND enum value 2
 	ReceiptLookupStatusNOT_FOUND ReceiptLookupStatus = 2
 )
 
+// ReceiptLookupStatusMap generated enum map
 var ReceiptLookupStatusMap = map[int32]string{
 
 	0: "ReceiptLookupStatusUNKNOWN",
@@ -1377,16 +1476,22 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReceiptLookupStatus)(nil)
 )
 
+// NonceLookupStatus generated enum
 type NonceLookupStatus int32
 
 const (
+
+	// NonceLookupStatusUNKNOWN enum value 0
 	NonceLookupStatusUNKNOWN NonceLookupStatus = 0
 
+	// NonceLookupStatusFOUND enum value 1
 	NonceLookupStatusFOUND NonceLookupStatus = 1
 
+	// NonceLookupStatusNOT_FOUND enum value 2
 	NonceLookupStatusNOT_FOUND NonceLookupStatus = 2
 )
 
+// NonceLookupStatusMap generated enum map
 var NonceLookupStatusMap = map[int32]string{
 
 	0: "NonceLookupStatusUNKNOWN",
@@ -1427,16 +1532,22 @@ var (
 	_ encoding.BinaryUnmarshaler = (*NonceLookupStatus)(nil)
 )
 
+// InfoLookupStatus generated enum
 type InfoLookupStatus int32
 
 const (
+
+	// InfoLookupStatusUNKNOWN enum value 0
 	InfoLookupStatusUNKNOWN InfoLookupStatus = 0
 
+	// InfoLookupStatusFOUND enum value 1
 	InfoLookupStatusFOUND InfoLookupStatus = 1
 
+	// InfoLookupStatusNOT_FOUND enum value 2
 	InfoLookupStatusNOT_FOUND InfoLookupStatus = 2
 )
 
+// InfoLookupStatusMap generated enum map
 var InfoLookupStatusMap = map[int32]string{
 
 	0: "InfoLookupStatusUNKNOWN",
@@ -1478,9 +1589,10 @@ var (
 )
 
 // End enum section
-//
+
 // Start union section
 
+// Identifier generated union
 type Identifier struct {
 	Type IdentifierType
 
@@ -1491,13 +1603,13 @@ type Identifier struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (u Identifier) SwitchFieldName() string {
+func (s Identifier) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
 // the value for an instance of Identifier
-func (u Identifier) ArmForSwitch(sw int32) (string, bool) {
+func (s Identifier) ArmForSwitch(sw int32) (string, bool) {
 	switch IdentifierType(sw) {
 
 	case IdentifierTypeNONE:
@@ -1543,8 +1655,8 @@ func NewIdentifier(aType IdentifierType, value interface{}) (result Identifier, 
 
 // MustNumber retrieves the Number value from the union,
 // panicing if the value is not set.
-func (u Identifier) MustNumber() uint64 {
-	val, ok := u.GetNumber()
+func (s Identifier) MustNumber() uint64 {
+	val, ok := s.GetNumber()
 
 	if !ok {
 		panic("arm Number is not set")
@@ -1555,11 +1667,11 @@ func (u Identifier) MustNumber() uint64 {
 
 // GetNumber retrieves the Number value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Identifier) GetNumber() (result uint64, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s Identifier) GetNumber() (result uint64, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "Number" {
-		result = *u.Number
+		result = *s.Number
 		ok = true
 	}
 
@@ -1568,8 +1680,8 @@ func (u Identifier) GetNumber() (result uint64, ok bool) {
 
 // MustHash retrieves the Hash value from the union,
 // panicing if the value is not set.
-func (u Identifier) MustHash() Hash {
-	val, ok := u.GetHash()
+func (s Identifier) MustHash() Hash {
+	val, ok := s.GetHash()
 
 	if !ok {
 		panic("arm Hash is not set")
@@ -1580,11 +1692,11 @@ func (u Identifier) MustHash() Hash {
 
 // GetHash retrieves the Hash value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Identifier) GetHash() (result Hash, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s Identifier) GetHash() (result Hash, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "Hash" {
-		result = *u.Hash
+		result = *s.Hash
 		ok = true
 	}
 
@@ -1615,9 +1727,12 @@ var (
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// BasicColumn generated struct
 type BasicColumn struct {
 	Name string `xdrmaxsize:"40"`
 
@@ -1642,6 +1757,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BasicColumn)(nil)
 )
 
+// TypedefColumn generated struct
 type TypedefColumn struct {
 	Name string `xdrmaxsize:"40"`
 
@@ -1666,6 +1782,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TypedefColumn)(nil)
 )
 
+// StructColumn generated struct
 type StructColumn struct {
 	Name string `xdrmaxsize:"40"`
 
@@ -1690,6 +1807,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*StructColumn)(nil)
 )
 
+// ArrayColumn generated struct
 type ArrayColumn struct {
 	Name string `xdrmaxsize:"40"`
 
@@ -1718,6 +1836,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ArrayColumn)(nil)
 )
 
+// Table generated struct
 type Table struct {
 	Name string `xdrmaxsize:"40"`
 
@@ -1744,6 +1863,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Table)(nil)
 )
 
+// Schema generated struct
 type Schema struct {
 	Tables []Table `xdrmaxsize:"40"`
 }
@@ -1770,28 +1890,40 @@ var (
 
 // Start enum section
 
+// BasicType generated enum
 type BasicType int32
 
 const (
+
+	// BasicTypeBOOLEAN enum value 0
 	BasicTypeBOOLEAN BasicType = 0
 
+	// BasicTypeSTRING enum value 1
 	BasicTypeSTRING BasicType = 1
 
+	// BasicTypeOPAQUE enum value 2
 	BasicTypeOPAQUE BasicType = 2
 
+	// BasicTypeINT enum value 3
 	BasicTypeINT BasicType = 3
 
+	// BasicTypeUNSIGNED_INT enum value 4
 	BasicTypeUNSIGNED_INT BasicType = 4
 
+	// BasicTypeHYPER enum value 5
 	BasicTypeHYPER BasicType = 5
 
+	// BasicTypeUNSIGNED_HYPER enum value 6
 	BasicTypeUNSIGNED_HYPER BasicType = 6
 
+	// BasicTypeFLOAT enum value 7
 	BasicTypeFLOAT BasicType = 7
 
+	// BasicTypeDOUBLE enum value 8
 	BasicTypeDOUBLE BasicType = 8
 )
 
+// BasicTypeMap generated enum map
 var BasicTypeMap = map[int32]string{
 
 	0: "BasicTypeBOOLEAN",
@@ -1844,18 +1976,25 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BasicType)(nil)
 )
 
+// ColumnType generated enum
 type ColumnType int32
 
 const (
+
+	// ColumnTypeBASIC enum value 0
 	ColumnTypeBASIC ColumnType = 0
 
+	// ColumnTypeSTRUCT enum value 1
 	ColumnTypeSTRUCT ColumnType = 1
 
+	// ColumnTypeARRAY enum value 2
 	ColumnTypeARRAY ColumnType = 2
 
+	// ColumnTypeTYPEDEF enum value 3
 	ColumnTypeTYPEDEF ColumnType = 3
 )
 
+// ColumnTypeMap generated enum map
 var ColumnTypeMap = map[int32]string{
 
 	0: "ColumnTypeBASIC",
@@ -1899,9 +2038,10 @@ var (
 )
 
 // End enum section
-//
+
 // Start union section
 
+// Column generated union
 type Column struct {
 	Type ColumnType
 
@@ -1916,13 +2056,13 @@ type Column struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (u Column) SwitchFieldName() string {
+func (s Column) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
 // the value for an instance of Column
-func (u Column) ArmForSwitch(sw int32) (string, bool) {
+func (s Column) ArmForSwitch(sw int32) (string, bool) {
 	switch ColumnType(sw) {
 
 	case ColumnTypeBASIC:
@@ -1987,8 +2127,8 @@ func NewColumn(aType ColumnType, value interface{}) (result Column, err error) {
 
 // MustBasic retrieves the Basic value from the union,
 // panicing if the value is not set.
-func (u Column) MustBasic() BasicColumn {
-	val, ok := u.GetBasic()
+func (s Column) MustBasic() BasicColumn {
+	val, ok := s.GetBasic()
 
 	if !ok {
 		panic("arm Basic is not set")
@@ -1999,11 +2139,11 @@ func (u Column) MustBasic() BasicColumn {
 
 // GetBasic retrieves the Basic value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Column) GetBasic() (result BasicColumn, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s Column) GetBasic() (result BasicColumn, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "Basic" {
-		result = *u.Basic
+		result = *s.Basic
 		ok = true
 	}
 
@@ -2012,8 +2152,8 @@ func (u Column) GetBasic() (result BasicColumn, ok bool) {
 
 // MustStruc retrieves the Struc value from the union,
 // panicing if the value is not set.
-func (u Column) MustStruc() StructColumn {
-	val, ok := u.GetStruc()
+func (s Column) MustStruc() StructColumn {
+	val, ok := s.GetStruc()
 
 	if !ok {
 		panic("arm Struc is not set")
@@ -2024,11 +2164,11 @@ func (u Column) MustStruc() StructColumn {
 
 // GetStruc retrieves the Struc value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Column) GetStruc() (result StructColumn, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s Column) GetStruc() (result StructColumn, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "Struc" {
-		result = *u.Struc
+		result = *s.Struc
 		ok = true
 	}
 
@@ -2037,8 +2177,8 @@ func (u Column) GetStruc() (result StructColumn, ok bool) {
 
 // MustArray retrieves the Array value from the union,
 // panicing if the value is not set.
-func (u Column) MustArray() ArrayColumn {
-	val, ok := u.GetArray()
+func (s Column) MustArray() ArrayColumn {
+	val, ok := s.GetArray()
 
 	if !ok {
 		panic("arm Array is not set")
@@ -2049,11 +2189,11 @@ func (u Column) MustArray() ArrayColumn {
 
 // GetArray retrieves the Array value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Column) GetArray() (result ArrayColumn, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s Column) GetArray() (result ArrayColumn, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "Array" {
-		result = *u.Array
+		result = *s.Array
 		ok = true
 	}
 
@@ -2062,8 +2202,8 @@ func (u Column) GetArray() (result ArrayColumn, ok bool) {
 
 // MustTyp retrieves the Typ value from the union,
 // panicing if the value is not set.
-func (u Column) MustTyp() TypedefColumn {
-	val, ok := u.GetTyp()
+func (s Column) MustTyp() TypedefColumn {
+	val, ok := s.GetTyp()
 
 	if !ok {
 		panic("arm Typ is not set")
@@ -2074,11 +2214,11 @@ func (u Column) MustTyp() TypedefColumn {
 
 // GetTyp retrieves the Typ value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Column) GetTyp() (result TypedefColumn, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s Column) GetTyp() (result TypedefColumn, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "Typ" {
-		result = *u.Typ
+		result = *s.Typ
 		ok = true
 	}
 
@@ -2109,9 +2249,12 @@ var (
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// Call generated struct
 type Call struct {
 	Function string `xdrmaxsize:"256"`
 
@@ -2136,6 +2279,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Call)(nil)
 )
 
+// Update generated struct
 type Update struct {
 	Contract []byte
 }
@@ -2158,6 +2302,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Update)(nil)
 )
 
+// Permission generated struct
 type Permission struct {
 	Key ID
 
@@ -2182,6 +2327,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Permission)(nil)
 )
 
+// Action generated struct
 type Action struct {
 	Address ID
 
@@ -2210,6 +2356,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Action)(nil)
 )
 
+// Transaction generated struct
 type Transaction struct {
 	Signature Signature
 
@@ -2236,6 +2383,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Transaction)(nil)
 )
 
+// CommittedTransaction generated struct
 type CommittedTransaction struct {
 	Transaction Transaction
 
@@ -2266,6 +2414,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*CommittedTransaction)(nil)
 )
 
+// Input generated struct
 type Input struct {
 	InputType InputType
 
@@ -2296,14 +2445,19 @@ var (
 
 // Start enum section
 
+// PermissionAction generated enum
 type PermissionAction int32
 
 const (
+
+	// PermissionActionREVOKE enum value 0
 	PermissionActionREVOKE PermissionAction = 0
 
+	// PermissionActionGRANT enum value 1
 	PermissionActionGRANT PermissionAction = 1
 )
 
+// PermissionActionMap generated enum map
 var PermissionActionMap = map[int32]string{
 
 	0: "PermissionActionREVOKE",
@@ -2342,18 +2496,25 @@ var (
 	_ encoding.BinaryUnmarshaler = (*PermissionAction)(nil)
 )
 
+// ActionCategoryType generated enum
 type ActionCategoryType int32
 
 const (
+
+	// ActionCategoryTypeNONE enum value 0
 	ActionCategoryTypeNONE ActionCategoryType = 0
 
+	// ActionCategoryTypeCALL enum value 1
 	ActionCategoryTypeCALL ActionCategoryType = 1
 
+	// ActionCategoryTypeUPDATE enum value 2
 	ActionCategoryTypeUPDATE ActionCategoryType = 2
 
+	// ActionCategoryTypePERMISSION enum value 3
 	ActionCategoryTypePERMISSION ActionCategoryType = 3
 )
 
+// ActionCategoryTypeMap generated enum map
 var ActionCategoryTypeMap = map[int32]string{
 
 	0: "ActionCategoryTypeNONE",
@@ -2396,14 +2557,19 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ActionCategoryType)(nil)
 )
 
+// AuthorityType generated enum
 type AuthorityType int32
 
 const (
+
+	// AuthorityTypeNONE enum value 0
 	AuthorityTypeNONE AuthorityType = 0
 
+	// AuthorityTypePERMISSIONED enum value 1
 	AuthorityTypePERMISSIONED AuthorityType = 1
 )
 
+// AuthorityTypeMap generated enum map
 var AuthorityTypeMap = map[int32]string{
 
 	0: "AuthorityTypeNONE",
@@ -2442,18 +2608,25 @@ var (
 	_ encoding.BinaryUnmarshaler = (*AuthorityType)(nil)
 )
 
+// InputType generated enum
 type InputType int32
 
 const (
+
+	// InputTypeNONE enum value 0
 	InputTypeNONE InputType = 0
 
+	// InputTypeREADONLY enum value 1
 	InputTypeREADONLY InputType = 1
 
+	// InputTypeEXECUTE enum value 2
 	InputTypeEXECUTE InputType = 2
 
+	// InputTypeCONSTRUCTOR enum value 3
 	InputTypeCONSTRUCTOR InputType = 3
 )
 
+// InputTypeMap generated enum map
 var InputTypeMap = map[int32]string{
 
 	0: "InputTypeNONE",
@@ -2497,9 +2670,10 @@ var (
 )
 
 // End enum section
-//
+
 // Start union section
 
+// ActionCategory generated union
 type ActionCategory struct {
 	Type ActionCategoryType
 
@@ -2512,13 +2686,13 @@ type ActionCategory struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (u ActionCategory) SwitchFieldName() string {
+func (s ActionCategory) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
 // the value for an instance of ActionCategory
-func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
+func (s ActionCategory) ArmForSwitch(sw int32) (string, bool) {
 	switch ActionCategoryType(sw) {
 
 	case ActionCategoryTypeNONE:
@@ -2576,8 +2750,8 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 
 // MustCall retrieves the Call value from the union,
 // panicing if the value is not set.
-func (u ActionCategory) MustCall() Call {
-	val, ok := u.GetCall()
+func (s ActionCategory) MustCall() Call {
+	val, ok := s.GetCall()
 
 	if !ok {
 		panic("arm Call is not set")
@@ -2588,11 +2762,11 @@ func (u ActionCategory) MustCall() Call {
 
 // GetCall retrieves the Call value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetCall() (result Call, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s ActionCategory) GetCall() (result Call, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "Call" {
-		result = *u.Call
+		result = *s.Call
 		ok = true
 	}
 
@@ -2601,8 +2775,8 @@ func (u ActionCategory) GetCall() (result Call, ok bool) {
 
 // MustUpdate retrieves the Update value from the union,
 // panicing if the value is not set.
-func (u ActionCategory) MustUpdate() Update {
-	val, ok := u.GetUpdate()
+func (s ActionCategory) MustUpdate() Update {
+	val, ok := s.GetUpdate()
 
 	if !ok {
 		panic("arm Update is not set")
@@ -2613,11 +2787,11 @@ func (u ActionCategory) MustUpdate() Update {
 
 // GetUpdate retrieves the Update value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetUpdate() (result Update, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s ActionCategory) GetUpdate() (result Update, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "Update" {
-		result = *u.Update
+		result = *s.Update
 		ok = true
 	}
 
@@ -2626,8 +2800,8 @@ func (u ActionCategory) GetUpdate() (result Update, ok bool) {
 
 // MustPermission retrieves the Permission value from the union,
 // panicing if the value is not set.
-func (u ActionCategory) MustPermission() Permission {
-	val, ok := u.GetPermission()
+func (s ActionCategory) MustPermission() Permission {
+	val, ok := s.GetPermission()
 
 	if !ok {
 		panic("arm Permission is not set")
@@ -2638,11 +2812,11 @@ func (u ActionCategory) MustPermission() Permission {
 
 // GetPermission retrieves the Permission value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetPermission() (result Permission, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s ActionCategory) GetPermission() (result Permission, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "Permission" {
-		result = *u.Permission
+		result = *s.Permission
 		ok = true
 	}
 
@@ -2667,6 +2841,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ActionCategory)(nil)
 )
 
+// Authority generated union
 type Authority struct {
 	Type AuthorityType
 
@@ -2675,13 +2850,13 @@ type Authority struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (u Authority) SwitchFieldName() string {
+func (s Authority) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
 // the value for an instance of Authority
-func (u Authority) ArmForSwitch(sw int32) (string, bool) {
+func (s Authority) ArmForSwitch(sw int32) (string, bool) {
 	switch AuthorityType(sw) {
 
 	case AuthorityTypeNONE:
@@ -2715,8 +2890,8 @@ func NewAuthority(aType AuthorityType, value interface{}) (result Authority, err
 
 // MustOrigin retrieves the Origin value from the union,
 // panicing if the value is not set.
-func (u Authority) MustOrigin() ID {
-	val, ok := u.GetOrigin()
+func (s Authority) MustOrigin() ID {
+	val, ok := s.GetOrigin()
 
 	if !ok {
 		panic("arm Origin is not set")
@@ -2727,11 +2902,11 @@ func (u Authority) MustOrigin() ID {
 
 // GetOrigin retrieves the Origin value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Authority) GetOrigin() (result ID, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
+func (s Authority) GetOrigin() (result ID, ok bool) {
+	armName, _ := s.ArmForSwitch(int32(s.Type))
 
 	if armName == "Origin" {
-		result = *u.Origin
+		result = *s.Origin
 		ok = true
 	}
 
