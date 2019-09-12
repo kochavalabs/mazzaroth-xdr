@@ -18,7 +18,7 @@ namespace mazzaroth
     // Timestamp stored for this block
     string timestamp<256>; 
 
-    // Block height number
+    // Block height is the number of blocks preceding this block
     unsigned hyper blockHeight;
 
     // The merkle root of the transaction merkle tree in this block
