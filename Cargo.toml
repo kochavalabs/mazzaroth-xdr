@@ -5,7 +5,7 @@ authors = ["Kyle Bartush <kbartush@kochava.com>"]
 edition = "2018"
 
 [dependencies]
-xdr-rs-serialize= { git = "ssh://git@github.com/kochavalabs/xdr-rs-serialize.git", branch = "develop"}
+xdr-rs-serialize = { git = "ssh://git@github.com/kochavalabs/xdr-rs-serialize.git", branch = "develop"}
 xdr-rs-serialize-derive = { git = "ssh://git@github.com/kochavalabs/xdr-rs-serialize.git", branch = "develop"}
 
 [lib]
