@@ -1,14 +1,14 @@
 #![allow(non_snake_case)]
 #![allow(non_camel_case_types)]
 #[macro_use]
-extern crate ex_dee_derive;
+extern crate xdr_rs_serialize_derive;
 #[allow(unused_imports)]
-use ex_dee::de::{
+use xdr_rs_serialize::de::{
     read_fixed_array, read_fixed_opaque, read_var_array, read_var_opaque, read_var_string, XDRIn,
 };
-use ex_dee::error::Error;
+use xdr_rs_serialize::error::Error;
 #[allow(unused_imports)]
-use ex_dee::ser::{
+use xdr_rs_serialize::ser::{
     write_fixed_array, write_fixed_opaque, write_var_array, write_var_opaque, write_var_string,
     XDROut,
 };
@@ -536,6 +536,125 @@ pub enum Identifier {
 impl Default for Identifier {
     fn default() -> Self {
         Identifier::NONE(())
+    }
+}
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct BasicColumn {
+    #[array(var = 40)]
+    pub name: String,
+
+    pub typ: BasicType,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct TypedefColumn {
+    #[array(var = 40)]
+    pub name: String,
+
+    #[array(fixed = 1)]
+    pub child: Vec<Column>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct StructColumn {
+    #[array(var = 40)]
+    pub name: String,
+
+    #[array(var = 40)]
+    pub columns: Vec<Column>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ArrayColumn {
+    #[array(var = 40)]
+    pub name: String,
+
+    pub fixed: bool,
+
+    pub length: u32,
+
+    #[array(fixed = 1)]
+    pub column: Vec<Column>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Table {
+    #[array(var = 40)]
+    pub name: String,
+
+    pub primary: String,
+
+    #[array(var = 40)]
+    pub columns: Vec<Column>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Schema {
+    #[array(var = 40)]
+    pub tables: Vec<Table>,
+}
+
+// End struct section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum BasicType {
+    BOOLEAN = 0,
+    STRING = 1,
+    OPAQUE = 2,
+    INT = 3,
+    UNSIGNED_INT = 4,
+    HYPER = 5,
+    UNSIGNED_HYPER = 6,
+    FLOAT = 7,
+    DOUBLE = 8,
+}
+
+impl Default for BasicType {
+    fn default() -> Self {
+        BasicType::BOOLEAN
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ColumnType {
+    BASIC = 0,
+    STRUCT = 1,
+    ARRAY = 2,
+    TYPEDEF = 3,
+}
+
+impl Default for ColumnType {
+    fn default() -> Self {
+        ColumnType::BASIC
+    }
+}
+// Start union section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum Column {
+    BASIC(BasicColumn),
+
+    STRUCT(StructColumn),
+
+    ARRAY(ArrayColumn),
+
+    TYPEDEF(TypedefColumn),
+}
+
+impl Default for Column {
+    fn default() -> Self {
+        Column::BASIC(BasicColumn::default())
     }
 }
 // End union section
