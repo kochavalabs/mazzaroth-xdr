@@ -1,4 +1,5 @@
 # Mazzaroth-xdr
+[![CircleCI](https://circleci.com/gh/kochavalabs/mazzaroth-xdr.svg?style=svg)](https://circleci.com/gh/kochavalabs/mazzaroth-xdr)
 
 Mazzaroth-xdr is a library that contains the XDR objects used by Mazzaroth.
 
