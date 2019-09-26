@@ -18,6 +18,8 @@ jobs:
       - run:
           name: NPM Install
           command: npm install
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Clean
           command: rm -rf ./js/*
@@ -30,6 +32,10 @@ jobs:
       - run:
           name: Verify No Changes
           command: if [[ `git status --porcelain` ]]; then  { printf '%s\n' "Should not have git changes." >&2; exit 1; }; fi
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
 
   publish-js-dev:
     docker:
