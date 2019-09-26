@@ -15,11 +15,11 @@ jobs:
       - run:
           name: Setup Env
           command: echo "export PATH=$HOME/.cargo/bin:$PATH" >> $BASH_ENV
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: NPM Install
           command: npm install
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Clean
           command: rm -rf ./js/*
