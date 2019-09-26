@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build-js:
+  build:
     docker:
       - image: circleci/node:latest
     steps:
@@ -9,8 +9,12 @@ jobs:
       - run:
           name: Update npm
           command: 'sudo npm install -g npm@latest'
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Get Rust
+          command: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+      - run:
+          name: Setup Env
+          command: echo "export PATH=$HOME/.cargo/bin:$PATH" >> $BASH_ENV
       - run:
           name: NPM Install
           command: npm install
@@ -23,10 +27,9 @@ jobs:
       - run:
           name: Build Javascript
           command: npm run build-js
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - node_modules
+      - run:
+          name: Verify No Changes
+          command: if [[ `git status --porcelain` ]]; then  { printf '%s\n' "Should not have git changes." >&2; exit 1; }; fi
 
   publish-js-dev:
     docker:
@@ -49,10 +52,10 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build-js
+      - build
       - publish-js-dev:
           requires:
-            - build-js
+            - build
           filters:
             branches:
               only: develop
