@@ -16,7 +16,7 @@ jobs:
           command: npm install
       - run:
           name: Clean
-          command: npm run clean
+          command: rm -rf ./js
       - run:
           name: Get Deps
           command: npm run get-deps
