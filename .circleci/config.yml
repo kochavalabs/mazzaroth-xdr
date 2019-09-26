@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build:
+  build-js:
     docker:
       - image: circleci/node:latest
     steps:
@@ -15,14 +15,20 @@ jobs:
           name: NPM Install
           command: npm install
       - run:
-          name: NPM Build
-          command: npm run build
+          name: Clean
+          command: npm run clean
+      - run:
+          name: Get Deps
+          command: npm run get-deps
+      - run:
+          name: Build Javascript
+          command: npm run build-js
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - node_modules
 
-  publish-dev:
+  publish-js-dev:
     docker:
       - image: circleci/node:latest
     steps:
@@ -43,12 +49,10 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
-      - publish-dev:
+      - build-js
+      - publish-js-dev:
           requires:
-            - build
+            - build-js
           filters:
             branches:
               only: develop
-
-
