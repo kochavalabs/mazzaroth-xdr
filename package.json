@@ -20,7 +20,7 @@
     "xdr",
     "mazzaroth"
   ],
-  "author": "Kyle Bartush",
+  "author": "KochavaLabs",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kochavalabs/mazzaroth-xdr/issues"
@@ -34,6 +34,6 @@
     "eslint": "^5.16.0"
   },
   "dependencies": {
-    "xdr-js-serialize": "git+ssh://git@github.com/kochavalabs/xdr-js-serialize.git"
+    "xdr-js-serialize": "develop"
   }
 }
