@@ -7,6 +7,17 @@ namespace mazzaroth
 {
   typedef string StatusInfo<256>;
 
+  // StateStatus provides state information about a block in responses
+  struct StateStatus
+  {
+    // The previous block number
+    unsigned hyper previousBlock;
+
+    // Number of transactions in this block
+    unsigned hyper transactionCount;
+  };
+
+  // IdentifierType for a block request, either by number or hash
   enum IdentifierType
   {
     NONE = 0, 
@@ -24,21 +35,29 @@ namespace mazzaroth
       Hash hash;
   };
 
+// BlockLookupRequest used to get a particular block from ledger
   struct BlockLookupRequest
   {
+    // Either the block number or hash
     Identifier ID;
   };
 
+  // BlockHeaderLookupRequest used to get the block header of a particular block from ledger
   struct BlockHeaderLookupRequest
   {
+    // Either the block number or hash
     Identifier ID;
   };
 
+  // BlockLookupResponse returned from BlockLookupRequests
   struct BlockLookupResponse
   {
 
     // Block that was requested if status is found.
     Block block;
+
+    // Current state status
+    StateStatus stateStatus;
 
     // Status for the requested block.
     BlockStatus status;
@@ -47,11 +66,15 @@ namespace mazzaroth
     StatusInfo statusInfo;
   };
 
+  // BlockHeaderLookupResponse returned from BlockHeaderLookupRequests
   struct BlockHeaderLookupResponse
   {
 
     // Block header that was requested if status is found.
     BlockHeader header;
+
+    // Current state status
+    StateStatus stateStatus;
 
     // Status for the requested block.
     BlockStatus status;
@@ -91,6 +114,9 @@ namespace mazzaroth
     // Final transaction written to the blockchain.
     Transaction transaction;
 
+    // Current state status
+    StateStatus stateStatus;
+
     // Current status of the transaction.
     TransactionStatus status;
 
@@ -120,7 +146,7 @@ namespace mazzaroth
   // Message sent to a node to submit a readonly request.
   struct ReadonlyRequest
   {
-    // Reaonly Request can only be a call
+    // Reaonly Request just takes call
     Call call;
   };
 
@@ -130,8 +156,8 @@ namespace mazzaroth
     // Return results of execution
     opaque result<>;
 
-    // The state root
-    Hash stateRoot;
+    // Current state status
+    StateStatus stateStatus;
 
     // Status of the request.
     ReadonlyStatus status;
@@ -186,6 +212,9 @@ namespace mazzaroth
     // Final receipt written to the blockchain.
     Receipt receipt; 
 
+    // Current state status
+    StateStatus stateStatus;
+
     // Current status of the receipt
     ReceiptLookupStatus status;
 
@@ -219,6 +248,9 @@ namespace mazzaroth
     // Final receipt written to the blockchain.
     unsigned hyper nonce; 
 
+    // Current state status
+    StateStatus stateStatus;
+
     // Status of the lookup
     NonceLookupStatus status;
 
@@ -238,4 +270,41 @@ namespace mazzaroth
     // The account nonce was not found.
     NOT_FOUND = 2
   };
+
+  // Request for a node to look up account info.
+  struct AccountInfoLookupRequest
+  {
+    // ID of the account
+    ID account;
+  };
+
+  // Response to account info lookup request.
+  struct AccountInfoLookupResponse
+  {
+    // Final receipt written to the blockchain.
+    Account accountInfo;
+
+    // Current state status
+    StateStatus stateStatus;
+
+    // Status of the lookup
+    InfoLookupStatus status;
+
+    // Human readable information to help understand the status.
+    StatusInfo statusInfo;
+  };
+
+  // Status of a info lookup.
+  enum InfoLookupStatus
+  {
+    // The status is either not known or not set.
+    UNKNOWN = 0,
+
+    // The account info was found.
+    FOUND = 1,
+
+    // The account info was not found.
+    NOT_FOUND = 2
+  };
+
 }

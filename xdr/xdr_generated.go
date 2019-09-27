@@ -1,3 +1,4 @@
+// Package xdr is automatically generated
 // DO NOT EDIT or your changes may be overwritten
 package xdr
 
@@ -25,15 +26,18 @@ func Marshal(w io.Writer, v interface{}) (int, error) {
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// Account generated struct
 type Account struct {
 	Name string
 
 	Nonce uint64
 
-	Value uint64
+	PermissionedKeys []ID
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -59,17 +63,21 @@ var (
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// Block generated struct
 type Block struct {
 	Header BlockHeader
 
@@ -94,6 +102,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Block)(nil)
 )
 
+// BlockHeader generated struct
 type BlockHeader struct {
 	Timestamp string `xdrmaxsize:"256"`
 
@@ -133,17 +142,21 @@ var (
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// ChannelConfig generated struct
 type ChannelConfig struct {
 	Owner ID
 
@@ -170,6 +183,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ChannelConfig)(nil)
 )
 
+// PBFTConfig generated struct
 type PBFTConfig struct {
 	CheckpointPeriod uint64
 }
@@ -196,14 +210,19 @@ var (
 
 // Start enum section
 
+// ConsensusConfigType generated enum
 type ConsensusConfigType int32
 
 const (
+
+	// ConsensusConfigTypeNONE enum value 0
 	ConsensusConfigTypeNONE ConsensusConfigType = 0
 
+	// ConsensusConfigTypePBFT enum value 1
 	ConsensusConfigTypePBFT ConsensusConfigType = 1
 )
 
+// ConsensusConfigTypeMap generated enum map
 var ConsensusConfigTypeMap = map[int32]string{
 
 	0: "ConsensusConfigTypeNONE",
@@ -243,9 +262,10 @@ var (
 )
 
 // End enum section
-//
+
 // Start union section
 
+// ConsensusConfig generated union
 type ConsensusConfig struct {
 	Type ConsensusConfigType
 
@@ -318,15 +338,15 @@ func (u ConsensusConfig) GetPbftConfig() (result PBFTConfig, ok bool) {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ConsensusConfig) MarshalBinary() ([]byte, error) {
+func (u ConsensusConfig) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
+	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ConsensusConfig) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
+func (u *ConsensusConfig) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
@@ -342,6 +362,7 @@ var (
 
 // Start typedef section
 
+// Signature generated typedef
 type Signature [64]byte
 
 // XDRMaxSize implements the Sized interface for Signature
@@ -367,6 +388,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Signature)(nil)
 )
 
+// ID generated typedef
 type ID [32]byte
 
 // XDRMaxSize implements the Sized interface for ID
@@ -392,6 +414,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ID)(nil)
 )
 
+// Hash generated typedef
 type Hash [32]byte
 
 // XDRMaxSize implements the Sized interface for Hash
@@ -417,6 +440,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Hash)(nil)
 )
 
+// Parameter generated typedef
 type Parameter []byte
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -440,22 +464,27 @@ var (
 // End typedef section
 
 // Start struct section
+
 // End struct section
 
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// ContractMetadata generated struct
 type ContractMetadata struct {
 	Hash Hash
 
@@ -485,17 +514,21 @@ var (
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// Event generated struct
 type Event struct {
 	Key string `xdrmaxsize:"256"`
 
@@ -525,17 +558,67 @@ var (
 // Start enum section
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// ExecutionPlan generated struct
+type ExecutionPlan struct {
+	Host string `xdrmaxsize:"256"`
+
+	ChannelID ID
+
+	Calls []Call `xdrmaxsize:"100"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ExecutionPlan) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ExecutionPlan) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ExecutionPlan)(nil)
+	_ encoding.BinaryUnmarshaler = (*ExecutionPlan)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+// End enum section
+
+// Start union section
+
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+// Receipt generated struct
 type Receipt struct {
 	Status ReceiptStatus
 
@@ -568,14 +651,19 @@ var (
 
 // Start enum section
 
+// ReceiptStatus generated enum
 type ReceiptStatus int32
 
 const (
+
+	// ReceiptStatusFAILURE enum value 0
 	ReceiptStatusFAILURE ReceiptStatus = 0
 
+	// ReceiptStatusSUCCESS enum value 1
 	ReceiptStatusSUCCESS ReceiptStatus = 1
 )
 
+// ReceiptStatusMap generated enum map
 var ReceiptStatusMap = map[int32]string{
 
 	0: "ReceiptStatusFAILURE",
@@ -615,8 +703,9 @@ var (
 )
 
 // End enum section
-//
+
 // Start union section
+
 // End union section
 
 // Namspace end mazzaroth
@@ -624,6 +713,7 @@ var (
 
 // Start typedef section
 
+// StatusInfo generated typedef
 type StatusInfo string
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -647,6 +737,33 @@ var (
 // End typedef section
 
 // Start struct section
+
+// StateStatus generated struct
+type StateStatus struct {
+	PreviousBlock uint64
+
+	TransactionCount uint64
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s StateStatus) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *StateStatus) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*StateStatus)(nil)
+	_ encoding.BinaryUnmarshaler = (*StateStatus)(nil)
+)
+
+// BlockLookupRequest generated struct
 type BlockLookupRequest struct {
 	ID Identifier
 }
@@ -669,6 +786,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockLookupRequest)(nil)
 )
 
+// BlockHeaderLookupRequest generated struct
 type BlockHeaderLookupRequest struct {
 	ID Identifier
 }
@@ -691,8 +809,11 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockHeaderLookupRequest)(nil)
 )
 
+// BlockLookupResponse generated struct
 type BlockLookupResponse struct {
 	Block Block
+
+	StateStatus StateStatus
 
 	Status BlockStatus
 
@@ -717,8 +838,11 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockLookupResponse)(nil)
 )
 
+// BlockHeaderLookupResponse generated struct
 type BlockHeaderLookupResponse struct {
 	Header BlockHeader
+
+	StateStatus StateStatus
 
 	Status BlockStatus
 
@@ -743,6 +867,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockHeaderLookupResponse)(nil)
 )
 
+// TransactionLookupRequest generated struct
 type TransactionLookupRequest struct {
 	TransactionID ID
 }
@@ -765,8 +890,11 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionLookupRequest)(nil)
 )
 
+// TransactionLookupResponse generated struct
 type TransactionLookupResponse struct {
 	Transaction Transaction
+
+	StateStatus StateStatus
 
 	Status TransactionStatus
 
@@ -791,6 +919,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionLookupResponse)(nil)
 )
 
+// TransactionSubmitRequest generated struct
 type TransactionSubmitRequest struct {
 	Transaction Transaction
 }
@@ -813,6 +942,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionSubmitRequest)(nil)
 )
 
+// TransactionSubmitResponse generated struct
 type TransactionSubmitResponse struct {
 	TransactionID ID
 
@@ -839,6 +969,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionSubmitResponse)(nil)
 )
 
+// ReadonlyRequest generated struct
 type ReadonlyRequest struct {
 	Call Call
 }
@@ -861,10 +992,11 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReadonlyRequest)(nil)
 )
 
+// ReadonlyResponse generated struct
 type ReadonlyResponse struct {
 	Result []byte
 
-	StateRoot Hash
+	StateStatus StateStatus
 
 	Status ReadonlyStatus
 
@@ -889,6 +1021,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReadonlyResponse)(nil)
 )
 
+// ReceiptLookupRequest generated struct
 type ReceiptLookupRequest struct {
 	TransactionID ID
 }
@@ -911,8 +1044,11 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReceiptLookupRequest)(nil)
 )
 
+// ReceiptLookupResponse generated struct
 type ReceiptLookupResponse struct {
 	Receipt Receipt
+
+	StateStatus StateStatus
 
 	Status ReceiptLookupStatus
 
@@ -937,6 +1073,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReceiptLookupResponse)(nil)
 )
 
+// AccountNonceLookupRequest generated struct
 type AccountNonceLookupRequest struct {
 	Account ID
 }
@@ -959,8 +1096,11 @@ var (
 	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupRequest)(nil)
 )
 
+// AccountNonceLookupResponse generated struct
 type AccountNonceLookupResponse struct {
 	Nonce uint64
+
+	StateStatus StateStatus
 
 	Status NonceLookupStatus
 
@@ -985,20 +1125,78 @@ var (
 	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupResponse)(nil)
 )
 
+// AccountInfoLookupRequest generated struct
+type AccountInfoLookupRequest struct {
+	Account ID
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s AccountInfoLookupRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *AccountInfoLookupRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*AccountInfoLookupRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*AccountInfoLookupRequest)(nil)
+)
+
+// AccountInfoLookupResponse generated struct
+type AccountInfoLookupResponse struct {
+	AccountInfo Account
+
+	StateStatus StateStatus
+
+	Status InfoLookupStatus
+
+	StatusInfo StatusInfo
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s AccountInfoLookupResponse) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *AccountInfoLookupResponse) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*AccountInfoLookupResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*AccountInfoLookupResponse)(nil)
+)
+
 // End struct section
 
 // Start enum section
 
+// IdentifierType generated enum
 type IdentifierType int32
 
 const (
+
+	// IdentifierTypeNONE enum value 0
 	IdentifierTypeNONE IdentifierType = 0
 
+	// IdentifierTypeNUMBER enum value 1
 	IdentifierTypeNUMBER IdentifierType = 1
 
+	// IdentifierTypeHASH enum value 2
 	IdentifierTypeHASH IdentifierType = 2
 )
 
+// IdentifierTypeMap generated enum map
 var IdentifierTypeMap = map[int32]string{
 
 	0: "IdentifierTypeNONE",
@@ -1039,18 +1237,25 @@ var (
 	_ encoding.BinaryUnmarshaler = (*IdentifierType)(nil)
 )
 
+// BlockStatus generated enum
 type BlockStatus int32
 
 const (
+
+	// BlockStatusUNKNOWN enum value 0
 	BlockStatusUNKNOWN BlockStatus = 0
 
+	// BlockStatusCREATED enum value 1
 	BlockStatusCREATED BlockStatus = 1
 
+	// BlockStatusFUTURE enum value 2
 	BlockStatusFUTURE BlockStatus = 2
 
+	// BlockStatusNOT_FOUND enum value 3
 	BlockStatusNOT_FOUND BlockStatus = 3
 )
 
+// BlockStatusMap generated enum map
 var BlockStatusMap = map[int32]string{
 
 	0: "BlockStatusUNKNOWN",
@@ -1093,20 +1298,28 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockStatus)(nil)
 )
 
+// TransactionStatus generated enum
 type TransactionStatus int32
 
 const (
+
+	// TransactionStatusUNKNOWN enum value 0
 	TransactionStatusUNKNOWN TransactionStatus = 0
 
+	// TransactionStatusACCEPTED enum value 1
 	TransactionStatusACCEPTED TransactionStatus = 1
 
+	// TransactionStatusREJECTED enum value 2
 	TransactionStatusREJECTED TransactionStatus = 2
 
+	// TransactionStatusCONFIRMED enum value 3
 	TransactionStatusCONFIRMED TransactionStatus = 3
 
+	// TransactionStatusNOT_FOUND enum value 4
 	TransactionStatusNOT_FOUND TransactionStatus = 4
 )
 
+// TransactionStatusMap generated enum map
 var TransactionStatusMap = map[int32]string{
 
 	0: "TransactionStatusUNKNOWN",
@@ -1151,16 +1364,22 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionStatus)(nil)
 )
 
+// ReadonlyStatus generated enum
 type ReadonlyStatus int32
 
 const (
+
+	// ReadonlyStatusUNKNOWN enum value 0
 	ReadonlyStatusUNKNOWN ReadonlyStatus = 0
 
+	// ReadonlyStatusSUCCESS enum value 1
 	ReadonlyStatusSUCCESS ReadonlyStatus = 1
 
+	// ReadonlyStatusFAILURE enum value 2
 	ReadonlyStatusFAILURE ReadonlyStatus = 2
 )
 
+// ReadonlyStatusMap generated enum map
 var ReadonlyStatusMap = map[int32]string{
 
 	0: "ReadonlyStatusUNKNOWN",
@@ -1201,16 +1420,22 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReadonlyStatus)(nil)
 )
 
+// ReceiptLookupStatus generated enum
 type ReceiptLookupStatus int32
 
 const (
+
+	// ReceiptLookupStatusUNKNOWN enum value 0
 	ReceiptLookupStatusUNKNOWN ReceiptLookupStatus = 0
 
+	// ReceiptLookupStatusFOUND enum value 1
 	ReceiptLookupStatusFOUND ReceiptLookupStatus = 1
 
+	// ReceiptLookupStatusNOT_FOUND enum value 2
 	ReceiptLookupStatusNOT_FOUND ReceiptLookupStatus = 2
 )
 
+// ReceiptLookupStatusMap generated enum map
 var ReceiptLookupStatusMap = map[int32]string{
 
 	0: "ReceiptLookupStatusUNKNOWN",
@@ -1251,16 +1476,22 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ReceiptLookupStatus)(nil)
 )
 
+// NonceLookupStatus generated enum
 type NonceLookupStatus int32
 
 const (
+
+	// NonceLookupStatusUNKNOWN enum value 0
 	NonceLookupStatusUNKNOWN NonceLookupStatus = 0
 
+	// NonceLookupStatusFOUND enum value 1
 	NonceLookupStatusFOUND NonceLookupStatus = 1
 
+	// NonceLookupStatusNOT_FOUND enum value 2
 	NonceLookupStatusNOT_FOUND NonceLookupStatus = 2
 )
 
+// NonceLookupStatusMap generated enum map
 var NonceLookupStatusMap = map[int32]string{
 
 	0: "NonceLookupStatusUNKNOWN",
@@ -1301,10 +1532,67 @@ var (
 	_ encoding.BinaryUnmarshaler = (*NonceLookupStatus)(nil)
 )
 
+// InfoLookupStatus generated enum
+type InfoLookupStatus int32
+
+const (
+
+	// InfoLookupStatusUNKNOWN enum value 0
+	InfoLookupStatusUNKNOWN InfoLookupStatus = 0
+
+	// InfoLookupStatusFOUND enum value 1
+	InfoLookupStatusFOUND InfoLookupStatus = 1
+
+	// InfoLookupStatusNOT_FOUND enum value 2
+	InfoLookupStatusNOT_FOUND InfoLookupStatus = 2
+)
+
+// InfoLookupStatusMap generated enum map
+var InfoLookupStatusMap = map[int32]string{
+
+	0: "InfoLookupStatusUNKNOWN",
+
+	1: "InfoLookupStatusFOUND",
+
+	2: "InfoLookupStatusNOT_FOUND",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for InfoLookupStatus
+func (s InfoLookupStatus) ValidEnum(v int32) bool {
+	_, ok := InfoLookupStatusMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s InfoLookupStatus) String() string {
+	name, _ := InfoLookupStatusMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s InfoLookupStatus) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *InfoLookupStatus) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*InfoLookupStatus)(nil)
+	_ encoding.BinaryUnmarshaler = (*InfoLookupStatus)(nil)
+)
+
 // End enum section
-//
+
 // Start union section
 
+// Identifier generated union
 type Identifier struct {
 	Type IdentifierType
 
@@ -1416,15 +1704,15 @@ func (u Identifier) GetHash() (result Hash, ok bool) {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s Identifier) MarshalBinary() ([]byte, error) {
+func (u Identifier) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
+	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Identifier) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
+func (u *Identifier) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
@@ -1439,9 +1727,534 @@ var (
 // Namspace start mazzaroth
 
 // Start typedef section
+
 // End typedef section
 
 // Start struct section
+
+// BasicColumn generated struct
+type BasicColumn struct {
+	Name string `xdrmaxsize:"40"`
+
+	Typ BasicType
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s BasicColumn) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *BasicColumn) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*BasicColumn)(nil)
+	_ encoding.BinaryUnmarshaler = (*BasicColumn)(nil)
+)
+
+// TypedefColumn generated struct
+type TypedefColumn struct {
+	Name string `xdrmaxsize:"40"`
+
+	Child [1]Column
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s TypedefColumn) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *TypedefColumn) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*TypedefColumn)(nil)
+	_ encoding.BinaryUnmarshaler = (*TypedefColumn)(nil)
+)
+
+// StructColumn generated struct
+type StructColumn struct {
+	Name string `xdrmaxsize:"40"`
+
+	Columns []Column `xdrmaxsize:"40"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s StructColumn) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *StructColumn) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*StructColumn)(nil)
+	_ encoding.BinaryUnmarshaler = (*StructColumn)(nil)
+)
+
+// ArrayColumn generated struct
+type ArrayColumn struct {
+	Name string `xdrmaxsize:"40"`
+
+	Fixed bool
+
+	Length uint32
+
+	Column [1]Column
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ArrayColumn) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ArrayColumn) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ArrayColumn)(nil)
+	_ encoding.BinaryUnmarshaler = (*ArrayColumn)(nil)
+)
+
+// Table generated struct
+type Table struct {
+	Name string `xdrmaxsize:"40"`
+
+	Primary string
+
+	Columns []Column `xdrmaxsize:"40"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Table) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Table) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Table)(nil)
+	_ encoding.BinaryUnmarshaler = (*Table)(nil)
+)
+
+// Schema generated struct
+type Schema struct {
+	Tables []Table `xdrmaxsize:"40"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Schema) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Schema) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Schema)(nil)
+	_ encoding.BinaryUnmarshaler = (*Schema)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+// BasicType generated enum
+type BasicType int32
+
+const (
+
+	// BasicTypeBOOLEAN enum value 0
+	BasicTypeBOOLEAN BasicType = 0
+
+	// BasicTypeSTRING enum value 1
+	BasicTypeSTRING BasicType = 1
+
+	// BasicTypeOPAQUE enum value 2
+	BasicTypeOPAQUE BasicType = 2
+
+	// BasicTypeINT enum value 3
+	BasicTypeINT BasicType = 3
+
+	// BasicTypeUNSIGNED_INT enum value 4
+	BasicTypeUNSIGNED_INT BasicType = 4
+
+	// BasicTypeHYPER enum value 5
+	BasicTypeHYPER BasicType = 5
+
+	// BasicTypeUNSIGNED_HYPER enum value 6
+	BasicTypeUNSIGNED_HYPER BasicType = 6
+
+	// BasicTypeFLOAT enum value 7
+	BasicTypeFLOAT BasicType = 7
+
+	// BasicTypeDOUBLE enum value 8
+	BasicTypeDOUBLE BasicType = 8
+)
+
+// BasicTypeMap generated enum map
+var BasicTypeMap = map[int32]string{
+
+	0: "BasicTypeBOOLEAN",
+
+	1: "BasicTypeSTRING",
+
+	2: "BasicTypeOPAQUE",
+
+	3: "BasicTypeINT",
+
+	4: "BasicTypeUNSIGNED_INT",
+
+	5: "BasicTypeHYPER",
+
+	6: "BasicTypeUNSIGNED_HYPER",
+
+	7: "BasicTypeFLOAT",
+
+	8: "BasicTypeDOUBLE",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for BasicType
+func (s BasicType) ValidEnum(v int32) bool {
+	_, ok := BasicTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s BasicType) String() string {
+	name, _ := BasicTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s BasicType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *BasicType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*BasicType)(nil)
+	_ encoding.BinaryUnmarshaler = (*BasicType)(nil)
+)
+
+// ColumnType generated enum
+type ColumnType int32
+
+const (
+
+	// ColumnTypeBASIC enum value 0
+	ColumnTypeBASIC ColumnType = 0
+
+	// ColumnTypeSTRUCT enum value 1
+	ColumnTypeSTRUCT ColumnType = 1
+
+	// ColumnTypeARRAY enum value 2
+	ColumnTypeARRAY ColumnType = 2
+
+	// ColumnTypeTYPEDEF enum value 3
+	ColumnTypeTYPEDEF ColumnType = 3
+)
+
+// ColumnTypeMap generated enum map
+var ColumnTypeMap = map[int32]string{
+
+	0: "ColumnTypeBASIC",
+
+	1: "ColumnTypeSTRUCT",
+
+	2: "ColumnTypeARRAY",
+
+	3: "ColumnTypeTYPEDEF",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ColumnType
+func (s ColumnType) ValidEnum(v int32) bool {
+	_, ok := ColumnTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s ColumnType) String() string {
+	name, _ := ColumnTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ColumnType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ColumnType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ColumnType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ColumnType)(nil)
+)
+
+// End enum section
+
+// Start union section
+
+// Column generated union
+type Column struct {
+	Type ColumnType
+
+	Basic *BasicColumn
+
+	Struc *StructColumn
+
+	Array *ArrayColumn
+
+	Typ *TypedefColumn
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u Column) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of Column
+func (u Column) ArmForSwitch(sw int32) (string, bool) {
+	switch ColumnType(sw) {
+
+	case ColumnTypeBASIC:
+		return "Basic", true
+
+	case ColumnTypeSTRUCT:
+		return "Struc", true
+
+	case ColumnTypeARRAY:
+		return "Array", true
+
+	case ColumnTypeTYPEDEF:
+		return "Typ", true
+	}
+	return "-", false
+}
+
+// NewColumn creates a new  Column.
+func NewColumn(aType ColumnType, value interface{}) (result Column, err error) {
+	result.Type = aType
+	switch aType {
+
+	case ColumnTypeBASIC:
+
+		tv, ok := value.(BasicColumn)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Basic = &tv
+
+	case ColumnTypeSTRUCT:
+
+		tv, ok := value.(StructColumn)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Struc = &tv
+
+	case ColumnTypeARRAY:
+
+		tv, ok := value.(ArrayColumn)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Array = &tv
+
+	case ColumnTypeTYPEDEF:
+
+		tv, ok := value.(TypedefColumn)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Typ = &tv
+
+	}
+	return
+}
+
+// MustBasic retrieves the Basic value from the union,
+// panicing if the value is not set.
+func (u Column) MustBasic() BasicColumn {
+	val, ok := u.GetBasic()
+
+	if !ok {
+		panic("arm Basic is not set")
+	}
+
+	return val
+}
+
+// GetBasic retrieves the Basic value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Column) GetBasic() (result BasicColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Basic" {
+		result = *u.Basic
+		ok = true
+	}
+
+	return
+}
+
+// MustStruc retrieves the Struc value from the union,
+// panicing if the value is not set.
+func (u Column) MustStruc() StructColumn {
+	val, ok := u.GetStruc()
+
+	if !ok {
+		panic("arm Struc is not set")
+	}
+
+	return val
+}
+
+// GetStruc retrieves the Struc value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Column) GetStruc() (result StructColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Struc" {
+		result = *u.Struc
+		ok = true
+	}
+
+	return
+}
+
+// MustArray retrieves the Array value from the union,
+// panicing if the value is not set.
+func (u Column) MustArray() ArrayColumn {
+	val, ok := u.GetArray()
+
+	if !ok {
+		panic("arm Array is not set")
+	}
+
+	return val
+}
+
+// GetArray retrieves the Array value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Column) GetArray() (result ArrayColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Array" {
+		result = *u.Array
+		ok = true
+	}
+
+	return
+}
+
+// MustTyp retrieves the Typ value from the union,
+// panicing if the value is not set.
+func (u Column) MustTyp() TypedefColumn {
+	val, ok := u.GetTyp()
+
+	if !ok {
+		panic("arm Typ is not set")
+	}
+
+	return val
+}
+
+// GetTyp retrieves the Typ value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Column) GetTyp() (result TypedefColumn, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Typ" {
+		result = *u.Typ
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u Column) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *Column) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Column)(nil)
+	_ encoding.BinaryUnmarshaler = (*Column)(nil)
+)
+
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+// Call generated struct
 type Call struct {
 	Function string `xdrmaxsize:"256"`
 
@@ -1466,6 +2279,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Call)(nil)
 )
 
+// Update generated struct
 type Update struct {
 	Contract []byte
 }
@@ -1488,7 +2302,35 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Update)(nil)
 )
 
+// Permission generated struct
+type Permission struct {
+	Key ID
+
+	Action PermissionAction
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Permission) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Permission) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Permission)(nil)
+	_ encoding.BinaryUnmarshaler = (*Permission)(nil)
+)
+
+// Action generated struct
 type Action struct {
+	Address ID
+
 	ChannelID ID
 
 	Nonce uint64
@@ -1514,10 +2356,11 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Action)(nil)
 )
 
+// Transaction generated struct
 type Transaction struct {
 	Signature Signature
 
-	Address ID
+	Signer Authority
 
 	Action Action
 }
@@ -1540,6 +2383,7 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Transaction)(nil)
 )
 
+// CommittedTransaction generated struct
 type CommittedTransaction struct {
 	Transaction Transaction
 
@@ -1570,20 +2414,107 @@ var (
 	_ encoding.BinaryUnmarshaler = (*CommittedTransaction)(nil)
 )
 
+// Input generated struct
+type Input struct {
+	InputType InputType
+
+	Function string `xdrmaxsize:"256"`
+
+	Parameters []Parameter
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Input) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Input) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Input)(nil)
+	_ encoding.BinaryUnmarshaler = (*Input)(nil)
+)
+
 // End struct section
 
 // Start enum section
 
+// PermissionAction generated enum
+type PermissionAction int32
+
+const (
+
+	// PermissionActionREVOKE enum value 0
+	PermissionActionREVOKE PermissionAction = 0
+
+	// PermissionActionGRANT enum value 1
+	PermissionActionGRANT PermissionAction = 1
+)
+
+// PermissionActionMap generated enum map
+var PermissionActionMap = map[int32]string{
+
+	0: "PermissionActionREVOKE",
+
+	1: "PermissionActionGRANT",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for PermissionAction
+func (s PermissionAction) ValidEnum(v int32) bool {
+	_, ok := PermissionActionMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s PermissionAction) String() string {
+	name, _ := PermissionActionMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s PermissionAction) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *PermissionAction) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*PermissionAction)(nil)
+	_ encoding.BinaryUnmarshaler = (*PermissionAction)(nil)
+)
+
+// ActionCategoryType generated enum
 type ActionCategoryType int32
 
 const (
+
+	// ActionCategoryTypeNONE enum value 0
 	ActionCategoryTypeNONE ActionCategoryType = 0
 
+	// ActionCategoryTypeCALL enum value 1
 	ActionCategoryTypeCALL ActionCategoryType = 1
 
+	// ActionCategoryTypeUPDATE enum value 2
 	ActionCategoryTypeUPDATE ActionCategoryType = 2
+
+	// ActionCategoryTypePERMISSION enum value 3
+	ActionCategoryTypePERMISSION ActionCategoryType = 3
 )
 
+// ActionCategoryTypeMap generated enum map
 var ActionCategoryTypeMap = map[int32]string{
 
 	0: "ActionCategoryTypeNONE",
@@ -1591,6 +2522,8 @@ var ActionCategoryTypeMap = map[int32]string{
 	1: "ActionCategoryTypeCALL",
 
 	2: "ActionCategoryTypeUPDATE",
+
+	3: "ActionCategoryTypePERMISSION",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -1624,16 +2557,131 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ActionCategoryType)(nil)
 )
 
+// AuthorityType generated enum
+type AuthorityType int32
+
+const (
+
+	// AuthorityTypeNONE enum value 0
+	AuthorityTypeNONE AuthorityType = 0
+
+	// AuthorityTypePERMISSIONED enum value 1
+	AuthorityTypePERMISSIONED AuthorityType = 1
+)
+
+// AuthorityTypeMap generated enum map
+var AuthorityTypeMap = map[int32]string{
+
+	0: "AuthorityTypeNONE",
+
+	1: "AuthorityTypePERMISSIONED",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for AuthorityType
+func (s AuthorityType) ValidEnum(v int32) bool {
+	_, ok := AuthorityTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s AuthorityType) String() string {
+	name, _ := AuthorityTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s AuthorityType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *AuthorityType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*AuthorityType)(nil)
+	_ encoding.BinaryUnmarshaler = (*AuthorityType)(nil)
+)
+
+// InputType generated enum
+type InputType int32
+
+const (
+
+	// InputTypeNONE enum value 0
+	InputTypeNONE InputType = 0
+
+	// InputTypeREADONLY enum value 1
+	InputTypeREADONLY InputType = 1
+
+	// InputTypeEXECUTE enum value 2
+	InputTypeEXECUTE InputType = 2
+
+	// InputTypeCONSTRUCTOR enum value 3
+	InputTypeCONSTRUCTOR InputType = 3
+)
+
+// InputTypeMap generated enum map
+var InputTypeMap = map[int32]string{
+
+	0: "InputTypeNONE",
+
+	1: "InputTypeREADONLY",
+
+	2: "InputTypeEXECUTE",
+
+	3: "InputTypeCONSTRUCTOR",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for InputType
+func (s InputType) ValidEnum(v int32) bool {
+	_, ok := InputTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s InputType) String() string {
+	name, _ := InputTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s InputType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *InputType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*InputType)(nil)
+	_ encoding.BinaryUnmarshaler = (*InputType)(nil)
+)
+
 // End enum section
-//
+
 // Start union section
 
+// ActionCategory generated union
 type ActionCategory struct {
 	Type ActionCategoryType
 
 	Call *Call
 
 	Update *Update
+
+	Permission *Permission
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -1655,6 +2703,9 @@ func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
 
 	case ActionCategoryTypeUPDATE:
 		return "Update", true
+
+	case ActionCategoryTypePERMISSION:
+		return "Permission", true
 	}
 	return "-", false
 }
@@ -1683,6 +2734,15 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 			return
 		}
 		result.Update = &tv
+
+	case ActionCategoryTypePERMISSION:
+
+		tv, ok := value.(Permission)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Permission = &tv
 
 	}
 	return
@@ -1738,22 +2798,137 @@ func (u ActionCategory) GetUpdate() (result Update, ok bool) {
 	return
 }
 
+// MustPermission retrieves the Permission value from the union,
+// panicing if the value is not set.
+func (u ActionCategory) MustPermission() Permission {
+	val, ok := u.GetPermission()
+
+	if !ok {
+		panic("arm Permission is not set")
+	}
+
+	return val
+}
+
+// GetPermission retrieves the Permission value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ActionCategory) GetPermission() (result Permission, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Permission" {
+		result = *u.Permission
+		ok = true
+	}
+
+	return
+}
+
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ActionCategory) MarshalBinary() ([]byte, error) {
+func (u ActionCategory) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
+	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ActionCategory) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
+func (u *ActionCategory) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
 var (
 	_ encoding.BinaryMarshaler   = (*ActionCategory)(nil)
 	_ encoding.BinaryUnmarshaler = (*ActionCategory)(nil)
+)
+
+// Authority generated union
+type Authority struct {
+	Type AuthorityType
+
+	Origin *ID
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u Authority) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of Authority
+func (u Authority) ArmForSwitch(sw int32) (string, bool) {
+	switch AuthorityType(sw) {
+
+	case AuthorityTypeNONE:
+		return "", true
+
+	case AuthorityTypePERMISSIONED:
+		return "Origin", true
+	}
+	return "-", false
+}
+
+// NewAuthority creates a new  Authority.
+func NewAuthority(aType AuthorityType, value interface{}) (result Authority, err error) {
+	result.Type = aType
+	switch aType {
+
+	case AuthorityTypeNONE:
+
+	case AuthorityTypePERMISSIONED:
+
+		tv, ok := value.(ID)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Origin = &tv
+
+	}
+	return
+}
+
+// MustOrigin retrieves the Origin value from the union,
+// panicing if the value is not set.
+func (u Authority) MustOrigin() ID {
+	val, ok := u.GetOrigin()
+
+	if !ok {
+		panic("arm Origin is not set")
+	}
+
+	return val
+}
+
+// GetOrigin retrieves the Origin value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Authority) GetOrigin() (result ID, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Origin" {
+		result = *u.Origin
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u Authority) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *Authority) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Authority)(nil)
+	_ encoding.BinaryUnmarshaler = (*Authority)(nil)
 )
 
 // End union section

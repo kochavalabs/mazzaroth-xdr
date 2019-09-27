@@ -1,19 +1,23 @@
 package main
 
 import (
-	"github.com/kochavalabs/mazzaroth-xdr/xdr"
 	"testing"
+
+	"github.com/kochavalabs/mazzaroth-xdr/xdr"
 )
 
 var signature = [64]byte{1, 2, 3}
-var address = [32]byte{6, 7, 8}
+var address = xdr.ID{6, 7, 8}
 var contract = []byte{1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 var channelID = [32]byte{3, 4, 5}
 
 func getXdr() xdr.Transaction {
 	return xdr.Transaction{
 		Signature: signature,
-		Address:   address,
+		Signer: xdr.Authority{
+			Type:   xdr.AuthorityTypeNONE,
+			Origin: &address,
+		},
 		Action: xdr.Action{
 			ChannelID: channelID,
 			Nonce:     4,

@@ -1,12 +1,23 @@
 [package]
 name = "mazzaroth-xdr"
-version = "0.1.0"
-authors = ["Kyle Bartush <kbartush@kochava.com>"]
+version = "0.1.0-alpha"
+authors = ["Kochavalabs <dev@mazzaroth.io>"]
+description = "XDR objects used by Mazzaroth"
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/kochavalabs/mazzaroth-xdr"
+repository = "https://github.com/kochavalabs/mazzaroth-xdr"
 edition = "2018"
+keywords = ["mazzaroth", "xdr"]
+
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+]
 
 [dependencies]
-ex-dee = { git = "ssh://git@github.com/kochavalabs/ex-dee.git" }
-ex-dee-derive = { git = "ssh://git@github.com/kochavalabs/ex-dee.git" }
+xdr-rs-serialize = "0.1.0-alpha"
+xdr-rs-serialize-derive = "0.1.0-alpha"
 
 [lib]
 path = "rust/xdr_generated.rs"
