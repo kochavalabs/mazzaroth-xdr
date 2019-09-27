@@ -5,4 +5,4 @@ examples/xdroutjs
 target/
 xdr-codegen/
 Cargo.lock
-package-json.lock
+package-lock.json
