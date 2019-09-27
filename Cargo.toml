@@ -1,8 +1,19 @@
 [package]
 name = "mazzaroth-xdr"
 version = "0.1.0"
-authors = ["Kyle Bartush <kbartush@kochava.com>"]
+authors = ["Kochavalabs <dev@mazzaroth.io>"]
+description = "XDR objects used by Mazzaroth"
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/kochavalabs/mazzaroth-xdr"
+repository = "https://github.com/kochavalabs/mazzaroth-xdr"
 edition = "2018"
+keywords = ["mazzaroth", "xdr"]
+
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+]
 
 [dependencies]
 xdr-rs-serialize = { git = "ssh://git@github.com/kochavalabs/xdr-rs-serialize.git", branch = "develop"}
