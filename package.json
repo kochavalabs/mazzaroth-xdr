@@ -38,6 +38,6 @@
     "package-tagger": "^0.1.1"
   },
   "dependencies": {
-    "xdr-js-serialize": "develop"
+    "xdr-js-serialize": "0.1.0-alpha"
   }
 }

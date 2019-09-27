@@ -16,8 +16,8 @@ include = [
 ]
 
 [dependencies]
-xdr-rs-serialize = { git = "ssh://git@github.com/kochavalabs/xdr-rs-serialize.git", branch = "develop"}
-xdr-rs-serialize-derive = { git = "ssh://git@github.com/kochavalabs/xdr-rs-serialize.git", branch = "develop"}
+xdr-rs-serialize = "0.1.0-alpha"
+xdr-rs-serialize-derive = "0.1.0-alpha"
 
 [lib]
 path = "rust/xdr_generated.rs"
