@@ -4,3 +4,5 @@ examples/pbout
 examples/xdroutjs
 target/
 xdr-codegen/
+Cargo.lock
+package-json.lock
