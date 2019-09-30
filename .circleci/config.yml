@@ -30,6 +30,9 @@ jobs:
           name: Build Javascript
           command: npm run build-js
       - run:
+          name: Build Rust
+          command: npm run build-rust
+      - run:
           name: Verify No Changes
           command: if [[ `git status --porcelain` ]]; then  { printf '%s\n' "Should not have git changes." >&2; exit 1; }; fi
       - save_cache:
