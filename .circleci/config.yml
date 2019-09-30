@@ -11,7 +11,9 @@ jobs:
           command: 'sudo npm install -g npm@latest'
       - run:
           name: Get Rust
-          command: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+          command: |
+            "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+            rustup component add rustfmt
       - run:
           name: Setup Env
           command: echo "export PATH=$HOME/.cargo/bin:$PATH" >> $BASH_ENV
