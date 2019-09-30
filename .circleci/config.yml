@@ -11,9 +11,7 @@ jobs:
           command: 'sudo npm install -g npm@latest'
       - run:
           name: Get Rust
-          command: |
-            "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
-            rustup component add rustfmt
+          command: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
       - run:
           name: Setup Env
           command: echo "export PATH=$HOME/.cargo/bin:$PATH" >> $BASH_ENV
@@ -33,7 +31,9 @@ jobs:
           command: npm run build-js
       - run:
           name: Build Rust
-          command: npm run build-rust
+          command: |
+            rustup component add rustfmt
+            npm run build-rust
       - run:
           name: Verify No Changes
           command: if [[ `git status --porcelain` ]]; then  { printf '%s\n' "Should not have git changes." >&2; exit 1; }; fi
