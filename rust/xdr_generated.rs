@@ -711,15 +711,32 @@ pub struct Transaction {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct TransactionsBatch {
+    #[array(var = 2147483647)]
+    pub transactions: Vec<Transaction>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct CommittedTransaction {
+    pub batch: TransactionsBatch,
+
+    pub commit: Commit,
+
+    #[array(var = 2147483647)]
+    pub signatureSet: Vec<SignatureSet>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Commit {
+    pub view: u64,
+
     pub sequenceNumber: u64,
 
-    pub transaction: Transaction,
+    pub batchId: String,
+}
 
-    pub receiptID: ID,
-
-    pub currentTransactionRoot: Hash,
-
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct SignatureSet {
     pub signer: ID,
 
     pub signature: Signature,

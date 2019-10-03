@@ -59,7 +59,10 @@ exports.Update = Update;
 exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
+exports.TransactionsBatch = TransactionsBatch;
 exports.CommittedTransaction = CommittedTransaction;
+exports.Commit = Commit;
+exports.SignatureSet = SignatureSet;
 exports.Input = Input;
 exports.PermissionAction = PermissionAction;
 exports.ActionCategoryType = ActionCategoryType;
@@ -568,8 +571,17 @@ function Action() {
 function Transaction() {
     return new _xdrJsSerialize2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
 }
+function TransactionsBatch() {
+    return new _xdrJsSerialize2.default.Struct(["transactions"], [new _xdrJsSerialize2.default.VarArray(2147483647, Transaction)]);
+}
 function CommittedTransaction() {
-    return new _xdrJsSerialize2.default.Struct(["sequenceNumber", "transaction", "receiptID", "currentTransactionRoot", "signer", "signature"], [new _xdrJsSerialize2.default.UHyper(), Transaction(), ID(), Hash(), ID(), Signature()]);
+    return new _xdrJsSerialize2.default.Struct(["batch", "commit", "signatureSet"], [TransactionsBatch(), Commit(), new _xdrJsSerialize2.default.VarArray(2147483647, SignatureSet)]);
+}
+function Commit() {
+    return new _xdrJsSerialize2.default.Struct(["view", "sequenceNumber", "batchId"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.Str('', 0)]);
+}
+function SignatureSet() {
+    return new _xdrJsSerialize2.default.Struct(["signer", "signature"], [ID(), Signature()]);
 }
 function Input() {
     return new _xdrJsSerialize2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);

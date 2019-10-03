@@ -2383,19 +2383,36 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Transaction)(nil)
 )
 
+// TransactionsBatch generated struct
+type TransactionsBatch struct {
+	Transactions []Transaction
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s TransactionsBatch) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *TransactionsBatch) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*TransactionsBatch)(nil)
+	_ encoding.BinaryUnmarshaler = (*TransactionsBatch)(nil)
+)
+
 // CommittedTransaction generated struct
 type CommittedTransaction struct {
-	SequenceNumber uint64
+	Batch TransactionsBatch
 
-	Transaction Transaction
+	Commit Commit
 
-	ReceiptID ID
-
-	CurrentTransactionRoot Hash
-
-	Signer ID
-
-	Signature Signature
+	SignatureSet []SignatureSet
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2414,6 +2431,58 @@ func (s *CommittedTransaction) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*CommittedTransaction)(nil)
 	_ encoding.BinaryUnmarshaler = (*CommittedTransaction)(nil)
+)
+
+// Commit generated struct
+type Commit struct {
+	View uint64
+
+	SequenceNumber uint64
+
+	BatchId string
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Commit) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Commit) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Commit)(nil)
+	_ encoding.BinaryUnmarshaler = (*Commit)(nil)
+)
+
+// SignatureSet generated struct
+type SignatureSet struct {
+	Signer ID
+
+	Signature Signature
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s SignatureSet) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *SignatureSet) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*SignatureSet)(nil)
+	_ encoding.BinaryUnmarshaler = (*SignatureSet)(nil)
 )
 
 // Input generated struct
