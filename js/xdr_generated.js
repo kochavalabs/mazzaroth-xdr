@@ -59,7 +59,6 @@ exports.Update = Update;
 exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
-exports.CommittedTransaction = CommittedTransaction;
 exports.Input = Input;
 exports.PermissionAction = PermissionAction;
 exports.ActionCategoryType = ActionCategoryType;
@@ -567,9 +566,6 @@ function Action() {
 }
 function Transaction() {
     return new _xdrJsSerialize2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
-}
-function CommittedTransaction() {
-    return new _xdrJsSerialize2.default.Struct(["transaction", "sequenceNumber", "receiptID", "currentTransactionRoot", "signatures"], [Transaction(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.VarArray(25, ID), Hash(), new _xdrJsSerialize2.default.VarArray(2147483647, Signature)]);
 }
 function Input() {
     return new _xdrJsSerialize2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
