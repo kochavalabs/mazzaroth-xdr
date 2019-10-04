@@ -711,21 +711,6 @@ pub struct Transaction {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct CommittedTransaction {
-    pub transaction: Transaction,
-
-    pub sequenceNumber: u64,
-
-    #[array(var = 25)]
-    pub receiptID: Vec<ID>,
-
-    pub currentTransactionRoot: Hash,
-
-    #[array(var = 2147483647)]
-    pub signatures: Vec<Signature>,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Input {
     pub inputType: InputType,
 

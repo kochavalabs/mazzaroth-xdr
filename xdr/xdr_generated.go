@@ -2383,37 +2383,6 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Transaction)(nil)
 )
 
-// CommittedTransaction generated struct
-type CommittedTransaction struct {
-	Transaction Transaction
-
-	SequenceNumber uint64
-
-	ReceiptID []ID `xdrmaxsize:"25"`
-
-	CurrentTransactionRoot Hash
-
-	Signatures []Signature
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s CommittedTransaction) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *CommittedTransaction) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*CommittedTransaction)(nil)
-	_ encoding.BinaryUnmarshaler = (*CommittedTransaction)(nil)
-)
-
 // Input generated struct
 type Input struct {
 	InputType InputType
