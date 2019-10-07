@@ -15,6 +15,11 @@ exports.ID = ID;
 exports.Hash = Hash;
 exports.Parameter = Parameter;
 exports.ContractMetadata = ContractMetadata;
+exports.DownloadRequest = DownloadRequest;
+exports.DownloadResponse = DownloadResponse;
+exports.DownloadRequestType = DownloadRequestType;
+exports.DownloadRequestPayload = DownloadRequestPayload;
+exports.DownloadResponsePayload = DownloadResponsePayload;
 exports.Event = Event;
 exports.ExecutionPlan = ExecutionPlan;
 exports.Receipt = Receipt;
@@ -224,6 +229,76 @@ function ContractMetadata() {
 
 // Start union section
 
+
+// End union section
+
+// End namespace mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
+function DownloadRequest() {
+    return new _xdrJsSerialize2.default.Struct(["requestPayload"], [RequestPayload()]);
+}
+function DownloadResponse() {
+    return new _xdrJsSerialize2.default.Struct(["ResponsePayload"], [ResponsePayload()]);
+}
+
+// End struct section
+
+// Start enum section
+
+function DownloadRequestType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "UNKNOWN",
+        1: "HEIGHT",
+        2: "BLOCK"
+
+    });
+}
+
+// End enum section
+
+// Start union section
+
+
+function DownloadRequestPayload() {
+    return new _xdrJsSerialize2.default.Union(DownloadRequestType(), {
+
+        "UNKNOWN": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "HEIGHT": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "BLOCK": () => {
+            return new _xdrJsSerialize2.default.UHyper();
+        }
+
+    });
+}
+
+function DownloadResponsePayload() {
+    return new _xdrJsSerialize2.default.Union(DownloadRequestType(), {
+
+        "UNKNOWN": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "HEIGHT": () => {
+            return new _xdrJsSerialize2.default.UHyper();
+        },
+
+        "BLOCK": () => {
+            return Block();
+        }
+
+    });
+}
 
 // End union section
 

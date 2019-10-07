@@ -1,0 +1,41 @@
+%#include "block.x"
+
+namespace mazzaroth
+{
+    // Downlaod Requests are made between Mazzaroth nodes to sync data
+    struct DownloadRequest {
+        RequestPayload requestPayload;
+    }
+
+    // The different request messages that can be sent
+    enum DownloadRequestType {
+        UNKNOWN = 0,
+        HEIGHT = 1, // Request current block height of node
+        BLOCK = 2 // Request a block from the node
+    };
+
+    union DownloadRequestPayload switch (DownloadRequestType Type)
+    {
+        case UNKNOWN:
+            void;
+        case HEIGHT:
+            void;
+        case BLOCK:
+            unsigned hyper height;
+    }
+
+    // Download Responses returned from requests
+    struct DownloadResponse {
+        ResponsePayload ResponsePayload;
+    }
+
+    union DownloadResponsePayload switch (DownloadRequestType Type)
+    {
+        case UNKNOWN:
+            void;
+        case HEIGHT:
+            unsigned hyper height;
+        case BLOCK:
+            Block block;
+    }
+}

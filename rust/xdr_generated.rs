@@ -199,6 +199,72 @@ pub struct ContractMetadata {
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct DownloadRequest {
+    pub requestPayload: RequestPayload,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct DownloadResponse {
+    pub ResponsePayload: ResponsePayload,
+}
+
+// End struct section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum DownloadRequestType {
+    UNKNOWN = 0,
+    HEIGHT = 1,
+    BLOCK = 2,
+}
+
+impl Default for DownloadRequestType {
+    fn default() -> Self {
+        DownloadRequestType::UNKNOWN
+    }
+}
+// Start union section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum DownloadRequestPayload {
+    UNKNOWN(()),
+
+    HEIGHT(()),
+
+    BLOCK(u64),
+}
+
+impl Default for DownloadRequestPayload {
+    fn default() -> Self {
+        DownloadRequestPayload::UNKNOWN(())
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum DownloadResponsePayload {
+    UNKNOWN(()),
+
+    HEIGHT(u64),
+
+    BLOCK(Block),
+}
+
+impl Default for DownloadResponsePayload {
+    fn default() -> Self {
+        DownloadResponsePayload::UNKNOWN(())
+    }
+}
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Event {
     #[array(var = 256)]
     pub key: String,

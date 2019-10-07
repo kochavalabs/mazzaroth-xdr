@@ -528,6 +528,351 @@ var (
 
 // Start struct section
 
+// DownloadRequest generated struct
+type DownloadRequest struct {
+	RequestPayload RequestPayload
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s DownloadRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *DownloadRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*DownloadRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadRequest)(nil)
+)
+
+// DownloadResponse generated struct
+type DownloadResponse struct {
+	ResponsePayload ResponsePayload
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s DownloadResponse) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *DownloadResponse) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*DownloadResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadResponse)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+// DownloadRequestType generated enum
+type DownloadRequestType int32
+
+const (
+
+	// DownloadRequestTypeUNKNOWN enum value 0
+	DownloadRequestTypeUNKNOWN DownloadRequestType = 0
+
+	// DownloadRequestTypeHEIGHT enum value 1
+	DownloadRequestTypeHEIGHT DownloadRequestType = 1
+
+	// DownloadRequestTypeBLOCK enum value 2
+	DownloadRequestTypeBLOCK DownloadRequestType = 2
+)
+
+// DownloadRequestTypeMap generated enum map
+var DownloadRequestTypeMap = map[int32]string{
+
+	0: "DownloadRequestTypeUNKNOWN",
+
+	1: "DownloadRequestTypeHEIGHT",
+
+	2: "DownloadRequestTypeBLOCK",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for DownloadRequestType
+func (s DownloadRequestType) ValidEnum(v int32) bool {
+	_, ok := DownloadRequestTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s DownloadRequestType) String() string {
+	name, _ := DownloadRequestTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s DownloadRequestType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *DownloadRequestType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*DownloadRequestType)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadRequestType)(nil)
+)
+
+// End enum section
+
+// Start union section
+
+// DownloadRequestPayload generated union
+type DownloadRequestPayload struct {
+	Type DownloadRequestType
+
+	Height *uint64
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u DownloadRequestPayload) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of DownloadRequestPayload
+func (u DownloadRequestPayload) ArmForSwitch(sw int32) (string, bool) {
+	switch DownloadRequestType(sw) {
+
+	case DownloadRequestTypeUNKNOWN:
+		return "", true
+
+	case DownloadRequestTypeHEIGHT:
+		return "", true
+
+	case DownloadRequestTypeBLOCK:
+		return "Height", true
+	}
+	return "-", false
+}
+
+// NewDownloadRequestPayload creates a new  DownloadRequestPayload.
+func NewDownloadRequestPayload(aType DownloadRequestType, value interface{}) (result DownloadRequestPayload, err error) {
+	result.Type = aType
+	switch aType {
+
+	case DownloadRequestTypeUNKNOWN:
+
+	case DownloadRequestTypeHEIGHT:
+
+	case DownloadRequestTypeBLOCK:
+
+		tv, ok := value.(uint64)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Height = &tv
+
+	}
+	return
+}
+
+// MustHeight retrieves the Height value from the union,
+// panicing if the value is not set.
+func (u DownloadRequestPayload) MustHeight() uint64 {
+	val, ok := u.GetHeight()
+
+	if !ok {
+		panic("arm Height is not set")
+	}
+
+	return val
+}
+
+// GetHeight retrieves the Height value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u DownloadRequestPayload) GetHeight() (result uint64, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Height" {
+		result = *u.Height
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u DownloadRequestPayload) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *DownloadRequestPayload) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*DownloadRequestPayload)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadRequestPayload)(nil)
+)
+
+// DownloadResponsePayload generated union
+type DownloadResponsePayload struct {
+	Type DownloadRequestType
+
+	Height *uint64
+
+	Block *Block
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u DownloadResponsePayload) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of DownloadResponsePayload
+func (u DownloadResponsePayload) ArmForSwitch(sw int32) (string, bool) {
+	switch DownloadRequestType(sw) {
+
+	case DownloadRequestTypeUNKNOWN:
+		return "", true
+
+	case DownloadRequestTypeHEIGHT:
+		return "Height", true
+
+	case DownloadRequestTypeBLOCK:
+		return "Block", true
+	}
+	return "-", false
+}
+
+// NewDownloadResponsePayload creates a new  DownloadResponsePayload.
+func NewDownloadResponsePayload(aType DownloadRequestType, value interface{}) (result DownloadResponsePayload, err error) {
+	result.Type = aType
+	switch aType {
+
+	case DownloadRequestTypeUNKNOWN:
+
+	case DownloadRequestTypeHEIGHT:
+
+		tv, ok := value.(uint64)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Height = &tv
+
+	case DownloadRequestTypeBLOCK:
+
+		tv, ok := value.(Block)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Block = &tv
+
+	}
+	return
+}
+
+// MustHeight retrieves the Height value from the union,
+// panicing if the value is not set.
+func (u DownloadResponsePayload) MustHeight() uint64 {
+	val, ok := u.GetHeight()
+
+	if !ok {
+		panic("arm Height is not set")
+	}
+
+	return val
+}
+
+// GetHeight retrieves the Height value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u DownloadResponsePayload) GetHeight() (result uint64, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Height" {
+		result = *u.Height
+		ok = true
+	}
+
+	return
+}
+
+// MustBlock retrieves the Block value from the union,
+// panicing if the value is not set.
+func (u DownloadResponsePayload) MustBlock() Block {
+	val, ok := u.GetBlock()
+
+	if !ok {
+		panic("arm Block is not set")
+	}
+
+	return val
+}
+
+// GetBlock retrieves the Block value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u DownloadResponsePayload) GetBlock() (result Block, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Block" {
+		result = *u.Block
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u DownloadResponsePayload) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *DownloadResponsePayload) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*DownloadResponsePayload)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadResponsePayload)(nil)
+)
+
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
 // Event generated struct
 type Event struct {
 	Key string `xdrmaxsize:"256"`
