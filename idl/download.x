@@ -4,7 +4,7 @@ namespace mazzaroth
 {
     // Downlaod Requests are made between Mazzaroth nodes to sync data
     struct DownloadRequest {
-        RequestPayload requestPayload;
+        DownloadRequestPayload downloadRequestPayload;
     }
 
     // The different request messages that can be sent
@@ -26,7 +26,7 @@ namespace mazzaroth
 
     // Download Responses returned from requests
     struct DownloadResponse {
-        ResponsePayload ResponsePayload;
+        DownloadResponsePayload downloadResponsePayload;
     }
 
     union DownloadResponsePayload switch (DownloadRequestType Type)

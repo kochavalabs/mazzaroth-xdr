@@ -530,7 +530,7 @@ var (
 
 // DownloadRequest generated struct
 type DownloadRequest struct {
-	RequestPayload RequestPayload
+	DownloadRequestPayload DownloadRequestPayload
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -553,7 +553,7 @@ var (
 
 // DownloadResponse generated struct
 type DownloadResponse struct {
-	ResponsePayload ResponsePayload
+	DownloadResponsePayload DownloadResponsePayload
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.

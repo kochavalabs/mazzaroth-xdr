@@ -240,10 +240,10 @@ function ContractMetadata() {
 
 // Start struct section
 function DownloadRequest() {
-    return new _xdrJsSerialize2.default.Struct(["requestPayload"], [RequestPayload()]);
+    return new _xdrJsSerialize2.default.Struct(["DownloadRequestPayload"], [DownloadRequestPayload()]);
 }
 function DownloadResponse() {
-    return new _xdrJsSerialize2.default.Struct(["ResponsePayload"], [ResponsePayload()]);
+    return new _xdrJsSerialize2.default.Struct(["DownloadResponsePayload"], [DownloadResponsePayload()]);
 }
 
 // End struct section

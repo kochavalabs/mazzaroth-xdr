@@ -200,12 +200,12 @@ pub struct ContractMetadata {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct DownloadRequest {
-    pub requestPayload: RequestPayload,
+    pub DownloadRequestPayload: DownloadRequestPayload,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct DownloadResponse {
-    pub ResponsePayload: ResponsePayload,
+    pub DownloadResponsePayload: DownloadResponsePayload,
 }
 
 // End struct section
