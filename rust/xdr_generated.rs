@@ -61,6 +61,8 @@ pub struct BlockHeader {
 
     pub blockHeight: u64,
 
+    pub transactionHeight: u64,
+
     pub txMerkleRoot: Hash,
 
     pub txReceiptRoot: Hash,
@@ -200,12 +202,12 @@ pub struct ContractMetadata {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct DownloadRequest {
-    pub DownloadRequestPayload: DownloadRequestPayload,
+    pub downloadRequestPayload: DownloadRequestPayload,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct DownloadResponse {
-    pub DownloadResponsePayload: DownloadResponsePayload,
+    pub downloadResponsePayload: DownloadResponsePayload,
 }
 
 // End struct section

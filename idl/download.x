@@ -11,7 +11,7 @@ namespace mazzaroth
     enum DownloadRequestType {
         UNKNOWN = 0,
         HEIGHT = 1, // Request current block height of node
-        BLOCK = 2 // Request a block from the node
+        BLOCK = 2 // Request a specific block from the node
     };
 
     union DownloadRequestPayload switch (DownloadRequestType Type)
@@ -21,7 +21,7 @@ namespace mazzaroth
         case HEIGHT:
             void;
         case BLOCK:
-            unsigned hyper height;
+            unsigned hyper blockNumber;
     }
 
     // Download Responses returned from requests

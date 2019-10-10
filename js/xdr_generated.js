@@ -111,7 +111,7 @@ function Block() {
     return new _xdrJsSerialize2.default.Struct(["header", "transactions"], [BlockHeader(), new _xdrJsSerialize2.default.VarArray(2147483647, Transaction)]);
 }
 function BlockHeader() {
-    return new _xdrJsSerialize2.default.Struct(["timestamp", "blockHeight", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
+    return new _xdrJsSerialize2.default.Struct(["timestamp", "blockHeight", "transactionHeight", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
 }
 
 // End struct section
@@ -240,10 +240,10 @@ function ContractMetadata() {
 
 // Start struct section
 function DownloadRequest() {
-    return new _xdrJsSerialize2.default.Struct(["DownloadRequestPayload"], [DownloadRequestPayload()]);
+    return new _xdrJsSerialize2.default.Struct(["downloadRequestPayload"], [DownloadRequestPayload()]);
 }
 function DownloadResponse() {
-    return new _xdrJsSerialize2.default.Struct(["DownloadResponsePayload"], [DownloadResponsePayload()]);
+    return new _xdrJsSerialize2.default.Struct(["downloadResponsePayload"], [DownloadResponsePayload()]);
 }
 
 // End struct section

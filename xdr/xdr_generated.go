@@ -108,6 +108,8 @@ type BlockHeader struct {
 
 	BlockHeight uint64
 
+	TransactionHeight uint64
+
 	TxMerkleRoot Hash
 
 	TxReceiptRoot Hash
@@ -642,7 +644,7 @@ var (
 type DownloadRequestPayload struct {
 	Type DownloadRequestType
 
-	Height *uint64
+	BlockNumber *uint64
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -663,7 +665,7 @@ func (u DownloadRequestPayload) ArmForSwitch(sw int32) (string, bool) {
 		return "", true
 
 	case DownloadRequestTypeBLOCK:
-		return "Height", true
+		return "BlockNumber", true
 	}
 	return "-", false
 }
@@ -684,31 +686,31 @@ func NewDownloadRequestPayload(aType DownloadRequestType, value interface{}) (re
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.Height = &tv
+		result.BlockNumber = &tv
 
 	}
 	return
 }
 
-// MustHeight retrieves the Height value from the union,
+// MustBlockNumber retrieves the BlockNumber value from the union,
 // panicing if the value is not set.
-func (u DownloadRequestPayload) MustHeight() uint64 {
-	val, ok := u.GetHeight()
+func (u DownloadRequestPayload) MustBlockNumber() uint64 {
+	val, ok := u.GetBlockNumber()
 
 	if !ok {
-		panic("arm Height is not set")
+		panic("arm BlockNumber is not set")
 	}
 
 	return val
 }
 
-// GetHeight retrieves the Height value from the union,
+// GetBlockNumber retrieves the BlockNumber value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u DownloadRequestPayload) GetHeight() (result uint64, ok bool) {
+func (u DownloadRequestPayload) GetBlockNumber() (result uint64, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "Height" {
-		result = *u.Height
+	if armName == "BlockNumber" {
+		result = *u.BlockNumber
 		ok = true
 	}
 
