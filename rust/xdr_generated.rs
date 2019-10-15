@@ -681,6 +681,8 @@ pub struct Call {
 pub struct Update {
     #[array(var = 2147483647)]
     pub contract: Vec<u8>,
+
+    pub schema: Schema,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
