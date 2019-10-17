@@ -2282,6 +2282,8 @@ var (
 // Update generated struct
 type Update struct {
 	Contract []byte
+
+	Schema Schema
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.

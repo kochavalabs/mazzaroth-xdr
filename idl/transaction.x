@@ -19,6 +19,9 @@ namespace mazzaroth
   {
     // Contract binary bytes.
     opaque contract<>;
+
+    // Schema data format for use with keyquery data formats
+    Schema schema;
   };
 
   enum PermissionAction
