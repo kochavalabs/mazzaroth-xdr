@@ -110,6 +110,8 @@ type BlockHeader struct {
 
 	TransactionHeight uint64
 
+	ConsensusSequenceNumber uint64
+
 	TxMerkleRoot Hash
 
 	TxReceiptRoot Hash

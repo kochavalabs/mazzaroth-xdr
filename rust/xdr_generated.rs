@@ -63,6 +63,8 @@ pub struct BlockHeader {
 
     pub transactionHeight: u64,
 
+    pub consensusSequenceNumber: u64,
+
     pub txMerkleRoot: Hash,
 
     pub txReceiptRoot: Hash,
