@@ -2,7 +2,7 @@
 
 namespace mazzaroth
 {
-    // Downlaod Requests are made between Mazzaroth nodes to sync data
+    // Download Requests are made between Mazzaroth nodes to sync data
     struct DownloadRequest {
         DownloadRequestPayload downloadRequestPayload;
     }
