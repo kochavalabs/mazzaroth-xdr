@@ -556,7 +556,7 @@ function ArrayColumn() {
     return new _xdrJsSerialize2.default.Struct(["name", "fixed", "length", "column"], [new _xdrJsSerialize2.default.Str('', 40), new _xdrJsSerialize2.default.Bool(), new _xdrJsSerialize2.default.UInt(), new _xdrJsSerialize2.default.FixedArray(1, Column)]);
 }
 function Table() {
-    return new _xdrJsSerialize2.default.Struct(["name", "primary", "columns"], [new _xdrJsSerialize2.default.Str('', 40), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(40, Column)]);
+    return new _xdrJsSerialize2.default.Struct(["name", "primary", "columns"], [new _xdrJsSerialize2.default.Str('', 40), new _xdrJsSerialize2.default.Str('', 40), new _xdrJsSerialize2.default.VarArray(40, Column)]);
 }
 function Schema() {
     return new _xdrJsSerialize2.default.Struct(["tables"], [new _xdrJsSerialize2.default.VarArray(40, Table)]);

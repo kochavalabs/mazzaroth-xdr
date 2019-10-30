@@ -72,7 +72,7 @@ namespace mazzaroth
   {
     string name<40>;
 
-    string primary;
+    string primary<40>;
 
     Column columns<40>;
   };

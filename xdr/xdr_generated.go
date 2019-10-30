@@ -2189,7 +2189,7 @@ var (
 type Table struct {
 	Name string `xdrmaxsize:"40"`
 
-	Primary string
+	Primary string `xdrmaxsize:"40"`
 
 	Columns []Column `xdrmaxsize:"40"`
 }

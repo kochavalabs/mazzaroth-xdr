@@ -663,6 +663,7 @@ pub struct Table {
     #[array(var = 40)]
     pub name: String,
 
+    #[array(var = 40)]
     pub primary: String,
 
     #[array(var = 40)]
