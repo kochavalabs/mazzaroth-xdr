@@ -15,6 +15,11 @@ exports.ID = ID;
 exports.Hash = Hash;
 exports.Parameter = Parameter;
 exports.ContractMetadata = ContractMetadata;
+exports.DownloadRequest = DownloadRequest;
+exports.DownloadResponse = DownloadResponse;
+exports.DownloadRequestType = DownloadRequestType;
+exports.DownloadRequestPayload = DownloadRequestPayload;
+exports.DownloadResponsePayload = DownloadResponsePayload;
 exports.Event = Event;
 exports.ExecutionPlan = ExecutionPlan;
 exports.Receipt = Receipt;
@@ -106,7 +111,7 @@ function Block() {
     return new _xdrJsSerialize2.default.Struct(["header", "transactions"], [BlockHeader(), new _xdrJsSerialize2.default.VarArray(2147483647, Transaction)]);
 }
 function BlockHeader() {
-    return new _xdrJsSerialize2.default.Struct(["timestamp", "blockHeight", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
+    return new _xdrJsSerialize2.default.Struct(["timestamp", "blockHeight", "transactionHeight", "consensusSequenceNumber", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
 }
 
 // End struct section
@@ -224,6 +229,76 @@ function ContractMetadata() {
 
 // Start union section
 
+
+// End union section
+
+// End namespace mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
+function DownloadRequest() {
+    return new _xdrJsSerialize2.default.Struct(["downloadRequestPayload"], [DownloadRequestPayload()]);
+}
+function DownloadResponse() {
+    return new _xdrJsSerialize2.default.Struct(["downloadResponsePayload"], [DownloadResponsePayload()]);
+}
+
+// End struct section
+
+// Start enum section
+
+function DownloadRequestType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "UNKNOWN",
+        1: "HEIGHT",
+        2: "BLOCK"
+
+    });
+}
+
+// End enum section
+
+// Start union section
+
+
+function DownloadRequestPayload() {
+    return new _xdrJsSerialize2.default.Union(DownloadRequestType(), {
+
+        "UNKNOWN": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "HEIGHT": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "BLOCK": () => {
+            return new _xdrJsSerialize2.default.UHyper();
+        }
+
+    });
+}
+
+function DownloadResponsePayload() {
+    return new _xdrJsSerialize2.default.Union(DownloadRequestType(), {
+
+        "UNKNOWN": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "HEIGHT": () => {
+            return new _xdrJsSerialize2.default.UHyper();
+        },
+
+        "BLOCK": () => {
+            return Block();
+        }
+
+    });
+}
 
 // End union section
 

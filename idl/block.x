@@ -21,6 +21,12 @@ namespace mazzaroth
     // Block height is the number of blocks preceding this block
     unsigned hyper blockHeight;
 
+    // Ending transaction height of this block
+    unsigned hyper transactionHeight;
+
+    // Ending consensus sequence number for commits in this block
+    unsigned hyper consensusSequenceNumber;
+
     // The merkle root of the transaction merkle tree in this block
     Hash txMerkleRoot;
 
