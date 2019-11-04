@@ -50,15 +50,6 @@ exports.ReceiptLookupStatus = ReceiptLookupStatus;
 exports.NonceLookupStatus = NonceLookupStatus;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
-exports.BasicColumn = BasicColumn;
-exports.TypedefColumn = TypedefColumn;
-exports.StructColumn = StructColumn;
-exports.ArrayColumn = ArrayColumn;
-exports.Table = Table;
-exports.Schema = Schema;
-exports.BasicType = BasicType;
-exports.ColumnType = ColumnType;
-exports.Column = Column;
 exports.Call = Call;
 exports.Update = Update;
 exports.Permission = Permission;
@@ -543,95 +534,11 @@ function Identifier() {
 // End typedef section
 
 // Start struct section
-function BasicColumn() {
-    return new _xdrJsSerialize2.default.Struct(["name", "typ"], [new _xdrJsSerialize2.default.Str('', 40), BasicType()]);
-}
-function TypedefColumn() {
-    return new _xdrJsSerialize2.default.Struct(["name", "child"], [new _xdrJsSerialize2.default.Str('', 40), new _xdrJsSerialize2.default.FixedArray(1, Column)]);
-}
-function StructColumn() {
-    return new _xdrJsSerialize2.default.Struct(["name", "columns"], [new _xdrJsSerialize2.default.Str('', 40), new _xdrJsSerialize2.default.VarArray(40, Column)]);
-}
-function ArrayColumn() {
-    return new _xdrJsSerialize2.default.Struct(["name", "fixed", "length", "column"], [new _xdrJsSerialize2.default.Str('', 40), new _xdrJsSerialize2.default.Bool(), new _xdrJsSerialize2.default.UInt(), new _xdrJsSerialize2.default.FixedArray(1, Column)]);
-}
-function Table() {
-    return new _xdrJsSerialize2.default.Struct(["name", "primary", "columns"], [new _xdrJsSerialize2.default.Str('', 40), new _xdrJsSerialize2.default.Str('', 40), new _xdrJsSerialize2.default.VarArray(40, Column)]);
-}
-function Schema() {
-    return new _xdrJsSerialize2.default.Struct(["tables"], [new _xdrJsSerialize2.default.VarArray(40, Table)]);
-}
-
-// End struct section
-
-// Start enum section
-
-function BasicType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "BOOLEAN",
-        1: "STRING",
-        2: "OPAQUE",
-        3: "INT",
-        4: "UNSIGNED_INT",
-        5: "HYPER",
-        6: "UNSIGNED_HYPER",
-        7: "FLOAT",
-        8: "DOUBLE"
-
-    });
-}
-
-function ColumnType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "BASIC",
-        1: "STRUCT",
-        2: "ARRAY",
-        3: "TYPEDEF"
-
-    });
-}
-
-// End enum section
-
-// Start union section
-
-
-function Column() {
-    return new _xdrJsSerialize2.default.Union(ColumnType(), {
-
-        "BASIC": () => {
-            return BasicColumn();
-        },
-
-        "STRUCT": () => {
-            return StructColumn();
-        },
-
-        "ARRAY": () => {
-            return ArrayColumn();
-        },
-
-        "TYPEDEF": () => {
-            return TypedefColumn();
-        }
-
-    });
-}
-
-// End union section
-
-// End namespace mazzaroth
-// Namespace start mazzaroth
-
-// Start typedef section
-// End typedef section
-
-// Start struct section
 function Call() {
     return new _xdrJsSerialize2.default.Struct(["function", "parameters"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
 }
 function Update() {
-    return new _xdrJsSerialize2.default.Struct(["contract", "schema"], [new _xdrJsSerialize2.default.VarOpaque(2147483647), Schema()]);
+    return new _xdrJsSerialize2.default.Struct(["contract"], [new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
 }
 function Permission() {
     return new _xdrJsSerialize2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
