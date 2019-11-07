@@ -209,6 +209,8 @@ pub struct DownloadRequest {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct DownloadResponse {
+    pub downloadStatus: DownloadStatus,
+
     pub downloadResponsePayload: DownloadResponsePayload,
 }
 
@@ -224,6 +226,19 @@ pub enum DownloadRequestType {
 impl Default for DownloadRequestType {
     fn default() -> Self {
         DownloadRequestType::UNKNOWN
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum DownloadStatus {
+    UNKNOWN = 0,
+    SUCCESS = 1,
+    FAILURE = 2,
+}
+
+impl Default for DownloadStatus {
+    fn default() -> Self {
+        DownloadStatus::UNKNOWN
     }
 }
 // Start union section

@@ -18,6 +18,7 @@ exports.ContractMetadata = ContractMetadata;
 exports.DownloadRequest = DownloadRequest;
 exports.DownloadResponse = DownloadResponse;
 exports.DownloadRequestType = DownloadRequestType;
+exports.DownloadStatus = DownloadStatus;
 exports.DownloadRequestPayload = DownloadRequestPayload;
 exports.DownloadResponsePayload = DownloadResponsePayload;
 exports.Event = Event;
@@ -234,7 +235,7 @@ function DownloadRequest() {
     return new _xdrJsSerialize2.default.Struct(["downloadRequestPayload"], [DownloadRequestPayload()]);
 }
 function DownloadResponse() {
-    return new _xdrJsSerialize2.default.Struct(["downloadResponsePayload"], [DownloadResponsePayload()]);
+    return new _xdrJsSerialize2.default.Struct(["downloadStatus", "downloadResponsePayload"], [DownloadStatus(), DownloadResponsePayload()]);
 }
 
 // End struct section
@@ -246,6 +247,15 @@ function DownloadRequestType() {
         0: "UNKNOWN",
         1: "HEIGHT",
         2: "BLOCK"
+
+    });
+}
+
+function DownloadStatus() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "UNKNOWN",
+        1: "SUCCESS",
+        2: "FAILURE"
 
     });
 }

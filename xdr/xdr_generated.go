@@ -557,6 +557,8 @@ var (
 
 // DownloadResponse generated struct
 type DownloadResponse struct {
+	DownloadStatus DownloadStatus
+
 	DownloadResponsePayload DownloadResponsePayload
 }
 
@@ -636,6 +638,62 @@ func (s *DownloadRequestType) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*DownloadRequestType)(nil)
 	_ encoding.BinaryUnmarshaler = (*DownloadRequestType)(nil)
+)
+
+// DownloadStatus generated enum
+type DownloadStatus int32
+
+const (
+
+	// DownloadStatusUNKNOWN enum value 0
+	DownloadStatusUNKNOWN DownloadStatus = 0
+
+	// DownloadStatusSUCCESS enum value 1
+	DownloadStatusSUCCESS DownloadStatus = 1
+
+	// DownloadStatusFAILURE enum value 2
+	DownloadStatusFAILURE DownloadStatus = 2
+)
+
+// DownloadStatusMap generated enum map
+var DownloadStatusMap = map[int32]string{
+
+	0: "DownloadStatusUNKNOWN",
+
+	1: "DownloadStatusSUCCESS",
+
+	2: "DownloadStatusFAILURE",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for DownloadStatus
+func (s DownloadStatus) ValidEnum(v int32) bool {
+	_, ok := DownloadStatusMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s DownloadStatus) String() string {
+	name, _ := DownloadStatusMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s DownloadStatus) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *DownloadStatus) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*DownloadStatus)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadStatus)(nil)
 )
 
 // End enum section
