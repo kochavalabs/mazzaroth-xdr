@@ -26,8 +26,22 @@ namespace mazzaroth
 
     // Download Responses returned from requests
     struct DownloadResponse {
+        DownloadStatus downloadStatus;
         DownloadResponsePayload downloadResponsePayload;
     }
+
+    // Status of a download request.
+    enum DownloadStatus
+    {
+        // The status is either not known or not set.
+        UNKNOWN = 0,
+
+        // Download request was successfull.
+        SUCCESS = 1,
+
+        // Download request failed.
+        FAILURE = 2,
+    };
 
     union DownloadResponsePayload switch (DownloadRequestType Type)
     {
