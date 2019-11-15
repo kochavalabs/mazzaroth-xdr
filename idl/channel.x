@@ -5,8 +5,8 @@ namespace mazzaroth
   // ChannelConfig stores channel configuration in state
   struct ChannelConfig
   {
+    ID channelID;
     ID owner;
-    ID validators<>;
     ConsensusConfig consensusConfig;
   };
 
@@ -27,7 +27,11 @@ namespace mazzaroth
   // Configuration for PBFT to store in state
   struct PBFTConfig
   {
-    // number of sequence numbers between checkpoints
+    // List of currently selected validators participating in pbft consensus
+    ID validators<>;
+    // Number of sequence numbers between checkpoints
     unsigned hyper checkpointPeriod;
+    // Max number of sequence number to accept while waiting on checkpoint
+    unsigned hyper watermarkRange;
   };
 }

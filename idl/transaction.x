@@ -34,12 +34,39 @@ namespace mazzaroth
     PermissionAction action;
   };
 
+  enum ConfigType
+  {
+    NONE = 0,
+    CHANNELID = 1,
+    OWNER = 2,
+    CONSENSUS = 3
+  };
+
+  union ConfigAction switch (ConfigType Type)
+  {
+    case NONE:
+      void;
+    case CHANNELID:
+      ID channelID;
+    case OWNER:
+      ID owner;
+    case CONSENSUS:
+      ConsensusConfig consensusConfig;
+  };
+
+  // A transaction that defines a channel configuration change
+  struct Config
+  {
+    ConfigAction action;
+  };
+
   enum ActionCategoryType
   {
     NONE = 0,
     CALL = 1,
     UPDATE = 2,
-    PERMISSION = 3
+    PERMISSION = 3,
+    CONFIG = 4
   };
 
   union ActionCategory switch (ActionCategoryType Type)
@@ -52,6 +79,8 @@ namespace mazzaroth
       Update update;
     case PERMISSION:
       Permission permission;
+    case CONFIG:
+      Config config;
   };
 
   // The Action data of a transaction

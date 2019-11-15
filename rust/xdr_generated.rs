@@ -93,17 +93,21 @@ pub struct BlockHeader {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ChannelConfig {
-    pub owner: ID,
+    pub channelID: ID,
 
-    #[array(var = 2147483647)]
-    pub validators: Vec<ID>,
+    pub owner: ID,
 
     pub consensusConfig: ConsensusConfig,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct PBFTConfig {
+    #[array(var = 2147483647)]
+    pub validators: Vec<ID>,
+
     pub checkpointPeriod: u64,
+
+    pub watermarkRange: u64,
 }
 
 // End struct section
@@ -657,6 +661,11 @@ pub struct Permission {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Config {
+    pub action: ConfigAction,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Action {
     pub address: ID,
 
@@ -702,11 +711,26 @@ impl Default for PermissionAction {
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ConfigType {
+    NONE = 0,
+    CHANNELID = 1,
+    OWNER = 2,
+    CONSENSUS = 3,
+}
+
+impl Default for ConfigType {
+    fn default() -> Self {
+        ConfigType::NONE
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ActionCategoryType {
     NONE = 0,
     CALL = 1,
     UPDATE = 2,
     PERMISSION = 3,
+    CONFIG = 4,
 }
 
 impl Default for ActionCategoryType {
@@ -743,6 +767,23 @@ impl Default for InputType {
 // Start union section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ConfigAction {
+    NONE(()),
+
+    CHANNELID(ID),
+
+    OWNER(ID),
+
+    CONSENSUS(ConsensusConfig),
+}
+
+impl Default for ConfigAction {
+    fn default() -> Self {
+        ConfigAction::NONE(())
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ActionCategory {
     NONE(()),
 
@@ -751,6 +792,8 @@ pub enum ActionCategory {
     UPDATE(Update),
 
     PERMISSION(Permission),
+
+    CONFIG(Config),
 }
 
 impl Default for ActionCategory {
