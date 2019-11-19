@@ -54,16 +54,13 @@ exports.Identifier = Identifier;
 exports.Call = Call;
 exports.Update = Update;
 exports.Permission = Permission;
-exports.Config = Config;
 exports.Action = Action;
 exports.Transaction = Transaction;
 exports.Input = Input;
 exports.PermissionAction = PermissionAction;
-exports.ConfigType = ConfigType;
 exports.ActionCategoryType = ActionCategoryType;
 exports.AuthorityType = AuthorityType;
 exports.InputType = InputType;
-exports.ConfigAction = ConfigAction;
 exports.ActionCategory = ActionCategory;
 exports.Authority = Authority;
 
@@ -129,7 +126,7 @@ function BlockHeader() {
 
 // Start struct section
 function ChannelConfig() {
-    return new _xdrJsSerialize2.default.Struct(["channelID", "owner", "consensusConfig"], [ID(), ID(), ConsensusConfig()]);
+    return new _xdrJsSerialize2.default.Struct(["channelID", "owner", "maxBlockSize", "consensusConfig"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), ConsensusConfig()]);
 }
 function PBFTConfig() {
     return new _xdrJsSerialize2.default.Struct(["validators", "checkpointPeriod", "watermarkRange"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper()]);
@@ -556,9 +553,6 @@ function Update() {
 function Permission() {
     return new _xdrJsSerialize2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
 }
-function Config() {
-    return new _xdrJsSerialize2.default.Struct(["action"], [ConfigAction()]);
-}
 function Action() {
     return new _xdrJsSerialize2.default.Struct(["address", "channelID", "nonce", "category"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), ActionCategory()]);
 }
@@ -577,16 +571,6 @@ function PermissionAction() {
     return new _xdrJsSerialize2.default.Enum({
         0: "REVOKE",
         1: "GRANT"
-
-    });
-}
-
-function ConfigType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "NONE",
-        1: "CHANNELID",
-        2: "OWNER",
-        3: "CONSENSUS"
 
     });
 }
@@ -625,28 +609,6 @@ function InputType() {
 // Start union section
 
 
-function ConfigAction() {
-    return new _xdrJsSerialize2.default.Union(ConfigType(), {
-
-        "NONE": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "CHANNELID": () => {
-            return ID();
-        },
-
-        "OWNER": () => {
-            return ID();
-        },
-
-        "CONSENSUS": () => {
-            return ConsensusConfig();
-        }
-
-    });
-}
-
 function ActionCategory() {
     return new _xdrJsSerialize2.default.Union(ActionCategoryType(), {
 
@@ -667,7 +629,7 @@ function ActionCategory() {
         },
 
         "CONFIG": () => {
-            return Config();
+            return ChannelConfig();
         }
 
     });

@@ -97,6 +97,8 @@ pub struct ChannelConfig {
 
     pub owner: ID,
 
+    pub maxBlockSize: u64,
+
     pub consensusConfig: ConsensusConfig,
 }
 
@@ -661,11 +663,6 @@ pub struct Permission {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Config {
-    pub action: ConfigAction,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Action {
     pub address: ID,
 
@@ -707,20 +704,6 @@ pub enum PermissionAction {
 impl Default for PermissionAction {
     fn default() -> Self {
         PermissionAction::REVOKE
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ConfigType {
-    NONE = 0,
-    CHANNELID = 1,
-    OWNER = 2,
-    CONSENSUS = 3,
-}
-
-impl Default for ConfigType {
-    fn default() -> Self {
-        ConfigType::NONE
     }
 }
 
@@ -767,23 +750,6 @@ impl Default for InputType {
 // Start union section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ConfigAction {
-    NONE(()),
-
-    CHANNELID(ID),
-
-    OWNER(ID),
-
-    CONSENSUS(ConsensusConfig),
-}
-
-impl Default for ConfigAction {
-    fn default() -> Self {
-        ConfigAction::NONE(())
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ActionCategory {
     NONE(()),
 
@@ -793,7 +759,7 @@ pub enum ActionCategory {
 
     PERMISSION(Permission),
 
-    CONFIG(Config),
+    CONFIG(ChannelConfig),
 }
 
 impl Default for ActionCategory {

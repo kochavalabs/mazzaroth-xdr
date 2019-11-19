@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io"
 
-	xdr "github.com/stellar/go-xdr/xdr3"
+	"github.com/stellar/go-xdr/xdr3"
 )
 
 // Unmarshal reads an xdr element from `r` into `v`.
@@ -165,6 +165,8 @@ type ChannelConfig struct {
 	ChannelID ID
 
 	Owner ID
+
+	MaxBlockSize uint64
 
 	ConsensusConfig ConsensusConfig
 }
@@ -2216,29 +2218,6 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Permission)(nil)
 )
 
-// Config generated struct
-type Config struct {
-	Action ConfigAction
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Config) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Config) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Config)(nil)
-	_ encoding.BinaryUnmarshaler = (*Config)(nil)
-)
-
 // Action generated struct
 type Action struct {
 	Address ID
@@ -2375,67 +2354,6 @@ func (s *PermissionAction) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*PermissionAction)(nil)
 	_ encoding.BinaryUnmarshaler = (*PermissionAction)(nil)
-)
-
-// ConfigType generated enum
-type ConfigType int32
-
-const (
-
-	// ConfigTypeNONE enum value 0
-	ConfigTypeNONE ConfigType = 0
-
-	// ConfigTypeCHANNELID enum value 1
-	ConfigTypeCHANNELID ConfigType = 1
-
-	// ConfigTypeOWNER enum value 2
-	ConfigTypeOWNER ConfigType = 2
-
-	// ConfigTypeCONSENSUS enum value 3
-	ConfigTypeCONSENSUS ConfigType = 3
-)
-
-// ConfigTypeMap generated enum map
-var ConfigTypeMap = map[int32]string{
-
-	0: "ConfigTypeNONE",
-
-	1: "ConfigTypeCHANNELID",
-
-	2: "ConfigTypeOWNER",
-
-	3: "ConfigTypeCONSENSUS",
-}
-
-// ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for ConfigType
-func (s ConfigType) ValidEnum(v int32) bool {
-	_, ok := ConfigTypeMap[v]
-	return ok
-}
-
-// String returns the name of `e`
-func (s ConfigType) String() string {
-	name, _ := ConfigTypeMap[int32(s)]
-	return name
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s ConfigType) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ConfigType) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*ConfigType)(nil)
-	_ encoding.BinaryUnmarshaler = (*ConfigType)(nil)
 )
 
 // ActionCategoryType generated enum
@@ -2620,174 +2538,6 @@ var (
 
 // Start union section
 
-// ConfigAction generated union
-type ConfigAction struct {
-	Type ConfigType
-
-	ChannelID *ID
-
-	Owner *ID
-
-	ConsensusConfig *ConsensusConfig
-}
-
-// SwitchFieldName returns the field name in which this union's
-// discriminant is stored
-func (u ConfigAction) SwitchFieldName() string {
-	return "Type"
-}
-
-// ArmForSwitch returns which field name should be used for storing
-// the value for an instance of ConfigAction
-func (u ConfigAction) ArmForSwitch(sw int32) (string, bool) {
-	switch ConfigType(sw) {
-
-	case ConfigTypeNONE:
-		return "", true
-
-	case ConfigTypeCHANNELID:
-		return "ChannelID", true
-
-	case ConfigTypeOWNER:
-		return "Owner", true
-
-	case ConfigTypeCONSENSUS:
-		return "ConsensusConfig", true
-	}
-	return "-", false
-}
-
-// NewConfigAction creates a new  ConfigAction.
-func NewConfigAction(aType ConfigType, value interface{}) (result ConfigAction, err error) {
-	result.Type = aType
-	switch aType {
-
-	case ConfigTypeNONE:
-
-	case ConfigTypeCHANNELID:
-
-		tv, ok := value.(ID)
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.ChannelID = &tv
-
-	case ConfigTypeOWNER:
-
-		tv, ok := value.(ID)
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Owner = &tv
-
-	case ConfigTypeCONSENSUS:
-
-		tv, ok := value.(ConsensusConfig)
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.ConsensusConfig = &tv
-
-	}
-	return
-}
-
-// MustChannelID retrieves the ChannelID value from the union,
-// panicing if the value is not set.
-func (u ConfigAction) MustChannelID() ID {
-	val, ok := u.GetChannelID()
-
-	if !ok {
-		panic("arm ChannelID is not set")
-	}
-
-	return val
-}
-
-// GetChannelID retrieves the ChannelID value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u ConfigAction) GetChannelID() (result ID, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "ChannelID" {
-		result = *u.ChannelID
-		ok = true
-	}
-
-	return
-}
-
-// MustOwner retrieves the Owner value from the union,
-// panicing if the value is not set.
-func (u ConfigAction) MustOwner() ID {
-	val, ok := u.GetOwner()
-
-	if !ok {
-		panic("arm Owner is not set")
-	}
-
-	return val
-}
-
-// GetOwner retrieves the Owner value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u ConfigAction) GetOwner() (result ID, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Owner" {
-		result = *u.Owner
-		ok = true
-	}
-
-	return
-}
-
-// MustConsensusConfig retrieves the ConsensusConfig value from the union,
-// panicing if the value is not set.
-func (u ConfigAction) MustConsensusConfig() ConsensusConfig {
-	val, ok := u.GetConsensusConfig()
-
-	if !ok {
-		panic("arm ConsensusConfig is not set")
-	}
-
-	return val
-}
-
-// GetConsensusConfig retrieves the ConsensusConfig value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u ConfigAction) GetConsensusConfig() (result ConsensusConfig, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "ConsensusConfig" {
-		result = *u.ConsensusConfig
-		ok = true
-	}
-
-	return
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (u ConfigAction) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, u)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (u *ConfigAction) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), u)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*ConfigAction)(nil)
-	_ encoding.BinaryUnmarshaler = (*ConfigAction)(nil)
-)
-
 // ActionCategory generated union
 type ActionCategory struct {
 	Type ActionCategoryType
@@ -2798,7 +2548,7 @@ type ActionCategory struct {
 
 	Permission *Permission
 
-	Config *Config
+	ChannelConfig *ChannelConfig
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -2825,7 +2575,7 @@ func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
 		return "Permission", true
 
 	case ActionCategoryTypeCONFIG:
-		return "Config", true
+		return "ChannelConfig", true
 	}
 	return "-", false
 }
@@ -2866,12 +2616,12 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 
 	case ActionCategoryTypeCONFIG:
 
-		tv, ok := value.(Config)
+		tv, ok := value.(ChannelConfig)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.Config = &tv
+		result.ChannelConfig = &tv
 
 	}
 	return
@@ -2952,25 +2702,25 @@ func (u ActionCategory) GetPermission() (result Permission, ok bool) {
 	return
 }
 
-// MustConfig retrieves the Config value from the union,
+// MustChannelConfig retrieves the ChannelConfig value from the union,
 // panicing if the value is not set.
-func (u ActionCategory) MustConfig() Config {
-	val, ok := u.GetConfig()
+func (u ActionCategory) MustChannelConfig() ChannelConfig {
+	val, ok := u.GetChannelConfig()
 
 	if !ok {
-		panic("arm Config is not set")
+		panic("arm ChannelConfig is not set")
 	}
 
 	return val
 }
 
-// GetConfig retrieves the Config value from the union,
+// GetChannelConfig retrieves the ChannelConfig value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetConfig() (result Config, ok bool) {
+func (u ActionCategory) GetChannelConfig() (result ChannelConfig, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "Config" {
-		result = *u.Config
+	if armName == "ChannelConfig" {
+		result = *u.ChannelConfig
 		ok = true
 	}
 

@@ -7,6 +7,7 @@ namespace mazzaroth
   {
     ID channelID;
     ID owner;
+    unsigned hyper maxBlockSize;
     ConsensusConfig consensusConfig;
   };
 
