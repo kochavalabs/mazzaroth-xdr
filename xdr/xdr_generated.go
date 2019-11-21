@@ -162,9 +162,11 @@ var (
 
 // ChannelConfig generated struct
 type ChannelConfig struct {
+	ChannelID ID
+
 	Owner ID
 
-	Validators []ID
+	MaxBlockSize uint64
 
 	ConsensusConfig ConsensusConfig
 }
@@ -189,7 +191,11 @@ var (
 
 // PBFTConfig generated struct
 type PBFTConfig struct {
+	Validators []ID
+
 	CheckpointPeriod uint64
+
+	WatermarkRange uint64
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2366,6 +2372,9 @@ const (
 
 	// ActionCategoryTypePERMISSION enum value 3
 	ActionCategoryTypePERMISSION ActionCategoryType = 3
+
+	// ActionCategoryTypeCONFIG enum value 4
+	ActionCategoryTypeCONFIG ActionCategoryType = 4
 )
 
 // ActionCategoryTypeMap generated enum map
@@ -2378,6 +2387,8 @@ var ActionCategoryTypeMap = map[int32]string{
 	2: "ActionCategoryTypeUPDATE",
 
 	3: "ActionCategoryTypePERMISSION",
+
+	4: "ActionCategoryTypeCONFIG",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -2536,6 +2547,8 @@ type ActionCategory struct {
 	Update *Update
 
 	Permission *Permission
+
+	ChannelConfig *ChannelConfig
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -2560,6 +2573,9 @@ func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
 
 	case ActionCategoryTypePERMISSION:
 		return "Permission", true
+
+	case ActionCategoryTypeCONFIG:
+		return "ChannelConfig", true
 	}
 	return "-", false
 }
@@ -2597,6 +2613,15 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 			return
 		}
 		result.Permission = &tv
+
+	case ActionCategoryTypeCONFIG:
+
+		tv, ok := value.(ChannelConfig)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.ChannelConfig = &tv
 
 	}
 	return
@@ -2671,6 +2696,31 @@ func (u ActionCategory) GetPermission() (result Permission, ok bool) {
 
 	if armName == "Permission" {
 		result = *u.Permission
+		ok = true
+	}
+
+	return
+}
+
+// MustChannelConfig retrieves the ChannelConfig value from the union,
+// panicing if the value is not set.
+func (u ActionCategory) MustChannelConfig() ChannelConfig {
+	val, ok := u.GetChannelConfig()
+
+	if !ok {
+		panic("arm ChannelConfig is not set")
+	}
+
+	return val
+}
+
+// GetChannelConfig retrieves the ChannelConfig value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ActionCategory) GetChannelConfig() (result ChannelConfig, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "ChannelConfig" {
+		result = *u.ChannelConfig
 		ok = true
 	}
 

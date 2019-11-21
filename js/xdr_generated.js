@@ -126,10 +126,10 @@ function BlockHeader() {
 
 // Start struct section
 function ChannelConfig() {
-    return new _xdrJsSerialize2.default.Struct(["owner", "validators", "consensusConfig"], [ID(), new _xdrJsSerialize2.default.VarArray(2147483647, ID), ConsensusConfig()]);
+    return new _xdrJsSerialize2.default.Struct(["channelID", "owner", "maxBlockSize", "consensusConfig"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), ConsensusConfig()]);
 }
 function PBFTConfig() {
-    return new _xdrJsSerialize2.default.Struct(["checkpointPeriod"], [new _xdrJsSerialize2.default.UHyper()]);
+    return new _xdrJsSerialize2.default.Struct(["validators", "checkpointPeriod", "watermarkRange"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper()]);
 }
 
 // End struct section
@@ -580,7 +580,8 @@ function ActionCategoryType() {
         0: "NONE",
         1: "CALL",
         2: "UPDATE",
-        3: "PERMISSION"
+        3: "PERMISSION",
+        4: "CONFIG"
 
     });
 }
@@ -625,6 +626,10 @@ function ActionCategory() {
 
         "PERMISSION": () => {
             return Permission();
+        },
+
+        "CONFIG": () => {
+            return ChannelConfig();
         }
 
     });

@@ -39,7 +39,8 @@ namespace mazzaroth
     NONE = 0,
     CALL = 1,
     UPDATE = 2,
-    PERMISSION = 3
+    PERMISSION = 3,
+    CONFIG = 4
   };
 
   union ActionCategory switch (ActionCategoryType Type)
@@ -52,6 +53,8 @@ namespace mazzaroth
       Update update;
     case PERMISSION:
       Permission permission;
+    case CONFIG:
+      ChannelConfig channelConfig;
   };
 
   // The Action data of a transaction

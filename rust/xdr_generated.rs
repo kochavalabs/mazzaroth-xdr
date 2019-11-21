@@ -93,17 +93,23 @@ pub struct BlockHeader {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ChannelConfig {
+    pub channelID: ID,
+
     pub owner: ID,
 
-    #[array(var = 2147483647)]
-    pub validators: Vec<ID>,
+    pub maxBlockSize: u64,
 
     pub consensusConfig: ConsensusConfig,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct PBFTConfig {
+    #[array(var = 2147483647)]
+    pub validators: Vec<ID>,
+
     pub checkpointPeriod: u64,
+
+    pub watermarkRange: u64,
 }
 
 // End struct section
@@ -707,6 +713,7 @@ pub enum ActionCategoryType {
     CALL = 1,
     UPDATE = 2,
     PERMISSION = 3,
+    CONFIG = 4,
 }
 
 impl Default for ActionCategoryType {
@@ -751,6 +758,8 @@ pub enum ActionCategory {
     UPDATE(Update),
 
     PERMISSION(Permission),
+
+    CONFIG(ChannelConfig),
 }
 
 impl Default for ActionCategory {
