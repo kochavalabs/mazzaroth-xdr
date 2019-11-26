@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/stellar/go-xdr/xdr3"
+	xdr "github.com/stellar/go-xdr/xdr3"
 )
 
 // Unmarshal reads an xdr element from `r` into `v`.
@@ -156,222 +156,6 @@ var (
 
 // Start typedef section
 
-// End typedef section
-
-// Start struct section
-
-// ChannelConfig generated struct
-type ChannelConfig struct {
-	ChannelID ID
-
-	Owner ID
-
-	MaxBlockSize uint64
-
-	ConsensusConfig ConsensusConfig
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s ChannelConfig) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ChannelConfig) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*ChannelConfig)(nil)
-	_ encoding.BinaryUnmarshaler = (*ChannelConfig)(nil)
-)
-
-// PBFTConfig generated struct
-type PBFTConfig struct {
-	Validators []ID
-
-	CheckpointPeriod uint64
-
-	WatermarkRange uint64
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s PBFTConfig) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *PBFTConfig) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*PBFTConfig)(nil)
-	_ encoding.BinaryUnmarshaler = (*PBFTConfig)(nil)
-)
-
-// End struct section
-
-// Start enum section
-
-// ConsensusConfigType generated enum
-type ConsensusConfigType int32
-
-const (
-
-	// ConsensusConfigTypeNONE enum value 0
-	ConsensusConfigTypeNONE ConsensusConfigType = 0
-
-	// ConsensusConfigTypePBFT enum value 1
-	ConsensusConfigTypePBFT ConsensusConfigType = 1
-)
-
-// ConsensusConfigTypeMap generated enum map
-var ConsensusConfigTypeMap = map[int32]string{
-
-	0: "ConsensusConfigTypeNONE",
-
-	1: "ConsensusConfigTypePBFT",
-}
-
-// ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for ConsensusConfigType
-func (s ConsensusConfigType) ValidEnum(v int32) bool {
-	_, ok := ConsensusConfigTypeMap[v]
-	return ok
-}
-
-// String returns the name of `e`
-func (s ConsensusConfigType) String() string {
-	name, _ := ConsensusConfigTypeMap[int32(s)]
-	return name
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s ConsensusConfigType) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ConsensusConfigType) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*ConsensusConfigType)(nil)
-	_ encoding.BinaryUnmarshaler = (*ConsensusConfigType)(nil)
-)
-
-// End enum section
-
-// Start union section
-
-// ConsensusConfig generated union
-type ConsensusConfig struct {
-	Type ConsensusConfigType
-
-	PbftConfig *PBFTConfig
-}
-
-// SwitchFieldName returns the field name in which this union's
-// discriminant is stored
-func (u ConsensusConfig) SwitchFieldName() string {
-	return "Type"
-}
-
-// ArmForSwitch returns which field name should be used for storing
-// the value for an instance of ConsensusConfig
-func (u ConsensusConfig) ArmForSwitch(sw int32) (string, bool) {
-	switch ConsensusConfigType(sw) {
-
-	case ConsensusConfigTypeNONE:
-		return "", true
-
-	case ConsensusConfigTypePBFT:
-		return "PbftConfig", true
-	}
-	return "-", false
-}
-
-// NewConsensusConfig creates a new  ConsensusConfig.
-func NewConsensusConfig(aType ConsensusConfigType, value interface{}) (result ConsensusConfig, err error) {
-	result.Type = aType
-	switch aType {
-
-	case ConsensusConfigTypeNONE:
-
-	case ConsensusConfigTypePBFT:
-
-		tv, ok := value.(PBFTConfig)
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.PbftConfig = &tv
-
-	}
-	return
-}
-
-// MustPbftConfig retrieves the PbftConfig value from the union,
-// panicing if the value is not set.
-func (u ConsensusConfig) MustPbftConfig() PBFTConfig {
-	val, ok := u.GetPbftConfig()
-
-	if !ok {
-		panic("arm PbftConfig is not set")
-	}
-
-	return val
-}
-
-// GetPbftConfig retrieves the PbftConfig value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u ConsensusConfig) GetPbftConfig() (result PBFTConfig, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "PbftConfig" {
-		result = *u.PbftConfig
-		ok = true
-	}
-
-	return
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (u ConsensusConfig) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, u)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (u *ConsensusConfig) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), u)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*ConsensusConfig)(nil)
-	_ encoding.BinaryUnmarshaler = (*ConsensusConfig)(nil)
-)
-
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
 // Signature generated typedef
 type Signature [64]byte
 
@@ -494,38 +278,290 @@ var (
 
 // Start struct section
 
-// ContractMetadata generated struct
-type ContractMetadata struct {
-	Hash Hash
+// ContractChannelConfig generated struct
+type ContractChannelConfig struct {
+	ChannelID ID
 
-	Version uint64
+	Contract []byte
+
+	Version string
+
+	Owner ID
+
+	ChannelName string
+
+	Admins []ID
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ContractMetadata) MarshalBinary() ([]byte, error) {
+func (s ContractChannelConfig) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ContractMetadata) UnmarshalBinary(inp []byte) error {
+func (s *ContractChannelConfig) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ContractMetadata)(nil)
-	_ encoding.BinaryUnmarshaler = (*ContractMetadata)(nil)
+	_ encoding.BinaryMarshaler   = (*ContractChannelConfig)(nil)
+	_ encoding.BinaryUnmarshaler = (*ContractChannelConfig)(nil)
+)
+
+// GovernanceConfig generated struct
+type GovernanceConfig struct {
+	MaxBlockSize uint64
+
+	Consensus ConsensusConfigType
+
+	Permissioning Permissioning
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s GovernanceConfig) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *GovernanceConfig) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*GovernanceConfig)(nil)
+	_ encoding.BinaryUnmarshaler = (*GovernanceConfig)(nil)
+)
+
+// PrivatePermissioning generated struct
+type PrivatePermissioning struct {
+	AllowedIDs []ID
+
+	Validators []ID
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s PrivatePermissioning) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *PrivatePermissioning) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*PrivatePermissioning)(nil)
+	_ encoding.BinaryUnmarshaler = (*PrivatePermissioning)(nil)
 )
 
 // End struct section
 
 // Start enum section
 
+// ConsensusConfigType generated enum
+type ConsensusConfigType int32
+
+const (
+
+	// ConsensusConfigTypeNONE enum value 0
+	ConsensusConfigTypeNONE ConsensusConfigType = 0
+
+	// ConsensusConfigTypePBFT enum value 1
+	ConsensusConfigTypePBFT ConsensusConfigType = 1
+)
+
+// ConsensusConfigTypeMap generated enum map
+var ConsensusConfigTypeMap = map[int32]string{
+
+	0: "ConsensusConfigTypeNONE",
+
+	1: "ConsensusConfigTypePBFT",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ConsensusConfigType
+func (s ConsensusConfigType) ValidEnum(v int32) bool {
+	_, ok := ConsensusConfigTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s ConsensusConfigType) String() string {
+	name, _ := ConsensusConfigTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ConsensusConfigType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ConsensusConfigType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ConsensusConfigType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ConsensusConfigType)(nil)
+)
+
+// PermissioningType generated enum
+type PermissioningType int32
+
+const (
+
+	// PermissioningTypePUBLIC enum value 0
+	PermissioningTypePUBLIC PermissioningType = 0
+
+	// PermissioningTypePRIVATE enum value 1
+	PermissioningTypePRIVATE PermissioningType = 1
+)
+
+// PermissioningTypeMap generated enum map
+var PermissioningTypeMap = map[int32]string{
+
+	0: "PermissioningTypePUBLIC",
+
+	1: "PermissioningTypePRIVATE",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for PermissioningType
+func (s PermissioningType) ValidEnum(v int32) bool {
+	_, ok := PermissioningTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s PermissioningType) String() string {
+	name, _ := PermissioningTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s PermissioningType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *PermissioningType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*PermissioningType)(nil)
+	_ encoding.BinaryUnmarshaler = (*PermissioningType)(nil)
+)
+
 // End enum section
 
 // Start union section
+
+// Permissioning generated union
+type Permissioning struct {
+	Type PermissioningType
+
+	PrivatePermissioning *PrivatePermissioning
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u Permissioning) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of Permissioning
+func (u Permissioning) ArmForSwitch(sw int32) (string, bool) {
+	switch PermissioningType(sw) {
+
+	case PermissioningTypePUBLIC:
+		return "", true
+
+	case PermissioningTypePRIVATE:
+		return "PrivatePermissioning", true
+	}
+	return "-", false
+}
+
+// NewPermissioning creates a new  Permissioning.
+func NewPermissioning(aType PermissioningType, value interface{}) (result Permissioning, err error) {
+	result.Type = aType
+	switch aType {
+
+	case PermissioningTypePUBLIC:
+
+	case PermissioningTypePRIVATE:
+
+		tv, ok := value.(PrivatePermissioning)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.PrivatePermissioning = &tv
+
+	}
+	return
+}
+
+// MustPrivatePermissioning retrieves the PrivatePermissioning value from the union,
+// panicing if the value is not set.
+func (u Permissioning) MustPrivatePermissioning() PrivatePermissioning {
+	val, ok := u.GetPrivatePermissioning()
+
+	if !ok {
+		panic("arm PrivatePermissioning is not set")
+	}
+
+	return val
+}
+
+// GetPrivatePermissioning retrieves the PrivatePermissioning value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Permissioning) GetPrivatePermissioning() (result PrivatePermissioning, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "PrivatePermissioning" {
+		result = *u.PrivatePermissioning
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u Permissioning) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *Permissioning) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Permissioning)(nil)
+	_ encoding.BinaryUnmarshaler = (*Permissioning)(nil)
+)
 
 // End union section
 
@@ -2170,54 +2206,6 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Call)(nil)
 )
 
-// Update generated struct
-type Update struct {
-	Contract []byte
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Update) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Update) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Update)(nil)
-	_ encoding.BinaryUnmarshaler = (*Update)(nil)
-)
-
-// Permission generated struct
-type Permission struct {
-	Key ID
-
-	Action PermissionAction
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Permission) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Permission) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Permission)(nil)
-	_ encoding.BinaryUnmarshaler = (*Permission)(nil)
-)
-
 // Action generated struct
 type Action struct {
 	Address ID
@@ -2305,55 +2293,60 @@ var (
 
 // Start enum section
 
-// PermissionAction generated enum
-type PermissionAction int32
+// ConfigType generated enum
+type ConfigType int32
 
 const (
 
-	// PermissionActionREVOKE enum value 0
-	PermissionActionREVOKE PermissionAction = 0
+	// ConfigTypeNONE enum value 0
+	ConfigTypeNONE ConfigType = 0
 
-	// PermissionActionGRANT enum value 1
-	PermissionActionGRANT PermissionAction = 1
+	// ConfigTypeCHANNEL enum value 1
+	ConfigTypeCHANNEL ConfigType = 1
+
+	// ConfigTypePERMISSION enum value 2
+	ConfigTypePERMISSION ConfigType = 2
 )
 
-// PermissionActionMap generated enum map
-var PermissionActionMap = map[int32]string{
+// ConfigTypeMap generated enum map
+var ConfigTypeMap = map[int32]string{
 
-	0: "PermissionActionREVOKE",
+	0: "ConfigTypeNONE",
 
-	1: "PermissionActionGRANT",
+	1: "ConfigTypeCHANNEL",
+
+	2: "ConfigTypePERMISSION",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for PermissionAction
-func (s PermissionAction) ValidEnum(v int32) bool {
-	_, ok := PermissionActionMap[v]
+// the Enum interface for ConfigType
+func (s ConfigType) ValidEnum(v int32) bool {
+	_, ok := ConfigTypeMap[v]
 	return ok
 }
 
 // String returns the name of `e`
-func (s PermissionAction) String() string {
-	name, _ := PermissionActionMap[int32(s)]
+func (s ConfigType) String() string {
+	name, _ := ConfigTypeMap[int32(s)]
 	return name
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s PermissionAction) MarshalBinary() ([]byte, error) {
+func (s ConfigType) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *PermissionAction) UnmarshalBinary(inp []byte) error {
+func (s *ConfigType) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*PermissionAction)(nil)
-	_ encoding.BinaryUnmarshaler = (*PermissionAction)(nil)
+	_ encoding.BinaryMarshaler   = (*ConfigType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ConfigType)(nil)
 )
 
 // ActionCategoryType generated enum
@@ -2367,14 +2360,8 @@ const (
 	// ActionCategoryTypeCALL enum value 1
 	ActionCategoryTypeCALL ActionCategoryType = 1
 
-	// ActionCategoryTypeUPDATE enum value 2
-	ActionCategoryTypeUPDATE ActionCategoryType = 2
-
-	// ActionCategoryTypePERMISSION enum value 3
-	ActionCategoryTypePERMISSION ActionCategoryType = 3
-
-	// ActionCategoryTypeCONFIG enum value 4
-	ActionCategoryTypeCONFIG ActionCategoryType = 4
+	// ActionCategoryTypeCONFIG enum value 2
+	ActionCategoryTypeCONFIG ActionCategoryType = 2
 )
 
 // ActionCategoryTypeMap generated enum map
@@ -2384,11 +2371,7 @@ var ActionCategoryTypeMap = map[int32]string{
 
 	1: "ActionCategoryTypeCALL",
 
-	2: "ActionCategoryTypeUPDATE",
-
-	3: "ActionCategoryTypePERMISSION",
-
-	4: "ActionCategoryTypeCONFIG",
+	2: "ActionCategoryTypeCONFIG",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -2538,17 +2521,142 @@ var (
 
 // Start union section
 
+// Config generated union
+type Config struct {
+	Type ConfigType
+
+	ContractChannelConfig *ContractChannelConfig
+
+	Keys *ID
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u Config) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of Config
+func (u Config) ArmForSwitch(sw int32) (string, bool) {
+	switch ConfigType(sw) {
+
+	case ConfigTypeNONE:
+		return "", true
+
+	case ConfigTypeCHANNEL:
+		return "ContractChannelConfig", true
+
+	case ConfigTypePERMISSION:
+		return "Keys", true
+	}
+	return "-", false
+}
+
+// NewConfig creates a new  Config.
+func NewConfig(aType ConfigType, value interface{}) (result Config, err error) {
+	result.Type = aType
+	switch aType {
+
+	case ConfigTypeNONE:
+
+	case ConfigTypeCHANNEL:
+
+		tv, ok := value.(ContractChannelConfig)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.ContractChannelConfig = &tv
+
+	case ConfigTypePERMISSION:
+
+		tv, ok := value.(ID)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Keys = &tv
+
+	}
+	return
+}
+
+// MustContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// panicing if the value is not set.
+func (u Config) MustContractChannelConfig() ContractChannelConfig {
+	val, ok := u.GetContractChannelConfig()
+
+	if !ok {
+		panic("arm ContractChannelConfig is not set")
+	}
+
+	return val
+}
+
+// GetContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Config) GetContractChannelConfig() (result ContractChannelConfig, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "ContractChannelConfig" {
+		result = *u.ContractChannelConfig
+		ok = true
+	}
+
+	return
+}
+
+// MustKeys retrieves the Keys value from the union,
+// panicing if the value is not set.
+func (u Config) MustKeys() ID {
+	val, ok := u.GetKeys()
+
+	if !ok {
+		panic("arm Keys is not set")
+	}
+
+	return val
+}
+
+// GetKeys retrieves the Keys value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Config) GetKeys() (result ID, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Keys" {
+		result = *u.Keys
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u Config) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *Config) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Config)(nil)
+	_ encoding.BinaryUnmarshaler = (*Config)(nil)
+)
+
 // ActionCategory generated union
 type ActionCategory struct {
 	Type ActionCategoryType
 
 	Call *Call
 
-	Update *Update
-
-	Permission *Permission
-
-	ChannelConfig *ChannelConfig
+	Config *Config
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -2568,14 +2676,8 @@ func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
 	case ActionCategoryTypeCALL:
 		return "Call", true
 
-	case ActionCategoryTypeUPDATE:
-		return "Update", true
-
-	case ActionCategoryTypePERMISSION:
-		return "Permission", true
-
 	case ActionCategoryTypeCONFIG:
-		return "ChannelConfig", true
+		return "Config", true
 	}
 	return "-", false
 }
@@ -2596,32 +2698,14 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 		}
 		result.Call = &tv
 
-	case ActionCategoryTypeUPDATE:
-
-		tv, ok := value.(Update)
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Update = &tv
-
-	case ActionCategoryTypePERMISSION:
-
-		tv, ok := value.(Permission)
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Permission = &tv
-
 	case ActionCategoryTypeCONFIG:
 
-		tv, ok := value.(ChannelConfig)
+		tv, ok := value.(Config)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.ChannelConfig = &tv
+		result.Config = &tv
 
 	}
 	return
@@ -2652,75 +2736,25 @@ func (u ActionCategory) GetCall() (result Call, ok bool) {
 	return
 }
 
-// MustUpdate retrieves the Update value from the union,
+// MustConfig retrieves the Config value from the union,
 // panicing if the value is not set.
-func (u ActionCategory) MustUpdate() Update {
-	val, ok := u.GetUpdate()
+func (u ActionCategory) MustConfig() Config {
+	val, ok := u.GetConfig()
 
 	if !ok {
-		panic("arm Update is not set")
+		panic("arm Config is not set")
 	}
 
 	return val
 }
 
-// GetUpdate retrieves the Update value from the union,
+// GetConfig retrieves the Config value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetUpdate() (result Update, ok bool) {
+func (u ActionCategory) GetConfig() (result Config, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "Update" {
-		result = *u.Update
-		ok = true
-	}
-
-	return
-}
-
-// MustPermission retrieves the Permission value from the union,
-// panicing if the value is not set.
-func (u ActionCategory) MustPermission() Permission {
-	val, ok := u.GetPermission()
-
-	if !ok {
-		panic("arm Permission is not set")
-	}
-
-	return val
-}
-
-// GetPermission retrieves the Permission value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetPermission() (result Permission, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Permission" {
-		result = *u.Permission
-		ok = true
-	}
-
-	return
-}
-
-// MustChannelConfig retrieves the ChannelConfig value from the union,
-// panicing if the value is not set.
-func (u ActionCategory) MustChannelConfig() ChannelConfig {
-	val, ok := u.GetChannelConfig()
-
-	if !ok {
-		panic("arm ChannelConfig is not set")
-	}
-
-	return val
-}
-
-// GetChannelConfig retrieves the ChannelConfig value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetChannelConfig() (result ChannelConfig, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "ChannelConfig" {
-		result = *u.ChannelConfig
+	if armName == "Config" {
+		result = *u.Config
 		ok = true
 	}
 
