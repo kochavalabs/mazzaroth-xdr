@@ -28,7 +28,20 @@ namespace mazzaroth
     case CHANNEL:
       ContractChannelConfig contractChannelConfig;
     case PERMISSION:
-      ID keys<>;
+      Permission permission;
+  };
+
+  enum PermissionAction
+  {
+    REVOKE = 0,
+    GRANT = 1,
+  };
+
+  struct Permission
+  {
+    ID key;
+
+    PermissionAction action;
   };
 
   enum ActionCategoryType

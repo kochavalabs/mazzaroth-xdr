@@ -53,10 +53,12 @@ exports.NonceLookupStatus = NonceLookupStatus;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
 exports.Call = Call;
+exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
 exports.Input = Input;
 exports.ConfigType = ConfigType;
+exports.PermissionAction = PermissionAction;
 exports.ActionCategoryType = ActionCategoryType;
 exports.AuthorityType = AuthorityType;
 exports.InputType = InputType;
@@ -535,6 +537,9 @@ function Identifier() {
 function Call() {
     return new _xdrJsSerialize2.default.Struct(["function", "parameters"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
 }
+function Permission() {
+    return new _xdrJsSerialize2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
+}
 function Action() {
     return new _xdrJsSerialize2.default.Struct(["address", "channelID", "nonce", "category"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), ActionCategory()]);
 }
@@ -554,6 +559,14 @@ function ConfigType() {
         0: "NONE",
         1: "CHANNEL",
         2: "PERMISSION"
+
+    });
+}
+
+function PermissionAction() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "REVOKE",
+        1: "GRANT"
 
     });
 }
@@ -602,7 +615,7 @@ function Config() {
         },
 
         "PERMISSION": () => {
-            return new _xdrJsSerialize2.default.VarArray(2147483647, ID);
+            return Permission();
         }
 
     });

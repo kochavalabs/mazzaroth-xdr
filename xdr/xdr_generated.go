@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io"
 
-	xdr "github.com/stellar/go-xdr/xdr3"
+	"github.com/stellar/go-xdr/xdr3"
 )
 
 // Unmarshal reads an xdr element from `r` into `v`.
@@ -2206,6 +2206,31 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Call)(nil)
 )
 
+// Permission generated struct
+type Permission struct {
+	Key ID
+
+	Action PermissionAction
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Permission) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Permission) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Permission)(nil)
+	_ encoding.BinaryUnmarshaler = (*Permission)(nil)
+)
+
 // Action generated struct
 type Action struct {
 	Address ID
@@ -2347,6 +2372,57 @@ func (s *ConfigType) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*ConfigType)(nil)
 	_ encoding.BinaryUnmarshaler = (*ConfigType)(nil)
+)
+
+// PermissionAction generated enum
+type PermissionAction int32
+
+const (
+
+	// PermissionActionREVOKE enum value 0
+	PermissionActionREVOKE PermissionAction = 0
+
+	// PermissionActionGRANT enum value 1
+	PermissionActionGRANT PermissionAction = 1
+)
+
+// PermissionActionMap generated enum map
+var PermissionActionMap = map[int32]string{
+
+	0: "PermissionActionREVOKE",
+
+	1: "PermissionActionGRANT",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for PermissionAction
+func (s PermissionAction) ValidEnum(v int32) bool {
+	_, ok := PermissionActionMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s PermissionAction) String() string {
+	name, _ := PermissionActionMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s PermissionAction) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *PermissionAction) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*PermissionAction)(nil)
+	_ encoding.BinaryUnmarshaler = (*PermissionAction)(nil)
 )
 
 // ActionCategoryType generated enum
@@ -2527,7 +2603,7 @@ type Config struct {
 
 	ContractChannelConfig *ContractChannelConfig
 
-	Keys *ID
+	Permission *Permission
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -2548,7 +2624,7 @@ func (u Config) ArmForSwitch(sw int32) (string, bool) {
 		return "ContractChannelConfig", true
 
 	case ConfigTypePERMISSION:
-		return "Keys", true
+		return "Permission", true
 	}
 	return "-", false
 }
@@ -2571,12 +2647,12 @@ func NewConfig(aType ConfigType, value interface{}) (result Config, err error) {
 
 	case ConfigTypePERMISSION:
 
-		tv, ok := value.(ID)
+		tv, ok := value.(Permission)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.Keys = &tv
+		result.Permission = &tv
 
 	}
 	return
@@ -2607,25 +2683,25 @@ func (u Config) GetContractChannelConfig() (result ContractChannelConfig, ok boo
 	return
 }
 
-// MustKeys retrieves the Keys value from the union,
+// MustPermission retrieves the Permission value from the union,
 // panicing if the value is not set.
-func (u Config) MustKeys() ID {
-	val, ok := u.GetKeys()
+func (u Config) MustPermission() Permission {
+	val, ok := u.GetPermission()
 
 	if !ok {
-		panic("arm Keys is not set")
+		panic("arm Permission is not set")
 	}
 
 	return val
 }
 
-// GetKeys retrieves the Keys value from the union,
+// GetPermission retrieves the Permission value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Config) GetKeys() (result ID, ok bool) {
+func (u Config) GetPermission() (result Permission, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "Keys" {
-		result = *u.Keys
+	if armName == "Permission" {
+		result = *u.Permission
 		ok = true
 	}
 

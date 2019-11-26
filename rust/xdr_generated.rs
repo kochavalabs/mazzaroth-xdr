@@ -654,6 +654,13 @@ pub struct Call {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Permission {
+    pub key: ID,
+
+    pub action: PermissionAction,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Action {
     pub address: ID,
 
@@ -696,6 +703,18 @@ pub enum ConfigType {
 impl Default for ConfigType {
     fn default() -> Self {
         ConfigType::NONE
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum PermissionAction {
+    REVOKE = 0,
+    GRANT = 1,
+}
+
+impl Default for PermissionAction {
+    fn default() -> Self {
+        PermissionAction::REVOKE
     }
 }
 
@@ -745,7 +764,7 @@ pub enum Config {
 
     CHANNEL(ContractChannelConfig),
 
-    PERMISSION(ID),
+    PERMISSION(Permission),
 }
 
 impl Default for Config {
