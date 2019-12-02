@@ -131,9 +131,6 @@ pub struct Parameter {
 pub struct ContractChannelConfig {
     pub channelID: ID,
 
-    #[array(var = 2147483647)]
-    pub contract: Vec<u8>,
-
     pub version: String,
 
     pub owner: ID,
@@ -654,6 +651,12 @@ pub struct Call {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Update {
+    #[array(var = 2147483647)]
+    pub contract: Vec<u8>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Permission {
     pub key: ID,
 
@@ -722,7 +725,8 @@ impl Default for PermissionAction {
 pub enum ActionCategoryType {
     NONE = 0,
     CALL = 1,
-    CONFIG = 2,
+    UPDATE = 2,
+    CONFIG = 3,
 }
 
 impl Default for ActionCategoryType {
@@ -778,6 +782,8 @@ pub enum ActionCategory {
     NONE(()),
 
     CALL(Call),
+
+    UPDATE(Update),
 
     CONFIG(Config),
 }

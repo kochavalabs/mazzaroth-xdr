@@ -53,6 +53,7 @@ exports.NonceLookupStatus = NonceLookupStatus;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
 exports.Call = Call;
+exports.Update = Update;
 exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
@@ -164,7 +165,7 @@ function Parameter() {
 
 // Start struct section
 function ContractChannelConfig() {
-    return new _xdrJsSerialize2.default.Struct(["channelID", "contract", "version", "owner", "channelName", "admins"], [ID(), new _xdrJsSerialize2.default.VarOpaque(2147483647), new _xdrJsSerialize2.default.Str('', 0), ID(), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["channelID", "version", "owner", "channelName", "admins"], [ID(), new _xdrJsSerialize2.default.Str('', 0), ID(), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
 function GovernanceConfig() {
     return new _xdrJsSerialize2.default.Struct(["maxBlockSize", "consensus", "permissioning"], [new _xdrJsSerialize2.default.UHyper(), ConsensusConfigType(), Permissioning()]);
@@ -537,6 +538,9 @@ function Identifier() {
 function Call() {
     return new _xdrJsSerialize2.default.Struct(["function", "parameters"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
 }
+function Update() {
+    return new _xdrJsSerialize2.default.Struct(["contract"], [new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
+}
 function Permission() {
     return new _xdrJsSerialize2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
 }
@@ -575,7 +579,8 @@ function ActionCategoryType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "CALL",
-        2: "CONFIG"
+        2: "UPDATE",
+        3: "CONFIG"
 
     });
 }
@@ -630,6 +635,10 @@ function ActionCategory() {
 
         "CALL": () => {
             return Call();
+        },
+
+        "UPDATE": () => {
+            return Update();
         },
 
         "CONFIG": () => {

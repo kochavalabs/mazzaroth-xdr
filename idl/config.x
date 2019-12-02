@@ -8,8 +8,6 @@ namespace mazzaroth
   {
     // Unique channel id which cannot be changed
     ID channelID;
-    // Contract binary bytes
-    opaque contract<>;
     // Version number of the contract, specified by owner
     string version;
     // Public Key ID of the channel owner. Only owner can change this to transfer ownership of channel

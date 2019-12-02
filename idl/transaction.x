@@ -14,6 +14,12 @@ namespace mazzaroth
     Parameter parameters<>;
   };
 
+  // A transaction that provides a contract as a wasm binary.
+  struct Update
+  {
+    opaque contract<>;
+  }
+
   enum ConfigType
   {
     NONE = 0,
@@ -48,7 +54,8 @@ namespace mazzaroth
   {
     NONE = 0,
     CALL = 1,
-    CONFIG = 2
+    UPDATE = 2,
+    CONFIG = 3
   };
 
   union ActionCategory switch (ActionCategoryType Type)
@@ -57,6 +64,8 @@ namespace mazzaroth
       void;
     case CALL:
       Call call;
+    case UPDATE:
+      Update update;
     case CONFIG:
       Config config;
   };

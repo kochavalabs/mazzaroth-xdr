@@ -282,8 +282,6 @@ var (
 type ContractChannelConfig struct {
 	ChannelID ID
 
-	Contract []byte
-
 	Version string
 
 	Owner ID
@@ -2206,6 +2204,29 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Call)(nil)
 )
 
+// Update generated struct
+type Update struct {
+	Contract []byte
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Update) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Update) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Update)(nil)
+	_ encoding.BinaryUnmarshaler = (*Update)(nil)
+)
+
 // Permission generated struct
 type Permission struct {
 	Key ID
@@ -2436,8 +2457,11 @@ const (
 	// ActionCategoryTypeCALL enum value 1
 	ActionCategoryTypeCALL ActionCategoryType = 1
 
-	// ActionCategoryTypeCONFIG enum value 2
-	ActionCategoryTypeCONFIG ActionCategoryType = 2
+	// ActionCategoryTypeUPDATE enum value 2
+	ActionCategoryTypeUPDATE ActionCategoryType = 2
+
+	// ActionCategoryTypeCONFIG enum value 3
+	ActionCategoryTypeCONFIG ActionCategoryType = 3
 )
 
 // ActionCategoryTypeMap generated enum map
@@ -2447,7 +2471,9 @@ var ActionCategoryTypeMap = map[int32]string{
 
 	1: "ActionCategoryTypeCALL",
 
-	2: "ActionCategoryTypeCONFIG",
+	2: "ActionCategoryTypeUPDATE",
+
+	3: "ActionCategoryTypeCONFIG",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -2732,6 +2758,8 @@ type ActionCategory struct {
 
 	Call *Call
 
+	Update *Update
+
 	Config *Config
 }
 
@@ -2751,6 +2779,9 @@ func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
 
 	case ActionCategoryTypeCALL:
 		return "Call", true
+
+	case ActionCategoryTypeUPDATE:
+		return "Update", true
 
 	case ActionCategoryTypeCONFIG:
 		return "Config", true
@@ -2773,6 +2804,15 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 			return
 		}
 		result.Call = &tv
+
+	case ActionCategoryTypeUPDATE:
+
+		tv, ok := value.(Update)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Update = &tv
 
 	case ActionCategoryTypeCONFIG:
 
@@ -2806,6 +2846,31 @@ func (u ActionCategory) GetCall() (result Call, ok bool) {
 
 	if armName == "Call" {
 		result = *u.Call
+		ok = true
+	}
+
+	return
+}
+
+// MustUpdate retrieves the Update value from the union,
+// panicing if the value is not set.
+func (u ActionCategory) MustUpdate() Update {
+	val, ok := u.GetUpdate()
+
+	if !ok {
+		panic("arm Update is not set")
+	}
+
+	return val
+}
+
+// GetUpdate retrieves the Update value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ActionCategory) GetUpdate() (result Update, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Update" {
+		result = *u.Update
 		ok = true
 	}
 
