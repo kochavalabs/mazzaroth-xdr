@@ -282,6 +282,8 @@ var (
 type ContractChannelConfig struct {
 	ChannelID ID
 
+	ContractHash Hash
+
 	Version string
 
 	Owner ID

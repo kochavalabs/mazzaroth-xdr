@@ -165,7 +165,7 @@ function Parameter() {
 
 // Start struct section
 function ContractChannelConfig() {
-    return new _xdrJsSerialize2.default.Struct(["channelID", "version", "owner", "channelName", "admins"], [ID(), new _xdrJsSerialize2.default.Str('', 0), ID(), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["channelID", "contractHash", "version", "owner", "channelName", "admins"], [ID(), Hash(), new _xdrJsSerialize2.default.Str('', 0), ID(), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
 function GovernanceConfig() {
     return new _xdrJsSerialize2.default.Struct(["maxBlockSize", "consensus", "permissioning"], [new _xdrJsSerialize2.default.UHyper(), ConsensusConfigType(), Permissioning()]);

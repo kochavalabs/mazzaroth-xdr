@@ -131,6 +131,8 @@ pub struct Parameter {
 pub struct ContractChannelConfig {
     pub channelID: ID,
 
+    pub contractHash: Hash,
+
     pub version: String,
 
     pub owner: ID,
