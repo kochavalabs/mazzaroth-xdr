@@ -17,7 +17,11 @@ namespace mazzaroth
   // A transaction that provides a contract as a wasm binary.
   struct Update
   {
+    // Contract binary bytes.
     opaque contract<>;
+
+    // Version number of the contract, specified by owner
+    string version;
   }
 
   enum ConfigType

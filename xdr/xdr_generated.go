@@ -2207,6 +2207,8 @@ var (
 // Update generated struct
 type Update struct {
 	Contract []byte
+
+	Version string
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.

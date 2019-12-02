@@ -539,7 +539,7 @@ function Call() {
     return new _xdrJsSerialize2.default.Struct(["function", "parameters"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
 }
 function Update() {
-    return new _xdrJsSerialize2.default.Struct(["contract"], [new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
+    return new _xdrJsSerialize2.default.Struct(["contract", "version"], [new _xdrJsSerialize2.default.VarOpaque(2147483647), new _xdrJsSerialize2.default.Str('', 0)]);
 }
 function Permission() {
     return new _xdrJsSerialize2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
