@@ -153,7 +153,7 @@ pub struct GovernanceConfig {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct PrivatePermissioning {
+pub struct PermissionedIDs {
     #[array(var = 2147483647)]
     pub allowedIDs: Vec<ID>,
 
@@ -179,6 +179,7 @@ impl Default for ConsensusConfigType {
 pub enum PermissioningType {
     PUBLIC = 0,
     PRIVATE = 1,
+    PERMISSIONED = 2,
 }
 
 impl Default for PermissioningType {
@@ -192,7 +193,9 @@ impl Default for PermissioningType {
 pub enum Permissioning {
     PUBLIC(()),
 
-    PRIVATE(PrivatePermissioning),
+    PRIVATE(()),
+
+    PERMISSIONED(PermissionedIDs),
 }
 
 impl Default for Permissioning {

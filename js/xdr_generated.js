@@ -12,7 +12,7 @@ exports.Hash = Hash;
 exports.Parameter = Parameter;
 exports.ContractChannelConfig = ContractChannelConfig;
 exports.GovernanceConfig = GovernanceConfig;
-exports.PrivatePermissioning = PrivatePermissioning;
+exports.PermissionedIDs = PermissionedIDs;
 exports.ConsensusConfigType = ConsensusConfigType;
 exports.PermissioningType = PermissioningType;
 exports.Permissioning = Permissioning;
@@ -170,7 +170,7 @@ function ContractChannelConfig() {
 function GovernanceConfig() {
     return new _xdrJsSerialize2.default.Struct(["maxBlockSize", "consensus", "permissioning"], [new _xdrJsSerialize2.default.UHyper(), ConsensusConfigType(), Permissioning()]);
 }
-function PrivatePermissioning() {
+function PermissionedIDs() {
     return new _xdrJsSerialize2.default.Struct(["allowedIDs", "validators"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
 
@@ -189,7 +189,8 @@ function ConsensusConfigType() {
 function PermissioningType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "PUBLIC",
-        1: "PRIVATE"
+        1: "PRIVATE",
+        2: "PERMISSIONED"
 
     });
 }
@@ -207,7 +208,11 @@ function Permissioning() {
         },
 
         "PRIVATE": () => {
-            return PrivatePermissioning();
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "PERMISSIONED": () => {
+            return PermissionedIDs();
         }
 
     });

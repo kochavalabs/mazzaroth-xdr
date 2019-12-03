@@ -338,29 +338,29 @@ var (
 	_ encoding.BinaryUnmarshaler = (*GovernanceConfig)(nil)
 )
 
-// PrivatePermissioning generated struct
-type PrivatePermissioning struct {
+// PermissionedIDs generated struct
+type PermissionedIDs struct {
 	AllowedIDs []ID
 
 	Validators []ID
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s PrivatePermissioning) MarshalBinary() ([]byte, error) {
+func (s PermissionedIDs) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *PrivatePermissioning) UnmarshalBinary(inp []byte) error {
+func (s *PermissionedIDs) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*PrivatePermissioning)(nil)
-	_ encoding.BinaryUnmarshaler = (*PrivatePermissioning)(nil)
+	_ encoding.BinaryMarshaler   = (*PermissionedIDs)(nil)
+	_ encoding.BinaryUnmarshaler = (*PermissionedIDs)(nil)
 )
 
 // End struct section
@@ -428,6 +428,9 @@ const (
 
 	// PermissioningTypePRIVATE enum value 1
 	PermissioningTypePRIVATE PermissioningType = 1
+
+	// PermissioningTypePERMISSIONED enum value 2
+	PermissioningTypePERMISSIONED PermissioningType = 2
 )
 
 // PermissioningTypeMap generated enum map
@@ -436,6 +439,8 @@ var PermissioningTypeMap = map[int32]string{
 	0: "PermissioningTypePUBLIC",
 
 	1: "PermissioningTypePRIVATE",
+
+	2: "PermissioningTypePERMISSIONED",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -477,7 +482,7 @@ var (
 type Permissioning struct {
 	Type PermissioningType
 
-	PrivatePermissioning *PrivatePermissioning
+	PermissionedIDs *PermissionedIDs
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -495,7 +500,10 @@ func (u Permissioning) ArmForSwitch(sw int32) (string, bool) {
 		return "", true
 
 	case PermissioningTypePRIVATE:
-		return "PrivatePermissioning", true
+		return "", true
+
+	case PermissioningTypePERMISSIONED:
+		return "PermissionedIDs", true
 	}
 	return "-", false
 }
@@ -509,36 +517,38 @@ func NewPermissioning(aType PermissioningType, value interface{}) (result Permis
 
 	case PermissioningTypePRIVATE:
 
-		tv, ok := value.(PrivatePermissioning)
+	case PermissioningTypePERMISSIONED:
+
+		tv, ok := value.(PermissionedIDs)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.PrivatePermissioning = &tv
+		result.PermissionedIDs = &tv
 
 	}
 	return
 }
 
-// MustPrivatePermissioning retrieves the PrivatePermissioning value from the union,
+// MustPermissionedIDs retrieves the PermissionedIDs value from the union,
 // panicing if the value is not set.
-func (u Permissioning) MustPrivatePermissioning() PrivatePermissioning {
-	val, ok := u.GetPrivatePermissioning()
+func (u Permissioning) MustPermissionedIDs() PermissionedIDs {
+	val, ok := u.GetPermissionedIDs()
 
 	if !ok {
-		panic("arm PrivatePermissioning is not set")
+		panic("arm PermissionedIDs is not set")
 	}
 
 	return val
 }
 
-// GetPrivatePermissioning retrieves the PrivatePermissioning value from the union,
+// GetPermissionedIDs retrieves the PermissionedIDs value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Permissioning) GetPrivatePermissioning() (result PrivatePermissioning, ok bool) {
+func (u Permissioning) GetPermissionedIDs() (result PermissionedIDs, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "PrivatePermissioning" {
-		result = *u.PrivatePermissioning
+	if armName == "PermissionedIDs" {
+		result = *u.PermissionedIDs
 		ok = true
 	}
 

@@ -42,10 +42,11 @@ namespace mazzaroth
   enum PermissioningType
   {
     PUBLIC = 0,
-    PRIVATE = 1
+    PRIVATE = 1,
+    PERMISSIONED = 2
   };
 
-  struct PrivatePermissioning 
+  struct PermissionedIDs
   {
     // List of public key ids authorized to participate in channel
     ID allowedIDs<>;
@@ -56,8 +57,10 @@ namespace mazzaroth
   union Permissioning switch (PermissioningType Type)
   {
   case PUBLIC:
-      void;
+    void;
   case PRIVATE:
-      PrivatePermissioning privatePermissioning;
+    void;
+  case PERMISSIONED:
+    PermissionedIDs permissionedIDs;
   };
 }
