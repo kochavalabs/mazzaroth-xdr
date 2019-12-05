@@ -697,17 +697,6 @@ pub struct Transaction {
     pub action: Action,
 }
 
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Input {
-    pub inputType: InputType,
-
-    #[array(var = 256)]
-    pub function: String,
-
-    #[array(var = 2147483647)]
-    pub parameters: Vec<Parameter>,
-}
-
 // End struct section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
@@ -758,20 +747,6 @@ pub enum AuthorityType {
 impl Default for AuthorityType {
     fn default() -> Self {
         AuthorityType::NONE
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum InputType {
-    NONE = 0,
-    READONLY = 1,
-    EXECUTE = 2,
-    CONSTRUCTOR = 3,
-}
-
-impl Default for InputType {
-    fn default() -> Self {
-        InputType::NONE
     }
 }
 // Start union section

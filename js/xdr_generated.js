@@ -57,12 +57,10 @@ exports.Contract = Contract;
 exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
-exports.Input = Input;
 exports.UpdateType = UpdateType;
 exports.PermissionAction = PermissionAction;
 exports.ActionCategoryType = ActionCategoryType;
 exports.AuthorityType = AuthorityType;
-exports.InputType = InputType;
 exports.Update = Update;
 exports.ActionCategory = ActionCategory;
 exports.Authority = Authority;
@@ -555,9 +553,6 @@ function Action() {
 function Transaction() {
     return new _xdrJsSerialize2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
 }
-function Input() {
-    return new _xdrJsSerialize2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
-}
 
 // End struct section
 
@@ -594,16 +589,6 @@ function AuthorityType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "PERMISSIONED"
-
-    });
-}
-
-function InputType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "NONE",
-        1: "READONLY",
-        2: "EXECUTE",
-        3: "CONSTRUCTOR"
 
     });
 }
