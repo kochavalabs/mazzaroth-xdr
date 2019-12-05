@@ -6,15 +6,16 @@ Object.defineProperty(exports, "__esModule", {
 exports.Account = Account;
 exports.Block = Block;
 exports.BlockHeader = BlockHeader;
-exports.ChannelConfig = ChannelConfig;
-exports.PBFTConfig = PBFTConfig;
-exports.ConsensusConfigType = ConsensusConfigType;
-exports.ConsensusConfig = ConsensusConfig;
 exports.Signature = Signature;
 exports.ID = ID;
 exports.Hash = Hash;
 exports.Parameter = Parameter;
-exports.ContractMetadata = ContractMetadata;
+exports.ContractChannelConfig = ContractChannelConfig;
+exports.GovernanceConfig = GovernanceConfig;
+exports.PermissionedIDs = PermissionedIDs;
+exports.ConsensusConfigType = ConsensusConfigType;
+exports.PermissioningType = PermissioningType;
+exports.Permissioning = Permissioning;
 exports.DownloadRequest = DownloadRequest;
 exports.DownloadResponse = DownloadResponse;
 exports.DownloadRequestType = DownloadRequestType;
@@ -52,15 +53,17 @@ exports.NonceLookupStatus = NonceLookupStatus;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
 exports.Call = Call;
-exports.Update = Update;
+exports.Contract = Contract;
 exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
 exports.Input = Input;
+exports.UpdateType = UpdateType;
 exports.PermissionAction = PermissionAction;
 exports.ActionCategoryType = ActionCategoryType;
 exports.AuthorityType = AuthorityType;
 exports.InputType = InputType;
+exports.Update = Update;
 exports.ActionCategory = ActionCategory;
 exports.Authority = Authority;
 
@@ -122,53 +125,6 @@ function BlockHeader() {
 // Namespace start mazzaroth
 
 // Start typedef section
-// End typedef section
-
-// Start struct section
-function ChannelConfig() {
-    return new _xdrJsSerialize2.default.Struct(["channelID", "owner", "maxBlockSize", "consensusConfig"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), ConsensusConfig()]);
-}
-function PBFTConfig() {
-    return new _xdrJsSerialize2.default.Struct(["validators", "checkpointPeriod", "watermarkRange"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper()]);
-}
-
-// End struct section
-
-// Start enum section
-
-function ConsensusConfigType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "NONE",
-        1: "PBFT"
-
-    });
-}
-
-// End enum section
-
-// Start union section
-
-
-function ConsensusConfig() {
-    return new _xdrJsSerialize2.default.Union(ConsensusConfigType(), {
-
-        "NONE": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "PBFT": () => {
-            return PBFTConfig();
-        }
-
-    });
-}
-
-// End union section
-
-// End namespace mazzaroth
-// Namespace start mazzaroth
-
-// Start typedef section
 
 function Signature() {
     return new _xdrJsSerialize2.default.FixedOpaque(64);
@@ -208,19 +164,59 @@ function Parameter() {
 // End typedef section
 
 // Start struct section
-function ContractMetadata() {
-    return new _xdrJsSerialize2.default.Struct(["hash", "version"], [Hash(), new _xdrJsSerialize2.default.UHyper()]);
+function ContractChannelConfig() {
+    return new _xdrJsSerialize2.default.Struct(["channelID", "contractHash", "version", "owner", "channelName", "admins"], [ID(), Hash(), new _xdrJsSerialize2.default.Str('', 0), ID(), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+}
+function GovernanceConfig() {
+    return new _xdrJsSerialize2.default.Struct(["maxBlockSize", "consensus", "permissioning"], [new _xdrJsSerialize2.default.UHyper(), ConsensusConfigType(), Permissioning()]);
+}
+function PermissionedIDs() {
+    return new _xdrJsSerialize2.default.Struct(["allowedIDs", "validators"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
 
 // End struct section
 
 // Start enum section
 
+function ConsensusConfigType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "NONE",
+        1: "PBFT"
+
+    });
+}
+
+function PermissioningType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "PUBLIC",
+        1: "PRIVATE",
+        2: "PERMISSIONED"
+
+    });
+}
 
 // End enum section
 
 // Start union section
 
+
+function Permissioning() {
+    return new _xdrJsSerialize2.default.Union(PermissioningType(), {
+
+        "PUBLIC": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "PRIVATE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "PERMISSIONED": () => {
+            return PermissionedIDs();
+        }
+
+    });
+}
 
 // End union section
 
@@ -547,8 +543,8 @@ function Identifier() {
 function Call() {
     return new _xdrJsSerialize2.default.Struct(["function", "parameters"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
 }
-function Update() {
-    return new _xdrJsSerialize2.default.Struct(["contract"], [new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
+function Contract() {
+    return new _xdrJsSerialize2.default.Struct(["contract", "version"], [new _xdrJsSerialize2.default.VarOpaque(2147483647), new _xdrJsSerialize2.default.Str('', 0)]);
 }
 function Permission() {
     return new _xdrJsSerialize2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
@@ -567,6 +563,16 @@ function Input() {
 
 // Start enum section
 
+function UpdateType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "NONE",
+        1: "CONTRACT",
+        2: "CONFIG",
+        3: "PERMISSION"
+
+    });
+}
+
 function PermissionAction() {
     return new _xdrJsSerialize2.default.Enum({
         0: "REVOKE",
@@ -579,9 +585,7 @@ function ActionCategoryType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "CALL",
-        2: "UPDATE",
-        3: "PERMISSION",
-        4: "CONFIG"
+        2: "UPDATE"
 
     });
 }
@@ -609,6 +613,28 @@ function InputType() {
 // Start union section
 
 
+function Update() {
+    return new _xdrJsSerialize2.default.Union(UpdateType(), {
+
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "CONTRACT": () => {
+            return Contract();
+        },
+
+        "CONFIG": () => {
+            return ContractChannelConfig();
+        },
+
+        "PERMISSION": () => {
+            return Permission();
+        }
+
+    });
+}
+
 function ActionCategory() {
     return new _xdrJsSerialize2.default.Union(ActionCategoryType(), {
 
@@ -622,14 +648,6 @@ function ActionCategory() {
 
         "UPDATE": () => {
             return Update();
-        },
-
-        "PERMISSION": () => {
-            return Permission();
-        },
-
-        "CONFIG": () => {
-            return ChannelConfig();
         }
 
     });

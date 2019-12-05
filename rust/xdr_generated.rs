@@ -94,65 +94,6 @@ pub struct BlockHeader {
 
 // Start typedef section
 
-// End typedef section
-
-// Start struct section
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ChannelConfig {
-    pub channelID: ID,
-
-    pub owner: ID,
-
-    pub maxBlockSize: u64,
-
-    pub consensusConfig: ConsensusConfig,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct PBFTConfig {
-    #[array(var = 2147483647)]
-    pub validators: Vec<ID>,
-
-    pub checkpointPeriod: u64,
-
-    pub watermarkRange: u64,
-}
-
-// End struct section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ConsensusConfigType {
-    NONE = 0,
-    PBFT = 1,
-}
-
-impl Default for ConsensusConfigType {
-    fn default() -> Self {
-        ConsensusConfigType::NONE
-    }
-}
-// Start union section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ConsensusConfig {
-    NONE(()),
-
-    PBFT(PBFTConfig),
-}
-
-impl Default for ConsensusConfig {
-    fn default() -> Self {
-        ConsensusConfig::NONE(())
-    }
-}
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Signature {
     #[array(fixed = 64)]
@@ -194,16 +135,81 @@ pub struct Parameter {
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ContractMetadata {
-    pub hash: Hash,
+pub struct ContractChannelConfig {
+    pub channelID: ID,
 
-    pub version: u64,
+    pub contractHash: Hash,
+
+    pub version: String,
+
+    pub owner: ID,
+
+    pub channelName: String,
+
+    #[array(var = 2147483647)]
+    pub admins: Vec<ID>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct GovernanceConfig {
+    pub maxBlockSize: u64,
+
+    pub consensus: ConsensusConfigType,
+
+    pub permissioning: Permissioning,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct PermissionedIDs {
+    #[array(var = 2147483647)]
+    pub allowedIDs: Vec<ID>,
+
+    #[array(var = 2147483647)]
+    pub validators: Vec<ID>,
 }
 
 // End struct section
 
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ConsensusConfigType {
+    NONE = 0,
+    PBFT = 1,
+}
+
+impl Default for ConsensusConfigType {
+    fn default() -> Self {
+        ConsensusConfigType::NONE
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum PermissioningType {
+    PUBLIC = 0,
+    PRIVATE = 1,
+    PERMISSIONED = 2,
+}
+
+impl Default for PermissioningType {
+    fn default() -> Self {
+        PermissioningType::PUBLIC
+    }
+}
 // Start union section
 
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum Permissioning {
+    PUBLIC(()),
+
+    PRIVATE(()),
+
+    PERMISSIONED(PermissionedIDs),
+}
+
+impl Default for Permissioning {
+    fn default() -> Self {
+        Permissioning::PUBLIC(())
+    }
+}
 // End union section
 
 // Namspace end mazzaroth
@@ -657,9 +663,11 @@ pub struct Call {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Update {
+pub struct Contract {
     #[array(var = 2147483647)]
     pub contract: Vec<u8>,
+
+    pub version: String,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
@@ -703,6 +711,20 @@ pub struct Input {
 // End struct section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum UpdateType {
+    NONE = 0,
+    CONTRACT = 1,
+    CONFIG = 2,
+    PERMISSION = 3,
+}
+
+impl Default for UpdateType {
+    fn default() -> Self {
+        UpdateType::NONE
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum PermissionAction {
     REVOKE = 0,
     GRANT = 1,
@@ -719,8 +741,6 @@ pub enum ActionCategoryType {
     NONE = 0,
     CALL = 1,
     UPDATE = 2,
-    PERMISSION = 3,
-    CONFIG = 4,
 }
 
 impl Default for ActionCategoryType {
@@ -757,16 +777,29 @@ impl Default for InputType {
 // Start union section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum Update {
+    NONE(()),
+
+    CONTRACT(Contract),
+
+    CONFIG(ContractChannelConfig),
+
+    PERMISSION(Permission),
+}
+
+impl Default for Update {
+    fn default() -> Self {
+        Update::NONE(())
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ActionCategory {
     NONE(()),
 
     CALL(Call),
 
     UPDATE(Update),
-
-    PERMISSION(Permission),
-
-    CONFIG(ChannelConfig),
 }
 
 impl Default for ActionCategory {
