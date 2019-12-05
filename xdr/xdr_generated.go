@@ -2216,29 +2216,29 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Call)(nil)
 )
 
-// Update generated struct
-type Update struct {
+// Contract generated struct
+type Contract struct {
 	Contract []byte
 
 	Version string
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s Update) MarshalBinary() ([]byte, error) {
+func (s Contract) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Update) UnmarshalBinary(inp []byte) error {
+func (s *Contract) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*Update)(nil)
-	_ encoding.BinaryUnmarshaler = (*Update)(nil)
+	_ encoding.BinaryMarshaler   = (*Contract)(nil)
+	_ encoding.BinaryUnmarshaler = (*Contract)(nil)
 )
 
 // Permission generated struct
@@ -2353,60 +2353,65 @@ var (
 
 // Start enum section
 
-// ConfigType generated enum
-type ConfigType int32
+// UpdateType generated enum
+type UpdateType int32
 
 const (
 
-	// ConfigTypeNONE enum value 0
-	ConfigTypeNONE ConfigType = 0
+	// UpdateTypeNONE enum value 0
+	UpdateTypeNONE UpdateType = 0
 
-	// ConfigTypeCHANNEL enum value 1
-	ConfigTypeCHANNEL ConfigType = 1
+	// UpdateTypeCONTRACT enum value 1
+	UpdateTypeCONTRACT UpdateType = 1
 
-	// ConfigTypePERMISSION enum value 2
-	ConfigTypePERMISSION ConfigType = 2
+	// UpdateTypeCONFIG enum value 2
+	UpdateTypeCONFIG UpdateType = 2
+
+	// UpdateTypePERMISSION enum value 3
+	UpdateTypePERMISSION UpdateType = 3
 )
 
-// ConfigTypeMap generated enum map
-var ConfigTypeMap = map[int32]string{
+// UpdateTypeMap generated enum map
+var UpdateTypeMap = map[int32]string{
 
-	0: "ConfigTypeNONE",
+	0: "UpdateTypeNONE",
 
-	1: "ConfigTypeCHANNEL",
+	1: "UpdateTypeCONTRACT",
 
-	2: "ConfigTypePERMISSION",
+	2: "UpdateTypeCONFIG",
+
+	3: "UpdateTypePERMISSION",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for ConfigType
-func (s ConfigType) ValidEnum(v int32) bool {
-	_, ok := ConfigTypeMap[v]
+// the Enum interface for UpdateType
+func (s UpdateType) ValidEnum(v int32) bool {
+	_, ok := UpdateTypeMap[v]
 	return ok
 }
 
 // String returns the name of `e`
-func (s ConfigType) String() string {
-	name, _ := ConfigTypeMap[int32(s)]
+func (s UpdateType) String() string {
+	name, _ := UpdateTypeMap[int32(s)]
 	return name
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ConfigType) MarshalBinary() ([]byte, error) {
+func (s UpdateType) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ConfigType) UnmarshalBinary(inp []byte) error {
+func (s *UpdateType) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ConfigType)(nil)
-	_ encoding.BinaryUnmarshaler = (*ConfigType)(nil)
+	_ encoding.BinaryMarshaler   = (*UpdateType)(nil)
+	_ encoding.BinaryUnmarshaler = (*UpdateType)(nil)
 )
 
 // PermissionAction generated enum
@@ -2473,9 +2478,6 @@ const (
 
 	// ActionCategoryTypeUPDATE enum value 2
 	ActionCategoryTypeUPDATE ActionCategoryType = 2
-
-	// ActionCategoryTypeCONFIG enum value 3
-	ActionCategoryTypeCONFIG ActionCategoryType = 3
 )
 
 // ActionCategoryTypeMap generated enum map
@@ -2486,8 +2488,6 @@ var ActionCategoryTypeMap = map[int32]string{
 	1: "ActionCategoryTypeCALL",
 
 	2: "ActionCategoryTypeUPDATE",
-
-	3: "ActionCategoryTypeCONFIG",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -2637,9 +2637,11 @@ var (
 
 // Start union section
 
-// Config generated union
-type Config struct {
-	Type ConfigType
+// Update generated union
+type Update struct {
+	Type UpdateType
+
+	Contract *Contract
 
 	ContractChannelConfig *ContractChannelConfig
 
@@ -2648,35 +2650,47 @@ type Config struct {
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (u Config) SwitchFieldName() string {
+func (u Update) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
-// the value for an instance of Config
-func (u Config) ArmForSwitch(sw int32) (string, bool) {
-	switch ConfigType(sw) {
+// the value for an instance of Update
+func (u Update) ArmForSwitch(sw int32) (string, bool) {
+	switch UpdateType(sw) {
 
-	case ConfigTypeNONE:
+	case UpdateTypeNONE:
 		return "", true
 
-	case ConfigTypeCHANNEL:
+	case UpdateTypeCONTRACT:
+		return "Contract", true
+
+	case UpdateTypeCONFIG:
 		return "ContractChannelConfig", true
 
-	case ConfigTypePERMISSION:
+	case UpdateTypePERMISSION:
 		return "Permission", true
 	}
 	return "-", false
 }
 
-// NewConfig creates a new  Config.
-func NewConfig(aType ConfigType, value interface{}) (result Config, err error) {
+// NewUpdate creates a new  Update.
+func NewUpdate(aType UpdateType, value interface{}) (result Update, err error) {
 	result.Type = aType
 	switch aType {
 
-	case ConfigTypeNONE:
+	case UpdateTypeNONE:
 
-	case ConfigTypeCHANNEL:
+	case UpdateTypeCONTRACT:
+
+		tv, ok := value.(Contract)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Contract = &tv
+
+	case UpdateTypeCONFIG:
 
 		tv, ok := value.(ContractChannelConfig)
 		if !ok {
@@ -2685,7 +2699,7 @@ func NewConfig(aType ConfigType, value interface{}) (result Config, err error) {
 		}
 		result.ContractChannelConfig = &tv
 
-	case ConfigTypePERMISSION:
+	case UpdateTypePERMISSION:
 
 		tv, ok := value.(Permission)
 		if !ok {
@@ -2698,9 +2712,34 @@ func NewConfig(aType ConfigType, value interface{}) (result Config, err error) {
 	return
 }
 
+// MustContract retrieves the Contract value from the union,
+// panicing if the value is not set.
+func (u Update) MustContract() Contract {
+	val, ok := u.GetContract()
+
+	if !ok {
+		panic("arm Contract is not set")
+	}
+
+	return val
+}
+
+// GetContract retrieves the Contract value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Update) GetContract() (result Contract, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Contract" {
+		result = *u.Contract
+		ok = true
+	}
+
+	return
+}
+
 // MustContractChannelConfig retrieves the ContractChannelConfig value from the union,
 // panicing if the value is not set.
-func (u Config) MustContractChannelConfig() ContractChannelConfig {
+func (u Update) MustContractChannelConfig() ContractChannelConfig {
 	val, ok := u.GetContractChannelConfig()
 
 	if !ok {
@@ -2712,7 +2751,7 @@ func (u Config) MustContractChannelConfig() ContractChannelConfig {
 
 // GetContractChannelConfig retrieves the ContractChannelConfig value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Config) GetContractChannelConfig() (result ContractChannelConfig, ok bool) {
+func (u Update) GetContractChannelConfig() (result ContractChannelConfig, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "ContractChannelConfig" {
@@ -2725,7 +2764,7 @@ func (u Config) GetContractChannelConfig() (result ContractChannelConfig, ok boo
 
 // MustPermission retrieves the Permission value from the union,
 // panicing if the value is not set.
-func (u Config) MustPermission() Permission {
+func (u Update) MustPermission() Permission {
 	val, ok := u.GetPermission()
 
 	if !ok {
@@ -2737,7 +2776,7 @@ func (u Config) MustPermission() Permission {
 
 // GetPermission retrieves the Permission value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Config) GetPermission() (result Permission, ok bool) {
+func (u Update) GetPermission() (result Permission, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Permission" {
@@ -2749,21 +2788,21 @@ func (u Config) GetPermission() (result Permission, ok bool) {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (u Config) MarshalBinary() ([]byte, error) {
+func (u Update) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (u *Config) UnmarshalBinary(inp []byte) error {
+func (u *Update) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*Config)(nil)
-	_ encoding.BinaryUnmarshaler = (*Config)(nil)
+	_ encoding.BinaryMarshaler   = (*Update)(nil)
+	_ encoding.BinaryUnmarshaler = (*Update)(nil)
 )
 
 // ActionCategory generated union
@@ -2773,8 +2812,6 @@ type ActionCategory struct {
 	Call *Call
 
 	Update *Update
-
-	Config *Config
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -2796,9 +2833,6 @@ func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
 
 	case ActionCategoryTypeUPDATE:
 		return "Update", true
-
-	case ActionCategoryTypeCONFIG:
-		return "Config", true
 	}
 	return "-", false
 }
@@ -2827,15 +2861,6 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 			return
 		}
 		result.Update = &tv
-
-	case ActionCategoryTypeCONFIG:
-
-		tv, ok := value.(Config)
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Config = &tv
 
 	}
 	return
@@ -2885,31 +2910,6 @@ func (u ActionCategory) GetUpdate() (result Update, ok bool) {
 
 	if armName == "Update" {
 		result = *u.Update
-		ok = true
-	}
-
-	return
-}
-
-// MustConfig retrieves the Config value from the union,
-// panicing if the value is not set.
-func (u ActionCategory) MustConfig() Config {
-	val, ok := u.GetConfig()
-
-	if !ok {
-		panic("arm Config is not set")
-	}
-
-	return val
-}
-
-// GetConfig retrieves the Config value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetConfig() (result Config, ok bool) {
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Config" {
-		result = *u.Config
 		ok = true
 	}
 

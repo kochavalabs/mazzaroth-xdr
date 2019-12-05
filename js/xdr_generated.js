@@ -53,17 +53,17 @@ exports.NonceLookupStatus = NonceLookupStatus;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
 exports.Call = Call;
-exports.Update = Update;
+exports.Contract = Contract;
 exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
 exports.Input = Input;
-exports.ConfigType = ConfigType;
+exports.UpdateType = UpdateType;
 exports.PermissionAction = PermissionAction;
 exports.ActionCategoryType = ActionCategoryType;
 exports.AuthorityType = AuthorityType;
 exports.InputType = InputType;
-exports.Config = Config;
+exports.Update = Update;
 exports.ActionCategory = ActionCategory;
 exports.Authority = Authority;
 
@@ -543,7 +543,7 @@ function Identifier() {
 function Call() {
     return new _xdrJsSerialize2.default.Struct(["function", "parameters"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
 }
-function Update() {
+function Contract() {
     return new _xdrJsSerialize2.default.Struct(["contract", "version"], [new _xdrJsSerialize2.default.VarOpaque(2147483647), new _xdrJsSerialize2.default.Str('', 0)]);
 }
 function Permission() {
@@ -563,11 +563,12 @@ function Input() {
 
 // Start enum section
 
-function ConfigType() {
+function UpdateType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
-        1: "CHANNEL",
-        2: "PERMISSION"
+        1: "CONTRACT",
+        2: "CONFIG",
+        3: "PERMISSION"
 
     });
 }
@@ -584,8 +585,7 @@ function ActionCategoryType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "CALL",
-        2: "UPDATE",
-        3: "CONFIG"
+        2: "UPDATE"
 
     });
 }
@@ -613,14 +613,18 @@ function InputType() {
 // Start union section
 
 
-function Config() {
-    return new _xdrJsSerialize2.default.Union(ConfigType(), {
+function Update() {
+    return new _xdrJsSerialize2.default.Union(UpdateType(), {
 
         "NONE": () => {
             return new _xdrJsSerialize2.default.Void();
         },
 
-        "CHANNEL": () => {
+        "CONTRACT": () => {
+            return Contract();
+        },
+
+        "CONFIG": () => {
             return ContractChannelConfig();
         },
 
@@ -644,10 +648,6 @@ function ActionCategory() {
 
         "UPDATE": () => {
             return Update();
-        },
-
-        "CONFIG": () => {
-            return Config();
         }
 
     });

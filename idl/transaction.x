@@ -14,8 +14,28 @@ namespace mazzaroth
     Parameter parameters<>;
   };
 
-  // A transaction that provides a contract as a wasm binary.
-  struct Update
+  enum UpdateType
+  {
+    NONE = 0,
+    CONTRACT = 1,
+    CONFIG = 2,
+    PERMISSION = 3
+  };
+
+  union Update switch (UpdateType Type)
+  {
+    case NONE:
+      void;
+    case CONTRACT:
+      Contract contract;
+    case CONFIG:
+      ContractChannelConfig contractChannelConfig;
+    case PERMISSION:
+      Permission permission;
+  };
+
+  // An update transaction that provides a contract as a wasm binary.
+  struct Contract
   {
     // Contract binary bytes.
     opaque contract<>;
@@ -23,23 +43,6 @@ namespace mazzaroth
     // Version number of the contract, specified by owner
     string version;
   }
-
-  enum ConfigType
-  {
-    NONE = 0,
-    CHANNEL = 1,
-    PERMISSION = 2
-  };
-
-  union Config switch (ConfigType Type)
-  {
-    case NONE:
-      void;
-    case CHANNEL:
-      ContractChannelConfig contractChannelConfig;
-    case PERMISSION:
-      Permission permission;
-  };
 
   enum PermissionAction
   {
@@ -58,8 +61,7 @@ namespace mazzaroth
   {
     NONE = 0,
     CALL = 1,
-    UPDATE = 2,
-    CONFIG = 3
+    UPDATE = 2
   };
 
   union ActionCategory switch (ActionCategoryType Type)
@@ -70,8 +72,6 @@ namespace mazzaroth
       Call call;
     case UPDATE:
       Update update;
-    case CONFIG:
-      Config config;
   };
 
   // The Action data of a transaction

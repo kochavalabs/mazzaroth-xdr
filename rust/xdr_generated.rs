@@ -656,7 +656,7 @@ pub struct Call {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Update {
+pub struct Contract {
     #[array(var = 2147483647)]
     pub contract: Vec<u8>,
 
@@ -704,15 +704,16 @@ pub struct Input {
 // End struct section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ConfigType {
+pub enum UpdateType {
     NONE = 0,
-    CHANNEL = 1,
-    PERMISSION = 2,
+    CONTRACT = 1,
+    CONFIG = 2,
+    PERMISSION = 3,
 }
 
-impl Default for ConfigType {
+impl Default for UpdateType {
     fn default() -> Self {
-        ConfigType::NONE
+        UpdateType::NONE
     }
 }
 
@@ -733,7 +734,6 @@ pub enum ActionCategoryType {
     NONE = 0,
     CALL = 1,
     UPDATE = 2,
-    CONFIG = 3,
 }
 
 impl Default for ActionCategoryType {
@@ -770,17 +770,19 @@ impl Default for InputType {
 // Start union section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum Config {
+pub enum Update {
     NONE(()),
 
-    CHANNEL(ContractChannelConfig),
+    CONTRACT(Contract),
+
+    CONFIG(ContractChannelConfig),
 
     PERMISSION(Permission),
 }
 
-impl Default for Config {
+impl Default for Update {
     fn default() -> Self {
-        Config::NONE(())
+        Update::NONE(())
     }
 }
 
@@ -791,8 +793,6 @@ pub enum ActionCategory {
     CALL(Call),
 
     UPDATE(Update),
-
-    CONFIG(Config),
 }
 
 impl Default for ActionCategory {
