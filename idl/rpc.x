@@ -35,7 +35,7 @@ namespace mazzaroth
       Hash hash;
   };
 
-// BlockLookupRequest used to get a particular block from ledger
+  // BlockLookupRequest used to get a particular block from ledger
   struct BlockLookupRequest
   {
     // Either the block number or hash
@@ -283,6 +283,52 @@ namespace mazzaroth
   {
     // Final receipt written to the blockchain.
     Account accountInfo;
+
+    // Current state status
+    StateStatus stateStatus;
+
+    // Status of the lookup
+    InfoLookupStatus status;
+
+    // Human readable information to help understand the status.
+    StatusInfo statusInfo;
+  };
+
+  // Type of Contract info to return from request.
+  enum ContractInfoType
+  {
+    // Not set
+    NONE = 0,
+
+    // Contract binary request
+    CONTRACT = 1,
+
+    // Contract Channel Config request
+    CONFIG = 2
+  };
+
+  // Request for a node to look up contract info.
+  struct ContractInfoLookupRequest
+  {
+    // Contract info to lookup
+    ContractInfoType infoType;
+  };
+
+  union ContractInfo switch (ContractInfoType Type)
+  {
+    case NONE:
+      void;
+    case CONTRACT:
+      Contract contract;
+    case CONFIG:
+      ContractChannelConfig contractChannelConfig;
+  };
+
+  // Response to contract info lookup request.
+  struct ContractInfoLookupResponse
+  {
+    // Contract info to return
+    ContractInfo contractInfo;
 
     // Current state status
     StateStatus stateStatus;

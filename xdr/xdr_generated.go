@@ -1636,6 +1636,58 @@ var (
 	_ encoding.BinaryUnmarshaler = (*AccountInfoLookupResponse)(nil)
 )
 
+// ContractInfoLookupRequest generated struct
+type ContractInfoLookupRequest struct {
+	InfoType ContractInfoType
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ContractInfoLookupRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ContractInfoLookupRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ContractInfoLookupRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*ContractInfoLookupRequest)(nil)
+)
+
+// ContractInfoLookupResponse generated struct
+type ContractInfoLookupResponse struct {
+	ContractInfo ContractInfo
+
+	StateStatus StateStatus
+
+	Status InfoLookupStatus
+
+	StatusInfo StatusInfo
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ContractInfoLookupResponse) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ContractInfoLookupResponse) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ContractInfoLookupResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*ContractInfoLookupResponse)(nil)
+)
+
 // End struct section
 
 // Start enum section
@@ -1991,6 +2043,62 @@ var (
 	_ encoding.BinaryUnmarshaler = (*NonceLookupStatus)(nil)
 )
 
+// ContractInfoType generated enum
+type ContractInfoType int32
+
+const (
+
+	// ContractInfoTypeNONE enum value 0
+	ContractInfoTypeNONE ContractInfoType = 0
+
+	// ContractInfoTypeCONTRACT enum value 1
+	ContractInfoTypeCONTRACT ContractInfoType = 1
+
+	// ContractInfoTypeCONFIG enum value 2
+	ContractInfoTypeCONFIG ContractInfoType = 2
+)
+
+// ContractInfoTypeMap generated enum map
+var ContractInfoTypeMap = map[int32]string{
+
+	0: "ContractInfoTypeNONE",
+
+	1: "ContractInfoTypeCONTRACT",
+
+	2: "ContractInfoTypeCONFIG",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ContractInfoType
+func (s ContractInfoType) ValidEnum(v int32) bool {
+	_, ok := ContractInfoTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s ContractInfoType) String() string {
+	name, _ := ContractInfoTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ContractInfoType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ContractInfoType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ContractInfoType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ContractInfoType)(nil)
+)
+
 // InfoLookupStatus generated enum
 type InfoLookupStatus int32
 
@@ -2178,6 +2286,135 @@ func (u *Identifier) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*Identifier)(nil)
 	_ encoding.BinaryUnmarshaler = (*Identifier)(nil)
+)
+
+// ContractInfo generated union
+type ContractInfo struct {
+	Type ContractInfoType
+
+	Contract *Contract
+
+	ContractChannelConfig *ContractChannelConfig
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u ContractInfo) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of ContractInfo
+func (u ContractInfo) ArmForSwitch(sw int32) (string, bool) {
+	switch ContractInfoType(sw) {
+
+	case ContractInfoTypeNONE:
+		return "", true
+
+	case ContractInfoTypeCONTRACT:
+		return "Contract", true
+
+	case ContractInfoTypeCONFIG:
+		return "ContractChannelConfig", true
+	}
+	return "-", false
+}
+
+// NewContractInfo creates a new  ContractInfo.
+func NewContractInfo(aType ContractInfoType, value interface{}) (result ContractInfo, err error) {
+	result.Type = aType
+	switch aType {
+
+	case ContractInfoTypeNONE:
+
+	case ContractInfoTypeCONTRACT:
+
+		tv, ok := value.(Contract)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Contract = &tv
+
+	case ContractInfoTypeCONFIG:
+
+		tv, ok := value.(ContractChannelConfig)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.ContractChannelConfig = &tv
+
+	}
+	return
+}
+
+// MustContract retrieves the Contract value from the union,
+// panicing if the value is not set.
+func (u ContractInfo) MustContract() Contract {
+	val, ok := u.GetContract()
+
+	if !ok {
+		panic("arm Contract is not set")
+	}
+
+	return val
+}
+
+// GetContract retrieves the Contract value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ContractInfo) GetContract() (result Contract, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Contract" {
+		result = *u.Contract
+		ok = true
+	}
+
+	return
+}
+
+// MustContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// panicing if the value is not set.
+func (u ContractInfo) MustContractChannelConfig() ContractChannelConfig {
+	val, ok := u.GetContractChannelConfig()
+
+	if !ok {
+		panic("arm ContractChannelConfig is not set")
+	}
+
+	return val
+}
+
+// GetContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ContractInfo) GetContractChannelConfig() (result ContractChannelConfig, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "ContractChannelConfig" {
+		result = *u.ContractChannelConfig
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u ContractInfo) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *ContractInfo) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ContractInfo)(nil)
+	_ encoding.BinaryUnmarshaler = (*ContractInfo)(nil)
 )
 
 // End union section

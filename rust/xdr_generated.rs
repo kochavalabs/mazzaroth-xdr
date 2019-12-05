@@ -531,6 +531,22 @@ pub struct AccountInfoLookupResponse {
     pub statusInfo: StatusInfo,
 }
 
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ContractInfoLookupRequest {
+    pub infoType: ContractInfoType,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ContractInfoLookupResponse {
+    pub contractInfo: ContractInfo,
+
+    pub stateStatus: StateStatus,
+
+    pub status: InfoLookupStatus,
+
+    pub statusInfo: StatusInfo,
+}
+
 // End struct section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
@@ -615,6 +631,19 @@ impl Default for NonceLookupStatus {
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ContractInfoType {
+    NONE = 0,
+    CONTRACT = 1,
+    CONFIG = 2,
+}
+
+impl Default for ContractInfoType {
+    fn default() -> Self {
+        ContractInfoType::NONE
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum InfoLookupStatus {
     UNKNOWN = 0,
     FOUND = 1,
@@ -640,6 +669,21 @@ pub enum Identifier {
 impl Default for Identifier {
     fn default() -> Self {
         Identifier::NONE(())
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ContractInfo {
+    NONE(()),
+
+    CONTRACT(Contract),
+
+    CONFIG(ContractChannelConfig),
+}
+
+impl Default for ContractInfo {
+    fn default() -> Self {
+        ContractInfo::NONE(())
     }
 }
 // End union section
