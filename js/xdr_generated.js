@@ -44,14 +44,18 @@ exports.AccountNonceLookupRequest = AccountNonceLookupRequest;
 exports.AccountNonceLookupResponse = AccountNonceLookupResponse;
 exports.AccountInfoLookupRequest = AccountInfoLookupRequest;
 exports.AccountInfoLookupResponse = AccountInfoLookupResponse;
+exports.ContractInfoLookupRequest = ContractInfoLookupRequest;
+exports.ContractInfoLookupResponse = ContractInfoLookupResponse;
 exports.IdentifierType = IdentifierType;
 exports.BlockStatus = BlockStatus;
 exports.TransactionStatus = TransactionStatus;
 exports.ReadonlyStatus = ReadonlyStatus;
 exports.ReceiptLookupStatus = ReceiptLookupStatus;
 exports.NonceLookupStatus = NonceLookupStatus;
+exports.ContractInfoType = ContractInfoType;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
+exports.ContractInfo = ContractInfo;
 exports.Call = Call;
 exports.Contract = Contract;
 exports.Permission = Permission;
@@ -437,6 +441,12 @@ function AccountInfoLookupRequest() {
 function AccountInfoLookupResponse() {
     return new _xdrJsSerialize2.default.Struct(["accountInfo", "stateStatus", "status", "statusInfo"], [Account(), StateStatus(), InfoLookupStatus(), StatusInfo()]);
 }
+function ContractInfoLookupRequest() {
+    return new _xdrJsSerialize2.default.Struct(["infoType"], [ContractInfoType()]);
+}
+function ContractInfoLookupResponse() {
+    return new _xdrJsSerialize2.default.Struct(["contractInfo", "stateStatus", "status", "statusInfo"], [ContractInfo(), StateStatus(), InfoLookupStatus(), StatusInfo()]);
+}
 
 // End struct section
 
@@ -499,6 +509,15 @@ function NonceLookupStatus() {
     });
 }
 
+function ContractInfoType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "NONE",
+        1: "CONTRACT",
+        2: "CONFIG"
+
+    });
+}
+
 function InfoLookupStatus() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
@@ -526,6 +545,24 @@ function Identifier() {
 
         "HASH": () => {
             return Hash();
+        }
+
+    });
+}
+
+function ContractInfo() {
+    return new _xdrJsSerialize2.default.Union(ContractInfoType(), {
+
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "CONTRACT": () => {
+            return Contract();
+        },
+
+        "CONFIG": () => {
+            return ContractChannelConfig();
         }
 
     });
