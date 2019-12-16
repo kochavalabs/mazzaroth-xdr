@@ -294,8 +294,8 @@ namespace mazzaroth
     StatusInfo statusInfo;
   };
 
-  // Type of Contract info to return from request.
-  enum ContractInfoType
+  // Type of Channel info to return from request.
+  enum ChannelInfoType
   {
     // Not set
     NONE = 0,
@@ -307,14 +307,14 @@ namespace mazzaroth
     CONFIG = 2
   };
 
-  // Request for a node to look up contract info.
-  struct ContractInfoLookupRequest
+  // Request for a node to look up channel info.
+  struct ChannelInfoLookupRequest
   {
-    // Contract info to lookup
-    ContractInfoType infoType;
+    // Channel info to lookup
+    ChannelInfoType infoType;
   };
 
-  union ContractInfo switch (ContractInfoType Type)
+  union ChannelInfo switch (ChannelInfoType Type)
   {
     case NONE:
       void;
@@ -324,11 +324,11 @@ namespace mazzaroth
       ChannelConfig channelConfig;
   };
 
-  // Response to contract info lookup request.
-  struct ContractInfoLookupResponse
+  // Response to channel info lookup request.
+  struct ChannelInfoLookupResponse
   {
-    // Contract info to return
-    ContractInfo contractInfo;
+    // Channel info to return
+    ChannelInfo channelInfo;
 
     // Current state status
     StateStatus stateStatus;
