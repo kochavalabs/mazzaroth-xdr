@@ -135,18 +135,20 @@ pub struct Parameter {
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ContractChannelConfig {
+pub struct ChannelConfig {
     pub channelID: ID,
 
     pub contractHash: Hash,
 
+    #[array(var = 200)]
     pub version: String,
 
     pub owner: ID,
 
+    #[array(var = 200)]
     pub channelName: String,
 
-    #[array(var = 2147483647)]
+    #[array(var = 200)]
     pub admins: Vec<ID>,
 }
 
@@ -678,7 +680,7 @@ pub enum ContractInfo {
 
     CONTRACT(Contract),
 
-    CONFIG(ContractChannelConfig),
+    CONFIG(ChannelConfig),
 }
 
 impl Default for ContractInfo {
@@ -826,7 +828,7 @@ pub enum Update {
 
     CONTRACT(Contract),
 
-    CONFIG(ContractChannelConfig),
+    CONFIG(ChannelConfig),
 
     PERMISSION(Permission),
 }

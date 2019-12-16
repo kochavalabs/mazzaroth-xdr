@@ -10,7 +10,7 @@ exports.Signature = Signature;
 exports.ID = ID;
 exports.Hash = Hash;
 exports.Parameter = Parameter;
-exports.ContractChannelConfig = ContractChannelConfig;
+exports.ChannelConfig = ChannelConfig;
 exports.GovernanceConfig = GovernanceConfig;
 exports.PermissionedIDs = PermissionedIDs;
 exports.ConsensusConfigType = ConsensusConfigType;
@@ -168,8 +168,8 @@ function Parameter() {
 // End typedef section
 
 // Start struct section
-function ContractChannelConfig() {
-    return new _xdrJsSerialize2.default.Struct(["channelID", "contractHash", "version", "owner", "channelName", "admins"], [ID(), Hash(), new _xdrJsSerialize2.default.Str('', 0), ID(), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+function ChannelConfig() {
+    return new _xdrJsSerialize2.default.Struct(["channelID", "contractHash", "version", "owner", "channelName", "admins"], [ID(), Hash(), new _xdrJsSerialize2.default.Str('', 200), ID(), new _xdrJsSerialize2.default.Str('', 200), new _xdrJsSerialize2.default.VarArray(200, ID)]);
 }
 function GovernanceConfig() {
     return new _xdrJsSerialize2.default.Struct(["maxBlockSize", "consensus", "permissioning"], [new _xdrJsSerialize2.default.UHyper(), ConsensusConfigType(), Permissioning()]);
@@ -562,7 +562,7 @@ function ContractInfo() {
         },
 
         "CONFIG": () => {
-            return ContractChannelConfig();
+            return ChannelConfig();
         }
 
     });
@@ -662,7 +662,7 @@ function Update() {
         },
 
         "CONFIG": () => {
-            return ContractChannelConfig();
+            return ChannelConfig();
         },
 
         "PERMISSION": () => {

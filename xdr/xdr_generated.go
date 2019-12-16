@@ -278,37 +278,37 @@ var (
 
 // Start struct section
 
-// ContractChannelConfig generated struct
-type ContractChannelConfig struct {
+// ChannelConfig generated struct
+type ChannelConfig struct {
 	ChannelID ID
 
 	ContractHash Hash
 
-	Version string
+	Version string `xdrmaxsize:"200"`
 
 	Owner ID
 
-	ChannelName string
+	ChannelName string `xdrmaxsize:"200"`
 
-	Admins []ID
+	Admins []ID `xdrmaxsize:"200"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ContractChannelConfig) MarshalBinary() ([]byte, error) {
+func (s ChannelConfig) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ContractChannelConfig) UnmarshalBinary(inp []byte) error {
+func (s *ChannelConfig) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ContractChannelConfig)(nil)
-	_ encoding.BinaryUnmarshaler = (*ContractChannelConfig)(nil)
+	_ encoding.BinaryMarshaler   = (*ChannelConfig)(nil)
+	_ encoding.BinaryUnmarshaler = (*ChannelConfig)(nil)
 )
 
 // GovernanceConfig generated struct
@@ -2294,7 +2294,7 @@ type ContractInfo struct {
 
 	Contract *Contract
 
-	ContractChannelConfig *ContractChannelConfig
+	ChannelConfig *ChannelConfig
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -2315,7 +2315,7 @@ func (u ContractInfo) ArmForSwitch(sw int32) (string, bool) {
 		return "Contract", true
 
 	case ContractInfoTypeCONFIG:
-		return "ContractChannelConfig", true
+		return "ChannelConfig", true
 	}
 	return "-", false
 }
@@ -2338,12 +2338,12 @@ func NewContractInfo(aType ContractInfoType, value interface{}) (result Contract
 
 	case ContractInfoTypeCONFIG:
 
-		tv, ok := value.(ContractChannelConfig)
+		tv, ok := value.(ChannelConfig)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.ContractChannelConfig = &tv
+		result.ChannelConfig = &tv
 
 	}
 	return
@@ -2374,25 +2374,25 @@ func (u ContractInfo) GetContract() (result Contract, ok bool) {
 	return
 }
 
-// MustContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// MustChannelConfig retrieves the ChannelConfig value from the union,
 // panicing if the value is not set.
-func (u ContractInfo) MustContractChannelConfig() ContractChannelConfig {
-	val, ok := u.GetContractChannelConfig()
+func (u ContractInfo) MustChannelConfig() ChannelConfig {
+	val, ok := u.GetChannelConfig()
 
 	if !ok {
-		panic("arm ContractChannelConfig is not set")
+		panic("arm ChannelConfig is not set")
 	}
 
 	return val
 }
 
-// GetContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// GetChannelConfig retrieves the ChannelConfig value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ContractInfo) GetContractChannelConfig() (result ContractChannelConfig, ok bool) {
+func (u ContractInfo) GetChannelConfig() (result ChannelConfig, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "ContractChannelConfig" {
-		result = *u.ContractChannelConfig
+	if armName == "ChannelConfig" {
+		result = *u.ChannelConfig
 		ok = true
 	}
 
@@ -2880,7 +2880,7 @@ type Update struct {
 
 	Contract *Contract
 
-	ContractChannelConfig *ContractChannelConfig
+	ChannelConfig *ChannelConfig
 
 	Permission *Permission
 }
@@ -2903,7 +2903,7 @@ func (u Update) ArmForSwitch(sw int32) (string, bool) {
 		return "Contract", true
 
 	case UpdateTypeCONFIG:
-		return "ContractChannelConfig", true
+		return "ChannelConfig", true
 
 	case UpdateTypePERMISSION:
 		return "Permission", true
@@ -2929,12 +2929,12 @@ func NewUpdate(aType UpdateType, value interface{}) (result Update, err error) {
 
 	case UpdateTypeCONFIG:
 
-		tv, ok := value.(ContractChannelConfig)
+		tv, ok := value.(ChannelConfig)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.ContractChannelConfig = &tv
+		result.ChannelConfig = &tv
 
 	case UpdateTypePERMISSION:
 
@@ -2974,25 +2974,25 @@ func (u Update) GetContract() (result Contract, ok bool) {
 	return
 }
 
-// MustContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// MustChannelConfig retrieves the ChannelConfig value from the union,
 // panicing if the value is not set.
-func (u Update) MustContractChannelConfig() ContractChannelConfig {
-	val, ok := u.GetContractChannelConfig()
+func (u Update) MustChannelConfig() ChannelConfig {
+	val, ok := u.GetChannelConfig()
 
 	if !ok {
-		panic("arm ContractChannelConfig is not set")
+		panic("arm ChannelConfig is not set")
 	}
 
 	return val
 }
 
-// GetContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// GetChannelConfig retrieves the ChannelConfig value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Update) GetContractChannelConfig() (result ContractChannelConfig, ok bool) {
+func (u Update) GetChannelConfig() (result ChannelConfig, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "ContractChannelConfig" {
-		result = *u.ContractChannelConfig
+	if armName == "ChannelConfig" {
+		result = *u.ChannelConfig
 		ok = true
 	}
 

@@ -321,7 +321,7 @@ namespace mazzaroth
     case CONTRACT:
       Contract contract;
     case CONFIG:
-      ContractChannelConfig contractChannelConfig;
+      ChannelConfig channelConfig;
   };
 
   // Response to contract info lookup request.
