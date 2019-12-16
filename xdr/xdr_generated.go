@@ -278,37 +278,37 @@ var (
 
 // Start struct section
 
-// ContractChannelConfig generated struct
-type ContractChannelConfig struct {
+// ChannelConfig generated struct
+type ChannelConfig struct {
 	ChannelID ID
 
 	ContractHash Hash
 
-	Version string
+	Version string `xdrmaxsize:"200"`
 
 	Owner ID
 
-	ChannelName string
+	ChannelName string `xdrmaxsize:"200"`
 
-	Admins []ID
+	Admins []ID `xdrmaxsize:"200"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ContractChannelConfig) MarshalBinary() ([]byte, error) {
+func (s ChannelConfig) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ContractChannelConfig) UnmarshalBinary(inp []byte) error {
+func (s *ChannelConfig) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ContractChannelConfig)(nil)
-	_ encoding.BinaryUnmarshaler = (*ContractChannelConfig)(nil)
+	_ encoding.BinaryMarshaler   = (*ChannelConfig)(nil)
+	_ encoding.BinaryUnmarshaler = (*ChannelConfig)(nil)
 )
 
 // GovernanceConfig generated struct
@@ -1636,32 +1636,32 @@ var (
 	_ encoding.BinaryUnmarshaler = (*AccountInfoLookupResponse)(nil)
 )
 
-// ContractInfoLookupRequest generated struct
-type ContractInfoLookupRequest struct {
-	InfoType ContractInfoType
+// ChannelInfoLookupRequest generated struct
+type ChannelInfoLookupRequest struct {
+	InfoType ChannelInfoType
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ContractInfoLookupRequest) MarshalBinary() ([]byte, error) {
+func (s ChannelInfoLookupRequest) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ContractInfoLookupRequest) UnmarshalBinary(inp []byte) error {
+func (s *ChannelInfoLookupRequest) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ContractInfoLookupRequest)(nil)
-	_ encoding.BinaryUnmarshaler = (*ContractInfoLookupRequest)(nil)
+	_ encoding.BinaryMarshaler   = (*ChannelInfoLookupRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*ChannelInfoLookupRequest)(nil)
 )
 
-// ContractInfoLookupResponse generated struct
-type ContractInfoLookupResponse struct {
-	ContractInfo ContractInfo
+// ChannelInfoLookupResponse generated struct
+type ChannelInfoLookupResponse struct {
+	ChannelInfo ChannelInfo
 
 	StateStatus StateStatus
 
@@ -1671,21 +1671,21 @@ type ContractInfoLookupResponse struct {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ContractInfoLookupResponse) MarshalBinary() ([]byte, error) {
+func (s ChannelInfoLookupResponse) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ContractInfoLookupResponse) UnmarshalBinary(inp []byte) error {
+func (s *ChannelInfoLookupResponse) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ContractInfoLookupResponse)(nil)
-	_ encoding.BinaryUnmarshaler = (*ContractInfoLookupResponse)(nil)
+	_ encoding.BinaryMarshaler   = (*ChannelInfoLookupResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*ChannelInfoLookupResponse)(nil)
 )
 
 // End struct section
@@ -2043,60 +2043,60 @@ var (
 	_ encoding.BinaryUnmarshaler = (*NonceLookupStatus)(nil)
 )
 
-// ContractInfoType generated enum
-type ContractInfoType int32
+// ChannelInfoType generated enum
+type ChannelInfoType int32
 
 const (
 
-	// ContractInfoTypeNONE enum value 0
-	ContractInfoTypeNONE ContractInfoType = 0
+	// ChannelInfoTypeNONE enum value 0
+	ChannelInfoTypeNONE ChannelInfoType = 0
 
-	// ContractInfoTypeCONTRACT enum value 1
-	ContractInfoTypeCONTRACT ContractInfoType = 1
+	// ChannelInfoTypeCONTRACT enum value 1
+	ChannelInfoTypeCONTRACT ChannelInfoType = 1
 
-	// ContractInfoTypeCONFIG enum value 2
-	ContractInfoTypeCONFIG ContractInfoType = 2
+	// ChannelInfoTypeCONFIG enum value 2
+	ChannelInfoTypeCONFIG ChannelInfoType = 2
 )
 
-// ContractInfoTypeMap generated enum map
-var ContractInfoTypeMap = map[int32]string{
+// ChannelInfoTypeMap generated enum map
+var ChannelInfoTypeMap = map[int32]string{
 
-	0: "ContractInfoTypeNONE",
+	0: "ChannelInfoTypeNONE",
 
-	1: "ContractInfoTypeCONTRACT",
+	1: "ChannelInfoTypeCONTRACT",
 
-	2: "ContractInfoTypeCONFIG",
+	2: "ChannelInfoTypeCONFIG",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for ContractInfoType
-func (s ContractInfoType) ValidEnum(v int32) bool {
-	_, ok := ContractInfoTypeMap[v]
+// the Enum interface for ChannelInfoType
+func (s ChannelInfoType) ValidEnum(v int32) bool {
+	_, ok := ChannelInfoTypeMap[v]
 	return ok
 }
 
 // String returns the name of `e`
-func (s ContractInfoType) String() string {
-	name, _ := ContractInfoTypeMap[int32(s)]
+func (s ChannelInfoType) String() string {
+	name, _ := ChannelInfoTypeMap[int32(s)]
 	return name
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ContractInfoType) MarshalBinary() ([]byte, error) {
+func (s ChannelInfoType) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ContractInfoType) UnmarshalBinary(inp []byte) error {
+func (s *ChannelInfoType) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ContractInfoType)(nil)
-	_ encoding.BinaryUnmarshaler = (*ContractInfoType)(nil)
+	_ encoding.BinaryMarshaler   = (*ChannelInfoType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ChannelInfoType)(nil)
 )
 
 // InfoLookupStatus generated enum
@@ -2288,46 +2288,46 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Identifier)(nil)
 )
 
-// ContractInfo generated union
-type ContractInfo struct {
-	Type ContractInfoType
+// ChannelInfo generated union
+type ChannelInfo struct {
+	Type ChannelInfoType
 
 	Contract *Contract
 
-	ContractChannelConfig *ContractChannelConfig
+	ChannelConfig *ChannelConfig
 }
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (u ContractInfo) SwitchFieldName() string {
+func (u ChannelInfo) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
-// the value for an instance of ContractInfo
-func (u ContractInfo) ArmForSwitch(sw int32) (string, bool) {
-	switch ContractInfoType(sw) {
+// the value for an instance of ChannelInfo
+func (u ChannelInfo) ArmForSwitch(sw int32) (string, bool) {
+	switch ChannelInfoType(sw) {
 
-	case ContractInfoTypeNONE:
+	case ChannelInfoTypeNONE:
 		return "", true
 
-	case ContractInfoTypeCONTRACT:
+	case ChannelInfoTypeCONTRACT:
 		return "Contract", true
 
-	case ContractInfoTypeCONFIG:
-		return "ContractChannelConfig", true
+	case ChannelInfoTypeCONFIG:
+		return "ChannelConfig", true
 	}
 	return "-", false
 }
 
-// NewContractInfo creates a new  ContractInfo.
-func NewContractInfo(aType ContractInfoType, value interface{}) (result ContractInfo, err error) {
+// NewChannelInfo creates a new  ChannelInfo.
+func NewChannelInfo(aType ChannelInfoType, value interface{}) (result ChannelInfo, err error) {
 	result.Type = aType
 	switch aType {
 
-	case ContractInfoTypeNONE:
+	case ChannelInfoTypeNONE:
 
-	case ContractInfoTypeCONTRACT:
+	case ChannelInfoTypeCONTRACT:
 
 		tv, ok := value.(Contract)
 		if !ok {
@@ -2336,14 +2336,14 @@ func NewContractInfo(aType ContractInfoType, value interface{}) (result Contract
 		}
 		result.Contract = &tv
 
-	case ContractInfoTypeCONFIG:
+	case ChannelInfoTypeCONFIG:
 
-		tv, ok := value.(ContractChannelConfig)
+		tv, ok := value.(ChannelConfig)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.ContractChannelConfig = &tv
+		result.ChannelConfig = &tv
 
 	}
 	return
@@ -2351,7 +2351,7 @@ func NewContractInfo(aType ContractInfoType, value interface{}) (result Contract
 
 // MustContract retrieves the Contract value from the union,
 // panicing if the value is not set.
-func (u ContractInfo) MustContract() Contract {
+func (u ChannelInfo) MustContract() Contract {
 	val, ok := u.GetContract()
 
 	if !ok {
@@ -2363,7 +2363,7 @@ func (u ContractInfo) MustContract() Contract {
 
 // GetContract retrieves the Contract value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ContractInfo) GetContract() (result Contract, ok bool) {
+func (u ChannelInfo) GetContract() (result Contract, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Contract" {
@@ -2374,25 +2374,25 @@ func (u ContractInfo) GetContract() (result Contract, ok bool) {
 	return
 }
 
-// MustContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// MustChannelConfig retrieves the ChannelConfig value from the union,
 // panicing if the value is not set.
-func (u ContractInfo) MustContractChannelConfig() ContractChannelConfig {
-	val, ok := u.GetContractChannelConfig()
+func (u ChannelInfo) MustChannelConfig() ChannelConfig {
+	val, ok := u.GetChannelConfig()
 
 	if !ok {
-		panic("arm ContractChannelConfig is not set")
+		panic("arm ChannelConfig is not set")
 	}
 
 	return val
 }
 
-// GetContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// GetChannelConfig retrieves the ChannelConfig value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ContractInfo) GetContractChannelConfig() (result ContractChannelConfig, ok bool) {
+func (u ChannelInfo) GetChannelConfig() (result ChannelConfig, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "ContractChannelConfig" {
-		result = *u.ContractChannelConfig
+	if armName == "ChannelConfig" {
+		result = *u.ChannelConfig
 		ok = true
 	}
 
@@ -2400,21 +2400,21 @@ func (u ContractInfo) GetContractChannelConfig() (result ContractChannelConfig, 
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (u ContractInfo) MarshalBinary() ([]byte, error) {
+func (u ChannelInfo) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (u *ContractInfo) UnmarshalBinary(inp []byte) error {
+func (u *ChannelInfo) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ContractInfo)(nil)
-	_ encoding.BinaryUnmarshaler = (*ContractInfo)(nil)
+	_ encoding.BinaryMarshaler   = (*ChannelInfo)(nil)
+	_ encoding.BinaryUnmarshaler = (*ChannelInfo)(nil)
 )
 
 // End union section
@@ -2880,7 +2880,7 @@ type Update struct {
 
 	Contract *Contract
 
-	ContractChannelConfig *ContractChannelConfig
+	ChannelConfig *ChannelConfig
 
 	Permission *Permission
 }
@@ -2903,7 +2903,7 @@ func (u Update) ArmForSwitch(sw int32) (string, bool) {
 		return "Contract", true
 
 	case UpdateTypeCONFIG:
-		return "ContractChannelConfig", true
+		return "ChannelConfig", true
 
 	case UpdateTypePERMISSION:
 		return "Permission", true
@@ -2929,12 +2929,12 @@ func NewUpdate(aType UpdateType, value interface{}) (result Update, err error) {
 
 	case UpdateTypeCONFIG:
 
-		tv, ok := value.(ContractChannelConfig)
+		tv, ok := value.(ChannelConfig)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.ContractChannelConfig = &tv
+		result.ChannelConfig = &tv
 
 	case UpdateTypePERMISSION:
 
@@ -2974,25 +2974,25 @@ func (u Update) GetContract() (result Contract, ok bool) {
 	return
 }
 
-// MustContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// MustChannelConfig retrieves the ChannelConfig value from the union,
 // panicing if the value is not set.
-func (u Update) MustContractChannelConfig() ContractChannelConfig {
-	val, ok := u.GetContractChannelConfig()
+func (u Update) MustChannelConfig() ChannelConfig {
+	val, ok := u.GetChannelConfig()
 
 	if !ok {
-		panic("arm ContractChannelConfig is not set")
+		panic("arm ChannelConfig is not set")
 	}
 
 	return val
 }
 
-// GetContractChannelConfig retrieves the ContractChannelConfig value from the union,
+// GetChannelConfig retrieves the ChannelConfig value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Update) GetContractChannelConfig() (result ContractChannelConfig, ok bool) {
+func (u Update) GetChannelConfig() (result ChannelConfig, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "ContractChannelConfig" {
-		result = *u.ContractChannelConfig
+	if armName == "ChannelConfig" {
+		result = *u.ChannelConfig
 		ok = true
 	}
 

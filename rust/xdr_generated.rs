@@ -135,18 +135,20 @@ pub struct Parameter {
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ContractChannelConfig {
+pub struct ChannelConfig {
     pub channelID: ID,
 
     pub contractHash: Hash,
 
+    #[array(var = 200)]
     pub version: String,
 
     pub owner: ID,
 
+    #[array(var = 200)]
     pub channelName: String,
 
-    #[array(var = 2147483647)]
+    #[array(var = 200)]
     pub admins: Vec<ID>,
 }
 
@@ -532,13 +534,13 @@ pub struct AccountInfoLookupResponse {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ContractInfoLookupRequest {
-    pub infoType: ContractInfoType,
+pub struct ChannelInfoLookupRequest {
+    pub infoType: ChannelInfoType,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ContractInfoLookupResponse {
-    pub contractInfo: ContractInfo,
+pub struct ChannelInfoLookupResponse {
+    pub channelInfo: ChannelInfo,
 
     pub stateStatus: StateStatus,
 
@@ -631,15 +633,15 @@ impl Default for NonceLookupStatus {
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ContractInfoType {
+pub enum ChannelInfoType {
     NONE = 0,
     CONTRACT = 1,
     CONFIG = 2,
 }
 
-impl Default for ContractInfoType {
+impl Default for ChannelInfoType {
     fn default() -> Self {
-        ContractInfoType::NONE
+        ChannelInfoType::NONE
     }
 }
 
@@ -673,17 +675,17 @@ impl Default for Identifier {
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ContractInfo {
+pub enum ChannelInfo {
     NONE(()),
 
     CONTRACT(Contract),
 
-    CONFIG(ContractChannelConfig),
+    CONFIG(ChannelConfig),
 }
 
-impl Default for ContractInfo {
+impl Default for ChannelInfo {
     fn default() -> Self {
-        ContractInfo::NONE(())
+        ChannelInfo::NONE(())
     }
 }
 // End union section
@@ -826,7 +828,7 @@ pub enum Update {
 
     CONTRACT(Contract),
 
-    CONFIG(ContractChannelConfig),
+    CONFIG(ChannelConfig),
 
     PERMISSION(Permission),
 }

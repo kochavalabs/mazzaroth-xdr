@@ -29,7 +29,7 @@ namespace mazzaroth
     case CONTRACT:
       Contract contract;
     case CONFIG:
-      ContractChannelConfig contractChannelConfig;
+      ChannelConfig channelConfig;
     case PERMISSION:
       Permission permission;
   };

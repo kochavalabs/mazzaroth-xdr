@@ -10,7 +10,7 @@ exports.Signature = Signature;
 exports.ID = ID;
 exports.Hash = Hash;
 exports.Parameter = Parameter;
-exports.ContractChannelConfig = ContractChannelConfig;
+exports.ChannelConfig = ChannelConfig;
 exports.GovernanceConfig = GovernanceConfig;
 exports.PermissionedIDs = PermissionedIDs;
 exports.ConsensusConfigType = ConsensusConfigType;
@@ -44,18 +44,18 @@ exports.AccountNonceLookupRequest = AccountNonceLookupRequest;
 exports.AccountNonceLookupResponse = AccountNonceLookupResponse;
 exports.AccountInfoLookupRequest = AccountInfoLookupRequest;
 exports.AccountInfoLookupResponse = AccountInfoLookupResponse;
-exports.ContractInfoLookupRequest = ContractInfoLookupRequest;
-exports.ContractInfoLookupResponse = ContractInfoLookupResponse;
+exports.ChannelInfoLookupRequest = ChannelInfoLookupRequest;
+exports.ChannelInfoLookupResponse = ChannelInfoLookupResponse;
 exports.IdentifierType = IdentifierType;
 exports.BlockStatus = BlockStatus;
 exports.TransactionStatus = TransactionStatus;
 exports.ReadonlyStatus = ReadonlyStatus;
 exports.ReceiptLookupStatus = ReceiptLookupStatus;
 exports.NonceLookupStatus = NonceLookupStatus;
-exports.ContractInfoType = ContractInfoType;
+exports.ChannelInfoType = ChannelInfoType;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
-exports.ContractInfo = ContractInfo;
+exports.ChannelInfo = ChannelInfo;
 exports.Call = Call;
 exports.Contract = Contract;
 exports.Permission = Permission;
@@ -168,8 +168,8 @@ function Parameter() {
 // End typedef section
 
 // Start struct section
-function ContractChannelConfig() {
-    return new _xdrJsSerialize2.default.Struct(["channelID", "contractHash", "version", "owner", "channelName", "admins"], [ID(), Hash(), new _xdrJsSerialize2.default.Str('', 0), ID(), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+function ChannelConfig() {
+    return new _xdrJsSerialize2.default.Struct(["channelID", "contractHash", "version", "owner", "channelName", "admins"], [ID(), Hash(), new _xdrJsSerialize2.default.Str('', 200), ID(), new _xdrJsSerialize2.default.Str('', 200), new _xdrJsSerialize2.default.VarArray(200, ID)]);
 }
 function GovernanceConfig() {
     return new _xdrJsSerialize2.default.Struct(["maxBlockSize", "consensus", "permissioning"], [new _xdrJsSerialize2.default.UHyper(), ConsensusConfigType(), Permissioning()]);
@@ -441,11 +441,11 @@ function AccountInfoLookupRequest() {
 function AccountInfoLookupResponse() {
     return new _xdrJsSerialize2.default.Struct(["accountInfo", "stateStatus", "status", "statusInfo"], [Account(), StateStatus(), InfoLookupStatus(), StatusInfo()]);
 }
-function ContractInfoLookupRequest() {
-    return new _xdrJsSerialize2.default.Struct(["infoType"], [ContractInfoType()]);
+function ChannelInfoLookupRequest() {
+    return new _xdrJsSerialize2.default.Struct(["infoType"], [ChannelInfoType()]);
 }
-function ContractInfoLookupResponse() {
-    return new _xdrJsSerialize2.default.Struct(["contractInfo", "stateStatus", "status", "statusInfo"], [ContractInfo(), StateStatus(), InfoLookupStatus(), StatusInfo()]);
+function ChannelInfoLookupResponse() {
+    return new _xdrJsSerialize2.default.Struct(["channelInfo", "stateStatus", "status", "statusInfo"], [ChannelInfo(), StateStatus(), InfoLookupStatus(), StatusInfo()]);
 }
 
 // End struct section
@@ -509,7 +509,7 @@ function NonceLookupStatus() {
     });
 }
 
-function ContractInfoType() {
+function ChannelInfoType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "CONTRACT",
@@ -550,8 +550,8 @@ function Identifier() {
     });
 }
 
-function ContractInfo() {
-    return new _xdrJsSerialize2.default.Union(ContractInfoType(), {
+function ChannelInfo() {
+    return new _xdrJsSerialize2.default.Union(ChannelInfoType(), {
 
         "NONE": () => {
             return new _xdrJsSerialize2.default.Void();
@@ -562,7 +562,7 @@ function ContractInfo() {
         },
 
         "CONFIG": () => {
-            return ContractChannelConfig();
+            return ChannelConfig();
         }
 
     });
@@ -662,7 +662,7 @@ function Update() {
         },
 
         "CONFIG": () => {
-            return ContractChannelConfig();
+            return ChannelConfig();
         },
 
         "PERMISSION": () => {

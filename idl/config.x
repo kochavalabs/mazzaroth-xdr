@@ -2,22 +2,22 @@
 
 namespace mazzaroth
 {
-  // ContractChannelConfig stores contract channel configuration in state and is 
+  // ChannelConfig stores contract channel configuration in state and is 
   // accessible through host contract host functions
-  struct ContractChannelConfig
+  struct ChannelConfig
   {
     // Unique channel id which cannot be changed
     ID channelID;
     // Hash of the contract bytes
     Hash contractHash;
     // Version number of the contract, specified by owner
-    string version;
+    string version<200>;
     // Public Key ID of the channel owner. Only owner can change this to transfer ownership of channel
     ID owner;
     // Human readable channel name
-    string channelName;
+    string channelName<200>;
     // Public Keys of IDs approved by owner able to modify channel
-    ID admins<>;
+    ID admins<200>;
   };
 
   // GovernanceConfig stores governance information about a channel 
