@@ -1037,7 +1037,7 @@ type ExecutionPlan struct {
 
 	ChannelID ID
 
-	Calls []Call `xdrmaxsize:"100"`
+	Actions []Action `xdrmaxsize:"100"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.

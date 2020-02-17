@@ -336,7 +336,7 @@ pub struct ExecutionPlan {
     pub channelID: ID,
 
     #[array(var = 100)]
-    pub calls: Vec<Call>,
+    pub actions: Vec<Action>,
 }
 
 // End struct section
