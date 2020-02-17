@@ -1035,8 +1035,6 @@ var (
 type ExecutionPlan struct {
 	Host string `xdrmaxsize:"256"`
 
-	ChannelID ID
-
 	Actions []Action `xdrmaxsize:"100"`
 }
 

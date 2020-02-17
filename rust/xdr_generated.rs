@@ -333,8 +333,6 @@ pub struct ExecutionPlan {
     #[array(var = 256)]
     pub host: String,
 
-    pub channelID: ID,
-
     #[array(var = 100)]
     pub actions: Vec<Action>,
 }

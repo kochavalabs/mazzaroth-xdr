@@ -9,9 +9,6 @@ namespace mazzaroth
     // The host ip of the Mazzaroth node to target
     string host<256>;
 
-    // The id of the channel for the transactions
-    ID channelID;
-
     // The list of actions to submit to the Mazzaroth node
     Action actions<100>;
   };
