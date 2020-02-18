@@ -334,7 +334,7 @@ function Event() {
 
 // Start struct section
 function ExecutionPlan() {
-    return new _xdrJsSerialize2.default.Struct(["host", "channelID", "calls"], [new _xdrJsSerialize2.default.Str('', 256), ID(), new _xdrJsSerialize2.default.VarArray(100, Call)]);
+    return new _xdrJsSerialize2.default.Struct(["host", "actions"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(100, Action)]);
 }
 
 // End struct section

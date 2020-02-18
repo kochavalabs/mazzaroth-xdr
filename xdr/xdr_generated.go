@@ -1035,9 +1035,7 @@ var (
 type ExecutionPlan struct {
 	Host string `xdrmaxsize:"256"`
 
-	ChannelID ID
-
-	Calls []Call `xdrmaxsize:"100"`
+	Actions []Action `xdrmaxsize:"100"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
