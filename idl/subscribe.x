@@ -31,7 +31,9 @@ namespace mazzaroth
     case STRING:
       string regex<256>;
     case HASH32:
-      Hash hashValue;
+      Hash hash32Value;
+    case HASH64:
+      Hash hash64Value;
     case UHYPER:
       unsigned hyper uhyperVaue;
     case BOOL:
