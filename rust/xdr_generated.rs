@@ -735,7 +735,7 @@ pub struct CallFilter {
 // End struct section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum TransactionFilterType {
+pub enum ValueFilterType {
     NONE = 0,
     STRING = 1,
     HASH32 = 2,
@@ -744,14 +744,14 @@ pub enum TransactionFilterType {
     BOOL = 5,
 }
 
-impl Default for TransactionFilterType {
+impl Default for ValueFilterType {
     fn default() -> Self {
-        TransactionFilterType::NONE
+        ValueFilterType::NONE
     }
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum TransactionFilterTYpe {
+pub enum TransactionFilterType {
     NONE = 0,
     CONTRACT = 1,
     CONFIG = 2,
@@ -759,9 +759,9 @@ pub enum TransactionFilterTYpe {
     CALL = 4,
 }
 
-impl Default for TransactionFilterTYpe {
+impl Default for TransactionFilterType {
     fn default() -> Self {
-        TransactionFilterTYpe::NONE
+        TransactionFilterType::NONE
     }
 }
 
@@ -785,6 +785,8 @@ pub enum ValueFilter {
     STRING(String),
 
     HASH32(Hash),
+
+    HASH64(Hash),
 
     UHYPER(u64),
 

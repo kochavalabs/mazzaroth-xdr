@@ -63,8 +63,8 @@ exports.ContractFilter = ContractFilter;
 exports.ConfigFilter = ConfigFilter;
 exports.PermissionFilter = PermissionFilter;
 exports.CallFilter = CallFilter;
+exports.ValueFilterType = ValueFilterType;
 exports.TransactionFilterType = TransactionFilterType;
-exports.TransactionFilterTYpe = TransactionFilterTYpe;
 exports.ReceiptFilterType = ReceiptFilterType;
 exports.ValueFilter = ValueFilter;
 exports.TransactionFilter = TransactionFilter;
@@ -596,7 +596,7 @@ function CallFilter() {
 
 // Start enum section
 
-function TransactionFilterType() {
+function ValueFilterType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "STRING",
@@ -608,7 +608,7 @@ function TransactionFilterType() {
     });
 }
 
-function TransactionFilterTYpe() {
+function TransactionFilterType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "CONTRACT",
@@ -644,6 +644,10 @@ function ValueFilter() {
         },
 
         "HASH32": () => {
+            return Hash();
+        },
+
+        "HASH64": () => {
             return Hash();
         },
 

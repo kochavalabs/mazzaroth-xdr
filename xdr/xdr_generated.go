@@ -2590,6 +2590,77 @@ var (
 
 // Start enum section
 
+// ValueFilterType generated enum
+type ValueFilterType int32
+
+const (
+
+	// ValueFilterTypeNONE enum value 0
+	ValueFilterTypeNONE ValueFilterType = 0
+
+	// ValueFilterTypeSTRING enum value 1
+	ValueFilterTypeSTRING ValueFilterType = 1
+
+	// ValueFilterTypeHASH32 enum value 2
+	ValueFilterTypeHASH32 ValueFilterType = 2
+
+	// ValueFilterTypeHASH64 enum value 3
+	ValueFilterTypeHASH64 ValueFilterType = 3
+
+	// ValueFilterTypeUHYPER enum value 4
+	ValueFilterTypeUHYPER ValueFilterType = 4
+
+	// ValueFilterTypeBOOL enum value 5
+	ValueFilterTypeBOOL ValueFilterType = 5
+)
+
+// ValueFilterTypeMap generated enum map
+var ValueFilterTypeMap = map[int32]string{
+
+	0: "ValueFilterTypeNONE",
+
+	1: "ValueFilterTypeSTRING",
+
+	2: "ValueFilterTypeHASH32",
+
+	3: "ValueFilterTypeHASH64",
+
+	4: "ValueFilterTypeUHYPER",
+
+	5: "ValueFilterTypeBOOL",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ValueFilterType
+func (s ValueFilterType) ValidEnum(v int32) bool {
+	_, ok := ValueFilterTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s ValueFilterType) String() string {
+	name, _ := ValueFilterTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ValueFilterType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ValueFilterType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ValueFilterType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ValueFilterType)(nil)
+)
+
 // TransactionFilterType generated enum
 type TransactionFilterType int32
 
@@ -2598,20 +2669,17 @@ const (
 	// TransactionFilterTypeNONE enum value 0
 	TransactionFilterTypeNONE TransactionFilterType = 0
 
-	// TransactionFilterTypeSTRING enum value 1
-	TransactionFilterTypeSTRING TransactionFilterType = 1
+	// TransactionFilterTypeCONTRACT enum value 1
+	TransactionFilterTypeCONTRACT TransactionFilterType = 1
 
-	// TransactionFilterTypeHASH32 enum value 2
-	TransactionFilterTypeHASH32 TransactionFilterType = 2
+	// TransactionFilterTypeCONFIG enum value 2
+	TransactionFilterTypeCONFIG TransactionFilterType = 2
 
-	// TransactionFilterTypeHASH64 enum value 3
-	TransactionFilterTypeHASH64 TransactionFilterType = 3
+	// TransactionFilterTypePERMISSION enum value 3
+	TransactionFilterTypePERMISSION TransactionFilterType = 3
 
-	// TransactionFilterTypeUHYPER enum value 4
-	TransactionFilterTypeUHYPER TransactionFilterType = 4
-
-	// TransactionFilterTypeBOOL enum value 5
-	TransactionFilterTypeBOOL TransactionFilterType = 5
+	// TransactionFilterTypeCALL enum value 4
+	TransactionFilterTypeCALL TransactionFilterType = 4
 )
 
 // TransactionFilterTypeMap generated enum map
@@ -2619,15 +2687,13 @@ var TransactionFilterTypeMap = map[int32]string{
 
 	0: "TransactionFilterTypeNONE",
 
-	1: "TransactionFilterTypeSTRING",
+	1: "TransactionFilterTypeCONTRACT",
 
-	2: "TransactionFilterTypeHASH32",
+	2: "TransactionFilterTypeCONFIG",
 
-	3: "TransactionFilterTypeHASH64",
+	3: "TransactionFilterTypePERMISSION",
 
-	4: "TransactionFilterTypeUHYPER",
-
-	5: "TransactionFilterTypeBOOL",
+	4: "TransactionFilterTypeCALL",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -2659,72 +2725,6 @@ func (s *TransactionFilterType) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*TransactionFilterType)(nil)
 	_ encoding.BinaryUnmarshaler = (*TransactionFilterType)(nil)
-)
-
-// TransactionFilterTYpe generated enum
-type TransactionFilterTYpe int32
-
-const (
-
-	// TransactionFilterTYpeNONE enum value 0
-	TransactionFilterTYpeNONE TransactionFilterTYpe = 0
-
-	// TransactionFilterTYpeCONTRACT enum value 1
-	TransactionFilterTYpeCONTRACT TransactionFilterTYpe = 1
-
-	// TransactionFilterTYpeCONFIG enum value 2
-	TransactionFilterTYpeCONFIG TransactionFilterTYpe = 2
-
-	// TransactionFilterTYpePERMISSION enum value 3
-	TransactionFilterTYpePERMISSION TransactionFilterTYpe = 3
-
-	// TransactionFilterTYpeCALL enum value 4
-	TransactionFilterTYpeCALL TransactionFilterTYpe = 4
-)
-
-// TransactionFilterTYpeMap generated enum map
-var TransactionFilterTYpeMap = map[int32]string{
-
-	0: "TransactionFilterTYpeNONE",
-
-	1: "TransactionFilterTYpeCONTRACT",
-
-	2: "TransactionFilterTYpeCONFIG",
-
-	3: "TransactionFilterTYpePERMISSION",
-
-	4: "TransactionFilterTYpeCALL",
-}
-
-// ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for TransactionFilterTYpe
-func (s TransactionFilterTYpe) ValidEnum(v int32) bool {
-	_, ok := TransactionFilterTYpeMap[v]
-	return ok
-}
-
-// String returns the name of `e`
-func (s TransactionFilterTYpe) String() string {
-	name, _ := TransactionFilterTYpeMap[int32(s)]
-	return name
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s TransactionFilterTYpe) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *TransactionFilterTYpe) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*TransactionFilterTYpe)(nil)
-	_ encoding.BinaryUnmarshaler = (*TransactionFilterTYpe)(nil)
 )
 
 // ReceiptFilterType generated enum
@@ -2788,7 +2788,9 @@ type ValueFilter struct {
 
 	Regex *string
 
-	HashValue *Hash
+	Hash32Value *Hash
+
+	Hash64Value *Hash
 
 	UhyperVaue *uint64
 
@@ -2813,7 +2815,10 @@ func (u ValueFilter) ArmForSwitch(sw int32) (string, bool) {
 		return "Regex", true
 
 	case ValueFilterTypeHASH32:
-		return "HashValue", true
+		return "Hash32Value", true
+
+	case ValueFilterTypeHASH64:
+		return "Hash64Value", true
 
 	case ValueFilterTypeUHYPER:
 		return "UhyperVaue", true
@@ -2847,7 +2852,16 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.HashValue = &tv
+		result.Hash32Value = &tv
+
+	case ValueFilterTypeHASH64:
+
+		tv, ok := value.(Hash)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Hash64Value = &tv
 
 	case ValueFilterTypeUHYPER:
 
@@ -2896,25 +2910,50 @@ func (u ValueFilter) GetRegex() (result string, ok bool) {
 	return
 }
 
-// MustHashValue retrieves the HashValue value from the union,
+// MustHash32Value retrieves the Hash32Value value from the union,
 // panicing if the value is not set.
-func (u ValueFilter) MustHashValue() Hash {
-	val, ok := u.GetHashValue()
+func (u ValueFilter) MustHash32Value() Hash {
+	val, ok := u.GetHash32Value()
 
 	if !ok {
-		panic("arm HashValue is not set")
+		panic("arm Hash32Value is not set")
 	}
 
 	return val
 }
 
-// GetHashValue retrieves the HashValue value from the union,
+// GetHash32Value retrieves the Hash32Value value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ValueFilter) GetHashValue() (result Hash, ok bool) {
+func (u ValueFilter) GetHash32Value() (result Hash, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "HashValue" {
-		result = *u.HashValue
+	if armName == "Hash32Value" {
+		result = *u.Hash32Value
+		ok = true
+	}
+
+	return
+}
+
+// MustHash64Value retrieves the Hash64Value value from the union,
+// panicing if the value is not set.
+func (u ValueFilter) MustHash64Value() Hash {
+	val, ok := u.GetHash64Value()
+
+	if !ok {
+		panic("arm Hash64Value is not set")
+	}
+
+	return val
+}
+
+// GetHash64Value retrieves the Hash64Value value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ValueFilter) GetHash64Value() (result Hash, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Hash64Value" {
+		result = *u.Hash64Value
 		ok = true
 	}
 
