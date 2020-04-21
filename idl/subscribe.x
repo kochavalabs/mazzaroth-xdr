@@ -14,7 +14,7 @@ namespace mazzaroth
     Hash transactionID;
   };
 
-  enum TransactionFilterType
+  enum ValueFilterType
   {
     NONE = 0,
     STRING = 1,
@@ -88,7 +88,7 @@ namespace mazzaroth
     ValueFilter function;
   };
 
-  enum TransactionFilterTYpe
+  enum TransactionFilterType
   {
     NONE = 0,
     CONTRACT = 1,
