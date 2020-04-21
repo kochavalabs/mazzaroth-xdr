@@ -305,30 +305,6 @@ impl Default for DownloadResponsePayload {
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Event {
-    #[array(var = 256)]
-    pub key: String,
-
-    #[array(var = 2147483647)]
-    pub parameters: Vec<Parameter>,
-}
-
-// End struct section
-
-// Start union section
-
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ExecutionPlan {
     #[array(var = 256)]
     pub host: String,
@@ -357,9 +333,6 @@ pub struct Receipt {
     pub status: ReceiptStatus,
 
     pub stateRoot: Hash,
-
-    #[array(var = 2147483647)]
-    pub events: Vec<Event>,
 
     #[array(var = 2147483647)]
     pub result: Vec<u8>,
@@ -684,6 +657,175 @@ pub enum ChannelInfo {
 impl Default for ChannelInfo {
     fn default() -> Self {
         ChannelInfo::NONE(())
+    }
+}
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ReceiptSubscription {
+    pub transactionFilter: TransactionFilter,
+
+    pub receiptFilter: ReceiptFilter,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ReceiptSubscriptionResult {
+    pub receipt: Receipt,
+
+    pub transactionID: Hash,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ReceiptValueFilter {
+    pub status: ValueFilter,
+
+    pub stateRoot: ValueFilter,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ActionFilter {
+    pub signature: ValueFilter,
+
+    pub signer: ValueFilter,
+
+    pub address: ValueFilter,
+
+    pub channelID: ValueFilter,
+
+    pub nonce: ValueFilter,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ContractFilter {
+    pub actionFilter: ActionFilter,
+
+    pub version: ValueFilter,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ConfigFilter {
+    pub actionFilter: ActionFilter,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct PermissionFilter {
+    pub actionFilter: ActionFilter,
+
+    pub key: ValueFilter,
+
+    pub action: ValueFilter,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct CallFilter {
+    pub actionFilter: ActionFilter,
+
+    pub function: ValueFilter,
+}
+
+// End struct section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum TransactionFilterType {
+    NONE = 0,
+    STRING = 1,
+    HASH32 = 2,
+    HASH64 = 3,
+    UHYPER = 4,
+    BOOL = 5,
+}
+
+impl Default for TransactionFilterType {
+    fn default() -> Self {
+        TransactionFilterType::NONE
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum TransactionFilterTYpe {
+    NONE = 0,
+    CONTRACT = 1,
+    CONFIG = 2,
+    PERMISSION = 3,
+    CALL = 4,
+}
+
+impl Default for TransactionFilterTYpe {
+    fn default() -> Self {
+        TransactionFilterTYpe::NONE
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ReceiptFilterType {
+    NONE = 0,
+    RECEIPT = 1,
+}
+
+impl Default for ReceiptFilterType {
+    fn default() -> Self {
+        ReceiptFilterType::NONE
+    }
+}
+// Start union section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ValueFilter {
+    NONE(()),
+
+    STRING(String),
+
+    HASH32(Hash),
+
+    UHYPER(u64),
+
+    BOOL(bool),
+}
+
+impl Default for ValueFilter {
+    fn default() -> Self {
+        ValueFilter::NONE(())
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum TransactionFilter {
+    NONE(()),
+
+    CONTRACT(ContractFilter),
+
+    CONFIG(ConfigFilter),
+
+    PERMISSION(PermissionFilter),
+
+    CALL(CallFilter),
+}
+
+impl Default for TransactionFilter {
+    fn default() -> Self {
+        TransactionFilter::NONE(())
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ReceiptFilter {
+    NONE(()),
+
+    RECEIPT(ReceiptValueFilter),
+}
+
+impl Default for ReceiptFilter {
+    fn default() -> Self {
+        ReceiptFilter::NONE(())
     }
 }
 // End union section

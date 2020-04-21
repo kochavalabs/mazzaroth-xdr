@@ -987,50 +987,6 @@ var (
 
 // Start struct section
 
-// Event generated struct
-type Event struct {
-	Key string `xdrmaxsize:"256"`
-
-	Parameters []Parameter
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Event) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Event) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Event)(nil)
-	_ encoding.BinaryUnmarshaler = (*Event)(nil)
-)
-
-// End struct section
-
-// Start enum section
-
-// End enum section
-
-// Start union section
-
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
-
 // ExecutionPlan generated struct
 type ExecutionPlan struct {
 	Host string `xdrmaxsize:"256"`
@@ -1080,8 +1036,6 @@ type Receipt struct {
 	Status ReceiptStatus
 
 	StateRoot Hash
-
-	Events []Event
 
 	Result []byte
 }
@@ -2413,6 +2367,923 @@ func (u *ChannelInfo) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*ChannelInfo)(nil)
 	_ encoding.BinaryUnmarshaler = (*ChannelInfo)(nil)
+)
+
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+// ReceiptSubscription generated struct
+type ReceiptSubscription struct {
+	TransactionFilter TransactionFilter
+
+	ReceiptFilter ReceiptFilter
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ReceiptSubscription) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ReceiptSubscription) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ReceiptSubscription)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReceiptSubscription)(nil)
+)
+
+// ReceiptSubscriptionResult generated struct
+type ReceiptSubscriptionResult struct {
+	Receipt Receipt
+
+	TransactionID Hash
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ReceiptSubscriptionResult) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ReceiptSubscriptionResult) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ReceiptSubscriptionResult)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReceiptSubscriptionResult)(nil)
+)
+
+// ReceiptValueFilter generated struct
+type ReceiptValueFilter struct {
+	Status ValueFilter
+
+	StateRoot ValueFilter
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ReceiptValueFilter) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ReceiptValueFilter) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ReceiptValueFilter)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReceiptValueFilter)(nil)
+)
+
+// ActionFilter generated struct
+type ActionFilter struct {
+	Signature ValueFilter
+
+	Signer ValueFilter
+
+	Address ValueFilter
+
+	ChannelID ValueFilter
+
+	Nonce ValueFilter
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ActionFilter) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ActionFilter) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ActionFilter)(nil)
+	_ encoding.BinaryUnmarshaler = (*ActionFilter)(nil)
+)
+
+// ContractFilter generated struct
+type ContractFilter struct {
+	ActionFilter ActionFilter
+
+	Version ValueFilter
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ContractFilter) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ContractFilter) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ContractFilter)(nil)
+	_ encoding.BinaryUnmarshaler = (*ContractFilter)(nil)
+)
+
+// ConfigFilter generated struct
+type ConfigFilter struct {
+	ActionFilter ActionFilter
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ConfigFilter) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ConfigFilter) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ConfigFilter)(nil)
+	_ encoding.BinaryUnmarshaler = (*ConfigFilter)(nil)
+)
+
+// PermissionFilter generated struct
+type PermissionFilter struct {
+	ActionFilter ActionFilter
+
+	Key ValueFilter
+
+	Action ValueFilter
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s PermissionFilter) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *PermissionFilter) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*PermissionFilter)(nil)
+	_ encoding.BinaryUnmarshaler = (*PermissionFilter)(nil)
+)
+
+// CallFilter generated struct
+type CallFilter struct {
+	ActionFilter ActionFilter
+
+	Function ValueFilter
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s CallFilter) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *CallFilter) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*CallFilter)(nil)
+	_ encoding.BinaryUnmarshaler = (*CallFilter)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+// TransactionFilterType generated enum
+type TransactionFilterType int32
+
+const (
+
+	// TransactionFilterTypeNONE enum value 0
+	TransactionFilterTypeNONE TransactionFilterType = 0
+
+	// TransactionFilterTypeSTRING enum value 1
+	TransactionFilterTypeSTRING TransactionFilterType = 1
+
+	// TransactionFilterTypeHASH32 enum value 2
+	TransactionFilterTypeHASH32 TransactionFilterType = 2
+
+	// TransactionFilterTypeHASH64 enum value 3
+	TransactionFilterTypeHASH64 TransactionFilterType = 3
+
+	// TransactionFilterTypeUHYPER enum value 4
+	TransactionFilterTypeUHYPER TransactionFilterType = 4
+
+	// TransactionFilterTypeBOOL enum value 5
+	TransactionFilterTypeBOOL TransactionFilterType = 5
+)
+
+// TransactionFilterTypeMap generated enum map
+var TransactionFilterTypeMap = map[int32]string{
+
+	0: "TransactionFilterTypeNONE",
+
+	1: "TransactionFilterTypeSTRING",
+
+	2: "TransactionFilterTypeHASH32",
+
+	3: "TransactionFilterTypeHASH64",
+
+	4: "TransactionFilterTypeUHYPER",
+
+	5: "TransactionFilterTypeBOOL",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for TransactionFilterType
+func (s TransactionFilterType) ValidEnum(v int32) bool {
+	_, ok := TransactionFilterTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s TransactionFilterType) String() string {
+	name, _ := TransactionFilterTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s TransactionFilterType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *TransactionFilterType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*TransactionFilterType)(nil)
+	_ encoding.BinaryUnmarshaler = (*TransactionFilterType)(nil)
+)
+
+// TransactionFilterTYpe generated enum
+type TransactionFilterTYpe int32
+
+const (
+
+	// TransactionFilterTYpeNONE enum value 0
+	TransactionFilterTYpeNONE TransactionFilterTYpe = 0
+
+	// TransactionFilterTYpeCONTRACT enum value 1
+	TransactionFilterTYpeCONTRACT TransactionFilterTYpe = 1
+
+	// TransactionFilterTYpeCONFIG enum value 2
+	TransactionFilterTYpeCONFIG TransactionFilterTYpe = 2
+
+	// TransactionFilterTYpePERMISSION enum value 3
+	TransactionFilterTYpePERMISSION TransactionFilterTYpe = 3
+
+	// TransactionFilterTYpeCALL enum value 4
+	TransactionFilterTYpeCALL TransactionFilterTYpe = 4
+)
+
+// TransactionFilterTYpeMap generated enum map
+var TransactionFilterTYpeMap = map[int32]string{
+
+	0: "TransactionFilterTYpeNONE",
+
+	1: "TransactionFilterTYpeCONTRACT",
+
+	2: "TransactionFilterTYpeCONFIG",
+
+	3: "TransactionFilterTYpePERMISSION",
+
+	4: "TransactionFilterTYpeCALL",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for TransactionFilterTYpe
+func (s TransactionFilterTYpe) ValidEnum(v int32) bool {
+	_, ok := TransactionFilterTYpeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s TransactionFilterTYpe) String() string {
+	name, _ := TransactionFilterTYpeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s TransactionFilterTYpe) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *TransactionFilterTYpe) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*TransactionFilterTYpe)(nil)
+	_ encoding.BinaryUnmarshaler = (*TransactionFilterTYpe)(nil)
+)
+
+// ReceiptFilterType generated enum
+type ReceiptFilterType int32
+
+const (
+
+	// ReceiptFilterTypeNONE enum value 0
+	ReceiptFilterTypeNONE ReceiptFilterType = 0
+
+	// ReceiptFilterTypeRECEIPT enum value 1
+	ReceiptFilterTypeRECEIPT ReceiptFilterType = 1
+)
+
+// ReceiptFilterTypeMap generated enum map
+var ReceiptFilterTypeMap = map[int32]string{
+
+	0: "ReceiptFilterTypeNONE",
+
+	1: "ReceiptFilterTypeRECEIPT",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ReceiptFilterType
+func (s ReceiptFilterType) ValidEnum(v int32) bool {
+	_, ok := ReceiptFilterTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s ReceiptFilterType) String() string {
+	name, _ := ReceiptFilterTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ReceiptFilterType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ReceiptFilterType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ReceiptFilterType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReceiptFilterType)(nil)
+)
+
+// End enum section
+
+// Start union section
+
+// ValueFilter generated union
+type ValueFilter struct {
+	Type ValueFilterType
+
+	Regex *string
+
+	HashValue *Hash
+
+	UhyperVaue *uint64
+
+	BoolValue *bool
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u ValueFilter) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of ValueFilter
+func (u ValueFilter) ArmForSwitch(sw int32) (string, bool) {
+	switch ValueFilterType(sw) {
+
+	case ValueFilterTypeNONE:
+		return "", true
+
+	case ValueFilterTypeSTRING:
+		return "Regex", true
+
+	case ValueFilterTypeHASH32:
+		return "HashValue", true
+
+	case ValueFilterTypeUHYPER:
+		return "UhyperVaue", true
+
+	case ValueFilterTypeBOOL:
+		return "BoolValue", true
+	}
+	return "-", false
+}
+
+// NewValueFilter creates a new  ValueFilter.
+func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilter, err error) {
+	result.Type = aType
+	switch aType {
+
+	case ValueFilterTypeNONE:
+
+	case ValueFilterTypeSTRING:
+
+		tv, ok := value.(string)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Regex = &tv
+
+	case ValueFilterTypeHASH32:
+
+		tv, ok := value.(Hash)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.HashValue = &tv
+
+	case ValueFilterTypeUHYPER:
+
+		tv, ok := value.(uint64)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.UhyperVaue = &tv
+
+	case ValueFilterTypeBOOL:
+
+		tv, ok := value.(bool)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.BoolValue = &tv
+
+	}
+	return
+}
+
+// MustRegex retrieves the Regex value from the union,
+// panicing if the value is not set.
+func (u ValueFilter) MustRegex() string {
+	val, ok := u.GetRegex()
+
+	if !ok {
+		panic("arm Regex is not set")
+	}
+
+	return val
+}
+
+// GetRegex retrieves the Regex value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ValueFilter) GetRegex() (result string, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Regex" {
+		result = *u.Regex
+		ok = true
+	}
+
+	return
+}
+
+// MustHashValue retrieves the HashValue value from the union,
+// panicing if the value is not set.
+func (u ValueFilter) MustHashValue() Hash {
+	val, ok := u.GetHashValue()
+
+	if !ok {
+		panic("arm HashValue is not set")
+	}
+
+	return val
+}
+
+// GetHashValue retrieves the HashValue value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ValueFilter) GetHashValue() (result Hash, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "HashValue" {
+		result = *u.HashValue
+		ok = true
+	}
+
+	return
+}
+
+// MustUhyperVaue retrieves the UhyperVaue value from the union,
+// panicing if the value is not set.
+func (u ValueFilter) MustUhyperVaue() uint64 {
+	val, ok := u.GetUhyperVaue()
+
+	if !ok {
+		panic("arm UhyperVaue is not set")
+	}
+
+	return val
+}
+
+// GetUhyperVaue retrieves the UhyperVaue value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ValueFilter) GetUhyperVaue() (result uint64, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "UhyperVaue" {
+		result = *u.UhyperVaue
+		ok = true
+	}
+
+	return
+}
+
+// MustBoolValue retrieves the BoolValue value from the union,
+// panicing if the value is not set.
+func (u ValueFilter) MustBoolValue() bool {
+	val, ok := u.GetBoolValue()
+
+	if !ok {
+		panic("arm BoolValue is not set")
+	}
+
+	return val
+}
+
+// GetBoolValue retrieves the BoolValue value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ValueFilter) GetBoolValue() (result bool, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "BoolValue" {
+		result = *u.BoolValue
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u ValueFilter) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *ValueFilter) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ValueFilter)(nil)
+	_ encoding.BinaryUnmarshaler = (*ValueFilter)(nil)
+)
+
+// TransactionFilter generated union
+type TransactionFilter struct {
+	Type TransactionFilterType
+
+	ContractFilter *ContractFilter
+
+	ConfigFilter *ConfigFilter
+
+	PermissionFilter *PermissionFilter
+
+	CallFilter *CallFilter
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u TransactionFilter) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of TransactionFilter
+func (u TransactionFilter) ArmForSwitch(sw int32) (string, bool) {
+	switch TransactionFilterType(sw) {
+
+	case TransactionFilterTypeNONE:
+		return "", true
+
+	case TransactionFilterTypeCONTRACT:
+		return "ContractFilter", true
+
+	case TransactionFilterTypeCONFIG:
+		return "ConfigFilter", true
+
+	case TransactionFilterTypePERMISSION:
+		return "PermissionFilter", true
+
+	case TransactionFilterTypeCALL:
+		return "CallFilter", true
+	}
+	return "-", false
+}
+
+// NewTransactionFilter creates a new  TransactionFilter.
+func NewTransactionFilter(aType TransactionFilterType, value interface{}) (result TransactionFilter, err error) {
+	result.Type = aType
+	switch aType {
+
+	case TransactionFilterTypeNONE:
+
+	case TransactionFilterTypeCONTRACT:
+
+		tv, ok := value.(ContractFilter)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.ContractFilter = &tv
+
+	case TransactionFilterTypeCONFIG:
+
+		tv, ok := value.(ConfigFilter)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.ConfigFilter = &tv
+
+	case TransactionFilterTypePERMISSION:
+
+		tv, ok := value.(PermissionFilter)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.PermissionFilter = &tv
+
+	case TransactionFilterTypeCALL:
+
+		tv, ok := value.(CallFilter)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.CallFilter = &tv
+
+	}
+	return
+}
+
+// MustContractFilter retrieves the ContractFilter value from the union,
+// panicing if the value is not set.
+func (u TransactionFilter) MustContractFilter() ContractFilter {
+	val, ok := u.GetContractFilter()
+
+	if !ok {
+		panic("arm ContractFilter is not set")
+	}
+
+	return val
+}
+
+// GetContractFilter retrieves the ContractFilter value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u TransactionFilter) GetContractFilter() (result ContractFilter, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "ContractFilter" {
+		result = *u.ContractFilter
+		ok = true
+	}
+
+	return
+}
+
+// MustConfigFilter retrieves the ConfigFilter value from the union,
+// panicing if the value is not set.
+func (u TransactionFilter) MustConfigFilter() ConfigFilter {
+	val, ok := u.GetConfigFilter()
+
+	if !ok {
+		panic("arm ConfigFilter is not set")
+	}
+
+	return val
+}
+
+// GetConfigFilter retrieves the ConfigFilter value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u TransactionFilter) GetConfigFilter() (result ConfigFilter, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "ConfigFilter" {
+		result = *u.ConfigFilter
+		ok = true
+	}
+
+	return
+}
+
+// MustPermissionFilter retrieves the PermissionFilter value from the union,
+// panicing if the value is not set.
+func (u TransactionFilter) MustPermissionFilter() PermissionFilter {
+	val, ok := u.GetPermissionFilter()
+
+	if !ok {
+		panic("arm PermissionFilter is not set")
+	}
+
+	return val
+}
+
+// GetPermissionFilter retrieves the PermissionFilter value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u TransactionFilter) GetPermissionFilter() (result PermissionFilter, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "PermissionFilter" {
+		result = *u.PermissionFilter
+		ok = true
+	}
+
+	return
+}
+
+// MustCallFilter retrieves the CallFilter value from the union,
+// panicing if the value is not set.
+func (u TransactionFilter) MustCallFilter() CallFilter {
+	val, ok := u.GetCallFilter()
+
+	if !ok {
+		panic("arm CallFilter is not set")
+	}
+
+	return val
+}
+
+// GetCallFilter retrieves the CallFilter value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u TransactionFilter) GetCallFilter() (result CallFilter, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "CallFilter" {
+		result = *u.CallFilter
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u TransactionFilter) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *TransactionFilter) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*TransactionFilter)(nil)
+	_ encoding.BinaryUnmarshaler = (*TransactionFilter)(nil)
+)
+
+// ReceiptFilter generated union
+type ReceiptFilter struct {
+	Type ReceiptFilterType
+
+	ValueFilter *ReceiptValueFilter
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u ReceiptFilter) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of ReceiptFilter
+func (u ReceiptFilter) ArmForSwitch(sw int32) (string, bool) {
+	switch ReceiptFilterType(sw) {
+
+	case ReceiptFilterTypeNONE:
+		return "", true
+
+	case ReceiptFilterTypeRECEIPT:
+		return "ValueFilter", true
+	}
+	return "-", false
+}
+
+// NewReceiptFilter creates a new  ReceiptFilter.
+func NewReceiptFilter(aType ReceiptFilterType, value interface{}) (result ReceiptFilter, err error) {
+	result.Type = aType
+	switch aType {
+
+	case ReceiptFilterTypeNONE:
+
+	case ReceiptFilterTypeRECEIPT:
+
+		tv, ok := value.(ReceiptValueFilter)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.ValueFilter = &tv
+
+	}
+	return
+}
+
+// MustValueFilter retrieves the ValueFilter value from the union,
+// panicing if the value is not set.
+func (u ReceiptFilter) MustValueFilter() ReceiptValueFilter {
+	val, ok := u.GetValueFilter()
+
+	if !ok {
+		panic("arm ValueFilter is not set")
+	}
+
+	return val
+}
+
+// GetValueFilter retrieves the ValueFilter value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u ReceiptFilter) GetValueFilter() (result ReceiptValueFilter, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "ValueFilter" {
+		result = *u.ValueFilter
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u ReceiptFilter) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *ReceiptFilter) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ReceiptFilter)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReceiptFilter)(nil)
 )
 
 // End union section
