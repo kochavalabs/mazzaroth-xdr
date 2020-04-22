@@ -681,7 +681,7 @@ pub struct ReceiptSubscription {
 pub struct ReceiptSubscriptionResult {
     pub receipt: Receipt,
 
-    pub transactionID: Hash,
+    pub transactionID: ID,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]

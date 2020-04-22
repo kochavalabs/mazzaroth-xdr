@@ -11,7 +11,7 @@ namespace mazzaroth
   {
     Receipt receipt;
 
-    Hash transactionID;
+    ID transactionID;
   };
 
   enum ValueFilterType

@@ -571,7 +571,7 @@ function ReceiptSubscription() {
     return new _xdrJsSerialize2.default.Struct(["transactionFilter", "receiptFilter"], [TransactionFilter(), ReceiptFilter()]);
 }
 function ReceiptSubscriptionResult() {
-    return new _xdrJsSerialize2.default.Struct(["receipt", "transactionID"], [Receipt(), Hash()]);
+    return new _xdrJsSerialize2.default.Struct(["receipt", "transactionID"], [Receipt(), ID()]);
 }
 function ReceiptValueFilter() {
     return new _xdrJsSerialize2.default.Struct(["status", "stateRoot"], [ValueFilter(), ValueFilter()]);

@@ -2409,7 +2409,7 @@ var (
 type ReceiptSubscriptionResult struct {
 	Receipt Receipt
 
-	TransactionID Hash
+	TransactionID ID
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
