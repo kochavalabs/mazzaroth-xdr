@@ -2669,17 +2669,20 @@ const (
 	// TransactionFilterTypeNONE enum value 0
 	TransactionFilterTypeNONE TransactionFilterType = 0
 
-	// TransactionFilterTypeCONTRACT enum value 1
-	TransactionFilterTypeCONTRACT TransactionFilterType = 1
+	// TransactionFilterTypeGENERIC enum value 1
+	TransactionFilterTypeGENERIC TransactionFilterType = 1
 
-	// TransactionFilterTypeCONFIG enum value 2
-	TransactionFilterTypeCONFIG TransactionFilterType = 2
+	// TransactionFilterTypeCONTRACT enum value 2
+	TransactionFilterTypeCONTRACT TransactionFilterType = 2
 
-	// TransactionFilterTypePERMISSION enum value 3
-	TransactionFilterTypePERMISSION TransactionFilterType = 3
+	// TransactionFilterTypeCONFIG enum value 3
+	TransactionFilterTypeCONFIG TransactionFilterType = 3
 
-	// TransactionFilterTypeCALL enum value 4
-	TransactionFilterTypeCALL TransactionFilterType = 4
+	// TransactionFilterTypePERMISSION enum value 4
+	TransactionFilterTypePERMISSION TransactionFilterType = 4
+
+	// TransactionFilterTypeCALL enum value 5
+	TransactionFilterTypeCALL TransactionFilterType = 5
 )
 
 // TransactionFilterTypeMap generated enum map
@@ -2687,13 +2690,15 @@ var TransactionFilterTypeMap = map[int32]string{
 
 	0: "TransactionFilterTypeNONE",
 
-	1: "TransactionFilterTypeCONTRACT",
+	1: "TransactionFilterTypeGENERIC",
 
-	2: "TransactionFilterTypeCONFIG",
+	2: "TransactionFilterTypeCONTRACT",
 
-	3: "TransactionFilterTypePERMISSION",
+	3: "TransactionFilterTypeCONFIG",
 
-	4: "TransactionFilterTypeCALL",
+	4: "TransactionFilterTypePERMISSION",
+
+	5: "TransactionFilterTypeCALL",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -3032,6 +3037,8 @@ var (
 type TransactionFilter struct {
 	Type TransactionFilterType
 
+	GenericFilter *ActionFilter
+
 	ContractFilter *ContractFilter
 
 	ConfigFilter *ConfigFilter
@@ -3055,6 +3062,9 @@ func (u TransactionFilter) ArmForSwitch(sw int32) (string, bool) {
 	case TransactionFilterTypeNONE:
 		return "", true
 
+	case TransactionFilterTypeGENERIC:
+		return "GenericFilter", true
+
 	case TransactionFilterTypeCONTRACT:
 		return "ContractFilter", true
 
@@ -3076,6 +3086,15 @@ func NewTransactionFilter(aType TransactionFilterType, value interface{}) (resul
 	switch aType {
 
 	case TransactionFilterTypeNONE:
+
+	case TransactionFilterTypeGENERIC:
+
+		tv, ok := value.(ActionFilter)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.GenericFilter = &tv
 
 	case TransactionFilterTypeCONTRACT:
 
@@ -3114,6 +3133,31 @@ func NewTransactionFilter(aType TransactionFilterType, value interface{}) (resul
 		result.CallFilter = &tv
 
 	}
+	return
+}
+
+// MustGenericFilter retrieves the GenericFilter value from the union,
+// panicing if the value is not set.
+func (u TransactionFilter) MustGenericFilter() ActionFilter {
+	val, ok := u.GetGenericFilter()
+
+	if !ok {
+		panic("arm GenericFilter is not set")
+	}
+
+	return val
+}
+
+// GetGenericFilter retrieves the GenericFilter value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u TransactionFilter) GetGenericFilter() (result ActionFilter, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "GenericFilter" {
+		result = *u.GenericFilter
+		ok = true
+	}
+
 	return
 }
 

@@ -611,10 +611,11 @@ function ValueFilterType() {
 function TransactionFilterType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
-        1: "CONTRACT",
-        2: "CONFIG",
-        3: "PERMISSION",
-        4: "CALL"
+        1: "GENERIC",
+        2: "CONTRACT",
+        3: "CONFIG",
+        4: "PERMISSION",
+        5: "CALL"
 
     });
 }
@@ -667,6 +668,10 @@ function TransactionFilter() {
 
         "NONE": () => {
             return new _xdrJsSerialize2.default.Void();
+        },
+
+        "GENERIC": () => {
+            return ActionFilter();
         },
 
         "CONTRACT": () => {

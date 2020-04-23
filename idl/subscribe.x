@@ -91,16 +91,19 @@ namespace mazzaroth
   enum TransactionFilterType
   {
     NONE = 0,
-    CONTRACT = 1,
-    CONFIG = 2,
-    PERMISSION = 3,
-    CALL = 4,
+    GENERIC = 1,
+    CONTRACT = 2,
+    CONFIG = 3,
+    PERMISSION = 4,
+    CALL = 5,
   };
 
   union TransactionFilter switch (TransactionFilterType Type)
   {
     case NONE:
       void;
+    case GENERIC:
+      ActionFilter genericFilter;
     case CONTRACT:
       ContractFilter contractFilter; 
     case CONFIG:

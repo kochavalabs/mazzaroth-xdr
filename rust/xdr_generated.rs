@@ -753,10 +753,11 @@ impl Default for ValueFilterType {
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum TransactionFilterType {
     NONE = 0,
-    CONTRACT = 1,
-    CONFIG = 2,
-    PERMISSION = 3,
-    CALL = 4,
+    GENERIC = 1,
+    CONTRACT = 2,
+    CONFIG = 3,
+    PERMISSION = 4,
+    CALL = 5,
 }
 
 impl Default for TransactionFilterType {
@@ -802,6 +803,8 @@ impl Default for ValueFilter {
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum TransactionFilter {
     NONE(()),
+
+    GENERIC(ActionFilter),
 
     CONTRACT(ContractFilter),
 
