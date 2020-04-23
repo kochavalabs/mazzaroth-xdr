@@ -648,7 +648,7 @@ function ValueFilter() {
         },
 
         "HASH64": () => {
-            return Hash();
+            return Signature();
         },
 
         "UHYPER": () => {

@@ -2790,7 +2790,7 @@ type ValueFilter struct {
 
 	Hash32Value *Hash
 
-	Hash64Value *Hash
+	Hash64Value *Signature
 
 	UhyperVaue *uint64
 
@@ -2856,7 +2856,7 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 
 	case ValueFilterTypeHASH64:
 
-		tv, ok := value.(Hash)
+		tv, ok := value.(Signature)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2937,7 +2937,7 @@ func (u ValueFilter) GetHash32Value() (result Hash, ok bool) {
 
 // MustHash64Value retrieves the Hash64Value value from the union,
 // panicing if the value is not set.
-func (u ValueFilter) MustHash64Value() Hash {
+func (u ValueFilter) MustHash64Value() Signature {
 	val, ok := u.GetHash64Value()
 
 	if !ok {
@@ -2949,7 +2949,7 @@ func (u ValueFilter) MustHash64Value() Hash {
 
 // GetHash64Value retrieves the Hash64Value value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ValueFilter) GetHash64Value() (result Hash, ok bool) {
+func (u ValueFilter) GetHash64Value() (result Signature, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Hash64Value" {

@@ -786,7 +786,7 @@ pub enum ValueFilter {
 
     HASH32(Hash),
 
-    HASH64(Hash),
+    HASH64(Signature),
 
     UHYPER(u64),
 

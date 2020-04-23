@@ -33,7 +33,7 @@ namespace mazzaroth
     case HASH32:
       Hash hash32Value;
     case HASH64:
-      Hash hash64Value;
+      Signature hash64Value;
     case UHYPER:
       unsigned hyper uhyperVaue;
     case BOOL:
