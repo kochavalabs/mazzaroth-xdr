@@ -35,7 +35,7 @@ namespace mazzaroth
     case HASH64:
       Signature hash64Value;
     case UHYPER:
-      unsigned hyper uhyperVaue;
+      unsigned hyper uhyperValue;
     case BOOL:
       bool boolValue;
   };

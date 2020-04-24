@@ -2797,7 +2797,7 @@ type ValueFilter struct {
 
 	Hash64Value *Signature
 
-	UhyperVaue *uint64
+	UhyperValue *uint64
 
 	BoolValue *bool
 }
@@ -2826,7 +2826,7 @@ func (u ValueFilter) ArmForSwitch(sw int32) (string, bool) {
 		return "Hash64Value", true
 
 	case ValueFilterTypeUHYPER:
-		return "UhyperVaue", true
+		return "UhyperValue", true
 
 	case ValueFilterTypeBOOL:
 		return "BoolValue", true
@@ -2875,7 +2875,7 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.UhyperVaue = &tv
+		result.UhyperValue = &tv
 
 	case ValueFilterTypeBOOL:
 
@@ -2965,25 +2965,25 @@ func (u ValueFilter) GetHash64Value() (result Signature, ok bool) {
 	return
 }
 
-// MustUhyperVaue retrieves the UhyperVaue value from the union,
+// MustUhyperValue retrieves the UhyperValue value from the union,
 // panicing if the value is not set.
-func (u ValueFilter) MustUhyperVaue() uint64 {
-	val, ok := u.GetUhyperVaue()
+func (u ValueFilter) MustUhyperValue() uint64 {
+	val, ok := u.GetUhyperValue()
 
 	if !ok {
-		panic("arm UhyperVaue is not set")
+		panic("arm UhyperValue is not set")
 	}
 
 	return val
 }
 
-// GetUhyperVaue retrieves the UhyperVaue value from the union,
+// GetUhyperValue retrieves the UhyperValue value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ValueFilter) GetUhyperVaue() (result uint64, ok bool) {
+func (u ValueFilter) GetUhyperValue() (result uint64, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "UhyperVaue" {
-		result = *u.UhyperVaue
+	if armName == "UhyperValue" {
+		result = *u.UhyperValue
 		ok = true
 	}
 
