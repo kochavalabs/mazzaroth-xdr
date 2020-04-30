@@ -255,6 +255,58 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Parameter)(nil)
 )
 
+// Hash32 generated typedef
+type Hash32 [32]byte
+
+// XDRMaxSize implements the Sized interface for Hash32
+func (s Hash32) XDRMaxSize() int {
+	return 32
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Hash32) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Hash32) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Hash32)(nil)
+	_ encoding.BinaryUnmarshaler = (*Hash32)(nil)
+)
+
+// Hash64 generated typedef
+type Hash64 [64]byte
+
+// XDRMaxSize implements the Sized interface for Hash64
+func (s Hash64) XDRMaxSize() int {
+	return 64
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Hash64) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Hash64) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Hash64)(nil)
+	_ encoding.BinaryUnmarshaler = (*Hash64)(nil)
+)
+
 // End typedef section
 
 // Start struct section
@@ -2793,9 +2845,9 @@ type ValueFilter struct {
 
 	Regex *string
 
-	Hash32Value *Hash
+	Hash32Value *Hash32
 
-	Hash64Value *Signature
+	Hash64Value *Hash64
 
 	UhyperValue *uint64
 
@@ -2852,7 +2904,7 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 
 	case ValueFilterTypeHASH32:
 
-		tv, ok := value.(Hash)
+		tv, ok := value.(Hash32)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2861,7 +2913,7 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 
 	case ValueFilterTypeHASH64:
 
-		tv, ok := value.(Signature)
+		tv, ok := value.(Hash64)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2917,7 +2969,7 @@ func (u ValueFilter) GetRegex() (result string, ok bool) {
 
 // MustHash32Value retrieves the Hash32Value value from the union,
 // panicing if the value is not set.
-func (u ValueFilter) MustHash32Value() Hash {
+func (u ValueFilter) MustHash32Value() Hash32 {
 	val, ok := u.GetHash32Value()
 
 	if !ok {
@@ -2929,7 +2981,7 @@ func (u ValueFilter) MustHash32Value() Hash {
 
 // GetHash32Value retrieves the Hash32Value value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ValueFilter) GetHash32Value() (result Hash, ok bool) {
+func (u ValueFilter) GetHash32Value() (result Hash32, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Hash32Value" {
@@ -2942,7 +2994,7 @@ func (u ValueFilter) GetHash32Value() (result Hash, ok bool) {
 
 // MustHash64Value retrieves the Hash64Value value from the union,
 // panicing if the value is not set.
-func (u ValueFilter) MustHash64Value() Signature {
+func (u ValueFilter) MustHash64Value() Hash64 {
 	val, ok := u.GetHash64Value()
 
 	if !ok {
@@ -2954,7 +3006,7 @@ func (u ValueFilter) MustHash64Value() Signature {
 
 // GetHash64Value retrieves the Hash64Value value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ValueFilter) GetHash64Value() (result Signature, ok bool) {
+func (u ValueFilter) GetHash64Value() (result Hash64, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Hash64Value" {

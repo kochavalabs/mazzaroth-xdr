@@ -114,6 +114,16 @@ pub struct Parameter {
     #[array(var = 2147483647)]
     pub t: Vec<u8>,
 }
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Hash32 {
+    #[array(fixed = 32)]
+    pub t: Vec<u8>,
+}
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Hash64 {
+    #[array(fixed = 64)]
+    pub t: Vec<u8>,
+}
 
 // End typedef section
 
@@ -785,9 +795,9 @@ pub enum ValueFilter {
 
     STRING(String),
 
-    HASH32(Hash),
+    HASH32(Hash32),
 
-    HASH64(Signature),
+    HASH64(Hash64),
 
     UHYPER(u64),
 

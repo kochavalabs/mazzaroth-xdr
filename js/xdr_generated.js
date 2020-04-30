@@ -10,6 +10,8 @@ exports.Signature = Signature;
 exports.ID = ID;
 exports.Hash = Hash;
 exports.Parameter = Parameter;
+exports.Hash32 = Hash32;
+exports.Hash64 = Hash64;
 exports.ChannelConfig = ChannelConfig;
 exports.GovernanceConfig = GovernanceConfig;
 exports.PermissionedIDs = PermissionedIDs;
@@ -157,6 +159,14 @@ function Hash() {
 
 function Parameter() {
     return new _xdrJsSerialize2.default.VarOpaque(2147483647);
+}
+
+function Hash32() {
+    return new _xdrJsSerialize2.default.FixedOpaque(32);
+}
+
+function Hash64() {
+    return new _xdrJsSerialize2.default.FixedOpaque(64);
 }
 // End typedef section
 
@@ -645,11 +655,11 @@ function ValueFilter() {
         },
 
         "HASH32": () => {
-            return Hash();
+            return Hash32();
         },
 
         "HASH64": () => {
-            return Signature();
+            return Hash64();
         },
 
         "UHYPER": () => {
