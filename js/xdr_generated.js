@@ -10,6 +10,8 @@ exports.Signature = Signature;
 exports.ID = ID;
 exports.Hash = Hash;
 exports.Parameter = Parameter;
+exports.Hash32 = Hash32;
+exports.Hash64 = Hash64;
 exports.ChannelConfig = ChannelConfig;
 exports.GovernanceConfig = GovernanceConfig;
 exports.PermissionedIDs = PermissionedIDs;
@@ -22,7 +24,6 @@ exports.DownloadRequestType = DownloadRequestType;
 exports.DownloadStatus = DownloadStatus;
 exports.DownloadRequestPayload = DownloadRequestPayload;
 exports.DownloadResponsePayload = DownloadResponsePayload;
-exports.Event = Event;
 exports.ExecutionPlan = ExecutionPlan;
 exports.Receipt = Receipt;
 exports.ReceiptStatus = ReceiptStatus;
@@ -56,6 +57,20 @@ exports.ChannelInfoType = ChannelInfoType;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
 exports.ChannelInfo = ChannelInfo;
+exports.ReceiptSubscription = ReceiptSubscription;
+exports.ReceiptSubscriptionResult = ReceiptSubscriptionResult;
+exports.ReceiptValueFilter = ReceiptValueFilter;
+exports.ActionFilter = ActionFilter;
+exports.ContractFilter = ContractFilter;
+exports.ConfigFilter = ConfigFilter;
+exports.PermissionFilter = PermissionFilter;
+exports.CallFilter = CallFilter;
+exports.ValueFilterType = ValueFilterType;
+exports.TransactionFilterType = TransactionFilterType;
+exports.ReceiptFilterType = ReceiptFilterType;
+exports.ValueFilter = ValueFilter;
+exports.TransactionFilter = TransactionFilter;
+exports.ReceiptFilter = ReceiptFilter;
 exports.Call = Call;
 exports.Contract = Contract;
 exports.Permission = Permission;
@@ -144,6 +159,14 @@ function Hash() {
 
 function Parameter() {
     return new _xdrJsSerialize2.default.VarOpaque(2147483647);
+}
+
+function Hash32() {
+    return new _xdrJsSerialize2.default.FixedOpaque(32);
+}
+
+function Hash64() {
+    return new _xdrJsSerialize2.default.FixedOpaque(64);
 }
 // End typedef section
 
@@ -310,29 +333,6 @@ function DownloadResponsePayload() {
 // End typedef section
 
 // Start struct section
-function Event() {
-    return new _xdrJsSerialize2.default.Struct(["key", "parameters"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
-}
-
-// End struct section
-
-// Start enum section
-
-
-// End enum section
-
-// Start union section
-
-
-// End union section
-
-// End namespace mazzaroth
-// Namespace start mazzaroth
-
-// Start typedef section
-// End typedef section
-
-// Start struct section
 function ExecutionPlan() {
     return new _xdrJsSerialize2.default.Struct(["host", "actions"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(100, Action)]);
 }
@@ -357,7 +357,7 @@ function ExecutionPlan() {
 
 // Start struct section
 function Receipt() {
-    return new _xdrJsSerialize2.default.Struct(["status", "stateRoot", "events", "result"], [ReceiptStatus(), Hash(), new _xdrJsSerialize2.default.VarArray(2147483647, Event), new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
+    return new _xdrJsSerialize2.default.Struct(["status", "stateRoot", "result"], [ReceiptStatus(), Hash(), new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
 }
 
 // End struct section
@@ -563,6 +563,155 @@ function ChannelInfo() {
 
         "CONFIG": () => {
             return ChannelConfig();
+        }
+
+    });
+}
+
+// End union section
+
+// End namespace mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
+function ReceiptSubscription() {
+    return new _xdrJsSerialize2.default.Struct(["transactionFilter", "receiptFilter"], [TransactionFilter(), ReceiptFilter()]);
+}
+function ReceiptSubscriptionResult() {
+    return new _xdrJsSerialize2.default.Struct(["receipt", "transactionID"], [Receipt(), ID()]);
+}
+function ReceiptValueFilter() {
+    return new _xdrJsSerialize2.default.Struct(["status", "stateRoot"], [ValueFilter(), ValueFilter()]);
+}
+function ActionFilter() {
+    return new _xdrJsSerialize2.default.Struct(["signature", "signer", "address", "channelID", "nonce"], [ValueFilter(), ValueFilter(), ValueFilter(), ValueFilter(), ValueFilter()]);
+}
+function ContractFilter() {
+    return new _xdrJsSerialize2.default.Struct(["actionFilter", "version"], [ActionFilter(), ValueFilter()]);
+}
+function ConfigFilter() {
+    return new _xdrJsSerialize2.default.Struct(["actionFilter"], [ActionFilter()]);
+}
+function PermissionFilter() {
+    return new _xdrJsSerialize2.default.Struct(["actionFilter", "key", "action"], [ActionFilter(), ValueFilter(), ValueFilter()]);
+}
+function CallFilter() {
+    return new _xdrJsSerialize2.default.Struct(["actionFilter", "function"], [ActionFilter(), ValueFilter()]);
+}
+
+// End struct section
+
+// Start enum section
+
+function ValueFilterType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "NONE",
+        1: "STRING",
+        2: "HASH32",
+        3: "HASH64",
+        4: "UHYPER",
+        5: "BOOL"
+
+    });
+}
+
+function TransactionFilterType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "NONE",
+        1: "GENERIC",
+        2: "CONTRACT",
+        3: "CONFIG",
+        4: "PERMISSION",
+        5: "CALL"
+
+    });
+}
+
+function ReceiptFilterType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "NONE",
+        1: "RECEIPT"
+
+    });
+}
+
+// End enum section
+
+// Start union section
+
+
+function ValueFilter() {
+    return new _xdrJsSerialize2.default.Union(ValueFilterType(), {
+
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "STRING": () => {
+            return new _xdrJsSerialize2.default.Str('', 256);
+        },
+
+        "HASH32": () => {
+            return Hash32();
+        },
+
+        "HASH64": () => {
+            return Hash64();
+        },
+
+        "UHYPER": () => {
+            return new _xdrJsSerialize2.default.UHyper();
+        },
+
+        "BOOL": () => {
+            return bool();
+        }
+
+    });
+}
+
+function TransactionFilter() {
+    return new _xdrJsSerialize2.default.Union(TransactionFilterType(), {
+
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "GENERIC": () => {
+            return ActionFilter();
+        },
+
+        "CONTRACT": () => {
+            return ContractFilter();
+        },
+
+        "CONFIG": () => {
+            return ConfigFilter();
+        },
+
+        "PERMISSION": () => {
+            return PermissionFilter();
+        },
+
+        "CALL": () => {
+            return CallFilter();
+        }
+
+    });
+}
+
+function ReceiptFilter() {
+    return new _xdrJsSerialize2.default.Union(ReceiptFilterType(), {
+
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "RECEIPT": () => {
+            return ReceiptValueFilter();
         }
 
     });
