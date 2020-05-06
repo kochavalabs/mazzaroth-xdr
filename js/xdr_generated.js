@@ -613,7 +613,7 @@ function ValueFilterType() {
         2: "HASH32",
         3: "HASH64",
         4: "UHYPER",
-        5: "BOOL"
+        5: "INT"
 
     });
 }
@@ -666,8 +666,8 @@ function ValueFilter() {
             return new _xdrJsSerialize2.default.UHyper();
         },
 
-        "BOOL": () => {
-            return new _xdrJsSerialize2.default.Bool();
+        "INT": () => {
+            return new _xdrJsSerialize2.default.Int();
         }
 
     });

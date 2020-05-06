@@ -21,7 +21,7 @@ namespace mazzaroth
     HASH32 = 2,
     HASH64 = 3,
     UHYPER = 4,
-    BOOL = 5,
+    INT = 5,
   };
 
   union ValueFilter switch (ValueFilterType Type) 
@@ -36,8 +36,8 @@ namespace mazzaroth
       Hash64 hash64Value;
     case UHYPER:
       unsigned hyper uhyperValue;
-    case BOOL:
-      boolean boolValue;
+    case INT:
+      int intValue;
   };
 
   struct ReceiptValueFilter 

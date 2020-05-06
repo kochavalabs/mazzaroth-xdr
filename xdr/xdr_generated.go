@@ -2662,8 +2662,8 @@ const (
 	// ValueFilterTypeUHYPER enum value 4
 	ValueFilterTypeUHYPER ValueFilterType = 4
 
-	// ValueFilterTypeBOOL enum value 5
-	ValueFilterTypeBOOL ValueFilterType = 5
+	// ValueFilterTypeINT enum value 5
+	ValueFilterTypeINT ValueFilterType = 5
 )
 
 // ValueFilterTypeMap generated enum map
@@ -2679,7 +2679,7 @@ var ValueFilterTypeMap = map[int32]string{
 
 	4: "ValueFilterTypeUHYPER",
 
-	5: "ValueFilterTypeBOOL",
+	5: "ValueFilterTypeINT",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -2851,7 +2851,7 @@ type ValueFilter struct {
 
 	UhyperValue *uint64
 
-	BoolValue *bool
+	IntValue *int32
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -2880,8 +2880,8 @@ func (u ValueFilter) ArmForSwitch(sw int32) (string, bool) {
 	case ValueFilterTypeUHYPER:
 		return "UhyperValue", true
 
-	case ValueFilterTypeBOOL:
-		return "BoolValue", true
+	case ValueFilterTypeINT:
+		return "IntValue", true
 	}
 	return "-", false
 }
@@ -2929,14 +2929,14 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 		}
 		result.UhyperValue = &tv
 
-	case ValueFilterTypeBOOL:
+	case ValueFilterTypeINT:
 
-		tv, ok := value.(bool)
+		tv, ok := value.(int32)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.BoolValue = &tv
+		result.IntValue = &tv
 
 	}
 	return
@@ -3042,25 +3042,25 @@ func (u ValueFilter) GetUhyperValue() (result uint64, ok bool) {
 	return
 }
 
-// MustBoolValue retrieves the BoolValue value from the union,
+// MustIntValue retrieves the IntValue value from the union,
 // panicing if the value is not set.
-func (u ValueFilter) MustBoolValue() bool {
-	val, ok := u.GetBoolValue()
+func (u ValueFilter) MustIntValue() int32 {
+	val, ok := u.GetIntValue()
 
 	if !ok {
-		panic("arm BoolValue is not set")
+		panic("arm IntValue is not set")
 	}
 
 	return val
 }
 
-// GetBoolValue retrieves the BoolValue value from the union,
+// GetIntValue retrieves the IntValue value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ValueFilter) GetBoolValue() (result bool, ok bool) {
+func (u ValueFilter) GetIntValue() (result int32, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "BoolValue" {
-		result = *u.BoolValue
+	if armName == "IntValue" {
+		result = *u.IntValue
 		ok = true
 	}
 
