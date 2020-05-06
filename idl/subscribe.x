@@ -37,7 +37,7 @@ namespace mazzaroth
     case UHYPER:
       unsigned hyper uhyperValue;
     case BOOL:
-      bool boolValue;
+      boolean boolValue;
   };
 
   struct ReceiptValueFilter 
