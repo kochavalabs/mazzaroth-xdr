@@ -751,7 +751,7 @@ pub enum ValueFilterType {
     HASH32 = 2,
     HASH64 = 3,
     UHYPER = 4,
-    BOOL = 5,
+    INT = 5,
 }
 
 impl Default for ValueFilterType {
@@ -801,7 +801,7 @@ pub enum ValueFilter {
 
     UHYPER(u64),
 
-    BOOL(bool),
+    INT(i32),
 }
 
 impl Default for ValueFilter {
