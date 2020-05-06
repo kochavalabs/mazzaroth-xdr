@@ -667,7 +667,7 @@ function ValueFilter() {
         },
 
         "BOOL": () => {
-            return bool();
+            return new _xdrJsSerialize2.default.Bool();
         }
 
     });
