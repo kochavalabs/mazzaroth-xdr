@@ -99,13 +99,13 @@ jobs:
           name: get rust
           command: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
       - run:
+          name: setup env
+          command: echo "export PATH=$HOME/.cargo/bin:$PATH" >> $BASH_ENV
+      - run:
           name: setup cargo for deploy
           command: |
             rustup install stable
             rustup default stable
-      - run:
-          name: setup env
-          command: echo "export PATH=$HOME/.cargo/bin:$PATH" >> $BASH_ENV
       - run:
           name: setup git config
           command: git config user.email "dev@mazzaroth.io" && git config user.name "CricleCI" && git config --global core.editor "\usr\local\bin\subl -n -w"
