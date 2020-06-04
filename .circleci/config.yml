@@ -1,57 +1,87 @@
-version: 2
+version: 2.1
 
-jobs:
-  build:
+executors:
+  node-latest:
+    working_directory: ~/repo
     docker:
       - image: circleci/node:latest
+
+jobs:
+  test-gen:
+    executor: node-latest
     steps:
       - checkout
       - run:
-          name: Update npm
-          command: 'sudo npm install -g npm@latest'
-      - run:
-          name: Get Rust
+          name: get rust
           command: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
       - run:
-          name: Setup Env
+          name: setup env
           command: echo "export PATH=$HOME/.cargo/bin:$PATH" >> $BASH_ENV
+      - run:
+          name: update rust dependencies if releasing
+          command: |
+            if [[ "$CIRCLE_BRANCH" =~ release/v.* ]]; then
+              cargo install cargo-edit
+              grep branch Cargo.toml | grep develop | awk '{print $1}' | xargs -I[] cargo add --allow-prerelease []
+              sed -i 's/branch = "develop", //g' Cargo.toml
+              export CARGO_VER=$(echo $CIRCLE_BRANCH | sed 's:release/v::')
+              sed -i "s/^version.*/version = \"$CARGO_VER\"/" Cargo.toml
+            fi
+      - run:
+          name: update js dependencies if releasing
+          command: |
+            if [[ "$CIRCLE_BRANCH" =~ release/v.* ]]; then
+              sudo npm install -g kl-ci-tools
+              kl-ci-tools deps | xargs -I[] npm install []@latest
+              echo $CIRCLE_BRANCH | sed 's:release/::' | xargs npm --no-git-tag-version version
+            fi
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: NPM Install
+          name: npm install
           command: npm install
       - run:
-          name: Clean
+          name: clean
           command: rm -rf ./js/*
       - run:
-          name: Get Deps
+          name: get deps
           command: npm run get-deps
       - run:
-          name: Build Javascript
+          name: build javascript
           command: npm run build-js
       - run:
-          name: Build Rust
+          name: build rust
           command: |
             rustup component add rustfmt
             npm run build-rust
       - run:
-          name: Verify No Changes
-          command: if [[ `git status --porcelain` ]]; then  { printf '%s\n' "Should not have git changes." >&2; exit 1; }; fi
+          name: verify no changes to generated files
+          command: |
+            if git status --short | grep generated; then
+              echo "there were changes to generated files";
+              exit 1;
+            fi
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: git-sha-{{ .Revision }}{{ .Branch }}
           paths:
             - node_modules
+            - package.json
+            - ~/.cargo
+            - ./target
+            - Cargo.toml
 
   publish-js-dev:
-    docker:
-      - image: circleci/node:latest
+    executor: node-latest
     steps:
       - checkout
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: git-sha-{{ .Revision }}{{ .Branch }}
+      - run:
+          name: install ci tools
+          command: sudo npm install -g kl-ci-tools
       - run:
           name: Set Develop Version
-          command: git rev-parse develop | cut -c1-10 | xargs -I[] ./node_modules/package-tagger/index.js dev.[]
+          command: git rev-parse develop | cut -c1-10 | xargs -I[] kl-ci-tools tag dev.[]
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > .npmrc
@@ -59,14 +89,64 @@ jobs:
           name: Publish package
           command: npm publish --tag develop
 
+  publish-latest:
+    executor: node-latest
+    steps:
+      - checkout
+      - run:
+          name: install ci tools
+          command: sudo npm install -g kl-ci-tools
+      - run:
+          name: setup git config
+          command: git config user.email "dev@mazzaroth.io" && git config user.name "CricleCI" && git config --global core.editor "\usr\local\bin\subl -n -w"
+      - run:
+          name: verify package.json
+          command: ~/.build_tools/node/node_modules/kl-ci-tools/dist/bin.js validate
+      - run:
+          name: commit updates
+          command: git add -A && git commit -m "Dependency/Version update for $CIRCLE_BRANCH"
+      - run:
+          name: pull latest from master
+          command: git pull --no-edit -Xours --rebase origin master
+      - run:
+          name: update master
+          command: git checkout master && git rebase -Xtheirs $CIRCLE_BRANCH && git push origin master
+      - run:
+          name: authenticate with npm registry
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > .npmrc
+      - run:
+          name: publish npm package
+          command: npm publish --tag latest
+      - run:
+          name: cargo login
+          command: cargo login $cargo_TOKEN
+      - run:
+          name: cargo publish
+          command: cargo publish --allow-dirty
+      - run:
+          name: checkout and develop
+          command: git checkout develop
+      - run:
+          name: update develop version
+          command: echo $CIRCLE_BRANCH | sed 's:release/::' | xargs npm --no-git-tag-version version
+      - run:
+          name: commit updates
+          command: git add -A && git commit -m "Version update for $CIRCLE_BRANCH" && git push origin develop
+
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - test-gen
       - publish-js-dev:
           requires:
-            - build
+            - test-gen
           filters:
             branches:
               only: develop
+      - publish-latest:
+          requires:
+            - test-gen
+          filters:
+            branches:
+              only: /release\/v([0-9]+)\.([0-9]+)\.([0-9]+)$/
