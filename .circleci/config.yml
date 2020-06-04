@@ -64,7 +64,6 @@ jobs:
           paths:
             - node_modules
             - package.json
-            - ~/.cargo
             - ./target
             - Cargo.toml
 
@@ -96,6 +95,14 @@ jobs:
       - run:
           name: install ci tools
           command: sudo npm install -g kl-ci-tools
+      - run:
+          name: get rust
+          command: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+      - run:
+          name: setup cargo for deploy
+          command: |
+            rustup install stable
+            rustup default stable
       - run:
           name: setup env
           command: echo "export PATH=$HOME/.cargo/bin:$PATH" >> $BASH_ENV
