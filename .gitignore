@@ -6,3 +6,4 @@ target/
 xdr-codegen/
 Cargo.lock
 package-lock.json
+.npmrc
