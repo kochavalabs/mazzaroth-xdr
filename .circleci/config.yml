@@ -100,8 +100,8 @@ jobs:
           name: setup git config
           command: git config user.email "dev@mazzaroth.io" && git config user.name "CricleCI" && git config --global core.editor "\usr\local\bin\subl -n -w"
       - run:
-          name: verify package.json
-          command: ~/.build_tools/node/node_modules/kl-ci-tools/dist/bin.js validate
+          name: validate package.json
+          command: kl-ci-tools validate
       - run:
           name: commit updates
           command: git add -A && git commit -m "Dependency/Version update for $CIRCLE_BRANCH"
