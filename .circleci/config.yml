@@ -48,10 +48,13 @@ jobs:
           name: build javascript
           command: npm run build-js
       - run:
-          name: build rust
+          name: generate rust
           command: |
             rustup component add rustfmt
             npm run build-rust
+      - run:
+          name: build rust
+          command: cargo build
       - run:
           name: verify no changes to generated files
           command: |
@@ -133,6 +136,12 @@ jobs:
       - run:
           name: cargo publish
           command: cargo publish
+      - run:
+          name: tag release
+          command: |
+            env GIT_TAG=$(echo $CIRCLE_BRANCH | sed 's:release/::')
+            git tag $GIT_TAG
+            git push origin $GIT_TAG
       - run:
           name: checkout and develop
           command: git checkout develop
