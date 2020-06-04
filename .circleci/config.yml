@@ -91,9 +91,14 @@ jobs:
     executor: node-latest
     steps:
       - checkout
+      - restore_cache:
+          key: git-sha-{{ .Revision }}{{ .Branch }}
       - run:
           name: install ci tools
           command: sudo npm install -g kl-ci-tools
+      - run:
+          name: setup env
+          command: echo "export PATH=$HOME/.cargo/bin:$PATH" >> $BASH_ENV
       - run:
           name: setup git config
           command: git config user.email "dev@mazzaroth.io" && git config user.name "CricleCI" && git config --global core.editor "\usr\local\bin\subl -n -w"
