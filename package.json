@@ -34,8 +34,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
-    "eslint": "^5.16.0",
-    "package-tagger": "^0.1.1"
+    "eslint": "^5.16.0"
   },
   "dependencies": {
     "xdr-js-serialize": "develop"
