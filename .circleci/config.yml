@@ -139,8 +139,7 @@ jobs:
       - run:
           name: tag release
           command: |
-            export GIT_TAG=$(echo $CIRCLE_BRANCH | sed 's:release/::')
-            git checkout master
+            env GIT_TAG=$(echo $CIRCLE_BRANCH | sed 's:release/::')
             git tag $GIT_TAG
             git push origin $GIT_TAG
       - run:
