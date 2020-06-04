@@ -35,8 +35,6 @@ jobs:
               kl-ci-tools deps | xargs -I[] npm install []@latest
               echo $CIRCLE_BRANCH | sed 's:release/::' | xargs npm --no-git-tag-version version
             fi
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: npm install
           command: npm install
