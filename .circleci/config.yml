@@ -119,11 +119,8 @@ jobs:
           name: commit updates
           command: git add -A && git commit -m "Dependency/Version update for $CIRCLE_BRANCH"
       - run:
-          name: pull latest from master
-          command: git pull --no-edit -Xours --rebase origin master
-      - run:
           name: update master
-          command: git checkout master && git rebase -Xtheirs $CIRCLE_BRANCH && git push origin master
+          command: git rebase -Xours master && git push origin master
       - run:
           name: authenticate with npm registry
           command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > .npmrc
