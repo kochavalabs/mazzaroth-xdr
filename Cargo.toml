@@ -1,6 +1,6 @@
 [package]
 name = "mazzaroth-xdr"
-version = "0.2.0"
+version = "0.2.2"
 authors = ["Kochavalabs <dev@mazzaroth.io>"]
 description = "XDR objects used by Mazzaroth"
 license = "MIT"
