@@ -111,7 +111,7 @@ jobs:
             rustup default stable
       - run:
           name: setup git config
-          command: git config user.email "dev@mazzaroth.io" && git config user.name "CricleCI" && git config --global core.editor "\usr\local\bin\subl -n -w"
+          command: git config user.email "dev@mazzaroth.io" && git config user.name "CircleCI" && git config --global core.editor "\usr\local\bin\subl -n -w"
       - run:
           name: validate package.json
           command: kl-ci-tools validate
