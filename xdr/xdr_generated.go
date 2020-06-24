@@ -1005,7 +1005,7 @@ type Receipt struct {
 
 	Result string `json:"result"`
 
-	StatusInfo StatusInfo `json:"status_info"`
+	Result string
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.

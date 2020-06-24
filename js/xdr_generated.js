@@ -335,7 +335,7 @@ function DownloadResponsePayload() {
 
 // Start struct section
 function Receipt() {
-    return new _xdrJsSerialize2.default.Struct(["status", "stateRoot", "result", "statusInfo"], [ReceiptStatus(), Hash(), new _xdrJsSerialize2.default.Str('', 2147483647), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["status", "stateRoot", "result"], [ReceiptStatus(), Hash(), new _xdrJsSerialize2.default.Str('', 2147483647)]);
 }
 
 // End struct section
