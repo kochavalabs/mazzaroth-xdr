@@ -9,7 +9,7 @@ namespace mazzaroth
     Hash stateRoot;
  
     // Return results of execution if there is one for function called
-    opaque result<>;
+    string result<>;
   };
 
   enum ReceiptStatus
