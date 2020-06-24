@@ -235,7 +235,7 @@ var (
 )
 
 // Parameter generated typedef
-type Parameter []byte
+type Parameter string
 
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (s Parameter) MarshalBinary() ([]byte, error) {
