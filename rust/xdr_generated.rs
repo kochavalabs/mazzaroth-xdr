@@ -112,7 +112,7 @@ pub struct Hash {
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Parameter {
     #[array(var = 2147483647)]
-    pub t: Vec<u8>,
+    pub t: String,
 }
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Hash32 {

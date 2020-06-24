@@ -158,7 +158,7 @@ function Hash() {
 }
 
 function Parameter() {
-    return new _xdrJsSerialize2.default.VarOpaque(2147483647);
+    return new _xdrJsSerialize2.default.Str('', 2147483647);
 }
 
 function Hash32() {
