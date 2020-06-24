@@ -179,7 +179,7 @@ function Hash() {
     return new _xdrJsSerialize2.default.FixedOpaque(32);
 }
 
-function Argument() {
+function Parameter() {
     return new _xdrJsSerialize2.default.Str('', 2147483647);
 }
 
