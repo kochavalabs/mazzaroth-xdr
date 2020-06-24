@@ -345,7 +345,7 @@ pub struct Receipt {
     pub stateRoot: Hash,
 
     #[array(var = 2147483647)]
-    pub result: Vec<u8>,
+    pub result: String,
 }
 
 // End struct section
