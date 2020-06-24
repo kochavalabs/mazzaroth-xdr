@@ -328,8 +328,8 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Hash)(nil)
 )
 
-// Argument generated typedef
-type Argument string
+// Parameter generated typedef
+type Parameter string
 
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (s Argument) MarshalBinary() ([]byte, error) {
