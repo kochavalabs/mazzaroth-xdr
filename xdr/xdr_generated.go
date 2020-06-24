@@ -1003,9 +1003,7 @@ type Receipt struct {
 
 	StateRoot Hash `json:"state_root"`
 
-	Result string `json:"result"`
-
-	StatusInfo StatusInfo `json:"status_info"`
+	Result string
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
