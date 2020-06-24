@@ -10,9 +10,6 @@ namespace mazzaroth
  
     // Return results of execution if there is one for function called
     string result<>;
-
-    // Human readable information to help understand the receipt status.
-    StatusInfo statusInfo;
   };
 
   enum ReceiptStatus
