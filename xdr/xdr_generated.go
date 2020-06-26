@@ -1457,7 +1457,7 @@ var (
 
 // ReadonlyResponse generated struct
 type ReadonlyResponse struct {
-	Result []byte
+	Result string
 
 	StateStatus StateStatus
 

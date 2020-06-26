@@ -457,7 +457,7 @@ pub struct ReadonlyRequest {
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ReadonlyResponse {
     #[array(var = 2147483647)]
-    pub result: Vec<u8>,
+    pub result: String,
 
     pub stateStatus: StateStatus,
 
