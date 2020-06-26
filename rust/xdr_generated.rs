@@ -429,6 +429,23 @@ pub struct TransactionSubmitResponse {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ReadonlyRequest {
+    pub call: Call,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct ReadonlyResponse {
+    #[array(var = 2147483647)]
+    pub result: String,
+
+    pub stateStatus: StateStatus,
+
+    pub status: ReadonlyStatus,
+
+    pub statusInfo: StatusInfo,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ReceiptLookupRequest {
     pub transactionID: ID,
 }

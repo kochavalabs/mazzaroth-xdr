@@ -1325,6 +1325,110 @@ var (
 	_ encoding.BinaryUnmarshaler = (*TransactionSubmitResponse)(nil)
 )
 
+// ReadonlyRequest generated struct
+type ReadonlyRequest struct {
+	Call Call
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ReadonlyRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ReadonlyRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ReadonlyRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReadonlyRequest)(nil)
+)
+
+// ReadonlyResponse generated struct
+type ReadonlyResponse struct {
+	Result string
+
+	StateStatus StateStatus
+
+	Status ReadonlyStatus
+
+	StatusInfo StatusInfo
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ReadonlyResponse) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ReadonlyResponse) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ReadonlyResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReadonlyResponse)(nil)
+)
+
+// ReceiptLookupRequest generated struct
+type ReceiptLookupRequest struct {
+	TransactionID ID
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ReceiptLookupRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ReceiptLookupRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ReceiptLookupRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReceiptLookupRequest)(nil)
+)
+
+// ReceiptLookupResponse generated struct
+type ReceiptLookupResponse struct {
+	Receipt Receipt
+
+	StateStatus StateStatus
+
+	Status ReceiptLookupStatus
+
+	StatusInfo StatusInfo
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ReceiptLookupResponse) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ReceiptLookupResponse) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ReceiptLookupResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*ReceiptLookupResponse)(nil)
+)
+
 // ReceiptLookupRequest generated struct
 type ReceiptLookupRequest struct {
 	TransactionID ID `json:"transaction_id"`
