@@ -389,7 +389,13 @@ function TransactionSubmitRequest() {
     return new _xdrJsSerialize2.default.Struct(["transaction"], [Transaction()]);
 }
 function TransactionSubmitResponse() {
-    return new _xdrJsSerialize2.default.Struct(["transactionInfo", "status", "statusInfo"], [TransactionInfo(), TransactionStatus(), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["transactionID", "status", "statusInfo"], [ID(), TransactionStatus(), StatusInfo()]);
+}
+function ReadonlyRequest() {
+    return new _xdrJsSerialize2.default.Struct(["call"], [Call()]);
+}
+function ReadonlyResponse() {
+    return new _xdrJsSerialize2.default.Struct(["result", "stateStatus", "status", "statusInfo"], [new _xdrJsSerialize2.default.Str('', 2147483647), StateStatus(), ReadonlyStatus(), StatusInfo()]);
 }
 function ReceiptLookupRequest() {
     return new _xdrJsSerialize2.default.Struct(["transactionID"], [ID()]);
