@@ -1562,7 +1562,7 @@ var (
 
 // ReadonlyResponse generated struct
 type ReadonlyResponse struct {
-	Result string `json:"result"`
+	Result string
 
 	StateStatus StateStatus `json:"state_status"`
 
