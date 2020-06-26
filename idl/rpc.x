@@ -154,7 +154,7 @@ namespace mazzaroth
   struct ReadonlyResponse
   {
     // Return results of execution
-    opaque result<>;
+    string result<>;
 
     // Current state status
     StateStatus stateStatus;
