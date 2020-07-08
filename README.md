@@ -1,11 +1,10 @@
 # Mazzaroth-XDR
 
 [![CircleCI](https://circleci.com/gh/kochavalabs/mazzaroth-xdr.svg?style=svg)](https://circleci.com/gh/kochavalabs/mazzaroth-xdr)
-
 **[Self Link](https://github.com/kochavalabs/mazzaroth-xdr)**
 
 Mazzaroth-xdr is a library that defines the core XDR data structures used by
-Mazzaroth. This includes the definitions of the blockchain, its underlying
+Mazzaroth. This includes the defninitions of the blockchain, its underlying
 data structures and the inputs/outputs of all APIs for interacting with
 Mazzaroth.
 
