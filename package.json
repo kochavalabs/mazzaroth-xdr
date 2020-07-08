@@ -13,6 +13,7 @@
     "build-rust": "cargo run --manifest-path=xdr-codegen/Cargo.toml ./idl/*.x --language rust | rustfmt > ./rust/xdr_generated.rs",
     "build-js": "cargo run --manifest-path=xdr-codegen/Cargo.toml ./idl/*.x --language js > ./js/xdr_generated.js && babel js -d js",
     "build": "npm run clean && npm run get-deps && npm run build-js && npm run build-go && npm run build-rust",
+    "lint": "./node_modules/.bin/markdownlint README.md",
     "write": "npm run build-js && node ./examples/write_file.js"
   },
   "repository": {
@@ -37,6 +38,7 @@
     "eslint": "^5.16.0"
   },
   "dependencies": {
+    "markdownlint-cli": "^0.23.2",
     "xdr-js-serialize": "develop"
   }
 }
