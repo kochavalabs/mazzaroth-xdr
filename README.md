@@ -4,7 +4,7 @@
 **[Self Link](https://github.com/kochavalabs/mazzaroth-xdr)**
 
 Mazzaroth-xdr is a library that defines the core XDR data structures used by
-Mazzaroth. This includes the defninitions of the blockchain, its underlying
+Mazzaroth. This includes the definitions of the blockchain, its underlying
 data structures and the inputs/outputs of all APIs for interacting with
 Mazzaroth.
 
@@ -34,7 +34,7 @@ cd xdr-codegen
 git pull
 ```
 
-Then run the npm build script to generate the code for all languagues:
+Then run the npm build script to generate the code for all languages:
 
 ```console
 npm install
