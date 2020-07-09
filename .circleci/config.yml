@@ -62,6 +62,9 @@ jobs:
               echo "there were changes to generated files";
               exit 1;
             fi
+      - run:
+          name: lint the readme.md
+          command: npm run lint
       - save_cache:
           key: git-sha-{{ .Revision }}{{ .Branch }}
           paths:
