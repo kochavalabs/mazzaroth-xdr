@@ -124,6 +124,11 @@ pub struct Hash64 {
     #[array(fixed = 64)]
     pub t: Vec<u8>,
 }
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct StatusInfo {
+    #[array(var = 256)]
+    pub t: String,
+}
 
 // End typedef section
 
@@ -346,6 +351,8 @@ pub struct Receipt {
 
     #[array(var = 2147483647)]
     pub result: String,
+
+    pub statusInfo: StatusInfo,
 }
 
 // End struct section
@@ -369,12 +376,6 @@ impl Default for ReceiptStatus {
 // Namspace start mazzaroth
 
 // Start typedef section
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct StatusInfo {
-    #[array(var = 256)]
-    pub t: String,
-}
 
 // End typedef section
 
