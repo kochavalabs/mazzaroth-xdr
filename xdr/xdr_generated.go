@@ -1111,6 +1111,8 @@ type Receipt struct {
 	StateRoot Hash
 
 	Result string
+
+	StatusInfo StatusInfo
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.

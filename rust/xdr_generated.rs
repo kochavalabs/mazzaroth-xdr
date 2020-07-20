@@ -351,6 +351,8 @@ pub struct Receipt {
 
     #[array(var = 2147483647)]
     pub result: String,
+
+    pub statusInfo: StatusInfo,
 }
 
 // End struct section
