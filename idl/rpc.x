@@ -5,8 +5,6 @@
 
 namespace mazzaroth
 {
-  typedef string StatusInfo<256>;
-
   // StateStatus provides state information about a block in responses
   struct StateStatus
   {

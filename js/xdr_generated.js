@@ -12,6 +12,7 @@ exports.Hash = Hash;
 exports.Parameter = Parameter;
 exports.Hash32 = Hash32;
 exports.Hash64 = Hash64;
+exports.StatusInfo = StatusInfo;
 exports.ChannelConfig = ChannelConfig;
 exports.GovernanceConfig = GovernanceConfig;
 exports.PermissionedIDs = PermissionedIDs;
@@ -27,7 +28,6 @@ exports.DownloadResponsePayload = DownloadResponsePayload;
 exports.ExecutionPlan = ExecutionPlan;
 exports.Receipt = Receipt;
 exports.ReceiptStatus = ReceiptStatus;
-exports.StatusInfo = StatusInfo;
 exports.StateStatus = StateStatus;
 exports.BlockLookupRequest = BlockLookupRequest;
 exports.BlockHeaderLookupRequest = BlockHeaderLookupRequest;
@@ -167,6 +167,10 @@ function Hash32() {
 
 function Hash64() {
     return new _xdrJsSerialize2.default.FixedOpaque(64);
+}
+
+function StatusInfo() {
+    return new _xdrJsSerialize2.default.Str('', 256);
 }
 // End typedef section
 
@@ -357,7 +361,7 @@ function ExecutionPlan() {
 
 // Start struct section
 function Receipt() {
-    return new _xdrJsSerialize2.default.Struct(["status", "stateRoot", "result"], [ReceiptStatus(), Hash(), new _xdrJsSerialize2.default.Str('', 2147483647)]);
+    return new _xdrJsSerialize2.default.Struct(["status", "stateRoot", "result", "statusInfo"], [ReceiptStatus(), Hash(), new _xdrJsSerialize2.default.Str('', 2147483647), StatusInfo()]);
 }
 
 // End struct section
@@ -383,10 +387,6 @@ function ReceiptStatus() {
 // Namespace start mazzaroth
 
 // Start typedef section
-
-function StatusInfo() {
-    return new _xdrJsSerialize2.default.Str('', 256);
-}
 // End typedef section
 
 // Start struct section
