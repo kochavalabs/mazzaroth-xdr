@@ -7,4 +7,5 @@ namespace mazzaroth
   typedef string Parameter<>;
   typedef opaque Hash32[32];
   typedef opaque Hash64[64];
+  typedef string StatusInfo<256>;
 }

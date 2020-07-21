@@ -307,6 +307,27 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Hash64)(nil)
 )
 
+// StatusInfo generated typedef
+type StatusInfo string
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s StatusInfo) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *StatusInfo) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*StatusInfo)(nil)
+	_ encoding.BinaryUnmarshaler = (*StatusInfo)(nil)
+)
+
 // End typedef section
 
 // Start struct section
@@ -1090,6 +1111,8 @@ type Receipt struct {
 	StateRoot Hash
 
 	Result string
+
+	StatusInfo StatusInfo
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1175,27 +1198,6 @@ var (
 // Namspace start mazzaroth
 
 // Start typedef section
-
-// StatusInfo generated typedef
-type StatusInfo string
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s StatusInfo) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *StatusInfo) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*StatusInfo)(nil)
-	_ encoding.BinaryUnmarshaler = (*StatusInfo)(nil)
-)
 
 // End typedef section
 
