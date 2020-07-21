@@ -1,6 +1,6 @@
 [package]
 name = "mazzaroth-xdr"
-version = "0.2.3"
+version = "0.2.4"
 authors = ["Kochavalabs <dev@mazzaroth.io>"]
 description = "XDR objects used by Mazzaroth"
 license = "MIT"
@@ -16,8 +16,8 @@ include = [
 ]
 
 [dependencies]
-xdr-rs-serialize = { version = "0.2.0" }
-xdr-rs-serialize-derive = { version = "0.2.0" }
+xdr-rs-serialize = { version = "0.2.3" }
+xdr-rs-serialize-derive = { version = "0.2.3" }
 json = "0.12.0"
 
 [lib]
