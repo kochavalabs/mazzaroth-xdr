@@ -250,6 +250,14 @@ pub struct DownloadResponse {
     pub downloadResponsePayload: DownloadResponsePayload,
 }
 
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct DownloadPendingPayload {
+    pub height: u64,
+
+    #[array(var = 2147483647)]
+    pub transactions: Vec<Transaction>,
+}
+
 // End struct section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
@@ -257,6 +265,7 @@ pub enum DownloadRequestType {
     UNKNOWN = 0,
     HEIGHT = 1,
     BLOCK = 2,
+    PENDING = 3,
 }
 
 impl Default for DownloadRequestType {
@@ -286,6 +295,8 @@ pub enum DownloadRequestPayload {
     HEIGHT(()),
 
     BLOCK(u64),
+
+    PENDING(()),
 }
 
 impl Default for DownloadRequestPayload {
@@ -301,6 +312,8 @@ pub enum DownloadResponsePayload {
     HEIGHT(u64),
 
     BLOCK(Block),
+
+    PENDING(DownloadPendingPayload),
 }
 
 impl Default for DownloadResponsePayload {

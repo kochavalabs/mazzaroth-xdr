@@ -11,7 +11,8 @@ namespace mazzaroth
     enum DownloadRequestType {
         UNKNOWN = 0,
         HEIGHT = 1, // Request current block height of node
-        BLOCK = 2 // Request a specific block from the node
+        BLOCK = 2, // Request a specific block from the node
+        PENDING = 3 // Request the pending transactions in ledger
     };
 
     union DownloadRequestPayload switch (DownloadRequestType Type)
@@ -22,6 +23,8 @@ namespace mazzaroth
             void;
         case BLOCK:
             unsigned hyper blockNumber;
+        case PENDING:
+            void;
     }
 
     // Download Responses returned from requests
@@ -36,7 +39,7 @@ namespace mazzaroth
         // The status is either not known or not set.
         UNKNOWN = 0,
 
-        // Download request was successfull.
+        // Download request was successful.
         SUCCESS = 1,
 
         // Download request failed.
@@ -51,5 +54,14 @@ namespace mazzaroth
             unsigned hyper height;
         case BLOCK:
             Block block;
+        case PENDING:
+            DownloadPendingPayload pendingPayload;
+    }
+
+    // Download Pending Response includes the pending transactions
+    // and current ledger height
+    struct DownloadPendingPayload {
+        unsigned hyper height;
+        Transaction transactions<>;
     }
 }

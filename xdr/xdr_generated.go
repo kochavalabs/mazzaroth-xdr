@@ -705,6 +705,31 @@ var (
 	_ encoding.BinaryUnmarshaler = (*DownloadResponse)(nil)
 )
 
+// DownloadPendingPayload generated struct
+type DownloadPendingPayload struct {
+	Height uint64
+
+	Transactions []Transaction
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s DownloadPendingPayload) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *DownloadPendingPayload) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*DownloadPendingPayload)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadPendingPayload)(nil)
+)
+
 // End struct section
 
 // Start enum section
@@ -722,6 +747,9 @@ const (
 
 	// DownloadRequestTypeBLOCK enum value 2
 	DownloadRequestTypeBLOCK DownloadRequestType = 2
+
+	// DownloadRequestTypePENDING enum value 3
+	DownloadRequestTypePENDING DownloadRequestType = 3
 )
 
 // DownloadRequestTypeMap generated enum map
@@ -732,6 +760,8 @@ var DownloadRequestTypeMap = map[int32]string{
 	1: "DownloadRequestTypeHEIGHT",
 
 	2: "DownloadRequestTypeBLOCK",
+
+	3: "DownloadRequestTypePENDING",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -851,6 +881,9 @@ func (u DownloadRequestPayload) ArmForSwitch(sw int32) (string, bool) {
 
 	case DownloadRequestTypeBLOCK:
 		return "BlockNumber", true
+
+	case DownloadRequestTypePENDING:
+		return "", true
 	}
 	return "-", false
 }
@@ -872,6 +905,8 @@ func NewDownloadRequestPayload(aType DownloadRequestType, value interface{}) (re
 			return
 		}
 		result.BlockNumber = &tv
+
+	case DownloadRequestTypePENDING:
 
 	}
 	return
@@ -927,6 +962,8 @@ type DownloadResponsePayload struct {
 	Height *uint64
 
 	Block *Block
+
+	PendingPayload *DownloadPendingPayload
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -948,6 +985,9 @@ func (u DownloadResponsePayload) ArmForSwitch(sw int32) (string, bool) {
 
 	case DownloadRequestTypeBLOCK:
 		return "Block", true
+
+	case DownloadRequestTypePENDING:
+		return "PendingPayload", true
 	}
 	return "-", false
 }
@@ -976,6 +1016,15 @@ func NewDownloadResponsePayload(aType DownloadRequestType, value interface{}) (r
 			return
 		}
 		result.Block = &tv
+
+	case DownloadRequestTypePENDING:
+
+		tv, ok := value.(DownloadPendingPayload)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.PendingPayload = &tv
 
 	}
 	return
@@ -1025,6 +1074,31 @@ func (u DownloadResponsePayload) GetBlock() (result Block, ok bool) {
 
 	if armName == "Block" {
 		result = *u.Block
+		ok = true
+	}
+
+	return
+}
+
+// MustPendingPayload retrieves the PendingPayload value from the union,
+// panicing if the value is not set.
+func (u DownloadResponsePayload) MustPendingPayload() DownloadPendingPayload {
+	val, ok := u.GetPendingPayload()
+
+	if !ok {
+		panic("arm PendingPayload is not set")
+	}
+
+	return val
+}
+
+// GetPendingPayload retrieves the PendingPayload value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u DownloadResponsePayload) GetPendingPayload() (result DownloadPendingPayload, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "PendingPayload" {
+		result = *u.PendingPayload
 		ok = true
 	}
 

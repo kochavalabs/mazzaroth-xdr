@@ -21,6 +21,7 @@ exports.PermissioningType = PermissioningType;
 exports.Permissioning = Permissioning;
 exports.DownloadRequest = DownloadRequest;
 exports.DownloadResponse = DownloadResponse;
+exports.DownloadPendingPayload = DownloadPendingPayload;
 exports.DownloadRequestType = DownloadRequestType;
 exports.DownloadStatus = DownloadStatus;
 exports.DownloadRequestPayload = DownloadRequestPayload;
@@ -264,6 +265,9 @@ function DownloadRequest() {
 function DownloadResponse() {
     return new _xdrJsSerialize2.default.Struct(["downloadStatus", "downloadResponsePayload"], [DownloadStatus(), DownloadResponsePayload()]);
 }
+function DownloadPendingPayload() {
+    return new _xdrJsSerialize2.default.Struct(["height", "transactions"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.VarArray(2147483647, Transaction)]);
+}
 
 // End struct section
 
@@ -273,7 +277,8 @@ function DownloadRequestType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "HEIGHT",
-        2: "BLOCK"
+        2: "BLOCK",
+        3: "PENDING"
 
     });
 }
@@ -305,6 +310,10 @@ function DownloadRequestPayload() {
 
         "BLOCK": () => {
             return new _xdrJsSerialize2.default.UHyper();
+        },
+
+        "PENDING": () => {
+            return new _xdrJsSerialize2.default.Void();
         }
 
     });
@@ -323,6 +332,10 @@ function DownloadResponsePayload() {
 
         "BLOCK": () => {
             return Block();
+        },
+
+        "PENDING": () => {
+            return DownloadPendingPayload();
         }
 
     });
