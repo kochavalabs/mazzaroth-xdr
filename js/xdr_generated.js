@@ -317,7 +317,7 @@ function DownloadRequestPayload() {
         },
 
         "BATCHES": () => {
-            return BatchesRequest();
+            return new _xdrJsSerialize2.default.UHyper();
         }
 
     });
