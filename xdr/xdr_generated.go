@@ -724,7 +724,7 @@ type DownloadRequestPayload struct {
 
 	BlockNumber *uint64
 
-	BatchesRequest *BatchesRequest
+	SeqNum *uint64
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -748,7 +748,7 @@ func (u DownloadRequestPayload) ArmForSwitch(sw int32) (string, bool) {
 		return "BlockNumber", true
 
 	case DownloadRequestTypeBATCHES:
-		return "BatchesRequest", true
+		return "SeqNum", true
 	}
 	return "-", false
 }
@@ -773,12 +773,12 @@ func NewDownloadRequestPayload(aType DownloadRequestType, value interface{}) (re
 
 	case DownloadRequestTypeBATCHES:
 
-		tv, ok := value.(BatchesRequest)
+		tv, ok := value.(uint64)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.BatchesRequest = &tv
+		result.SeqNum = &tv
 
 	}
 	return
@@ -809,25 +809,25 @@ func (u DownloadRequestPayload) GetBlockNumber() (result uint64, ok bool) {
 	return
 }
 
-// MustBatchesRequest retrieves the BatchesRequest value from the union,
+// MustSeqNum retrieves the SeqNum value from the union,
 // panicing if the value is not set.
-func (u DownloadRequestPayload) MustBatchesRequest() BatchesRequest {
-	val, ok := u.GetBatchesRequest()
+func (u DownloadRequestPayload) MustSeqNum() uint64 {
+	val, ok := u.GetSeqNum()
 
 	if !ok {
-		panic("arm BatchesRequest is not set")
+		panic("arm SeqNum is not set")
 	}
 
 	return val
 }
 
-// GetBatchesRequest retrieves the BatchesRequest value from the union,
+// GetSeqNum retrieves the SeqNum value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u DownloadRequestPayload) GetBatchesRequest() (result BatchesRequest, ok bool) {
+func (u DownloadRequestPayload) GetSeqNum() (result uint64, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "BatchesRequest" {
-		result = *u.BatchesRequest
+	if armName == "SeqNum" {
+		result = *u.SeqNum
 		ok = true
 	}
 
