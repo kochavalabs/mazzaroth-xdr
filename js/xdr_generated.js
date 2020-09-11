@@ -273,7 +273,8 @@ function DownloadRequestType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "HEIGHT",
-        2: "BLOCK"
+        2: "BLOCK",
+        3: "BATCHES"
 
     });
 }
@@ -305,6 +306,10 @@ function DownloadRequestPayload() {
 
         "BLOCK": () => {
             return new _xdrJsSerialize2.default.UHyper();
+        },
+
+        "BATCHES": () => {
+            return new _xdrJsSerialize2.default.UHyper();
         }
 
     });
@@ -323,6 +328,10 @@ function DownloadResponsePayload() {
 
         "BLOCK": () => {
             return Block();
+        },
+
+        "BATCHES": () => {
+            return new _xdrJsSerialize2.default.Void();
         }
 
     });
