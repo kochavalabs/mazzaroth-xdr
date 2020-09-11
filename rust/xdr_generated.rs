@@ -257,6 +257,7 @@ pub enum DownloadRequestType {
     UNKNOWN = 0,
     HEIGHT = 1,
     BLOCK = 2,
+    BATCHES = 3,
 }
 
 impl Default for DownloadRequestType {
@@ -286,6 +287,8 @@ pub enum DownloadRequestPayload {
     HEIGHT(()),
 
     BLOCK(u64),
+
+    BATCHES(u64),
 }
 
 impl Default for DownloadRequestPayload {
@@ -301,6 +304,8 @@ pub enum DownloadResponsePayload {
     HEIGHT(u64),
 
     BLOCK(Block),
+
+    BATCHES(()),
 }
 
 impl Default for DownloadResponsePayload {

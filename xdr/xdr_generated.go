@@ -722,6 +722,9 @@ const (
 
 	// DownloadRequestTypeBLOCK enum value 2
 	DownloadRequestTypeBLOCK DownloadRequestType = 2
+
+	// DownloadRequestTypeBATCHES enum value 3
+	DownloadRequestTypeBATCHES DownloadRequestType = 3
 )
 
 // DownloadRequestTypeMap generated enum map
@@ -732,6 +735,8 @@ var DownloadRequestTypeMap = map[int32]string{
 	1: "DownloadRequestTypeHEIGHT",
 
 	2: "DownloadRequestTypeBLOCK",
+
+	3: "DownloadRequestTypeBATCHES",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -830,6 +835,8 @@ type DownloadRequestPayload struct {
 	Type DownloadRequestType
 
 	BlockNumber *uint64
+
+	SeqNum *uint64
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -851,6 +858,9 @@ func (u DownloadRequestPayload) ArmForSwitch(sw int32) (string, bool) {
 
 	case DownloadRequestTypeBLOCK:
 		return "BlockNumber", true
+
+	case DownloadRequestTypeBATCHES:
+		return "SeqNum", true
 	}
 	return "-", false
 }
@@ -872,6 +882,15 @@ func NewDownloadRequestPayload(aType DownloadRequestType, value interface{}) (re
 			return
 		}
 		result.BlockNumber = &tv
+
+	case DownloadRequestTypeBATCHES:
+
+		tv, ok := value.(uint64)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.SeqNum = &tv
 
 	}
 	return
@@ -896,6 +915,31 @@ func (u DownloadRequestPayload) GetBlockNumber() (result uint64, ok bool) {
 
 	if armName == "BlockNumber" {
 		result = *u.BlockNumber
+		ok = true
+	}
+
+	return
+}
+
+// MustSeqNum retrieves the SeqNum value from the union,
+// panicing if the value is not set.
+func (u DownloadRequestPayload) MustSeqNum() uint64 {
+	val, ok := u.GetSeqNum()
+
+	if !ok {
+		panic("arm SeqNum is not set")
+	}
+
+	return val
+}
+
+// GetSeqNum retrieves the SeqNum value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u DownloadRequestPayload) GetSeqNum() (result uint64, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "SeqNum" {
+		result = *u.SeqNum
 		ok = true
 	}
 
@@ -948,6 +992,9 @@ func (u DownloadResponsePayload) ArmForSwitch(sw int32) (string, bool) {
 
 	case DownloadRequestTypeBLOCK:
 		return "Block", true
+
+	case DownloadRequestTypeBATCHES:
+		return "", true
 	}
 	return "-", false
 }
@@ -976,6 +1023,8 @@ func NewDownloadResponsePayload(aType DownloadRequestType, value interface{}) (r
 			return
 		}
 		result.Block = &tv
+
+	case DownloadRequestTypeBATCHES:
 
 	}
 	return
