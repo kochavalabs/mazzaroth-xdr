@@ -24,15 +24,7 @@ namespace mazzaroth
         case BLOCK:
             unsigned hyper blockNumber;
         case BATCHES:
-            BatchesRequest batchesRequest;
-    }
-
-    struct BatchesRequest {
-        unsigned hyper seqNum;
-        // Node details to target peer with batches
-        string id;
-        string ip;
-        unsigned hyper port;
+            unsigned hyper seqNum;
     }
 
     // Download Responses returned from requests
@@ -59,16 +51,10 @@ namespace mazzaroth
         case UNKNOWN:
             void;
         case HEIGHT:
-            DownloadHeight downloadHeight;
+            unsigned hyper height; // Return ledger height
         case BLOCK:
             Block block; // Return the requested block
         case BATCHES:
             void; // Missing batches are sent in new messages, not a response
-    }
-
-    // Download Height info including ledger block height and last processed sequence number
-    struct DownloadHeight {
-        unsigned hyper height; // Return ledger height
-        unsigned hyper seqNum; // Return latest consensus sequence number
     }
 }

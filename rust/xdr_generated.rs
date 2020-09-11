@@ -299,7 +299,7 @@ pub enum DownloadRequestPayload {
 
     BLOCK(u64),
 
-    BATCHES(BatchesRequest),
+    BATCHES(u64),
 }
 
 impl Default for DownloadRequestPayload {
