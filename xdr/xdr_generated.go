@@ -728,9 +728,9 @@ var (
 
 // DownloadHeight generated struct
 type DownloadHeight struct {
-	Height uint64 `json:"height"`
+	Height uint64
 
-	SeqNum uint64 `json:"seq_num"`
+	SeqNum uint64
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
