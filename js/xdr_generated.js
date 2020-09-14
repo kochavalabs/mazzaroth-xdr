@@ -21,6 +21,7 @@ exports.PermissioningType = PermissioningType;
 exports.Permissioning = Permissioning;
 exports.DownloadRequest = DownloadRequest;
 exports.DownloadResponse = DownloadResponse;
+exports.DownloadHeight = DownloadHeight;
 exports.DownloadRequestType = DownloadRequestType;
 exports.DownloadStatus = DownloadStatus;
 exports.DownloadRequestPayload = DownloadRequestPayload;
@@ -264,6 +265,9 @@ function DownloadRequest() {
 function DownloadResponse() {
     return new _xdrJsSerialize2.default.Struct(["downloadStatus", "downloadResponsePayload"], [DownloadStatus(), DownloadResponsePayload()]);
 }
+function DownloadHeight() {
+    return new _xdrJsSerialize2.default.Struct(["height", "seqNum"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper()]);
+}
 
 // End struct section
 
@@ -323,7 +327,7 @@ function DownloadResponsePayload() {
         },
 
         "HEIGHT": () => {
-            return new _xdrJsSerialize2.default.UHyper();
+            return DownloadHeight();
         },
 
         "BLOCK": () => {

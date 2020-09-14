@@ -250,6 +250,13 @@ pub struct DownloadResponse {
     pub downloadResponsePayload: DownloadResponsePayload,
 }
 
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct DownloadHeight {
+    pub height: u64,
+
+    pub seqNum: u64,
+}
+
 // End struct section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
@@ -301,7 +308,7 @@ impl Default for DownloadRequestPayload {
 pub enum DownloadResponsePayload {
     UNKNOWN(()),
 
-    HEIGHT(u64),
+    HEIGHT(DownloadHeight),
 
     BLOCK(Block),
 
