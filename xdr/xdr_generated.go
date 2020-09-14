@@ -705,6 +705,31 @@ var (
 	_ encoding.BinaryUnmarshaler = (*DownloadResponse)(nil)
 )
 
+// DownloadHeight generated struct
+type DownloadHeight struct {
+	Height uint64
+
+	SeqNum uint64
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s DownloadHeight) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *DownloadHeight) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*DownloadHeight)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadHeight)(nil)
+)
+
 // End struct section
 
 // Start enum section
@@ -968,7 +993,7 @@ var (
 type DownloadResponsePayload struct {
 	Type DownloadRequestType
 
-	Height *uint64
+	DownloadHeight *DownloadHeight
 
 	Block *Block
 }
@@ -988,7 +1013,7 @@ func (u DownloadResponsePayload) ArmForSwitch(sw int32) (string, bool) {
 		return "", true
 
 	case DownloadRequestTypeHEIGHT:
-		return "Height", true
+		return "DownloadHeight", true
 
 	case DownloadRequestTypeBLOCK:
 		return "Block", true
@@ -1008,12 +1033,12 @@ func NewDownloadResponsePayload(aType DownloadRequestType, value interface{}) (r
 
 	case DownloadRequestTypeHEIGHT:
 
-		tv, ok := value.(uint64)
+		tv, ok := value.(DownloadHeight)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.Height = &tv
+		result.DownloadHeight = &tv
 
 	case DownloadRequestTypeBLOCK:
 
@@ -1030,25 +1055,25 @@ func NewDownloadResponsePayload(aType DownloadRequestType, value interface{}) (r
 	return
 }
 
-// MustHeight retrieves the Height value from the union,
+// MustDownloadHeight retrieves the DownloadHeight value from the union,
 // panicing if the value is not set.
-func (u DownloadResponsePayload) MustHeight() uint64 {
-	val, ok := u.GetHeight()
+func (u DownloadResponsePayload) MustDownloadHeight() DownloadHeight {
+	val, ok := u.GetDownloadHeight()
 
 	if !ok {
-		panic("arm Height is not set")
+		panic("arm DownloadHeight is not set")
 	}
 
 	return val
 }
 
-// GetHeight retrieves the Height value from the union,
+// GetDownloadHeight retrieves the DownloadHeight value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u DownloadResponsePayload) GetHeight() (result uint64, ok bool) {
+func (u DownloadResponsePayload) GetDownloadHeight() (result DownloadHeight, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "Height" {
-		result = *u.Height
+	if armName == "DownloadHeight" {
+		result = *u.DownloadHeight
 		ok = true
 	}
 
