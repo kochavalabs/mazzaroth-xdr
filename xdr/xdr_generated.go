@@ -593,6 +593,31 @@ var (
 	_ encoding.BinaryUnmarshaler = (*DownloadHeight)(nil)
 )
 
+// DownloadHeight generated struct
+type DownloadHeight struct {
+	Height uint64
+
+	SeqNum uint64
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s DownloadHeight) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *DownloadHeight) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*DownloadHeight)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadHeight)(nil)
+)
+
 // End struct section
 
 // Start enum section
