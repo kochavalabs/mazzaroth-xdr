@@ -51,10 +51,16 @@ namespace mazzaroth
         case UNKNOWN:
             void;
         case HEIGHT:
-            unsigned hyper height; // Return ledger height
+            DownloadHeight downloadHeight;
         case BLOCK:
             Block block; // Return the requested block
         case BATCHES:
             void; // Missing batches are sent in new messages, not a response
+    }
+
+    // Download Height info including ledger block height and last processed sequence number
+    struct DownloadHeight {
+        unsigned hyper height; // Return ledger height
+        unsigned hyper seqNum; // Return latest consensus sequence number
     }
 }
