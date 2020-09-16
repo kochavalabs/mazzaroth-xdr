@@ -680,6 +680,31 @@ var (
 	_ encoding.BinaryUnmarshaler = (*DownloadRequest)(nil)
 )
 
+// BatchesRequest generated struct
+type BatchesRequest struct {
+	SeqNum uint64
+
+	Id string
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s BatchesRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *BatchesRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*BatchesRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*BatchesRequest)(nil)
+)
+
 // DownloadResponse generated struct
 type DownloadResponse struct {
 	DownloadStatus DownloadStatus
@@ -861,7 +886,7 @@ type DownloadRequestPayload struct {
 
 	BlockNumber *uint64
 
-	SeqNum *uint64
+	BatchesRequest *BatchesRequest
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -885,7 +910,7 @@ func (u DownloadRequestPayload) ArmForSwitch(sw int32) (string, bool) {
 		return "BlockNumber", true
 
 	case DownloadRequestTypeBATCHES:
-		return "SeqNum", true
+		return "BatchesRequest", true
 	}
 	return "-", false
 }
@@ -910,12 +935,12 @@ func NewDownloadRequestPayload(aType DownloadRequestType, value interface{}) (re
 
 	case DownloadRequestTypeBATCHES:
 
-		tv, ok := value.(uint64)
+		tv, ok := value.(BatchesRequest)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.SeqNum = &tv
+		result.BatchesRequest = &tv
 
 	}
 	return
@@ -946,25 +971,25 @@ func (u DownloadRequestPayload) GetBlockNumber() (result uint64, ok bool) {
 	return
 }
 
-// MustSeqNum retrieves the SeqNum value from the union,
+// MustBatchesRequest retrieves the BatchesRequest value from the union,
 // panicing if the value is not set.
-func (u DownloadRequestPayload) MustSeqNum() uint64 {
-	val, ok := u.GetSeqNum()
+func (u DownloadRequestPayload) MustBatchesRequest() BatchesRequest {
+	val, ok := u.GetBatchesRequest()
 
 	if !ok {
-		panic("arm SeqNum is not set")
+		panic("arm BatchesRequest is not set")
 	}
 
 	return val
 }
 
-// GetSeqNum retrieves the SeqNum value from the union,
+// GetBatchesRequest retrieves the BatchesRequest value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u DownloadRequestPayload) GetSeqNum() (result uint64, ok bool) {
+func (u DownloadRequestPayload) GetBatchesRequest() (result BatchesRequest, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "SeqNum" {
-		result = *u.SeqNum
+	if armName == "BatchesRequest" {
+		result = *u.BatchesRequest
 		ok = true
 	}
 

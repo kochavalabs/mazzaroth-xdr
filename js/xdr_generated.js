@@ -20,6 +20,7 @@ exports.ConsensusConfigType = ConsensusConfigType;
 exports.PermissioningType = PermissioningType;
 exports.Permissioning = Permissioning;
 exports.DownloadRequest = DownloadRequest;
+exports.BatchesRequest = BatchesRequest;
 exports.DownloadResponse = DownloadResponse;
 exports.DownloadHeight = DownloadHeight;
 exports.DownloadRequestType = DownloadRequestType;
@@ -262,6 +263,9 @@ function Permissioning() {
 function DownloadRequest() {
     return new _xdrJsSerialize2.default.Struct(["downloadRequestPayload"], [DownloadRequestPayload()]);
 }
+function BatchesRequest() {
+    return new _xdrJsSerialize2.default.Struct(["seqNum", "id"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.Str('', 0)]);
+}
 function DownloadResponse() {
     return new _xdrJsSerialize2.default.Struct(["downloadStatus", "downloadResponsePayload"], [DownloadStatus(), DownloadResponsePayload()]);
 }
@@ -313,7 +317,7 @@ function DownloadRequestPayload() {
         },
 
         "BATCHES": () => {
-            return new _xdrJsSerialize2.default.UHyper();
+            return BatchesRequest();
         }
 
     });
