@@ -248,10 +248,6 @@ pub struct BatchesRequest {
     pub seqNum: u64,
 
     pub id: String,
-
-    pub ip: String,
-
-    pub port: u64,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
@@ -306,7 +302,7 @@ pub enum DownloadRequestPayload {
 
     BLOCK(u64),
 
-    BATCHES(u64),
+    BATCHES(BatchesRequest),
 }
 
 impl Default for DownloadRequestPayload {
