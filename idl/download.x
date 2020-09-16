@@ -24,7 +24,12 @@ namespace mazzaroth
         case BLOCK:
             unsigned hyper blockNumber;
         case BATCHES:
-            unsigned hyper seqNum;
+            BatchesRequest batchesRequest;
+    }
+
+    struct BatchesRequest {
+        unsigned hyper seqNum;
+        string id; // Own id for targeting batches
     }
 
     // Download Responses returned from requests

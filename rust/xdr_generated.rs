@@ -244,6 +244,13 @@ pub struct DownloadRequest {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct BatchesRequest {
+    pub seqNum: u64,
+
+    pub id: String,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct DownloadResponse {
     pub downloadStatus: DownloadStatus,
 
@@ -295,7 +302,7 @@ pub enum DownloadRequestPayload {
 
     BLOCK(u64),
 
-    BATCHES(u64),
+    BATCHES(BatchesRequest),
 }
 
 impl Default for DownloadRequestPayload {
