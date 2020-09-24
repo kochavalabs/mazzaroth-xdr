@@ -29,7 +29,10 @@ namespace mazzaroth
 
     struct BatchesRequest {
         unsigned hyper seqNum;
-        string id; // Own id for targeting batches
+        // Node details to target peer with batches
+        string id;
+        string ip;
+        unsigned hyper port;
     }
 
     // Download Responses returned from requests

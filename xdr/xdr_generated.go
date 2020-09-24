@@ -677,6 +677,10 @@ type BatchesRequest struct {
 	SeqNum uint64
 
 	Id string
+
+	Ip string
+
+	Port uint64
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
