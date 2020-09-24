@@ -264,7 +264,7 @@ function DownloadRequest() {
     return new _xdrJsSerialize2.default.Struct(["downloadRequestPayload"], [DownloadRequestPayload()]);
 }
 function BatchesRequest() {
-    return new _xdrJsSerialize2.default.Struct(["seqNum", "id"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.Str('', 0)]);
+    return new _xdrJsSerialize2.default.Struct(["seqNum", "id", "ip", "port"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.UHyper()]);
 }
 function DownloadResponse() {
     return new _xdrJsSerialize2.default.Struct(["downloadStatus", "downloadResponsePayload"], [DownloadStatus(), DownloadResponsePayload()]);
