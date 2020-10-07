@@ -680,6 +680,35 @@ var (
 	_ encoding.BinaryUnmarshaler = (*DownloadRequest)(nil)
 )
 
+// BatchesRequest generated struct
+type BatchesRequest struct {
+	SeqNum uint64
+
+	Id string
+
+	Ip string
+
+	Port uint64
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s BatchesRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *BatchesRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*BatchesRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*BatchesRequest)(nil)
+)
+
 // DownloadResponse generated struct
 type DownloadResponse struct {
 	DownloadStatus DownloadStatus
@@ -705,6 +734,31 @@ var (
 	_ encoding.BinaryUnmarshaler = (*DownloadResponse)(nil)
 )
 
+// DownloadHeight generated struct
+type DownloadHeight struct {
+	Height uint64
+
+	SeqNum uint64
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s DownloadHeight) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *DownloadHeight) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*DownloadHeight)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadHeight)(nil)
+)
+
 // End struct section
 
 // Start enum section
@@ -722,6 +776,9 @@ const (
 
 	// DownloadRequestTypeBLOCK enum value 2
 	DownloadRequestTypeBLOCK DownloadRequestType = 2
+
+	// DownloadRequestTypeBATCHES enum value 3
+	DownloadRequestTypeBATCHES DownloadRequestType = 3
 )
 
 // DownloadRequestTypeMap generated enum map
@@ -732,6 +789,8 @@ var DownloadRequestTypeMap = map[int32]string{
 	1: "DownloadRequestTypeHEIGHT",
 
 	2: "DownloadRequestTypeBLOCK",
+
+	3: "DownloadRequestTypeBATCHES",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -830,6 +889,8 @@ type DownloadRequestPayload struct {
 	Type DownloadRequestType
 
 	BlockNumber *uint64
+
+	BatchesRequest *BatchesRequest
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -851,6 +912,9 @@ func (u DownloadRequestPayload) ArmForSwitch(sw int32) (string, bool) {
 
 	case DownloadRequestTypeBLOCK:
 		return "BlockNumber", true
+
+	case DownloadRequestTypeBATCHES:
+		return "BatchesRequest", true
 	}
 	return "-", false
 }
@@ -872,6 +936,15 @@ func NewDownloadRequestPayload(aType DownloadRequestType, value interface{}) (re
 			return
 		}
 		result.BlockNumber = &tv
+
+	case DownloadRequestTypeBATCHES:
+
+		tv, ok := value.(BatchesRequest)
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.BatchesRequest = &tv
 
 	}
 	return
@@ -902,6 +975,31 @@ func (u DownloadRequestPayload) GetBlockNumber() (result uint64, ok bool) {
 	return
 }
 
+// MustBatchesRequest retrieves the BatchesRequest value from the union,
+// panicing if the value is not set.
+func (u DownloadRequestPayload) MustBatchesRequest() BatchesRequest {
+	val, ok := u.GetBatchesRequest()
+
+	if !ok {
+		panic("arm BatchesRequest is not set")
+	}
+
+	return val
+}
+
+// GetBatchesRequest retrieves the BatchesRequest value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u DownloadRequestPayload) GetBatchesRequest() (result BatchesRequest, ok bool) {
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "BatchesRequest" {
+		result = *u.BatchesRequest
+		ok = true
+	}
+
+	return
+}
+
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (u DownloadRequestPayload) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
@@ -924,7 +1022,7 @@ var (
 type DownloadResponsePayload struct {
 	Type DownloadRequestType
 
-	Height *uint64
+	DownloadHeight *DownloadHeight
 
 	Block *Block
 }
@@ -944,10 +1042,13 @@ func (u DownloadResponsePayload) ArmForSwitch(sw int32) (string, bool) {
 		return "", true
 
 	case DownloadRequestTypeHEIGHT:
-		return "Height", true
+		return "DownloadHeight", true
 
 	case DownloadRequestTypeBLOCK:
 		return "Block", true
+
+	case DownloadRequestTypeBATCHES:
+		return "", true
 	}
 	return "-", false
 }
@@ -961,12 +1062,12 @@ func NewDownloadResponsePayload(aType DownloadRequestType, value interface{}) (r
 
 	case DownloadRequestTypeHEIGHT:
 
-		tv, ok := value.(uint64)
+		tv, ok := value.(DownloadHeight)
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.Height = &tv
+		result.DownloadHeight = &tv
 
 	case DownloadRequestTypeBLOCK:
 
@@ -977,29 +1078,31 @@ func NewDownloadResponsePayload(aType DownloadRequestType, value interface{}) (r
 		}
 		result.Block = &tv
 
+	case DownloadRequestTypeBATCHES:
+
 	}
 	return
 }
 
-// MustHeight retrieves the Height value from the union,
+// MustDownloadHeight retrieves the DownloadHeight value from the union,
 // panicing if the value is not set.
-func (u DownloadResponsePayload) MustHeight() uint64 {
-	val, ok := u.GetHeight()
+func (u DownloadResponsePayload) MustDownloadHeight() DownloadHeight {
+	val, ok := u.GetDownloadHeight()
 
 	if !ok {
-		panic("arm Height is not set")
+		panic("arm DownloadHeight is not set")
 	}
 
 	return val
 }
 
-// GetHeight retrieves the Height value from the union,
+// GetDownloadHeight retrieves the DownloadHeight value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u DownloadResponsePayload) GetHeight() (result uint64, ok bool) {
+func (u DownloadResponsePayload) GetDownloadHeight() (result DownloadHeight, ok bool) {
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "Height" {
-		result = *u.Height
+	if armName == "DownloadHeight" {
+		result = *u.DownloadHeight
 		ok = true
 	}
 

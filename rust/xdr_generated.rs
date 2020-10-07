@@ -244,10 +244,28 @@ pub struct DownloadRequest {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct BatchesRequest {
+    pub seqNum: u64,
+
+    pub id: String,
+
+    pub ip: String,
+
+    pub port: u64,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct DownloadResponse {
     pub downloadStatus: DownloadStatus,
 
     pub downloadResponsePayload: DownloadResponsePayload,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct DownloadHeight {
+    pub height: u64,
+
+    pub seqNum: u64,
 }
 
 // End struct section
@@ -257,6 +275,7 @@ pub enum DownloadRequestType {
     UNKNOWN = 0,
     HEIGHT = 1,
     BLOCK = 2,
+    BATCHES = 3,
 }
 
 impl Default for DownloadRequestType {
@@ -286,6 +305,8 @@ pub enum DownloadRequestPayload {
     HEIGHT(()),
 
     BLOCK(u64),
+
+    BATCHES(BatchesRequest),
 }
 
 impl Default for DownloadRequestPayload {
@@ -298,9 +319,11 @@ impl Default for DownloadRequestPayload {
 pub enum DownloadResponsePayload {
     UNKNOWN(()),
 
-    HEIGHT(u64),
+    HEIGHT(DownloadHeight),
 
     BLOCK(Block),
+
+    BATCHES(()),
 }
 
 impl Default for DownloadResponsePayload {

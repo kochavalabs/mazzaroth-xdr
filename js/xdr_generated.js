@@ -20,7 +20,9 @@ exports.ConsensusConfigType = ConsensusConfigType;
 exports.PermissioningType = PermissioningType;
 exports.Permissioning = Permissioning;
 exports.DownloadRequest = DownloadRequest;
+exports.BatchesRequest = BatchesRequest;
 exports.DownloadResponse = DownloadResponse;
+exports.DownloadHeight = DownloadHeight;
 exports.DownloadRequestType = DownloadRequestType;
 exports.DownloadStatus = DownloadStatus;
 exports.DownloadRequestPayload = DownloadRequestPayload;
@@ -261,8 +263,14 @@ function Permissioning() {
 function DownloadRequest() {
     return new _xdrJsSerialize2.default.Struct(["downloadRequestPayload"], [DownloadRequestPayload()]);
 }
+function BatchesRequest() {
+    return new _xdrJsSerialize2.default.Struct(["seqNum", "id", "ip", "port"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.UHyper()]);
+}
 function DownloadResponse() {
     return new _xdrJsSerialize2.default.Struct(["downloadStatus", "downloadResponsePayload"], [DownloadStatus(), DownloadResponsePayload()]);
+}
+function DownloadHeight() {
+    return new _xdrJsSerialize2.default.Struct(["height", "seqNum"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper()]);
 }
 
 // End struct section
@@ -273,7 +281,8 @@ function DownloadRequestType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "HEIGHT",
-        2: "BLOCK"
+        2: "BLOCK",
+        3: "BATCHES"
 
     });
 }
@@ -305,6 +314,10 @@ function DownloadRequestPayload() {
 
         "BLOCK": () => {
             return new _xdrJsSerialize2.default.UHyper();
+        },
+
+        "BATCHES": () => {
+            return BatchesRequest();
         }
 
     });
@@ -318,11 +331,15 @@ function DownloadResponsePayload() {
         },
 
         "HEIGHT": () => {
-            return new _xdrJsSerialize2.default.UHyper();
+            return DownloadHeight();
         },
 
         "BLOCK": () => {
             return Block();
+        },
+
+        "BATCHES": () => {
+            return new _xdrJsSerialize2.default.Void();
         }
 
     });
