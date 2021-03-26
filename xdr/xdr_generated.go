@@ -33,11 +33,11 @@ func Marshal(w io.Writer, v interface{}) (int, error) {
 
 // Account generated struct
 type Account struct {
-	Name string
+	Name string `json:"name"`
 
-	Nonce uint64
+	Nonce uint64 `json:"nonce"`
 
-	PermissionedKeys []ID
+	PermissionedKeys []ID `json:"permissioned_keys"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -79,9 +79,9 @@ var (
 
 // Block generated struct
 type Block struct {
-	Header BlockHeader
+	Header BlockHeader `json:"header"`
 
-	Transactions []Transaction
+	Transactions []Transaction `json:"transactions"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -104,23 +104,23 @@ var (
 
 // BlockHeader generated struct
 type BlockHeader struct {
-	Timestamp string `xdrmaxsize:"256"`
+	Timestamp string `xdrmaxsize:"256",json:"timestamp"`
 
-	BlockHeight uint64
+	BlockHeight uint64 `json:"block_height"`
 
-	TransactionHeight uint64
+	TransactionHeight uint64 `json:"transaction_height"`
 
-	ConsensusSequenceNumber uint64
+	ConsensusSequenceNumber uint64 `json:"consensus_sequence_number"`
 
-	TxMerkleRoot Hash
+	TxMerkleRoot Hash `json:"tx_merkle_root"`
 
-	TxReceiptRoot Hash
+	TxReceiptRoot Hash `json:"tx_receipt_root"`
 
-	StateRoot Hash
+	StateRoot Hash `json:"state_root"`
 
-	PreviousHeader Hash
+	PreviousHeader Hash `json:"previous_header"`
 
-	BlockProducerAddress ID
+	BlockProducerAddress ID `json:"block_producer_address"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -353,17 +353,17 @@ var (
 
 // ChannelConfig generated struct
 type ChannelConfig struct {
-	ChannelID ID
+	ChannelID ID `json:"channel_id"`
 
-	ContractHash Hash
+	ContractHash Hash `json:"contract_hash"`
 
-	Version string `xdrmaxsize:"200"`
+	Version string `xdrmaxsize:"200",json:"version"`
 
-	Owner ID
+	Owner ID `json:"owner"`
 
-	ChannelName string `xdrmaxsize:"200"`
+	ChannelName string `xdrmaxsize:"200",json:"channel_name"`
 
-	Admins []ID `xdrmaxsize:"200"`
+	Admins []ID `xdrmaxsize:"200",json:"admins"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -386,11 +386,11 @@ var (
 
 // GovernanceConfig generated struct
 type GovernanceConfig struct {
-	MaxBlockSize uint64
+	MaxBlockSize uint64 `json:"max_block_size"`
 
-	Consensus ConsensusConfigType
+	Consensus ConsensusConfigType `json:"consensus"`
 
-	Permissioning Permissioning
+	Permissioning Permissioning `json:"permissioning"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -413,9 +413,9 @@ var (
 
 // PermissionedIDs generated struct
 type PermissionedIDs struct {
-	AllowedIDs []ID
+	AllowedIDs []ID `json:"allowed_i_ds"`
 
-	Validators []ID
+	Validators []ID `json:"validators"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -659,7 +659,7 @@ var (
 
 // DownloadRequest generated struct
 type DownloadRequest struct {
-	DownloadRequestPayload DownloadRequestPayload
+	DownloadRequestPayload DownloadRequestPayload `json:"download_request_payload"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -682,13 +682,13 @@ var (
 
 // BatchesRequest generated struct
 type BatchesRequest struct {
-	SeqNum uint64
+	SeqNum uint64 `json:"seq_num"`
 
-	Id string
+	Id string `json:"id"`
 
-	Ip string
+	Ip string `json:"ip"`
 
-	Port uint64
+	Port uint64 `json:"port"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -711,9 +711,9 @@ var (
 
 // DownloadResponse generated struct
 type DownloadResponse struct {
-	DownloadStatus DownloadStatus
+	DownloadStatus DownloadStatus `json:"download_status"`
 
-	DownloadResponsePayload DownloadResponsePayload
+	DownloadResponsePayload DownloadResponsePayload `json:"download_response_payload"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -736,9 +736,9 @@ var (
 
 // DownloadHeight generated struct
 type DownloadHeight struct {
-	Height uint64
+	Height uint64 `json:"height"`
 
-	SeqNum uint64
+	SeqNum uint64 `json:"seq_num"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1165,9 +1165,9 @@ var (
 
 // ExecutionPlan generated struct
 type ExecutionPlan struct {
-	Host string `xdrmaxsize:"256"`
+	Host string `xdrmaxsize:"256",json:"host"`
 
-	Actions []Action `xdrmaxsize:"100"`
+	Actions []Action `xdrmaxsize:"100",json:"actions"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1209,13 +1209,13 @@ var (
 
 // Receipt generated struct
 type Receipt struct {
-	Status ReceiptStatus
+	Status ReceiptStatus `json:"status"`
 
-	StateRoot Hash
+	StateRoot Hash `json:"state_root"`
 
-	Result string
+	Result string `json:"result"`
 
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1308,9 +1308,9 @@ var (
 
 // StateStatus generated struct
 type StateStatus struct {
-	PreviousBlock uint64
+	PreviousBlock uint64 `json:"previous_block"`
 
-	TransactionCount uint64
+	TransactionCount uint64 `json:"transaction_count"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1333,7 +1333,7 @@ var (
 
 // BlockLookupRequest generated struct
 type BlockLookupRequest struct {
-	ID Identifier
+	ID Identifier `json:"id"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1356,7 +1356,7 @@ var (
 
 // BlockHeaderLookupRequest generated struct
 type BlockHeaderLookupRequest struct {
-	ID Identifier
+	ID Identifier `json:"id"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1379,13 +1379,13 @@ var (
 
 // BlockLookupResponse generated struct
 type BlockLookupResponse struct {
-	Block Block
+	Block Block `json:"block"`
 
-	StateStatus StateStatus
+	StateStatus StateStatus `json:"state_status"`
 
-	Status BlockStatus
+	Status BlockStatus `json:"status"`
 
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1408,13 +1408,13 @@ var (
 
 // BlockHeaderLookupResponse generated struct
 type BlockHeaderLookupResponse struct {
-	Header BlockHeader
+	Header BlockHeader `json:"header"`
 
-	StateStatus StateStatus
+	StateStatus StateStatus `json:"state_status"`
 
-	Status BlockStatus
+	Status BlockStatus `json:"status"`
 
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1437,7 +1437,7 @@ var (
 
 // TransactionLookupRequest generated struct
 type TransactionLookupRequest struct {
-	TransactionID ID
+	TransactionID ID `json:"transaction_id"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1460,13 +1460,13 @@ var (
 
 // TransactionLookupResponse generated struct
 type TransactionLookupResponse struct {
-	Transaction Transaction
+	Transaction Transaction `json:"transaction"`
 
-	StateStatus StateStatus
+	StateStatus StateStatus `json:"state_status"`
 
-	Status TransactionStatus
+	Status TransactionStatus `json:"status"`
 
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1489,7 +1489,7 @@ var (
 
 // TransactionSubmitRequest generated struct
 type TransactionSubmitRequest struct {
-	Transaction Transaction
+	Transaction Transaction `json:"transaction"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1512,11 +1512,11 @@ var (
 
 // TransactionSubmitResponse generated struct
 type TransactionSubmitResponse struct {
-	TransactionID ID
+	TransactionID ID `json:"transaction_id"`
 
-	Status TransactionStatus
+	Status TransactionStatus `json:"status"`
 
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1539,7 +1539,7 @@ var (
 
 // ReadonlyRequest generated struct
 type ReadonlyRequest struct {
-	Call Call
+	Call Call `json:"call"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1562,13 +1562,13 @@ var (
 
 // ReadonlyResponse generated struct
 type ReadonlyResponse struct {
-	Result string
+	Result string `json:"result"`
 
-	StateStatus StateStatus
+	StateStatus StateStatus `json:"state_status"`
 
-	Status ReadonlyStatus
+	Status ReadonlyStatus `json:"status"`
 
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1591,7 +1591,7 @@ var (
 
 // ReceiptLookupRequest generated struct
 type ReceiptLookupRequest struct {
-	TransactionID ID
+	TransactionID ID `json:"transaction_id"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1614,13 +1614,13 @@ var (
 
 // ReceiptLookupResponse generated struct
 type ReceiptLookupResponse struct {
-	Receipt Receipt
+	Receipt Receipt `json:"receipt"`
 
-	StateStatus StateStatus
+	StateStatus StateStatus `json:"state_status"`
 
-	Status ReceiptLookupStatus
+	Status ReceiptLookupStatus `json:"status"`
 
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1643,7 +1643,7 @@ var (
 
 // AccountNonceLookupRequest generated struct
 type AccountNonceLookupRequest struct {
-	Account ID
+	Account ID `json:"account"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1666,13 +1666,13 @@ var (
 
 // AccountNonceLookupResponse generated struct
 type AccountNonceLookupResponse struct {
-	Nonce uint64
+	Nonce uint64 `json:"nonce"`
 
-	StateStatus StateStatus
+	StateStatus StateStatus `json:"state_status"`
 
-	Status NonceLookupStatus
+	Status NonceLookupStatus `json:"status"`
 
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1695,7 +1695,7 @@ var (
 
 // AccountInfoLookupRequest generated struct
 type AccountInfoLookupRequest struct {
-	Account ID
+	Account ID `json:"account"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1718,13 +1718,13 @@ var (
 
 // AccountInfoLookupResponse generated struct
 type AccountInfoLookupResponse struct {
-	AccountInfo Account
+	AccountInfo Account `json:"account_info"`
 
-	StateStatus StateStatus
+	StateStatus StateStatus `json:"state_status"`
 
-	Status InfoLookupStatus
+	Status InfoLookupStatus `json:"status"`
 
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1747,7 +1747,7 @@ var (
 
 // ChannelInfoLookupRequest generated struct
 type ChannelInfoLookupRequest struct {
-	InfoType ChannelInfoType
+	InfoType ChannelInfoType `json:"info_type"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1770,13 +1770,13 @@ var (
 
 // ChannelInfoLookupResponse generated struct
 type ChannelInfoLookupResponse struct {
-	ChannelInfo ChannelInfo
+	ChannelInfo ChannelInfo `json:"channel_info"`
 
-	StateStatus StateStatus
+	StateStatus StateStatus `json:"state_status"`
 
-	Status InfoLookupStatus
+	Status InfoLookupStatus `json:"status"`
 
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2539,9 +2539,9 @@ var (
 
 // ReceiptSubscription generated struct
 type ReceiptSubscription struct {
-	TransactionFilter TransactionFilter
+	TransactionFilter TransactionFilter `json:"transaction_filter"`
 
-	ReceiptFilter ReceiptFilter
+	ReceiptFilter ReceiptFilter `json:"receipt_filter"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2564,9 +2564,9 @@ var (
 
 // ReceiptSubscriptionResult generated struct
 type ReceiptSubscriptionResult struct {
-	Receipt Receipt
+	Receipt Receipt `json:"receipt"`
 
-	TransactionID ID
+	TransactionID ID `json:"transaction_id"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2589,9 +2589,9 @@ var (
 
 // ReceiptValueFilter generated struct
 type ReceiptValueFilter struct {
-	Status ValueFilter
+	Status ValueFilter `json:"status"`
 
-	StateRoot ValueFilter
+	StateRoot ValueFilter `json:"state_root"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2614,15 +2614,15 @@ var (
 
 // ActionFilter generated struct
 type ActionFilter struct {
-	Signature ValueFilter
+	Signature ValueFilter `json:"signature"`
 
-	Signer ValueFilter
+	Signer ValueFilter `json:"signer"`
 
-	Address ValueFilter
+	Address ValueFilter `json:"address"`
 
-	ChannelID ValueFilter
+	ChannelID ValueFilter `json:"channel_id"`
 
-	Nonce ValueFilter
+	Nonce ValueFilter `json:"nonce"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2645,9 +2645,9 @@ var (
 
 // ContractFilter generated struct
 type ContractFilter struct {
-	ActionFilter ActionFilter
+	ActionFilter ActionFilter `json:"action_filter"`
 
-	Version ValueFilter
+	Version ValueFilter `json:"version"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2670,7 +2670,7 @@ var (
 
 // ConfigFilter generated struct
 type ConfigFilter struct {
-	ActionFilter ActionFilter
+	ActionFilter ActionFilter `json:"action_filter"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2693,11 +2693,11 @@ var (
 
 // PermissionFilter generated struct
 type PermissionFilter struct {
-	ActionFilter ActionFilter
+	ActionFilter ActionFilter `json:"action_filter"`
 
-	Key ValueFilter
+	Key ValueFilter `json:"key"`
 
-	Action ValueFilter
+	Action ValueFilter `json:"action"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2720,9 +2720,9 @@ var (
 
 // CallFilter generated struct
 type CallFilter struct {
-	ActionFilter ActionFilter
+	ActionFilter ActionFilter `json:"action_filter"`
 
-	Function ValueFilter
+	Function ValueFilter `json:"function"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -3539,9 +3539,9 @@ var (
 
 // Call generated struct
 type Call struct {
-	Function string `xdrmaxsize:"256"`
+	Function string `xdrmaxsize:"256",json:"function"`
 
-	Parameters []Parameter
+	Parameters []Parameter `json:"parameters"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -3564,9 +3564,9 @@ var (
 
 // Contract generated struct
 type Contract struct {
-	Contract []byte
+	Contract []byte `json:"contract"`
 
-	Version string
+	Version string `json:"version"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -3589,9 +3589,9 @@ var (
 
 // Permission generated struct
 type Permission struct {
-	Key ID
+	Key ID `json:"key"`
 
-	Action PermissionAction
+	Action PermissionAction `json:"action"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -3614,13 +3614,13 @@ var (
 
 // Action generated struct
 type Action struct {
-	Address ID
+	Address ID `json:"address"`
 
-	ChannelID ID
+	ChannelID ID `json:"channel_id"`
 
-	Nonce uint64
+	Nonce uint64 `json:"nonce"`
 
-	Category ActionCategory
+	Category ActionCategory `json:"category"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -3643,11 +3643,11 @@ var (
 
 // Transaction generated struct
 type Transaction struct {
-	Signature Signature
+	Signature Signature `json:"signature"`
 
-	Signer Authority
+	Signer Authority `json:"signer"`
 
-	Action Action
+	Action Action `json:"action"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -3670,11 +3670,11 @@ var (
 
 // Input generated struct
 type Input struct {
-	InputType InputType
+	InputType InputType `json:"input_type"`
 
-	Function string `xdrmaxsize:"256"`
+	Function string `xdrmaxsize:"256",json:"function"`
 
-	Parameters []Parameter
+	Parameters []Parameter `json:"parameters"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
