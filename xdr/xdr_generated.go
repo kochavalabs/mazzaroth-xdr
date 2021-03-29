@@ -104,7 +104,7 @@ var (
 
 // BlockHeader generated struct
 type BlockHeader struct {
-	Timestamp string `xdrmaxsize:"256",json:"timestamp"`
+	Timestamp string `xdrmaxsize:"256" json:"timestamp"`
 
 	BlockHeight uint64 `json:"block_height"`
 
@@ -357,13 +357,13 @@ type ChannelConfig struct {
 
 	ContractHash Hash `json:"contract_hash"`
 
-	Version string `xdrmaxsize:"200",json:"version"`
+	Version string `xdrmaxsize:"200" json:"version"`
 
 	Owner ID `json:"owner"`
 
-	ChannelName string `xdrmaxsize:"200",json:"channel_name"`
+	ChannelName string `xdrmaxsize:"200" json:"channel_name"`
 
-	Admins []ID `xdrmaxsize:"200",json:"admins"`
+	Admins []ID `xdrmaxsize:"200" json:"admins"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1165,9 +1165,9 @@ var (
 
 // ExecutionPlan generated struct
 type ExecutionPlan struct {
-	Host string `xdrmaxsize:"256",json:"host"`
+	Host string `xdrmaxsize:"256" json:"host"`
 
-	Actions []Action `xdrmaxsize:"100",json:"actions"`
+	Actions []Action `xdrmaxsize:"100" json:"actions"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -3539,7 +3539,7 @@ var (
 
 // Call generated struct
 type Call struct {
-	Function string `xdrmaxsize:"256",json:"function"`
+	Function string `xdrmaxsize:"256" json:"function"`
 
 	Parameters []Parameter `json:"parameters"`
 }
@@ -3672,7 +3672,7 @@ var (
 type Input struct {
 	InputType InputType `json:"input_type"`
 
-	Function string `xdrmaxsize:"256",json:"function"`
+	Function string `xdrmaxsize:"256" json:"function"`
 
 	Parameters []Parameter `json:"parameters"`
 }
