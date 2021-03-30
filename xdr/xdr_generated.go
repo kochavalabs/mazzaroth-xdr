@@ -353,6 +353,12 @@ var (
 
 // ChannelConfig generated struct
 type ChannelConfig struct {
+	ChannelID ID `json:"channel_id"`
+
+	ContractHash Hash `json:"contract_hash"`
+
+	Version string `xdrmaxsize:"200" json:"version"`
+
 	Owner ID `json:"owner"`
 
 	ChannelName string `xdrmaxsize:"200" json:"channel_name"`
@@ -676,13 +682,13 @@ var (
 
 // BatchesRequest generated struct
 type BatchesRequest struct {
-	SeqNum uint64
+	SeqNum uint64 `json:"seq_num"`
 
-	Id string
+	Id string `json:"id"`
 
-	Ip string
+	Ip string `json:"ip"`
 
-	Port uint64
+	Port uint64 `json:"port"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -730,9 +736,9 @@ var (
 
 // DownloadHeight generated struct
 type DownloadHeight struct {
-	Height uint64
+	Height uint64 `json:"height"`
 
-	SeqNum uint64
+	SeqNum uint64 `json:"seq_num"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1209,9 +1215,7 @@ type Receipt struct {
 
 	Result string `json:"result"`
 
-	Result string
-
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1558,7 +1562,7 @@ var (
 
 // ReadonlyResponse generated struct
 type ReadonlyResponse struct {
-	Result string
+	Result string `json:"result"`
 
 	StateStatus StateStatus `json:"state_status"`
 
@@ -3560,11 +3564,9 @@ var (
 
 // Contract generated struct
 type Contract struct {
-	ContractBytes []byte `json:"contract_bytes"`
+	Contract []byte `json:"contract"`
 
-	ContractHash Hash `json:"contract_hash"`
-
-	Version string `xdrmaxsize:"100" json:"version"`
+	Version string `json:"version"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
