@@ -682,13 +682,13 @@ var (
 
 // BatchesRequest generated struct
 type BatchesRequest struct {
-	SeqNum uint64
+	SeqNum uint64 `json:"seq_num"`
 
-	Id string
+	Id string `json:"id"`
 
-	Ip string
+	Ip string `json:"ip"`
 
-	Port uint64
+	Port uint64 `json:"port"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -736,9 +736,9 @@ var (
 
 // DownloadHeight generated struct
 type DownloadHeight struct {
-	Height uint64
+	Height uint64 `json:"height"`
 
-	SeqNum uint64
+	SeqNum uint64 `json:"seq_num"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1215,9 +1215,7 @@ type Receipt struct {
 
 	Result string `json:"result"`
 
-	Result string
-
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1564,7 +1562,7 @@ var (
 
 // ReadonlyResponse generated struct
 type ReadonlyResponse struct {
-	Result string
+	Result string `json:"result"`
 
 	StateStatus StateStatus `json:"state_status"`
 
