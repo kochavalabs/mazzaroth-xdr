@@ -35,6 +35,8 @@ func Marshal(w io.Writer, v interface{}) (int, error) {
 type Account struct {
 	Name string `json:"name"`
 
+	Nonce uint64 `json:"nonce"`
+
 	PermissionedKeys []ID `json:"permissioned_keys"`
 }
 
@@ -351,6 +353,12 @@ var (
 
 // ChannelConfig generated struct
 type ChannelConfig struct {
+	ChannelID ID `json:"channel_id"`
+
+	ContractHash Hash `json:"contract_hash"`
+
+	Version string `xdrmaxsize:"200" json:"version"`
+
 	Owner ID `json:"owner"`
 
 	ChannelName string `xdrmaxsize:"200" json:"channel_name"`
@@ -674,13 +682,13 @@ var (
 
 // BatchesRequest generated struct
 type BatchesRequest struct {
-	SeqNum uint64
+	SeqNum uint64 `json:"seq_num"`
 
-	Id string
+	Id string `json:"id"`
 
-	Ip string
+	Ip string `json:"ip"`
 
-	Port uint64
+	Port uint64 `json:"port"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -728,9 +736,9 @@ var (
 
 // DownloadHeight generated struct
 type DownloadHeight struct {
-	Height uint64
+	Height uint64 `json:"height"`
 
-	SeqNum uint64
+	SeqNum uint64 `json:"seq_num"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1207,9 +1215,7 @@ type Receipt struct {
 
 	Result string `json:"result"`
 
-	Result string
-
-	StatusInfo StatusInfo
+	StatusInfo StatusInfo `json:"status_info"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1556,7 +1562,7 @@ var (
 
 // ReadonlyResponse generated struct
 type ReadonlyResponse struct {
-	Result string
+	Result string `json:"result"`
 
 	StateStatus StateStatus `json:"state_status"`
 
@@ -1633,6 +1639,58 @@ func (s *ReceiptLookupResponse) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*ReceiptLookupResponse)(nil)
 	_ encoding.BinaryUnmarshaler = (*ReceiptLookupResponse)(nil)
+)
+
+// AccountNonceLookupRequest generated struct
+type AccountNonceLookupRequest struct {
+	Account ID `json:"account"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s AccountNonceLookupRequest) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *AccountNonceLookupRequest) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*AccountNonceLookupRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupRequest)(nil)
+)
+
+// AccountNonceLookupResponse generated struct
+type AccountNonceLookupResponse struct {
+	Nonce uint64 `json:"nonce"`
+
+	StateStatus StateStatus `json:"state_status"`
+
+	Status NonceLookupStatus `json:"status"`
+
+	StatusInfo StatusInfo `json:"status_info"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s AccountNonceLookupResponse) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *AccountNonceLookupResponse) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*AccountNonceLookupResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupResponse)(nil)
 )
 
 // AccountInfoLookupRequest generated struct
@@ -3450,11 +3508,9 @@ var (
 
 // Contract generated struct
 type Contract struct {
-	ContractBytes []byte `json:"contract_bytes"`
+	Contract []byte `json:"contract"`
 
-	ContractHash Hash `json:"contract_hash"`
-
-	Version string `xdrmaxsize:"100" json:"version"`
+	Version string `json:"version"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -3507,8 +3563,6 @@ type Action struct {
 	ChannelID ID `json:"channel_id"`
 
 	Nonce uint64 `json:"nonce"`
-
-	BlockExpirationNumber uint64 `json:"block_expiration_number"`
 
 	Category ActionCategory `json:"category"`
 }
