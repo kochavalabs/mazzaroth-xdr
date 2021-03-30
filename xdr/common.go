@@ -1,6 +1,7 @@
 package xdr
 
 import (
+	"crypto"
 	"errors"
 )
 
@@ -37,4 +38,13 @@ func SignatureFromSlice(slice []byte) (Signature, error) {
 // HashFromSlice gets a Hash from a byte slice.
 func HashFromSlice(slice []byte) (Hash, error) {
 	return fromSlice32(slice)
+}
+
+// IdFromPublicKey : from generic crypto.PublicKey interface{} we try to extract an ID
+func IdFromPublicKey(pk crypto.PublicKey) (ID, error) {
+	bbytes, ok := pk.([]byte)
+	if ok == false {
+		return ID{}, errors.New("public key not a slice of bytes")
+	}
+	return IdFromSlice(bbytes)
 }
