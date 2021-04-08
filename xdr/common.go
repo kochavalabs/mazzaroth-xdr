@@ -2,9 +2,10 @@ package xdr
 
 import (
 	"crypto"
-	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -53,8 +54,8 @@ func IDFromPublicKey(pk crypto.PublicKey) (ID, error) {
 }
 
 // MarshalJSON : when marshaling to JSON we want ID to be represented as a base64-encoded string, not as an array of uint8
-func (id *ID) MarshalJSON() ([]byte, error) {
-	return json.Marshal(base64.StdEncoding.WithPadding(base64.StdPadding).EncodeToString(id[:]))
+func (id ID) MarshalJSON() ([]byte, error) {
+	return json.Marshal(hex.EncodeToString(id[:]))
 }
 
 // UnmarshalJSON : when marshaling to JSON we want ID to be represented as a base64-encoded string, not as an array of uint8
@@ -63,20 +64,20 @@ func (id *ID) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &s); err != nil {
 		return err
 	}
-	bb, err := base64.StdEncoding.DecodeString(s)
+	bb, err := hex.DecodeString(s)
 	if err != nil {
 		return err
 	}
 	if len(bb) != len(id) {
-		return &json.MarshalerError{Type: reflect.TypeOf(id), Err: errors.New("length of decoded string incorrect")}
+		return &json.MarshalerError{Type: reflect.TypeOf(id), Err: fmt.Errorf("length of decoded string incorrect: %d, should be %d", len(bb), len(id))}
 	}
-    copy(id[:], bb)
+	copy(id[:], bb)
 	return nil
 }
 
 // MarshalJSON : when marshaling to JSON we want ID to be represented as a base64-encoded string, not as an array of uint8
-func (sig *Signature) MarshalJSON() ([]byte, error) {
-	return json.Marshal(base64.StdEncoding.WithPadding(base64.StdPadding).EncodeToString(sig[:]))
+func (sig Signature) MarshalJSON() ([]byte, error) {
+	return json.Marshal(hex.EncodeToString(sig[:]))
 }
 
 // UnmarshalJSON : when marshaling to JSON we want ID to be represented as a base64-encoded string, not as an array of uint8
@@ -85,20 +86,20 @@ func (sig *Signature) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &s); err != nil {
 		return err
 	}
-	bb, err := base64.StdEncoding.DecodeString(s)
+	bb, err := hex.DecodeString(s)
 	if err != nil {
 		return err
 	}
 	if len(bb) != len(sig) {
-		return &json.MarshalerError{Type: reflect.TypeOf(sig), Err: errors.New("length of decoded string incorrect")}
+		return &json.MarshalerError{Type: reflect.TypeOf(sig), Err: fmt.Errorf("length of decoded string incorrect: %d, should be %d", len(bb), len(sig))}
 	}
-    copy(sig[:], bb)
+	copy(sig[:], bb)
 	return nil
 }
 
 // MarshalJSON : when marshaling to JSON we want ID to be represented as a base64-encoded string, not as an array of uint8
-func (h *Hash) MarshalJSON() ([]byte, error) {
-	return json.Marshal(base64.StdEncoding.WithPadding(base64.StdPadding).EncodeToString(h[:]))
+func (h Hash) MarshalJSON() ([]byte, error) {
+	return json.Marshal(hex.EncodeToString(h[:]))
 }
 
 // UnmarshalJSON : when marshaling to JSON we want ID to be represented as a base64-encoded string, not as an array of uint8
@@ -107,20 +108,20 @@ func (h *Hash) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &s); err != nil {
 		return err
 	}
-	bb, err := base64.StdEncoding.DecodeString(s)
+	bb, err := hex.DecodeString(s)
 	if err != nil {
 		return err
 	}
 	if len(bb) != len(h) {
-		return &json.MarshalerError{Type: reflect.TypeOf(h), Err: errors.New("length of decoded string incorrect")}
+		return &json.MarshalerError{Type: reflect.TypeOf(h), Err: fmt.Errorf("length of decoded string incorrect: %d, should be %d", len(bb), len(h))}
 	}
 	copy(h[:], bb)
 	return nil
 }
 
 // MarshalJSON : when marshaling to JSON we want ID to be represented as a base64-encoded string, not as an array of uint8
-func (h *Hash32) MarshalJSON() ([]byte, error) {
-	return json.Marshal(base64.StdEncoding.WithPadding(base64.StdPadding).EncodeToString(h[:]))
+func (h Hash32) MarshalJSON() ([]byte, error) {
+	return json.Marshal(hex.EncodeToString(h[:]))
 }
 
 // UnmarshalJSON : when marshaling to JSON we want ID to be represented as a base64-encoded string, not as an array of uint8
@@ -129,20 +130,20 @@ func (h *Hash32) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &s); err != nil {
 		return err
 	}
-	bb, err := base64.StdEncoding.DecodeString(s)
+	bb, err := hex.DecodeString(s)
 	if err != nil {
 		return err
 	}
 	if len(bb) != len(h) {
-		return &json.MarshalerError{Type: reflect.TypeOf(h), Err: errors.New("length of decoded string incorrect")}
+		return &json.MarshalerError{Type: reflect.TypeOf(h), Err: fmt.Errorf("length of decoded string incorrect: %d, should be %d", len(bb), len(h))}
 	}
 	copy(h[:], bb)
 	return nil
 }
 
 // MarshalJSON : when marshaling to JSON we want ID to be represented as a base64-encoded string, not as an array of uint8
-func (h *Hash64) MarshalJSON() ([]byte, error) {
-	return json.Marshal(base64.StdEncoding.WithPadding(base64.StdPadding).EncodeToString(h[:]))
+func (h Hash64) MarshalJSON() ([]byte, error) {
+	return json.Marshal(hex.EncodeToString(h[:]))
 }
 
 // UnmarshalJSON : when marshaling to JSON we want ID to be represented as a base64-encoded string, not as an array of uint8
@@ -151,12 +152,12 @@ func (h *Hash64) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &s); err != nil {
 		return err
 	}
-	bb, err := base64.StdEncoding.DecodeString(s)
+	bb, err := hex.DecodeString(s)
 	if err != nil {
 		return err
 	}
 	if len(bb) != len(h) {
-		return &json.MarshalerError{Type: reflect.TypeOf(h), Err: errors.New("length of decoded string incorrect")}
+		return &json.MarshalerError{Type: reflect.TypeOf(h), Err: fmt.Errorf("length of decoded string incorrect: %d, should be %d", len(bb), len(h))}
 	}
 	copy(h[:], bb)
 	return nil
