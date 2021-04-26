@@ -353,12 +353,6 @@ var (
 
 // ChannelConfig generated struct
 type ChannelConfig struct {
-	ChannelID ID `json:"channel_id"`
-
-	ContractHash Hash `json:"contract_hash"`
-
-	Version string `xdrmaxsize:"200" json:"version"`
-
 	Owner ID `json:"owner"`
 
 	ChannelName string `xdrmaxsize:"200" json:"channel_name"`
@@ -3508,9 +3502,11 @@ var (
 
 // Contract generated struct
 type Contract struct {
-	Contract []byte `json:"contract"`
+	ContractBytes []byte `json:"contract_bytes"`
 
-	Version string `json:"version"`
+	ContractHash Hash `json:"contract_hash"`
+
+	Version string `xdrmaxsize:"100" json:"version"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
