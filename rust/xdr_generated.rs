@@ -151,13 +151,6 @@ pub struct StatusInfo {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct ChannelConfig {
-    pub channelID: ID,
-
-    pub contractHash: Hash,
-
-    #[array(var = 200)]
-    pub version: String,
-
     pub owner: ID,
 
     #[array(var = 200)]
@@ -890,8 +883,11 @@ pub struct Call {
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Contract {
     #[array(var = 2147483647)]
-    pub contract: Vec<u8>,
+    pub contractBytes: Vec<u8>,
 
+    pub contractHash: Hash,
+
+    #[array(var = 100)]
     pub version: String,
 }
 

@@ -38,10 +38,13 @@ namespace mazzaroth
   struct Contract
   {
     // Contract binary bytes.
-    opaque contract<>;
+    opaque contractBytes<>;
+
+    // Sha3 256 Hash of the contract bytes, verified on execution
+    Hash contractHash;
 
     // Version number of the contract, specified by owner
-    string version;
+    string version<100>;
   }
 
   enum PermissionAction

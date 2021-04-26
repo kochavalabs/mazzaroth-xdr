@@ -6,12 +6,6 @@ namespace mazzaroth
   // accessible through host contract host functions
   struct ChannelConfig
   {
-    // Unique channel id which cannot be changed
-    ID channelID;
-    // Hash of the contract bytes
-    Hash contractHash;
-    // Version number of the contract, specified by owner
-    string version<200>;
     // Public Key ID of the channel owner. Only owner can change this to transfer ownership of channel
     ID owner;
     // Human readable channel name
