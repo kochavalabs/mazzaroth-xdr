@@ -835,9 +835,6 @@ pub struct Contract {
     #[array(var = 2147483647)]
     pub contractBytes: Vec<u8>,
 
-    #[array(var = 2147483647)]
-    pub abi: String,
-
     pub contractHash: Hash,
 
     #[array(var = 100)]
