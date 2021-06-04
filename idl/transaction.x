@@ -89,6 +89,9 @@ namespace mazzaroth
 
     unsigned hyper nonce;
 
+    // Highest block number in which to accept this transaction
+    unsigned hyper blockExpirationNumber;
+
     ActionCategory category;
 
   };

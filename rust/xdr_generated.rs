@@ -906,6 +906,8 @@ pub struct Action {
 
     pub nonce: u64,
 
+    pub blockExpirationNumber: u64,
+
     pub category: ActionCategory,
 }
 

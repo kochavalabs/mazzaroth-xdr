@@ -3616,6 +3616,8 @@ type Action struct {
 
 	Nonce uint64 `json:"nonce"`
 
+	BlockExpirationNumber uint64 `json:"block_expiration_number"`
+
 	Category ActionCategory `json:"category"`
 }
 

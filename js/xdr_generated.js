@@ -753,7 +753,7 @@ function Permission() {
     return new _xdrJsSerialize2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
 }
 function Action() {
-    return new _xdrJsSerialize2.default.Struct(["address", "channelID", "nonce", "category"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), ActionCategory()]);
+    return new _xdrJsSerialize2.default.Struct(["address", "channelID", "nonce", "blockExpirationNumber", "category"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), ActionCategory()]);
 }
 function Transaction() {
     return new _xdrJsSerialize2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
