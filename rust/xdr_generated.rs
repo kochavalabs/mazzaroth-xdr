@@ -32,8 +32,6 @@ extern crate json;
 pub struct Account {
     pub name: String,
 
-    pub nonce: u64,
-
     #[array(var = 2147483647)]
     pub permissionedKeys: Vec<ID>,
 }
@@ -500,22 +498,6 @@ pub struct ReceiptLookupResponse {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct AccountNonceLookupRequest {
-    pub account: ID,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct AccountNonceLookupResponse {
-    pub nonce: u64,
-
-    pub stateStatus: StateStatus,
-
-    pub status: NonceLookupStatus,
-
-    pub statusInfo: StatusInfo,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct AccountInfoLookupRequest {
     pub account: ID,
 }
@@ -614,19 +596,6 @@ pub enum ReceiptLookupStatus {
 impl Default for ReceiptLookupStatus {
     fn default() -> Self {
         ReceiptLookupStatus::UNKNOWN
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum NonceLookupStatus {
-    UNKNOWN = 0,
-    FOUND = 1,
-    NOT_FOUND = 2,
-}
-
-impl Default for NonceLookupStatus {
-    fn default() -> Self {
-        NonceLookupStatus::UNKNOWN
     }
 }
 
