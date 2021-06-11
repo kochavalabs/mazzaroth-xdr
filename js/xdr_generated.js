@@ -121,7 +121,7 @@ function Parameter() {
 
 // Start struct section
 function Account() {
-    return new _xdrJsSerialize2.default.Struct(["permissionedKeys"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["name", "permissionedKeys"], [new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
 
 // End struct section

@@ -43,9 +43,6 @@ pub struct FunctionSignature {
     pub name: String,
 
     #[array(var = 2147483647)]
-    pub inputs: Vec<Parameter>,
-
-    #[array(var = 2147483647)]
     pub outputs: Vec<Parameter>,
 }
 
