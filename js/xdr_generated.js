@@ -43,8 +43,6 @@ exports.ReadonlyRequest = ReadonlyRequest;
 exports.ReadonlyResponse = ReadonlyResponse;
 exports.ReceiptLookupRequest = ReceiptLookupRequest;
 exports.ReceiptLookupResponse = ReceiptLookupResponse;
-exports.AccountNonceLookupRequest = AccountNonceLookupRequest;
-exports.AccountNonceLookupResponse = AccountNonceLookupResponse;
 exports.AccountInfoLookupRequest = AccountInfoLookupRequest;
 exports.AccountInfoLookupResponse = AccountInfoLookupResponse;
 exports.ChannelInfoLookupRequest = ChannelInfoLookupRequest;
@@ -54,7 +52,6 @@ exports.BlockStatus = BlockStatus;
 exports.TransactionStatus = TransactionStatus;
 exports.ReadonlyStatus = ReadonlyStatus;
 exports.ReceiptLookupStatus = ReceiptLookupStatus;
-exports.NonceLookupStatus = NonceLookupStatus;
 exports.ChannelInfoType = ChannelInfoType;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
@@ -101,7 +98,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // Start struct section
 function Account() {
-    return new _xdrJsSerialize2.default.Struct(["name", "nonce", "permissionedKeys"], [new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["name", "permissionedKeys"], [new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
 
 // End struct section
@@ -446,12 +443,6 @@ function ReceiptLookupRequest() {
 function ReceiptLookupResponse() {
     return new _xdrJsSerialize2.default.Struct(["receipt", "stateStatus", "status", "statusInfo"], [Receipt(), StateStatus(), ReceiptLookupStatus(), StatusInfo()]);
 }
-function AccountNonceLookupRequest() {
-    return new _xdrJsSerialize2.default.Struct(["account"], [ID()]);
-}
-function AccountNonceLookupResponse() {
-    return new _xdrJsSerialize2.default.Struct(["nonce", "stateStatus", "status", "statusInfo"], [new _xdrJsSerialize2.default.UHyper(), StateStatus(), NonceLookupStatus(), StatusInfo()]);
-}
 function AccountInfoLookupRequest() {
     return new _xdrJsSerialize2.default.Struct(["account"], [ID()]);
 }
@@ -509,15 +500,6 @@ function ReadonlyStatus() {
 }
 
 function ReceiptLookupStatus() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "UNKNOWN",
-        1: "FOUND",
-        2: "NOT_FOUND"
-
-    });
-}
-
-function NonceLookupStatus() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "FOUND",
@@ -753,7 +735,7 @@ function Permission() {
     return new _xdrJsSerialize2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
 }
 function Action() {
-    return new _xdrJsSerialize2.default.Struct(["address", "channelID", "nonce", "category"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), ActionCategory()]);
+    return new _xdrJsSerialize2.default.Struct(["address", "channelID", "nonce", "blockExpirationNumber", "category"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), ActionCategory()]);
 }
 function Transaction() {
     return new _xdrJsSerialize2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
