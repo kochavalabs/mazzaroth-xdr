@@ -35,8 +35,6 @@ func Marshal(w io.Writer, v interface{}) (int, error) {
 type Account struct {
 	Name string `json:"name"`
 
-	Nonce uint64 `json:"nonce"`
-
 	PermissionedKeys []ID `json:"permissioned_keys"`
 }
 
@@ -1633,58 +1631,6 @@ func (s *ReceiptLookupResponse) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*ReceiptLookupResponse)(nil)
 	_ encoding.BinaryUnmarshaler = (*ReceiptLookupResponse)(nil)
-)
-
-// AccountNonceLookupRequest generated struct
-type AccountNonceLookupRequest struct {
-	Account ID `json:"account"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s AccountNonceLookupRequest) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *AccountNonceLookupRequest) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*AccountNonceLookupRequest)(nil)
-	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupRequest)(nil)
-)
-
-// AccountNonceLookupResponse generated struct
-type AccountNonceLookupResponse struct {
-	Nonce uint64 `json:"nonce"`
-
-	StateStatus StateStatus `json:"state_status"`
-
-	Status NonceLookupStatus `json:"status"`
-
-	StatusInfo StatusInfo `json:"status_info"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s AccountNonceLookupResponse) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *AccountNonceLookupResponse) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*AccountNonceLookupResponse)(nil)
-	_ encoding.BinaryUnmarshaler = (*AccountNonceLookupResponse)(nil)
 )
 
 // AccountInfoLookupRequest generated struct
@@ -3559,6 +3505,8 @@ type Action struct {
 	ChannelID ID `json:"channel_id"`
 
 	Nonce uint64 `json:"nonce"`
+
+	BlockExpirationNumber uint64 `json:"block_expiration_number"`
 
 	Category ActionCategory `json:"category"`
 }
