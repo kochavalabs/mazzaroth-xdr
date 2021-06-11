@@ -233,42 +233,6 @@ namespace mazzaroth
     NOT_FOUND = 2
   };
 
-  // Request for a node to look up an account nonce.
-  struct AccountNonceLookupRequest 
-  {
-    // ID of the account
-    ID account;
-  };
-
-  // Response to account nonce lookup request.
-  struct AccountNonceLookupResponse
-  {
-    // Final receipt written to the blockchain.
-    unsigned hyper nonce; 
-
-    // Current state status
-    StateStatus stateStatus;
-
-    // Status of the lookup
-    NonceLookupStatus status;
-
-    // Human readable information to help understand the status.
-    StatusInfo statusInfo;
-  };
-
-  // Status of a nonce lookup.
-  enum NonceLookupStatus
-  {
-    // The status is either not known or not set.
-    UNKNOWN = 0,
-
-    // The account nonce was found.
-    FOUND = 1,
-
-    // The account nonce was not found.
-    NOT_FOUND = 2
-  };
-
   // Request for a node to look up account info.
   struct AccountInfoLookupRequest
   {
