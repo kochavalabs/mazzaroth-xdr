@@ -1,6 +1,6 @@
 {
   "name": "mazzaroth-xdr",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "description": "Serialization code for mazzaroth.",
   "main": "js/xdr_generated.js",
   "files": [
@@ -39,6 +39,6 @@
   },
   "dependencies": {
     "markdownlint-cli": "^0.23.2",
-    "xdr-js-serialize": "develop"
+    "xdr-js-serialize": "^0.2.0"
   }
 }
