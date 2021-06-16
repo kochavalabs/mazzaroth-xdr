@@ -31,10 +31,106 @@ func Marshal(w io.Writer, v interface{}) (int, error) {
 
 // Start struct section
 
-// Account generated struct
-type Account struct {
+// Abi generated struct
+type Abi struct {
+	Functions []FunctionSignature `json:"functions"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Abi) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Abi) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Abi)(nil)
+	_ encoding.BinaryUnmarshaler = (*Abi)(nil)
+)
+
+// FunctionSignature generated struct
+type FunctionSignature struct {
+	FunctionType string `json:"function_type"`
+
 	Name string `json:"name"`
 
+	Inputs []Parameter `json:"inputs"`
+
+	Outputs []Parameter `json:"outputs"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s FunctionSignature) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *FunctionSignature) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*FunctionSignature)(nil)
+	_ encoding.BinaryUnmarshaler = (*FunctionSignature)(nil)
+)
+
+// Parameter generated struct
+type Parameter struct {
+	Name string `json:"name"`
+
+	ParameterType string `json:"parameter_type"`
+
+	Codec string `json:"codec"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Parameter) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Parameter) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Parameter)(nil)
+	_ encoding.BinaryUnmarshaler = (*Parameter)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+// End enum section
+
+// Start union section
+
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+// Account generated struct
+type Account struct {
 	PermissionedKeys []ID `json:"permissioned_keys"`
 }
 
@@ -232,8 +328,8 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Hash)(nil)
 )
 
-// Parameter generated typedef
-type Parameter string
+// Argument generated typedef
+type Argument string
 
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (s Argument) MarshalBinary() ([]byte, error) {
@@ -376,58 +472,6 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ChannelConfig)(nil)
 )
 
-// GovernanceConfig generated struct
-type GovernanceConfig struct {
-	MaxBlockSize uint64 `json:"max_block_size"`
-
-	Consensus ConsensusConfigType `json:"consensus"`
-
-	Permissioning Permissioning `json:"permissioning"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s GovernanceConfig) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *GovernanceConfig) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*GovernanceConfig)(nil)
-	_ encoding.BinaryUnmarshaler = (*GovernanceConfig)(nil)
-)
-
-// PermissionedIDs generated struct
-type PermissionedIDs struct {
-	AllowedIDs []ID `json:"allowed_i_ds"`
-
-	Validators []ID `json:"validators"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s PermissionedIDs) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *PermissionedIDs) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*PermissionedIDs)(nil)
-	_ encoding.BinaryUnmarshaler = (*PermissionedIDs)(nil)
-)
-
 // End struct section
 
 // Start enum section
@@ -446,62 +490,6 @@ var (
 // End typedef section
 
 // Start struct section
-
-// DownloadRequest generated struct
-type DownloadRequest struct {
-	DownloadRequestPayload DownloadRequestPayload `json:"download_request_payload"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s DownloadResponse) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *DownloadResponse) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*DownloadResponse)(nil)
-	_ encoding.BinaryUnmarshaler = (*DownloadResponse)(nil)
-)
-
-// BatchesRequest generated struct
-type BatchesRequest struct {
-	SeqNum uint64 `json:"seq_num"`
-
-	Id string `json:"id"`
-
-	Ip string `json:"ip"`
-
-	Port uint64 `json:"port"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s BatchesRequest) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *BatchesRequest) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*BatchesRequest)(nil)
-	_ encoding.BinaryUnmarshaler = (*BatchesRequest)(nil)
-)
-
-// DownloadResponse generated struct
-type DownloadResponse struct {
-	DownloadStatus DownloadStatus `json:"download_status"`
 
 // DownloadRequest generated struct
 type DownloadRequest struct {
@@ -1009,50 +997,6 @@ var (
 
 // Start struct section
 
-// ExecutionPlan generated struct
-type ExecutionPlan struct {
-	Host string `xdrmaxsize:"256" json:"host"`
-
-	Actions []Action `xdrmaxsize:"100" json:"actions"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s ExecutionPlan) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ExecutionPlan) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*ExecutionPlan)(nil)
-	_ encoding.BinaryUnmarshaler = (*ExecutionPlan)(nil)
-)
-
-// End struct section
-
-// Start enum section
-
-// End enum section
-
-// Start union section
-
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
-
 // Receipt generated struct
 type Receipt struct {
 	Status ReceiptStatus `json:"status"`
@@ -1358,7 +1302,7 @@ var (
 
 // TransactionSubmitResponse generated struct
 type TransactionSubmitResponse struct {
-	TransactionID ID `json:"transaction_id"`
+	TransactionInfo TransactionInfo `json:"transaction_info"`
 
 	Status TransactionStatus `json:"status"`
 
@@ -1381,58 +1325,6 @@ func (s *TransactionSubmitResponse) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*TransactionSubmitResponse)(nil)
 	_ encoding.BinaryUnmarshaler = (*TransactionSubmitResponse)(nil)
-)
-
-// ReadonlyRequest generated struct
-type ReadonlyRequest struct {
-	Call Call `json:"call"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s ReadonlyRequest) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ReadonlyRequest) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*ReadonlyRequest)(nil)
-	_ encoding.BinaryUnmarshaler = (*ReadonlyRequest)(nil)
-)
-
-// ReadonlyResponse generated struct
-type ReadonlyResponse struct {
-	Result string `json:"result"`
-
-	StateStatus StateStatus `json:"state_status"`
-
-	Status ReadonlyStatus `json:"status"`
-
-	StatusInfo StatusInfo `json:"status_info"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s ReadonlyResponse) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ReadonlyResponse) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*ReadonlyResponse)(nil)
-	_ encoding.BinaryUnmarshaler = (*ReadonlyResponse)(nil)
 )
 
 // ReceiptLookupRequest generated struct
@@ -3408,7 +3300,7 @@ var (
 type Call struct {
 	Function string `xdrmaxsize:"256" json:"function"`
 
-	Parameters []Parameter `json:"parameters"`
+	Arguments []Argument `json:"arguments"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -3432,6 +3324,8 @@ var (
 // Contract generated struct
 type Contract struct {
 	ContractBytes []byte `json:"contract_bytes"`
+
+	Abi string `json:"abi"`
 
 	ContractHash Hash `json:"contract_hash"`
 
@@ -3537,33 +3431,6 @@ func (s *Transaction) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*Transaction)(nil)
 	_ encoding.BinaryUnmarshaler = (*Transaction)(nil)
-)
-
-// Input generated struct
-type Input struct {
-	InputType InputType `json:"input_type"`
-
-	Function string `xdrmaxsize:"256" json:"function"`
-
-	Parameters []Parameter `json:"parameters"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Input) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Input) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Input)(nil)
-	_ encoding.BinaryUnmarshaler = (*Input)(nil)
 )
 
 // End struct section

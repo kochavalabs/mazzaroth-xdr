@@ -43,6 +43,9 @@ pub struct FunctionSignature {
     pub name: String,
 
     #[array(var = 2147483647)]
+    pub inputs: Vec<Parameter>,
+
+    #[array(var = 2147483647)]
     pub outputs: Vec<Parameter>,
 }
 
@@ -423,23 +426,6 @@ pub struct TransactionSubmitResponse {
     pub transactionInfo: TransactionInfo,
 
     pub status: TransactionStatus,
-
-    pub statusInfo: StatusInfo,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ReadonlyRequest {
-    pub call: Call,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ReadonlyResponse {
-    #[array(var = 2147483647)]
-    pub result: String,
-
-    pub stateStatus: StateStatus,
-
-    pub status: ReadonlyStatus,
 
     pub statusInfo: StatusInfo,
 }
@@ -831,6 +817,9 @@ pub struct Call {
 pub struct Contract {
     #[array(var = 2147483647)]
     pub contractBytes: Vec<u8>,
+
+    #[array(var = 2147483647)]
+    pub abi: String,
 
     pub contractHash: Hash,
 
