@@ -13,48 +13,4 @@ namespace mazzaroth
     // Public Keys of IDs approved by owner able to modify channel
     ID admins<200>;
   };
-
-  // GovernanceConfig stores governance information about a channel 
-  struct GovernanceConfig
-  {
-    // Max number of transactions to store in a block
-    unsigned hyper maxBlockSize;
-    // Consensus type being used
-    ConsensusConfigType consensus;
-    // Permissioning configurations
-    Permissioning permissioning;
-  }
-
-  // Consensus type
-  enum ConsensusConfigType
-  {
-    NONE = 0,
-    PBFT = 1
-  };
-
-  // Permissioning types
-  enum PermissioningType
-  {
-    PUBLIC = 0,
-    PRIVATE = 1,
-    PERMISSIONED = 2
-  };
-
-  struct PermissionedIDs
-  {
-    // List of public key ids authorized to participate in channel
-    ID allowedIDs<>;
-    // List of public key ids authorized to validate in consensus
-    ID validators<>;
-  };
-
-  union Permissioning switch (PermissioningType Type)
-  {
-  case PUBLIC:
-    void;
-  case PRIVATE:
-    void;
-  case PERMISSIONED:
-    PermissionedIDs permissionedIDs;
-  };
 }

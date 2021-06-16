@@ -3,22 +3,20 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Abi = Abi;
+exports.FunctionSignature = FunctionSignature;
+exports.Parameter = Parameter;
 exports.Account = Account;
 exports.Block = Block;
 exports.BlockHeader = BlockHeader;
 exports.Signature = Signature;
 exports.ID = ID;
 exports.Hash = Hash;
-exports.Parameter = Parameter;
+exports.Argument = Argument;
 exports.Hash32 = Hash32;
 exports.Hash64 = Hash64;
 exports.StatusInfo = StatusInfo;
 exports.ChannelConfig = ChannelConfig;
-exports.GovernanceConfig = GovernanceConfig;
-exports.PermissionedIDs = PermissionedIDs;
-exports.ConsensusConfigType = ConsensusConfigType;
-exports.PermissioningType = PermissioningType;
-exports.Permissioning = Permissioning;
 exports.DownloadRequest = DownloadRequest;
 exports.BatchesRequest = BatchesRequest;
 exports.DownloadResponse = DownloadResponse;
@@ -27,7 +25,6 @@ exports.DownloadRequestType = DownloadRequestType;
 exports.DownloadStatus = DownloadStatus;
 exports.DownloadRequestPayload = DownloadRequestPayload;
 exports.DownloadResponsePayload = DownloadResponsePayload;
-exports.ExecutionPlan = ExecutionPlan;
 exports.Receipt = Receipt;
 exports.ReceiptStatus = ReceiptStatus;
 exports.StateStatus = StateStatus;
@@ -39,8 +36,6 @@ exports.TransactionLookupRequest = TransactionLookupRequest;
 exports.TransactionLookupResponse = TransactionLookupResponse;
 exports.TransactionSubmitRequest = TransactionSubmitRequest;
 exports.TransactionSubmitResponse = TransactionSubmitResponse;
-exports.ReadonlyRequest = ReadonlyRequest;
-exports.ReadonlyResponse = ReadonlyResponse;
 exports.ReceiptLookupRequest = ReceiptLookupRequest;
 exports.ReceiptLookupResponse = ReceiptLookupResponse;
 exports.AccountInfoLookupRequest = AccountInfoLookupRequest;
@@ -49,12 +44,13 @@ exports.ChannelInfoLookupRequest = ChannelInfoLookupRequest;
 exports.ChannelInfoLookupResponse = ChannelInfoLookupResponse;
 exports.IdentifierType = IdentifierType;
 exports.BlockStatus = BlockStatus;
+exports.TransactionType = TransactionType;
 exports.TransactionStatus = TransactionStatus;
-exports.ReadonlyStatus = ReadonlyStatus;
 exports.ReceiptLookupStatus = ReceiptLookupStatus;
 exports.ChannelInfoType = ChannelInfoType;
 exports.InfoLookupStatus = InfoLookupStatus;
 exports.Identifier = Identifier;
+exports.TransactionInfo = TransactionInfo;
 exports.ChannelInfo = ChannelInfo;
 exports.ReceiptSubscription = ReceiptSubscription;
 exports.ReceiptSubscriptionResult = ReceiptSubscriptionResult;
@@ -75,12 +71,10 @@ exports.Contract = Contract;
 exports.Permission = Permission;
 exports.Action = Action;
 exports.Transaction = Transaction;
-exports.Input = Input;
 exports.UpdateType = UpdateType;
 exports.PermissionAction = PermissionAction;
 exports.ActionCategoryType = ActionCategoryType;
 exports.AuthorityType = AuthorityType;
-exports.InputType = InputType;
 exports.Update = Update;
 exports.ActionCategory = ActionCategory;
 exports.Authority = Authority;
@@ -97,8 +91,37 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // End typedef section
 
 // Start struct section
+function Abi() {
+    return new _xdrJsSerialize2.default.Struct(["functions"], [new _xdrJsSerialize2.default.VarArray(2147483647, FunctionSignature)]);
+}
+function FunctionSignature() {
+    return new _xdrJsSerialize2.default.Struct(["functionType", "name", "inputs", "outputs"], [new _xdrJsSerialize2.default.Str('', 2147483647), new _xdrJsSerialize2.default.Str('', 2147483647), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
+}
+function Parameter() {
+    return new _xdrJsSerialize2.default.Struct(["name", "parameterType", "codec"], [new _xdrJsSerialize2.default.Str('', 2147483647), new _xdrJsSerialize2.default.Str('', 2147483647), new _xdrJsSerialize2.default.Str('', 2147483647)]);
+}
+
+// End struct section
+
+// Start enum section
+
+
+// End enum section
+
+// Start union section
+
+
+// End union section
+
+// End namespace mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
 function Account() {
-    return new _xdrJsSerialize2.default.Struct(["name", "permissionedKeys"], [new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["permissionedKeys"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
 
 // End struct section
@@ -156,7 +179,7 @@ function Hash() {
     return new _xdrJsSerialize2.default.FixedOpaque(32);
 }
 
-function Parameter() {
+function Argument() {
     return new _xdrJsSerialize2.default.Str('', 2147483647);
 }
 
@@ -197,56 +220,16 @@ function StatusInfo() {
 function ChannelConfig() {
     return new _xdrJsSerialize2.default.Struct(["owner", "channelName", "admins"], [ID(), new _xdrJsSerialize2.default.Str('', 200), new _xdrJsSerialize2.default.VarArray(200, ID)]);
 }
-function GovernanceConfig() {
-    return new _xdrJsSerialize2.default.Struct(["maxBlockSize", "consensus", "permissioning"], [new _xdrJsSerialize2.default.UHyper(), ConsensusConfigType(), Permissioning()]);
-}
-function PermissionedIDs() {
-    return new _xdrJsSerialize2.default.Struct(["allowedIDs", "validators"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
-}
 
 // End struct section
 
 // Start enum section
 
-function ConsensusConfigType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "NONE",
-        1: "PBFT"
-
-    });
-}
-
-function PermissioningType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "PUBLIC",
-        1: "PRIVATE",
-        2: "PERMISSIONED"
-
-    });
-}
 
 // End enum section
 
 // Start union section
 
-
-function Permissioning() {
-    return new _xdrJsSerialize2.default.Union(PermissioningType(), {
-
-        "PUBLIC": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "PRIVATE": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "PERMISSIONED": () => {
-            return PermissionedIDs();
-        }
-
-    });
-}
 
 // End union section
 
@@ -351,29 +334,6 @@ function DownloadResponsePayload() {
 // End typedef section
 
 // Start struct section
-function ExecutionPlan() {
-    return new _xdrJsSerialize2.default.Struct(["host", "actions"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(100, Action)]);
-}
-
-// End struct section
-
-// Start enum section
-
-
-// End enum section
-
-// Start union section
-
-
-// End union section
-
-// End namespace mazzaroth
-// Namespace start mazzaroth
-
-// Start typedef section
-// End typedef section
-
-// Start struct section
 function Receipt() {
     return new _xdrJsSerialize2.default.Struct(["status", "stateRoot", "result", "statusInfo"], [ReceiptStatus(), Hash(), new _xdrJsSerialize2.default.Str('', 2147483647), StatusInfo()]);
 }
@@ -429,13 +389,7 @@ function TransactionSubmitRequest() {
     return new _xdrJsSerialize2.default.Struct(["transaction"], [Transaction()]);
 }
 function TransactionSubmitResponse() {
-    return new _xdrJsSerialize2.default.Struct(["transactionID", "status", "statusInfo"], [ID(), TransactionStatus(), StatusInfo()]);
-}
-function ReadonlyRequest() {
-    return new _xdrJsSerialize2.default.Struct(["call"], [Call()]);
-}
-function ReadonlyResponse() {
-    return new _xdrJsSerialize2.default.Struct(["result", "stateStatus", "status", "statusInfo"], [new _xdrJsSerialize2.default.Str('', 2147483647), StateStatus(), ReadonlyStatus(), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["transactionInfo", "status", "statusInfo"], [TransactionInfo(), TransactionStatus(), StatusInfo()]);
 }
 function ReceiptLookupRequest() {
     return new _xdrJsSerialize2.default.Struct(["transactionID"], [ID()]);
@@ -479,6 +433,15 @@ function BlockStatus() {
     });
 }
 
+function TransactionType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "NONE",
+        1: "READ",
+        2: "WRITE"
+
+    });
+}
+
 function TransactionStatus() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
@@ -486,15 +449,6 @@ function TransactionStatus() {
         2: "REJECTED",
         3: "CONFIRMED",
         4: "NOT_FOUND"
-
-    });
-}
-
-function ReadonlyStatus() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "UNKNOWN",
-        1: "SUCCESS",
-        2: "FAILURE"
 
     });
 }
@@ -544,6 +498,24 @@ function Identifier() {
 
         "HASH": () => {
             return Hash();
+        }
+
+    });
+}
+
+function TransactionInfo() {
+    return new _xdrJsSerialize2.default.Union(TransactionType(), {
+
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "READ": () => {
+            return Receipt();
+        },
+
+        "WRITE": () => {
+            return ID();
         }
 
     });
@@ -726,10 +698,10 @@ function ReceiptFilter() {
 
 // Start struct section
 function Call() {
-    return new _xdrJsSerialize2.default.Struct(["function", "parameters"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
+    return new _xdrJsSerialize2.default.Struct(["function", "arguments"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Argument)]);
 }
 function Contract() {
-    return new _xdrJsSerialize2.default.Struct(["contractBytes", "contractHash", "version"], [new _xdrJsSerialize2.default.VarOpaque(2147483647), Hash(), new _xdrJsSerialize2.default.Str('', 100)]);
+    return new _xdrJsSerialize2.default.Struct(["contractBytes", "abi", "contractHash", "version"], [new _xdrJsSerialize2.default.VarOpaque(2147483647), new _xdrJsSerialize2.default.Str('', 2147483647), Hash(), new _xdrJsSerialize2.default.Str('', 100)]);
 }
 function Permission() {
     return new _xdrJsSerialize2.default.Struct(["key", "action"], [ID(), PermissionAction()]);
@@ -739,9 +711,6 @@ function Action() {
 }
 function Transaction() {
     return new _xdrJsSerialize2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
-}
-function Input() {
-    return new _xdrJsSerialize2.default.Struct(["inputType", "function", "parameters"], [InputType(), new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Parameter)]);
 }
 
 // End struct section
@@ -779,16 +748,6 @@ function AuthorityType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "NONE",
         1: "PERMISSIONED"
-
-    });
-}
-
-function InputType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "NONE",
-        1: "READONLY",
-        2: "EXECUTE",
-        3: "CONSTRUCTOR"
 
     });
 }

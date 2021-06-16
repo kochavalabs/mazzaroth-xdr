@@ -29,9 +29,55 @@ extern crate json;
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Account {
+pub struct Abi {
+    #[array(var = 2147483647)]
+    pub functions: Vec<FunctionSignature>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct FunctionSignature {
+    #[array(var = 2147483647)]
+    pub functionType: String,
+
+    #[array(var = 2147483647)]
     pub name: String,
 
+    #[array(var = 2147483647)]
+    pub inputs: Vec<Parameter>,
+
+    #[array(var = 2147483647)]
+    pub outputs: Vec<Parameter>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Parameter {
+    #[array(var = 2147483647)]
+    pub name: String,
+
+    #[array(var = 2147483647)]
+    pub parameterType: String,
+
+    #[array(var = 2147483647)]
+    pub codec: String,
+}
+
+// End struct section
+
+// Start union section
+
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Account {
     #[array(var = 2147483647)]
     pub permissionedKeys: Vec<ID>,
 }
@@ -108,7 +154,7 @@ pub struct Hash {
     pub t: Vec<u8>,
 }
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Parameter {
+pub struct Argument {
     #[array(var = 2147483647)]
     pub t: String,
 }
@@ -158,66 +204,10 @@ pub struct ChannelConfig {
     pub admins: Vec<ID>,
 }
 
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct GovernanceConfig {
-    pub maxBlockSize: u64,
-
-    pub consensus: ConsensusConfigType,
-
-    pub permissioning: Permissioning,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct PermissionedIDs {
-    #[array(var = 2147483647)]
-    pub allowedIDs: Vec<ID>,
-
-    #[array(var = 2147483647)]
-    pub validators: Vec<ID>,
-}
-
 // End struct section
 
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ConsensusConfigType {
-    NONE = 0,
-    PBFT = 1,
-}
-
-impl Default for ConsensusConfigType {
-    fn default() -> Self {
-        ConsensusConfigType::NONE
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum PermissioningType {
-    PUBLIC = 0,
-    PRIVATE = 1,
-    PERMISSIONED = 2,
-}
-
-impl Default for PermissioningType {
-    fn default() -> Self {
-        PermissioningType::PUBLIC
-    }
-}
 // Start union section
 
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum Permissioning {
-    PUBLIC(()),
-
-    PRIVATE(()),
-
-    PERMISSIONED(PermissionedIDs),
-}
-
-impl Default for Permissioning {
-    fn default() -> Self {
-        Permissioning::PUBLIC(())
-    }
-}
 // End union section
 
 // Namspace end mazzaroth
@@ -334,30 +324,6 @@ impl Default for DownloadResponsePayload {
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ExecutionPlan {
-    #[array(var = 256)]
-    pub host: String,
-
-    #[array(var = 100)]
-    pub actions: Vec<Action>,
-}
-
-// End struct section
-
-// Start union section
-
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Receipt {
     pub status: ReceiptStatus,
 
@@ -457,26 +423,9 @@ pub struct TransactionSubmitRequest {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct TransactionSubmitResponse {
-    pub transactionID: ID,
+    pub transactionInfo: TransactionInfo,
 
     pub status: TransactionStatus,
-
-    pub statusInfo: StatusInfo,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ReadonlyRequest {
-    pub call: Call,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ReadonlyResponse {
-    #[array(var = 2147483647)]
-    pub result: String,
-
-    pub stateStatus: StateStatus,
-
-    pub status: ReadonlyStatus,
 
     pub statusInfo: StatusInfo,
 }
@@ -559,6 +508,19 @@ impl Default for BlockStatus {
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum TransactionType {
+    NONE = 0,
+    READ = 1,
+    WRITE = 2,
+}
+
+impl Default for TransactionType {
+    fn default() -> Self {
+        TransactionType::NONE
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum TransactionStatus {
     UNKNOWN = 0,
     ACCEPTED = 1,
@@ -570,19 +532,6 @@ pub enum TransactionStatus {
 impl Default for TransactionStatus {
     fn default() -> Self {
         TransactionStatus::UNKNOWN
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ReadonlyStatus {
-    UNKNOWN = 0,
-    SUCCESS = 1,
-    FAILURE = 2,
-}
-
-impl Default for ReadonlyStatus {
-    fn default() -> Self {
-        ReadonlyStatus::UNKNOWN
     }
 }
 
@@ -638,6 +587,21 @@ pub enum Identifier {
 impl Default for Identifier {
     fn default() -> Self {
         Identifier::NONE(())
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum TransactionInfo {
+    NONE(()),
+
+    READ(Receipt),
+
+    WRITE(ID),
+}
+
+impl Default for TransactionInfo {
+    fn default() -> Self {
+        TransactionInfo::NONE(())
     }
 }
 
@@ -846,13 +810,16 @@ pub struct Call {
     pub function: String,
 
     #[array(var = 2147483647)]
-    pub parameters: Vec<Parameter>,
+    pub arguments: Vec<Argument>,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Contract {
     #[array(var = 2147483647)]
     pub contractBytes: Vec<u8>,
+
+    #[array(var = 2147483647)]
+    pub abi: String,
 
     pub contractHash: Hash,
 
@@ -887,17 +854,6 @@ pub struct Transaction {
     pub signer: Authority,
 
     pub action: Action,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Input {
-    pub inputType: InputType,
-
-    #[array(var = 256)]
-    pub function: String,
-
-    #[array(var = 2147483647)]
-    pub parameters: Vec<Parameter>,
 }
 
 // End struct section
@@ -950,20 +906,6 @@ pub enum AuthorityType {
 impl Default for AuthorityType {
     fn default() -> Self {
         AuthorityType::NONE
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum InputType {
-    NONE = 0,
-    READONLY = 1,
-    EXECUTE = 2,
-    CONSTRUCTOR = 3,
-}
-
-impl Default for InputType {
-    fn default() -> Self {
-        InputType::NONE
     }
 }
 // Start union section
