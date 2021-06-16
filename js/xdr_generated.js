@@ -17,11 +17,6 @@ exports.Hash32 = Hash32;
 exports.Hash64 = Hash64;
 exports.StatusInfo = StatusInfo;
 exports.ChannelConfig = ChannelConfig;
-exports.GovernanceConfig = GovernanceConfig;
-exports.PermissionedIDs = PermissionedIDs;
-exports.ConsensusConfigType = ConsensusConfigType;
-exports.PermissioningType = PermissioningType;
-exports.Permissioning = Permissioning;
 exports.DownloadRequest = DownloadRequest;
 exports.BatchesRequest = BatchesRequest;
 exports.DownloadResponse = DownloadResponse;
@@ -30,7 +25,6 @@ exports.DownloadRequestType = DownloadRequestType;
 exports.DownloadStatus = DownloadStatus;
 exports.DownloadRequestPayload = DownloadRequestPayload;
 exports.DownloadResponsePayload = DownloadResponsePayload;
-exports.ExecutionPlan = ExecutionPlan;
 exports.Receipt = Receipt;
 exports.ReceiptStatus = ReceiptStatus;
 exports.StateStatus = StateStatus;
@@ -127,7 +121,7 @@ function Parameter() {
 
 // Start struct section
 function Account() {
-    return new _xdrJsSerialize2.default.Struct(["name", "permissionedKeys"], [new _xdrJsSerialize2.default.Str('', 0), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["permissionedKeys"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
 
 // End struct section
@@ -226,56 +220,16 @@ function StatusInfo() {
 function ChannelConfig() {
     return new _xdrJsSerialize2.default.Struct(["owner", "channelName", "admins"], [ID(), new _xdrJsSerialize2.default.Str('', 200), new _xdrJsSerialize2.default.VarArray(200, ID)]);
 }
-function GovernanceConfig() {
-    return new _xdrJsSerialize2.default.Struct(["maxBlockSize", "consensus", "permissioning"], [new _xdrJsSerialize2.default.UHyper(), ConsensusConfigType(), Permissioning()]);
-}
-function PermissionedIDs() {
-    return new _xdrJsSerialize2.default.Struct(["allowedIDs", "validators"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID), new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
-}
 
 // End struct section
 
 // Start enum section
 
-function ConsensusConfigType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "NONE",
-        1: "PBFT"
-
-    });
-}
-
-function PermissioningType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "PUBLIC",
-        1: "PRIVATE",
-        2: "PERMISSIONED"
-
-    });
-}
 
 // End enum section
 
 // Start union section
 
-
-function Permissioning() {
-    return new _xdrJsSerialize2.default.Union(PermissioningType(), {
-
-        "PUBLIC": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "PRIVATE": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "PERMISSIONED": () => {
-            return PermissionedIDs();
-        }
-
-    });
-}
 
 // End union section
 
@@ -370,29 +324,6 @@ function DownloadResponsePayload() {
 
     });
 }
-
-// End union section
-
-// End namespace mazzaroth
-// Namespace start mazzaroth
-
-// Start typedef section
-// End typedef section
-
-// Start struct section
-function ExecutionPlan() {
-    return new _xdrJsSerialize2.default.Struct(["host", "actions"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(100, Action)]);
-}
-
-// End struct section
-
-// Start enum section
-
-
-// End enum section
-
-// Start union section
-
 
 // End union section
 
