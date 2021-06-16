@@ -40,6 +40,9 @@ namespace mazzaroth
     // Contract binary bytes.
     opaque contractBytes<>;
 
+    // Contract ABI as JSON string
+    string abi<>;
+
     // Sha3 256 Hash of the contract bytes, verified on execution
     Hash contractHash;
 

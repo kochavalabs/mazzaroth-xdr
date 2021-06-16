@@ -154,11 +154,7 @@ namespace mazzaroth
   // Response from a node from a transaction Request.
   struct TransactionSubmitResponse
   {
-    // Return results of execution
-    string result<>;
-
-    // Current state status
-    StateStatus stateStatus;
+    TransactionInfo transactionInfo;
 
     // Current status of the transaction.
     TransactionStatus status;
