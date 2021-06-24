@@ -3325,7 +3325,7 @@ var (
 type Contract struct {
 	ContractBytes []byte `json:"contract_bytes"`
 
-	Abi string `json:"abi"`
+	Abi Abi `json:"abi"`
 
 	ContractHash Hash `json:"contract_hash"`
 
