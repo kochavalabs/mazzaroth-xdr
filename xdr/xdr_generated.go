@@ -56,7 +56,7 @@ var (
 
 // FunctionSignature generated struct
 type FunctionSignature struct {
-	FunctionType string `json:"function_type"`
+	FunctionType string `json:"functionType"`
 
 	Name string `json:"name"`
 
@@ -87,7 +87,7 @@ var (
 type Parameter struct {
 	Name string `json:"name"`
 
-	ParameterType string `json:"parameter_type"`
+	ParameterType string `json:"parameterType"`
 
 	Codec string `json:"codec"`
 }
@@ -131,7 +131,7 @@ var (
 
 // Account generated struct
 type Account struct {
-	PermissionedKeys []ID `json:"permissioned_keys"`
+	PermissionedKeys []ID `json:"permissionedKeys"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -200,21 +200,21 @@ var (
 type BlockHeader struct {
 	Timestamp string `xdrmaxsize:"256" json:"timestamp"`
 
-	BlockHeight uint64 `json:"block_height"`
+	BlockHeight uint64 `json:"blockHeight"`
 
-	TransactionHeight uint64 `json:"transaction_height"`
+	TransactionHeight uint64 `json:"transactionHeight"`
 
-	ConsensusSequenceNumber uint64 `json:"consensus_sequence_number"`
+	ConsensusSequenceNumber uint64 `json:"consensusSequenceNumber"`
 
-	TxMerkleRoot Hash `json:"tx_merkle_root"`
+	TxMerkleRoot Hash `json:"txMerkleRoot"`
 
-	TxReceiptRoot Hash `json:"tx_receipt_root"`
+	TxReceiptRoot Hash `json:"txReceiptRoot"`
 
-	StateRoot Hash `json:"state_root"`
+	StateRoot Hash `json:"stateRoot"`
 
-	PreviousHeader Hash `json:"previous_header"`
+	PreviousHeader Hash `json:"previousHeader"`
 
-	BlockProducerAddress ID `json:"block_producer_address"`
+	BlockProducerAddress ID `json:"blockProducerAddress"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -449,7 +449,7 @@ var (
 type ChannelConfig struct {
 	Owner ID `json:"owner"`
 
-	ChannelName string `xdrmaxsize:"200" json:"channel_name"`
+	ChannelName string `xdrmaxsize:"200" json:"channelName"`
 
 	Admins []ID `xdrmaxsize:"200" json:"admins"`
 }
@@ -493,7 +493,7 @@ var (
 
 // DownloadRequest generated struct
 type DownloadRequest struct {
-	DownloadRequestPayload DownloadRequestPayload `json:"download_request_payload"`
+	DownloadRequestPayload DownloadRequestPayload `json:"downloadRequestPayload"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -516,7 +516,7 @@ var (
 
 // BatchesRequest generated struct
 type BatchesRequest struct {
-	SeqNum uint64 `json:"seq_num"`
+	SeqNum uint64 `json:"seqNum"`
 
 	Id string `json:"id"`
 
@@ -545,9 +545,9 @@ var (
 
 // DownloadResponse generated struct
 type DownloadResponse struct {
-	DownloadStatus DownloadStatus `json:"download_status"`
+	DownloadStatus DownloadStatus `json:"downloadStatus"`
 
-	DownloadResponsePayload DownloadResponsePayload `json:"download_response_payload"`
+	DownloadResponsePayload DownloadResponsePayload `json:"downloadResponsePayload"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -572,7 +572,7 @@ var (
 type DownloadHeight struct {
 	Height uint64 `json:"height"`
 
-	SeqNum uint64 `json:"seq_num"`
+	SeqNum uint64 `json:"seqNum"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -765,6 +765,7 @@ func NewDownloadRequestPayload(aType DownloadRequestType, value interface{}) (re
 	case DownloadRequestTypeBLOCK:
 
 		tv, ok := value.(uint64)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -774,6 +775,7 @@ func NewDownloadRequestPayload(aType DownloadRequestType, value interface{}) (re
 	case DownloadRequestTypeBATCHES:
 
 		tv, ok := value.(BatchesRequest)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -787,8 +789,8 @@ func NewDownloadRequestPayload(aType DownloadRequestType, value interface{}) (re
 // MustBlockNumber retrieves the BlockNumber value from the union,
 // panicing if the value is not set.
 func (u DownloadRequestPayload) MustBlockNumber() uint64 {
-	val, ok := u.GetBlockNumber()
 
+	val, ok := u.GetBlockNumber()
 	if !ok {
 		panic("arm BlockNumber is not set")
 	}
@@ -799,6 +801,7 @@ func (u DownloadRequestPayload) MustBlockNumber() uint64 {
 // GetBlockNumber retrieves the BlockNumber value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u DownloadRequestPayload) GetBlockNumber() (result uint64, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "BlockNumber" {
@@ -812,8 +815,8 @@ func (u DownloadRequestPayload) GetBlockNumber() (result uint64, ok bool) {
 // MustBatchesRequest retrieves the BatchesRequest value from the union,
 // panicing if the value is not set.
 func (u DownloadRequestPayload) MustBatchesRequest() BatchesRequest {
-	val, ok := u.GetBatchesRequest()
 
+	val, ok := u.GetBatchesRequest()
 	if !ok {
 		panic("arm BatchesRequest is not set")
 	}
@@ -824,6 +827,7 @@ func (u DownloadRequestPayload) MustBatchesRequest() BatchesRequest {
 // GetBatchesRequest retrieves the BatchesRequest value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u DownloadRequestPayload) GetBatchesRequest() (result BatchesRequest, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "BatchesRequest" {
@@ -897,6 +901,7 @@ func NewDownloadResponsePayload(aType DownloadRequestType, value interface{}) (r
 	case DownloadRequestTypeHEIGHT:
 
 		tv, ok := value.(DownloadHeight)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -906,6 +911,7 @@ func NewDownloadResponsePayload(aType DownloadRequestType, value interface{}) (r
 	case DownloadRequestTypeBLOCK:
 
 		tv, ok := value.(Block)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -921,8 +927,8 @@ func NewDownloadResponsePayload(aType DownloadRequestType, value interface{}) (r
 // MustDownloadHeight retrieves the DownloadHeight value from the union,
 // panicing if the value is not set.
 func (u DownloadResponsePayload) MustDownloadHeight() DownloadHeight {
-	val, ok := u.GetDownloadHeight()
 
+	val, ok := u.GetDownloadHeight()
 	if !ok {
 		panic("arm DownloadHeight is not set")
 	}
@@ -933,6 +939,7 @@ func (u DownloadResponsePayload) MustDownloadHeight() DownloadHeight {
 // GetDownloadHeight retrieves the DownloadHeight value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u DownloadResponsePayload) GetDownloadHeight() (result DownloadHeight, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "DownloadHeight" {
@@ -946,8 +953,8 @@ func (u DownloadResponsePayload) GetDownloadHeight() (result DownloadHeight, ok 
 // MustBlock retrieves the Block value from the union,
 // panicing if the value is not set.
 func (u DownloadResponsePayload) MustBlock() Block {
-	val, ok := u.GetBlock()
 
+	val, ok := u.GetBlock()
 	if !ok {
 		panic("arm Block is not set")
 	}
@@ -958,6 +965,7 @@ func (u DownloadResponsePayload) MustBlock() Block {
 // GetBlock retrieves the Block value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u DownloadResponsePayload) GetBlock() (result Block, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Block" {
@@ -1001,11 +1009,11 @@ var (
 type Receipt struct {
 	Status ReceiptStatus `json:"status"`
 
-	StateRoot Hash `json:"state_root"`
+	StateRoot Hash `json:"stateRoot"`
 
 	Result string `json:"result"`
 
-	StatusInfo StatusInfo `json:"status_info"`
+	StatusInfo StatusInfo `json:"statusInfo"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1098,9 +1106,9 @@ var (
 
 // StateStatus generated struct
 type StateStatus struct {
-	PreviousBlock uint64 `json:"previous_block"`
+	PreviousBlock uint64 `json:"previousBlock"`
 
-	TransactionCount uint64 `json:"transaction_count"`
+	TransactionCount uint64 `json:"transactionCount"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1123,7 +1131,7 @@ var (
 
 // BlockLookupRequest generated struct
 type BlockLookupRequest struct {
-	ID Identifier `json:"id"`
+	Identifier Identifier `json:"identifier"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1146,7 +1154,7 @@ var (
 
 // BlockHeaderLookupRequest generated struct
 type BlockHeaderLookupRequest struct {
-	ID Identifier `json:"id"`
+	Identifier Identifier `json:"identifier"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1171,11 +1179,11 @@ var (
 type BlockLookupResponse struct {
 	Block Block `json:"block"`
 
-	StateStatus StateStatus `json:"state_status"`
+	StateStatus StateStatus `json:"stateStatus"`
 
 	Status BlockStatus `json:"status"`
 
-	StatusInfo StatusInfo `json:"status_info"`
+	StatusInfo StatusInfo `json:"statusInfo"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1200,11 +1208,11 @@ var (
 type BlockHeaderLookupResponse struct {
 	Header BlockHeader `json:"header"`
 
-	StateStatus StateStatus `json:"state_status"`
+	StateStatus StateStatus `json:"stateStatus"`
 
 	Status BlockStatus `json:"status"`
 
-	StatusInfo StatusInfo `json:"status_info"`
+	StatusInfo StatusInfo `json:"statusInfo"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1227,7 +1235,7 @@ var (
 
 // TransactionLookupRequest generated struct
 type TransactionLookupRequest struct {
-	TransactionID ID `json:"transaction_id"`
+	TransactionID ID `json:"transactionID"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1252,11 +1260,11 @@ var (
 type TransactionLookupResponse struct {
 	Transaction Transaction `json:"transaction"`
 
-	StateStatus StateStatus `json:"state_status"`
+	StateStatus StateStatus `json:"stateStatus"`
 
 	Status TransactionStatus `json:"status"`
 
-	StatusInfo StatusInfo `json:"status_info"`
+	StatusInfo StatusInfo `json:"statusInfo"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1302,11 +1310,11 @@ var (
 
 // TransactionSubmitResponse generated struct
 type TransactionSubmitResponse struct {
-	TransactionInfo TransactionInfo `json:"transaction_info"`
+	TransactionInfo TransactionInfo `json:"transactionInfo"`
 
 	Status TransactionStatus `json:"status"`
 
-	StatusInfo StatusInfo `json:"status_info"`
+	StatusInfo StatusInfo `json:"statusInfo"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1329,7 +1337,7 @@ var (
 
 // ReceiptLookupRequest generated struct
 type ReceiptLookupRequest struct {
-	TransactionID ID `json:"transaction_id"`
+	TransactionID ID `json:"transactionID"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1354,11 +1362,11 @@ var (
 type ReceiptLookupResponse struct {
 	Receipt Receipt `json:"receipt"`
 
-	StateStatus StateStatus `json:"state_status"`
+	StateStatus StateStatus `json:"stateStatus"`
 
 	Status ReceiptLookupStatus `json:"status"`
 
-	StatusInfo StatusInfo `json:"status_info"`
+	StatusInfo StatusInfo `json:"statusInfo"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1404,13 +1412,13 @@ var (
 
 // AccountInfoLookupResponse generated struct
 type AccountInfoLookupResponse struct {
-	AccountInfo Account `json:"account_info"`
+	AccountInfo Account `json:"accountInfo"`
 
-	StateStatus StateStatus `json:"state_status"`
+	StateStatus StateStatus `json:"stateStatus"`
 
 	Status InfoLookupStatus `json:"status"`
 
-	StatusInfo StatusInfo `json:"status_info"`
+	StatusInfo StatusInfo `json:"statusInfo"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1433,7 +1441,7 @@ var (
 
 // ChannelInfoLookupRequest generated struct
 type ChannelInfoLookupRequest struct {
-	InfoType ChannelInfoType `json:"info_type"`
+	InfoType ChannelInfoType `json:"infoType"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1456,13 +1464,13 @@ var (
 
 // ChannelInfoLookupResponse generated struct
 type ChannelInfoLookupResponse struct {
-	ChannelInfo ChannelInfo `json:"channel_info"`
+	ChannelInfo ChannelInfo `json:"channelInfo"`
 
-	StateStatus StateStatus `json:"state_status"`
+	StateStatus StateStatus `json:"stateStatus"`
 
 	Status InfoLookupStatus `json:"status"`
 
-	StatusInfo StatusInfo `json:"status_info"`
+	StatusInfo StatusInfo `json:"statusInfo"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1940,6 +1948,7 @@ func NewIdentifier(aType IdentifierType, value interface{}) (result Identifier, 
 	case IdentifierTypeNUMBER:
 
 		tv, ok := value.(uint64)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -1949,6 +1958,7 @@ func NewIdentifier(aType IdentifierType, value interface{}) (result Identifier, 
 	case IdentifierTypeHASH:
 
 		tv, ok := value.(Hash)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -1962,8 +1972,8 @@ func NewIdentifier(aType IdentifierType, value interface{}) (result Identifier, 
 // MustNumber retrieves the Number value from the union,
 // panicing if the value is not set.
 func (u Identifier) MustNumber() uint64 {
-	val, ok := u.GetNumber()
 
+	val, ok := u.GetNumber()
 	if !ok {
 		panic("arm Number is not set")
 	}
@@ -1974,6 +1984,7 @@ func (u Identifier) MustNumber() uint64 {
 // GetNumber retrieves the Number value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u Identifier) GetNumber() (result uint64, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Number" {
@@ -1987,8 +1998,8 @@ func (u Identifier) GetNumber() (result uint64, ok bool) {
 // MustHash retrieves the Hash value from the union,
 // panicing if the value is not set.
 func (u Identifier) MustHash() Hash {
-	val, ok := u.GetHash()
 
+	val, ok := u.GetHash()
 	if !ok {
 		panic("arm Hash is not set")
 	}
@@ -1999,6 +2010,7 @@ func (u Identifier) MustHash() Hash {
 // GetHash retrieves the Hash value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u Identifier) GetHash() (result Hash, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Hash" {
@@ -2069,6 +2081,7 @@ func NewTransactionInfo(aType TransactionType, value interface{}) (result Transa
 	case TransactionTypeREAD:
 
 		tv, ok := value.(Receipt)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2078,6 +2091,7 @@ func NewTransactionInfo(aType TransactionType, value interface{}) (result Transa
 	case TransactionTypeWRITE:
 
 		tv, ok := value.(ID)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2091,8 +2105,8 @@ func NewTransactionInfo(aType TransactionType, value interface{}) (result Transa
 // MustReceipt retrieves the Receipt value from the union,
 // panicing if the value is not set.
 func (u TransactionInfo) MustReceipt() Receipt {
-	val, ok := u.GetReceipt()
 
+	val, ok := u.GetReceipt()
 	if !ok {
 		panic("arm Receipt is not set")
 	}
@@ -2103,6 +2117,7 @@ func (u TransactionInfo) MustReceipt() Receipt {
 // GetReceipt retrieves the Receipt value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u TransactionInfo) GetReceipt() (result Receipt, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Receipt" {
@@ -2116,8 +2131,8 @@ func (u TransactionInfo) GetReceipt() (result Receipt, ok bool) {
 // MustTransactionID retrieves the TransactionID value from the union,
 // panicing if the value is not set.
 func (u TransactionInfo) MustTransactionID() ID {
-	val, ok := u.GetTransactionID()
 
+	val, ok := u.GetTransactionID()
 	if !ok {
 		panic("arm TransactionID is not set")
 	}
@@ -2128,6 +2143,7 @@ func (u TransactionInfo) MustTransactionID() ID {
 // GetTransactionID retrieves the TransactionID value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u TransactionInfo) GetTransactionID() (result ID, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "TransactionID" {
@@ -2198,6 +2214,7 @@ func NewChannelInfo(aType ChannelInfoType, value interface{}) (result ChannelInf
 	case ChannelInfoTypeCONTRACT:
 
 		tv, ok := value.(Contract)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2207,6 +2224,7 @@ func NewChannelInfo(aType ChannelInfoType, value interface{}) (result ChannelInf
 	case ChannelInfoTypeCONFIG:
 
 		tv, ok := value.(ChannelConfig)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2220,8 +2238,8 @@ func NewChannelInfo(aType ChannelInfoType, value interface{}) (result ChannelInf
 // MustContract retrieves the Contract value from the union,
 // panicing if the value is not set.
 func (u ChannelInfo) MustContract() Contract {
-	val, ok := u.GetContract()
 
+	val, ok := u.GetContract()
 	if !ok {
 		panic("arm Contract is not set")
 	}
@@ -2232,6 +2250,7 @@ func (u ChannelInfo) MustContract() Contract {
 // GetContract retrieves the Contract value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u ChannelInfo) GetContract() (result Contract, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Contract" {
@@ -2245,8 +2264,8 @@ func (u ChannelInfo) GetContract() (result Contract, ok bool) {
 // MustChannelConfig retrieves the ChannelConfig value from the union,
 // panicing if the value is not set.
 func (u ChannelInfo) MustChannelConfig() ChannelConfig {
-	val, ok := u.GetChannelConfig()
 
+	val, ok := u.GetChannelConfig()
 	if !ok {
 		panic("arm ChannelConfig is not set")
 	}
@@ -2257,6 +2276,7 @@ func (u ChannelInfo) MustChannelConfig() ChannelConfig {
 // GetChannelConfig retrieves the ChannelConfig value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u ChannelInfo) GetChannelConfig() (result ChannelConfig, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "ChannelConfig" {
@@ -2298,9 +2318,9 @@ var (
 
 // ReceiptSubscription generated struct
 type ReceiptSubscription struct {
-	TransactionFilter TransactionFilter `json:"transaction_filter"`
+	TransactionFilter TransactionFilter `json:"transactionFilter"`
 
-	ReceiptFilter ReceiptFilter `json:"receipt_filter"`
+	ReceiptFilter ReceiptFilter `json:"receiptFilter"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2325,7 +2345,7 @@ var (
 type ReceiptSubscriptionResult struct {
 	Receipt Receipt `json:"receipt"`
 
-	TransactionID ID `json:"transaction_id"`
+	TransactionID ID `json:"transactionID"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2350,7 +2370,7 @@ var (
 type ReceiptValueFilter struct {
 	Status ValueFilter `json:"status"`
 
-	StateRoot ValueFilter `json:"state_root"`
+	StateRoot ValueFilter `json:"stateRoot"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2379,7 +2399,7 @@ type ActionFilter struct {
 
 	Address ValueFilter `json:"address"`
 
-	ChannelID ValueFilter `json:"channel_id"`
+	ChannelID ValueFilter `json:"channelID"`
 
 	Nonce ValueFilter `json:"nonce"`
 }
@@ -2404,7 +2424,7 @@ var (
 
 // ContractFilter generated struct
 type ContractFilter struct {
-	ActionFilter ActionFilter `json:"action_filter"`
+	ActionFilter ActionFilter `json:"actionFilter"`
 
 	Version ValueFilter `json:"version"`
 }
@@ -2429,7 +2449,7 @@ var (
 
 // ConfigFilter generated struct
 type ConfigFilter struct {
-	ActionFilter ActionFilter `json:"action_filter"`
+	ActionFilter ActionFilter `json:"actionFilter"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2452,7 +2472,7 @@ var (
 
 // PermissionFilter generated struct
 type PermissionFilter struct {
-	ActionFilter ActionFilter `json:"action_filter"`
+	ActionFilter ActionFilter `json:"actionFilter"`
 
 	Key ValueFilter `json:"key"`
 
@@ -2479,7 +2499,7 @@ var (
 
 // CallFilter generated struct
 type CallFilter struct {
-	ActionFilter ActionFilter `json:"action_filter"`
+	ActionFilter ActionFilter `json:"actionFilter"`
 
 	Function ValueFilter `json:"function"`
 }
@@ -2760,6 +2780,7 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 	case ValueFilterTypeSTRING:
 
 		tv, ok := value.(string)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2769,6 +2790,7 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 	case ValueFilterTypeHASH32:
 
 		tv, ok := value.(Hash32)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2778,6 +2800,7 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 	case ValueFilterTypeHASH64:
 
 		tv, ok := value.(Hash64)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2787,6 +2810,7 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 	case ValueFilterTypeUHYPER:
 
 		tv, ok := value.(uint64)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2796,6 +2820,7 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 	case ValueFilterTypeINT:
 
 		tv, ok := value.(int32)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -2809,8 +2834,8 @@ func NewValueFilter(aType ValueFilterType, value interface{}) (result ValueFilte
 // MustRegex retrieves the Regex value from the union,
 // panicing if the value is not set.
 func (u ValueFilter) MustRegex() string {
-	val, ok := u.GetRegex()
 
+	val, ok := u.GetRegex()
 	if !ok {
 		panic("arm Regex is not set")
 	}
@@ -2821,6 +2846,7 @@ func (u ValueFilter) MustRegex() string {
 // GetRegex retrieves the Regex value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u ValueFilter) GetRegex() (result string, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Regex" {
@@ -2834,8 +2860,8 @@ func (u ValueFilter) GetRegex() (result string, ok bool) {
 // MustHash32Value retrieves the Hash32Value value from the union,
 // panicing if the value is not set.
 func (u ValueFilter) MustHash32Value() Hash32 {
-	val, ok := u.GetHash32Value()
 
+	val, ok := u.GetHash32Value()
 	if !ok {
 		panic("arm Hash32Value is not set")
 	}
@@ -2846,6 +2872,7 @@ func (u ValueFilter) MustHash32Value() Hash32 {
 // GetHash32Value retrieves the Hash32Value value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u ValueFilter) GetHash32Value() (result Hash32, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Hash32Value" {
@@ -2859,8 +2886,8 @@ func (u ValueFilter) GetHash32Value() (result Hash32, ok bool) {
 // MustHash64Value retrieves the Hash64Value value from the union,
 // panicing if the value is not set.
 func (u ValueFilter) MustHash64Value() Hash64 {
-	val, ok := u.GetHash64Value()
 
+	val, ok := u.GetHash64Value()
 	if !ok {
 		panic("arm Hash64Value is not set")
 	}
@@ -2871,6 +2898,7 @@ func (u ValueFilter) MustHash64Value() Hash64 {
 // GetHash64Value retrieves the Hash64Value value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u ValueFilter) GetHash64Value() (result Hash64, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Hash64Value" {
@@ -2884,8 +2912,8 @@ func (u ValueFilter) GetHash64Value() (result Hash64, ok bool) {
 // MustUhyperValue retrieves the UhyperValue value from the union,
 // panicing if the value is not set.
 func (u ValueFilter) MustUhyperValue() uint64 {
-	val, ok := u.GetUhyperValue()
 
+	val, ok := u.GetUhyperValue()
 	if !ok {
 		panic("arm UhyperValue is not set")
 	}
@@ -2896,6 +2924,7 @@ func (u ValueFilter) MustUhyperValue() uint64 {
 // GetUhyperValue retrieves the UhyperValue value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u ValueFilter) GetUhyperValue() (result uint64, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "UhyperValue" {
@@ -2909,8 +2938,8 @@ func (u ValueFilter) GetUhyperValue() (result uint64, ok bool) {
 // MustIntValue retrieves the IntValue value from the union,
 // panicing if the value is not set.
 func (u ValueFilter) MustIntValue() int32 {
-	val, ok := u.GetIntValue()
 
+	val, ok := u.GetIntValue()
 	if !ok {
 		panic("arm IntValue is not set")
 	}
@@ -2921,6 +2950,7 @@ func (u ValueFilter) MustIntValue() int32 {
 // GetIntValue retrieves the IntValue value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u ValueFilter) GetIntValue() (result int32, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "IntValue" {
@@ -3006,6 +3036,7 @@ func NewTransactionFilter(aType TransactionFilterType, value interface{}) (resul
 	case TransactionFilterTypeGENERIC:
 
 		tv, ok := value.(ActionFilter)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3015,6 +3046,7 @@ func NewTransactionFilter(aType TransactionFilterType, value interface{}) (resul
 	case TransactionFilterTypeCONTRACT:
 
 		tv, ok := value.(ContractFilter)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3024,6 +3056,7 @@ func NewTransactionFilter(aType TransactionFilterType, value interface{}) (resul
 	case TransactionFilterTypeCONFIG:
 
 		tv, ok := value.(ConfigFilter)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3033,6 +3066,7 @@ func NewTransactionFilter(aType TransactionFilterType, value interface{}) (resul
 	case TransactionFilterTypePERMISSION:
 
 		tv, ok := value.(PermissionFilter)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3042,6 +3076,7 @@ func NewTransactionFilter(aType TransactionFilterType, value interface{}) (resul
 	case TransactionFilterTypeCALL:
 
 		tv, ok := value.(CallFilter)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3055,8 +3090,8 @@ func NewTransactionFilter(aType TransactionFilterType, value interface{}) (resul
 // MustGenericFilter retrieves the GenericFilter value from the union,
 // panicing if the value is not set.
 func (u TransactionFilter) MustGenericFilter() ActionFilter {
-	val, ok := u.GetGenericFilter()
 
+	val, ok := u.GetGenericFilter()
 	if !ok {
 		panic("arm GenericFilter is not set")
 	}
@@ -3067,6 +3102,7 @@ func (u TransactionFilter) MustGenericFilter() ActionFilter {
 // GetGenericFilter retrieves the GenericFilter value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u TransactionFilter) GetGenericFilter() (result ActionFilter, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "GenericFilter" {
@@ -3080,8 +3116,8 @@ func (u TransactionFilter) GetGenericFilter() (result ActionFilter, ok bool) {
 // MustContractFilter retrieves the ContractFilter value from the union,
 // panicing if the value is not set.
 func (u TransactionFilter) MustContractFilter() ContractFilter {
-	val, ok := u.GetContractFilter()
 
+	val, ok := u.GetContractFilter()
 	if !ok {
 		panic("arm ContractFilter is not set")
 	}
@@ -3092,6 +3128,7 @@ func (u TransactionFilter) MustContractFilter() ContractFilter {
 // GetContractFilter retrieves the ContractFilter value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u TransactionFilter) GetContractFilter() (result ContractFilter, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "ContractFilter" {
@@ -3105,8 +3142,8 @@ func (u TransactionFilter) GetContractFilter() (result ContractFilter, ok bool) 
 // MustConfigFilter retrieves the ConfigFilter value from the union,
 // panicing if the value is not set.
 func (u TransactionFilter) MustConfigFilter() ConfigFilter {
-	val, ok := u.GetConfigFilter()
 
+	val, ok := u.GetConfigFilter()
 	if !ok {
 		panic("arm ConfigFilter is not set")
 	}
@@ -3117,6 +3154,7 @@ func (u TransactionFilter) MustConfigFilter() ConfigFilter {
 // GetConfigFilter retrieves the ConfigFilter value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u TransactionFilter) GetConfigFilter() (result ConfigFilter, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "ConfigFilter" {
@@ -3130,8 +3168,8 @@ func (u TransactionFilter) GetConfigFilter() (result ConfigFilter, ok bool) {
 // MustPermissionFilter retrieves the PermissionFilter value from the union,
 // panicing if the value is not set.
 func (u TransactionFilter) MustPermissionFilter() PermissionFilter {
-	val, ok := u.GetPermissionFilter()
 
+	val, ok := u.GetPermissionFilter()
 	if !ok {
 		panic("arm PermissionFilter is not set")
 	}
@@ -3142,6 +3180,7 @@ func (u TransactionFilter) MustPermissionFilter() PermissionFilter {
 // GetPermissionFilter retrieves the PermissionFilter value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u TransactionFilter) GetPermissionFilter() (result PermissionFilter, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "PermissionFilter" {
@@ -3155,8 +3194,8 @@ func (u TransactionFilter) GetPermissionFilter() (result PermissionFilter, ok bo
 // MustCallFilter retrieves the CallFilter value from the union,
 // panicing if the value is not set.
 func (u TransactionFilter) MustCallFilter() CallFilter {
-	val, ok := u.GetCallFilter()
 
+	val, ok := u.GetCallFilter()
 	if !ok {
 		panic("arm CallFilter is not set")
 	}
@@ -3167,6 +3206,7 @@ func (u TransactionFilter) MustCallFilter() CallFilter {
 // GetCallFilter retrieves the CallFilter value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u TransactionFilter) GetCallFilter() (result CallFilter, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "CallFilter" {
@@ -3232,6 +3272,7 @@ func NewReceiptFilter(aType ReceiptFilterType, value interface{}) (result Receip
 	case ReceiptFilterTypeRECEIPT:
 
 		tv, ok := value.(ReceiptValueFilter)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3245,8 +3286,8 @@ func NewReceiptFilter(aType ReceiptFilterType, value interface{}) (result Receip
 // MustValueFilter retrieves the ValueFilter value from the union,
 // panicing if the value is not set.
 func (u ReceiptFilter) MustValueFilter() ReceiptValueFilter {
-	val, ok := u.GetValueFilter()
 
+	val, ok := u.GetValueFilter()
 	if !ok {
 		panic("arm ValueFilter is not set")
 	}
@@ -3257,6 +3298,7 @@ func (u ReceiptFilter) MustValueFilter() ReceiptValueFilter {
 // GetValueFilter retrieves the ValueFilter value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u ReceiptFilter) GetValueFilter() (result ReceiptValueFilter, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "ValueFilter" {
@@ -3323,11 +3365,11 @@ var (
 
 // Contract generated struct
 type Contract struct {
-	ContractBytes []byte `json:"contract_bytes"`
+	ContractBytes []byte `json:"contractBytes"`
 
 	Abi Abi `json:"abi"`
 
-	ContractHash Hash `json:"contract_hash"`
+	ContractHash Hash `json:"contractHash"`
 
 	Version string `xdrmaxsize:"100" json:"version"`
 }
@@ -3379,11 +3421,11 @@ var (
 type Action struct {
 	Address ID `json:"address"`
 
-	ChannelID ID `json:"channel_id"`
+	ChannelID ID `json:"channelID"`
 
 	Nonce uint64 `json:"nonce"`
 
-	BlockExpirationNumber uint64 `json:"block_expiration_number"`
+	BlockExpirationNumber uint64 `json:"blockExpirationNumber"`
 
 	Category ActionCategory `json:"category"`
 }
@@ -3707,6 +3749,7 @@ func NewUpdate(aType UpdateType, value interface{}) (result Update, err error) {
 	case UpdateTypeCONTRACT:
 
 		tv, ok := value.(Contract)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3716,6 +3759,7 @@ func NewUpdate(aType UpdateType, value interface{}) (result Update, err error) {
 	case UpdateTypeCONFIG:
 
 		tv, ok := value.(ChannelConfig)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3725,6 +3769,7 @@ func NewUpdate(aType UpdateType, value interface{}) (result Update, err error) {
 	case UpdateTypePERMISSION:
 
 		tv, ok := value.(Permission)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3738,8 +3783,8 @@ func NewUpdate(aType UpdateType, value interface{}) (result Update, err error) {
 // MustContract retrieves the Contract value from the union,
 // panicing if the value is not set.
 func (u Update) MustContract() Contract {
-	val, ok := u.GetContract()
 
+	val, ok := u.GetContract()
 	if !ok {
 		panic("arm Contract is not set")
 	}
@@ -3750,6 +3795,7 @@ func (u Update) MustContract() Contract {
 // GetContract retrieves the Contract value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u Update) GetContract() (result Contract, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Contract" {
@@ -3763,8 +3809,8 @@ func (u Update) GetContract() (result Contract, ok bool) {
 // MustChannelConfig retrieves the ChannelConfig value from the union,
 // panicing if the value is not set.
 func (u Update) MustChannelConfig() ChannelConfig {
-	val, ok := u.GetChannelConfig()
 
+	val, ok := u.GetChannelConfig()
 	if !ok {
 		panic("arm ChannelConfig is not set")
 	}
@@ -3775,6 +3821,7 @@ func (u Update) MustChannelConfig() ChannelConfig {
 // GetChannelConfig retrieves the ChannelConfig value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u Update) GetChannelConfig() (result ChannelConfig, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "ChannelConfig" {
@@ -3788,8 +3835,8 @@ func (u Update) GetChannelConfig() (result ChannelConfig, ok bool) {
 // MustPermission retrieves the Permission value from the union,
 // panicing if the value is not set.
 func (u Update) MustPermission() Permission {
-	val, ok := u.GetPermission()
 
+	val, ok := u.GetPermission()
 	if !ok {
 		panic("arm Permission is not set")
 	}
@@ -3800,6 +3847,7 @@ func (u Update) MustPermission() Permission {
 // GetPermission retrieves the Permission value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u Update) GetPermission() (result Permission, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Permission" {
@@ -3870,6 +3918,7 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 	case ActionCategoryTypeCALL:
 
 		tv, ok := value.(Call)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3879,6 +3928,7 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 	case ActionCategoryTypeUPDATE:
 
 		tv, ok := value.(Update)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -3892,8 +3942,8 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 // MustCall retrieves the Call value from the union,
 // panicing if the value is not set.
 func (u ActionCategory) MustCall() Call {
-	val, ok := u.GetCall()
 
+	val, ok := u.GetCall()
 	if !ok {
 		panic("arm Call is not set")
 	}
@@ -3904,6 +3954,7 @@ func (u ActionCategory) MustCall() Call {
 // GetCall retrieves the Call value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u ActionCategory) GetCall() (result Call, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Call" {
@@ -3917,8 +3968,8 @@ func (u ActionCategory) GetCall() (result Call, ok bool) {
 // MustUpdate retrieves the Update value from the union,
 // panicing if the value is not set.
 func (u ActionCategory) MustUpdate() Update {
-	val, ok := u.GetUpdate()
 
+	val, ok := u.GetUpdate()
 	if !ok {
 		panic("arm Update is not set")
 	}
@@ -3929,6 +3980,7 @@ func (u ActionCategory) MustUpdate() Update {
 // GetUpdate retrieves the Update value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u ActionCategory) GetUpdate() (result Update, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Update" {
@@ -3994,6 +4046,7 @@ func NewAuthority(aType AuthorityType, value interface{}) (result Authority, err
 	case AuthorityTypePERMISSIONED:
 
 		tv, ok := value.(ID)
+
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
@@ -4007,8 +4060,8 @@ func NewAuthority(aType AuthorityType, value interface{}) (result Authority, err
 // MustOrigin retrieves the Origin value from the union,
 // panicing if the value is not set.
 func (u Authority) MustOrigin() ID {
-	val, ok := u.GetOrigin()
 
+	val, ok := u.GetOrigin()
 	if !ok {
 		panic("arm Origin is not set")
 	}
@@ -4019,6 +4072,7 @@ func (u Authority) MustOrigin() ID {
 // GetOrigin retrieves the Origin value from the union,
 // returning ok if the union's switch indicated the value is valid.
 func (u Authority) GetOrigin() (result ID, ok bool) {
+
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Origin" {
