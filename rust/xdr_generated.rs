@@ -370,12 +370,12 @@ pub struct StateStatus {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct BlockLookupRequest {
-    pub ID: Identifier,
+    pub identifier: Identifier,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct BlockHeaderLookupRequest {
-    pub ID: Identifier,
+    pub identifier: Identifier,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]

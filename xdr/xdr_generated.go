@@ -1131,7 +1131,7 @@ var (
 
 // BlockLookupRequest generated struct
 type BlockLookupRequest struct {
-	ID Identifier `json:"iD"`
+	Identifier Identifier `json:"identifier"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1154,7 +1154,7 @@ var (
 
 // BlockHeaderLookupRequest generated struct
 type BlockHeaderLookupRequest struct {
-	ID Identifier `json:"iD"`
+	Identifier Identifier `json:"identifier"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.

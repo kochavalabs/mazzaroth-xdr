@@ -37,14 +37,14 @@ namespace mazzaroth
   struct BlockLookupRequest
   {
     // Either the block number or hash
-    Identifier ID;
+    Identifier identifier;
   };
 
   // BlockHeaderLookupRequest used to get the block header of a particular block from ledger
   struct BlockHeaderLookupRequest
   {
     // Either the block number or hash
-    Identifier ID;
+    Identifier identifier;
   };
 
   // BlockLookupResponse returned from BlockLookupRequests

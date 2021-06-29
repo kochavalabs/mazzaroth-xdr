@@ -368,10 +368,10 @@ function StateStatus() {
     return new _xdrJsSerialize2.default.Struct(["previousBlock", "transactionCount"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper()]);
 }
 function BlockLookupRequest() {
-    return new _xdrJsSerialize2.default.Struct(["ID"], [Identifier()]);
+    return new _xdrJsSerialize2.default.Struct(["identifier"], [Identifier()]);
 }
 function BlockHeaderLookupRequest() {
-    return new _xdrJsSerialize2.default.Struct(["ID"], [Identifier()]);
+    return new _xdrJsSerialize2.default.Struct(["identifier"], [Identifier()]);
 }
 function BlockLookupResponse() {
     return new _xdrJsSerialize2.default.Struct(["block", "stateStatus", "status", "statusInfo"], [Block(), StateStatus(), BlockStatus(), StatusInfo()]);
