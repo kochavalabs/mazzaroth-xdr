@@ -497,21 +497,21 @@ type DownloadRequest struct {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s DownloadHeight) MarshalBinary() ([]byte, error) {
+func (s DownloadRequest) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *DownloadHeight) UnmarshalBinary(inp []byte) error {
+func (s *DownloadRequest) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*DownloadHeight)(nil)
-	_ encoding.BinaryUnmarshaler = (*DownloadHeight)(nil)
+	_ encoding.BinaryMarshaler   = (*DownloadRequest)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadRequest)(nil)
 )
 
 // BatchesRequest generated struct
@@ -551,21 +551,21 @@ type DownloadResponse struct {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s DownloadHeight) MarshalBinary() ([]byte, error) {
+func (s DownloadResponse) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *DownloadHeight) UnmarshalBinary(inp []byte) error {
+func (s *DownloadResponse) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*DownloadHeight)(nil)
-	_ encoding.BinaryUnmarshaler = (*DownloadHeight)(nil)
+	_ encoding.BinaryMarshaler   = (*DownloadResponse)(nil)
+	_ encoding.BinaryUnmarshaler = (*DownloadResponse)(nil)
 )
 
 // DownloadHeight generated struct

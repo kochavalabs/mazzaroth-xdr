@@ -39,6 +39,6 @@
   },
   "dependencies": {
     "markdownlint-cli": "^0.23.2",
-    "xdr-js-serialize": "^0.2.0"
+    "xdr-js-serialize": "0.2.0"
   }
 }
