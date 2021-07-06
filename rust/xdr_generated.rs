@@ -78,7 +78,7 @@ pub struct Parameter {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Account {
-    #[array(var = 2147483647)]
+    #[array(var = 32)]
     pub permissionedKeys: Vec<ID>,
 }
 
@@ -107,9 +107,6 @@ pub struct Block {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct BlockHeader {
-    #[array(var = 256)]
-    pub timestamp: String,
-
     pub blockHeight: u64,
 
     pub transactionHeight: u64,
@@ -123,8 +120,6 @@ pub struct BlockHeader {
     pub stateRoot: Hash,
 
     pub previousHeader: Hash,
-
-    pub blockProducerAddress: ID,
 }
 
 // End struct section
@@ -197,17 +192,45 @@ pub struct StatusInfo {
 pub struct ChannelConfig {
     pub owner: ID,
 
-    #[array(var = 200)]
-    pub channelName: String,
-
-    #[array(var = 200)]
+    #[array(var = 32)]
     pub admins: Vec<ID>,
+
+    pub channelType: ChannelType,
 }
 
 // End struct section
 
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum Governance {
+    NONE = 0,
+    PUBLIC = 1,
+    PRIVATE = 2,
+    PERMISSIONED = 3,
+}
+
+impl Default for Governance {
+    fn default() -> Self {
+        Governance::NONE
+    }
+}
 // Start union section
 
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ChannelType {
+    NONE(()),
+
+    PUBLIC(()),
+
+    PRIVATE(()),
+
+    PERMISSIONED(()),
+}
+
+impl Default for ChannelType {
+    fn default() -> Self {
+        ChannelType::NONE(())
+    }
+}
 // End union section
 
 // Namspace end mazzaroth
