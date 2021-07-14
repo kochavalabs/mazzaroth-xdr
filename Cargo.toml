@@ -16,8 +16,8 @@ include = [
 ]
 
 [dependencies]
-xdr-rs-serialize = { git = "ssh://git@github.com/kochavalabs/xdr-rs-serialize.git", branch = "develop"}
-xdr-rs-serialize-derive = { git = "ssh://git@github.com/kochavalabs/xdr-rs-serialize.git", branch = "develop"}
+xdr-rs-serialize = { version = "0.2.5" }
+xdr-rs-serialize-derive = { version = "0.2.5" }
 json = "0.12.0"
 
 [lib]
