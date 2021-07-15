@@ -15,9 +15,6 @@ namespace mazzaroth
   // BlockHeader contains fields that describe the block
   struct BlockHeader
   {
-    // Timestamp stored for this block
-    string timestamp<256>; 
-
     // Block height is the number of blocks preceding this block
     unsigned hyper blockHeight;
 
@@ -38,8 +35,5 @@ namespace mazzaroth
 
     // The hash of the previous block header
     Hash previousHeader;
-
-    // Address associated with the consensus primary at time of block confirmation
-    ID blockProducerAddress;
   };
 }

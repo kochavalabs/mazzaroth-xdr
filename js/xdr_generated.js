@@ -17,6 +17,8 @@ exports.Hash32 = Hash32;
 exports.Hash64 = Hash64;
 exports.StatusInfo = StatusInfo;
 exports.ChannelConfig = ChannelConfig;
+exports.Governance = Governance;
+exports.ChannelType = ChannelType;
 exports.DownloadRequest = DownloadRequest;
 exports.BatchesRequest = BatchesRequest;
 exports.DownloadResponse = DownloadResponse;
@@ -121,7 +123,7 @@ function Parameter() {
 
 // Start struct section
 function Account() {
-    return new _xdrJsSerialize2.default.Struct(["permissionedKeys"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["permissionedKeys"], [new _xdrJsSerialize2.default.VarArray(32, ID)]);
 }
 
 // End struct section
@@ -147,7 +149,7 @@ function Block() {
     return new _xdrJsSerialize2.default.Struct(["header", "transactions"], [BlockHeader(), new _xdrJsSerialize2.default.VarArray(2147483647, Transaction)]);
 }
 function BlockHeader() {
-    return new _xdrJsSerialize2.default.Struct(["timestamp", "blockHeight", "transactionHeight", "consensusSequenceNumber", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
+    return new _xdrJsSerialize2.default.Struct(["blockHeight", "transactionHeight", "consensusSequenceNumber", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash()]);
 }
 
 // End struct section
@@ -218,18 +220,49 @@ function StatusInfo() {
 
 // Start struct section
 function ChannelConfig() {
-    return new _xdrJsSerialize2.default.Struct(["owner", "channelName", "admins"], [ID(), new _xdrJsSerialize2.default.Str('', 200), new _xdrJsSerialize2.default.VarArray(200, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["owner", "admins", "channelType"], [ID(), new _xdrJsSerialize2.default.VarArray(32, ID), ChannelType()]);
 }
 
 // End struct section
 
 // Start enum section
 
+function Governance() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "NONE",
+        1: "PUBLIC",
+        2: "PRIVATE",
+        3: "PERMISSIONED"
+
+    });
+}
 
 // End enum section
 
 // Start union section
 
+
+function ChannelType() {
+    return new _xdrJsSerialize2.default.Union(Governance(), {
+
+        "NONE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "PUBLIC": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "PRIVATE": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "PERMISSIONED": () => {
+            return new _xdrJsSerialize2.default.Void();
+        }
+
+    });
+}
 
 // End union section
 
