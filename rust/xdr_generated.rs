@@ -194,43 +194,12 @@ pub struct ChannelConfig {
 
     #[array(var = 32)]
     pub admins: Vec<ID>,
-
-    pub channelType: ChannelType,
 }
 
 // End struct section
 
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum Governance {
-    NONE = 0,
-    PUBLIC = 1,
-    PRIVATE = 2,
-    PERMISSIONED = 3,
-}
-
-impl Default for Governance {
-    fn default() -> Self {
-        Governance::NONE
-    }
-}
 // Start union section
 
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ChannelType {
-    NONE(()),
-
-    PUBLIC(()),
-
-    PRIVATE(()),
-
-    PERMISSIONED(()),
-}
-
-impl Default for ChannelType {
-    fn default() -> Self {
-        ChannelType::NONE(())
-    }
-}
 // End union section
 
 // Namspace end mazzaroth
