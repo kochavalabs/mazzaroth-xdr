@@ -5,6 +5,6 @@ namespace mazzaroth
   struct Account
   {
     // List of IDs with permission to act on behalf of this account
-    ID permissionedKeys<>;
+    ID permissionedKeys<32>;
   };
 }

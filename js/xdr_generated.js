@@ -121,7 +121,7 @@ function Parameter() {
 
 // Start struct section
 function Account() {
-    return new _xdrJsSerialize2.default.Struct(["permissionedKeys"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["permissionedKeys"], [new _xdrJsSerialize2.default.VarArray(32, ID)]);
 }
 
 // End struct section
@@ -147,7 +147,7 @@ function Block() {
     return new _xdrJsSerialize2.default.Struct(["header", "transactions"], [BlockHeader(), new _xdrJsSerialize2.default.VarArray(2147483647, Transaction)]);
 }
 function BlockHeader() {
-    return new _xdrJsSerialize2.default.Struct(["timestamp", "blockHeight", "transactionHeight", "consensusSequenceNumber", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader", "blockProducerAddress"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), ID()]);
+    return new _xdrJsSerialize2.default.Struct(["blockHeight", "transactionHeight", "consensusSequenceNumber", "txMerkleRoot", "txReceiptRoot", "stateRoot", "previousHeader"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash()]);
 }
 
 // End struct section
@@ -218,7 +218,7 @@ function StatusInfo() {
 
 // Start struct section
 function ChannelConfig() {
-    return new _xdrJsSerialize2.default.Struct(["owner", "channelName", "admins"], [ID(), new _xdrJsSerialize2.default.Str('', 200), new _xdrJsSerialize2.default.VarArray(200, ID)]);
+    return new _xdrJsSerialize2.default.Struct(["owner", "admins"], [ID(), new _xdrJsSerialize2.default.VarArray(32, ID)]);
 }
 
 // End struct section

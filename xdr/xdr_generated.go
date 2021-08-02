@@ -131,7 +131,7 @@ var (
 
 // Account generated struct
 type Account struct {
-	PermissionedKeys []ID `json:"permissionedKeys"`
+	PermissionedKeys []ID `xdrmaxsize:"32" json:"permissionedKeys"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -198,8 +198,6 @@ var (
 
 // BlockHeader generated struct
 type BlockHeader struct {
-	Timestamp string `xdrmaxsize:"256" json:"timestamp"`
-
 	BlockHeight uint64 `json:"blockHeight"`
 
 	TransactionHeight uint64 `json:"transactionHeight"`
@@ -213,8 +211,6 @@ type BlockHeader struct {
 	StateRoot Hash `json:"stateRoot"`
 
 	PreviousHeader Hash `json:"previousHeader"`
-
-	BlockProducerAddress ID `json:"blockProducerAddress"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -449,9 +445,7 @@ var (
 type ChannelConfig struct {
 	Owner ID `json:"owner"`
 
-	ChannelName string `xdrmaxsize:"200" json:"channelName"`
-
-	Admins []ID `xdrmaxsize:"200" json:"admins"`
+	Admins []ID `xdrmaxsize:"32" json:"admins"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
