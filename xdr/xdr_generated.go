@@ -446,8 +446,6 @@ type ChannelConfig struct {
 	Owner ID `json:"owner"`
 
 	Admins []ID `xdrmaxsize:"32" json:"admins"`
-
-	ChannelType ChannelType `json:"channelType"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -472,136 +470,9 @@ var (
 
 // Start enum section
 
-// Governance generated enum
-type Governance int32
-
-const (
-
-	// GovernanceNONE enum value 0
-	GovernanceNONE Governance = 0
-
-	// GovernancePUBLIC enum value 1
-	GovernancePUBLIC Governance = 1
-
-	// GovernancePRIVATE enum value 2
-	GovernancePRIVATE Governance = 2
-
-	// GovernancePERMISSIONED enum value 3
-	GovernancePERMISSIONED Governance = 3
-)
-
-// GovernanceMap generated enum map
-var GovernanceMap = map[int32]string{
-
-	0: "GovernanceNONE",
-
-	1: "GovernancePUBLIC",
-
-	2: "GovernancePRIVATE",
-
-	3: "GovernancePERMISSIONED",
-}
-
-// ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for Governance
-func (s Governance) ValidEnum(v int32) bool {
-	_, ok := GovernanceMap[v]
-	return ok
-}
-
-// String returns the name of `e`
-func (s Governance) String() string {
-	name, _ := GovernanceMap[int32(s)]
-	return name
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Governance) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Governance) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Governance)(nil)
-	_ encoding.BinaryUnmarshaler = (*Governance)(nil)
-)
-
 // End enum section
 
 // Start union section
-
-// ChannelType generated union
-type ChannelType struct {
-	Type Governance
-}
-
-// SwitchFieldName returns the field name in which this union's
-// discriminant is stored
-func (u ChannelType) SwitchFieldName() string {
-	return "Type"
-}
-
-// ArmForSwitch returns which field name should be used for storing
-// the value for an instance of ChannelType
-func (u ChannelType) ArmForSwitch(sw int32) (string, bool) {
-	switch Governance(sw) {
-
-	case GovernanceNONE:
-		return "", true
-
-	case GovernancePUBLIC:
-		return "", true
-
-	case GovernancePRIVATE:
-		return "", true
-
-	case GovernancePERMISSIONED:
-		return "", true
-	}
-	return "-", false
-}
-
-// NewChannelType creates a new  ChannelType.
-func NewChannelType(aType Governance, value interface{}) (result ChannelType, err error) {
-	result.Type = aType
-	switch aType {
-
-	case GovernanceNONE:
-
-	case GovernancePUBLIC:
-
-	case GovernancePRIVATE:
-
-	case GovernancePERMISSIONED:
-
-	}
-	return
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (u ChannelType) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, u)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (u *ChannelType) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), u)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*ChannelType)(nil)
-	_ encoding.BinaryUnmarshaler = (*ChannelType)(nil)
-)
 
 // End union section
 

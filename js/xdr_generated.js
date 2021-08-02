@@ -17,8 +17,6 @@ exports.Hash32 = Hash32;
 exports.Hash64 = Hash64;
 exports.StatusInfo = StatusInfo;
 exports.ChannelConfig = ChannelConfig;
-exports.Governance = Governance;
-exports.ChannelType = ChannelType;
 exports.DownloadRequest = DownloadRequest;
 exports.BatchesRequest = BatchesRequest;
 exports.DownloadResponse = DownloadResponse;
@@ -220,49 +218,18 @@ function StatusInfo() {
 
 // Start struct section
 function ChannelConfig() {
-    return new _xdrJsSerialize2.default.Struct(["owner", "admins", "channelType"], [ID(), new _xdrJsSerialize2.default.VarArray(32, ID), ChannelType()]);
+    return new _xdrJsSerialize2.default.Struct(["owner", "admins"], [ID(), new _xdrJsSerialize2.default.VarArray(32, ID)]);
 }
 
 // End struct section
 
 // Start enum section
 
-function Governance() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "NONE",
-        1: "PUBLIC",
-        2: "PRIVATE",
-        3: "PERMISSIONED"
-
-    });
-}
 
 // End enum section
 
 // Start union section
 
-
-function ChannelType() {
-    return new _xdrJsSerialize2.default.Union(Governance(), {
-
-        "NONE": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "PUBLIC": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "PRIVATE": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "PERMISSIONED": () => {
-            return new _xdrJsSerialize2.default.Void();
-        }
-
-    });
-}
 
 // End union section
 
