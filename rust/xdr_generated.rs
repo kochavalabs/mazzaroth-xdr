@@ -177,16 +177,6 @@ pub struct Argument {
     pub t: String,
 }
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Hash32 {
-    #[array(fixed = 32)]
-    pub t: Vec<u8>,
-}
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Hash64 {
-    #[array(fixed = 64)]
-    pub t: Vec<u8>,
-}
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct StatusInfo {
     #[array(var = 256)]
     pub t: String,

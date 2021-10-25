@@ -15,8 +15,6 @@ exports.Signature = Signature;
 exports.ID = ID;
 exports.Hash = Hash;
 exports.Argument = Argument;
-exports.Hash32 = Hash32;
-exports.Hash64 = Hash64;
 exports.StatusInfo = StatusInfo;
 exports.ChannelConfig = ChannelConfig;
 exports.Receipt = Receipt;
@@ -148,14 +146,6 @@ function Hash() {
 
 function Argument() {
     return new _xdrJsSerialize2.default.Str('', 2147483647);
-}
-
-function Hash32() {
-    return new _xdrJsSerialize2.default.FixedOpaque(32);
-}
-
-function Hash64() {
-    return new _xdrJsSerialize2.default.FixedOpaque(64);
 }
 
 function StatusInfo() {

@@ -430,58 +430,6 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Argument)(nil)
 )
 
-// Hash32 generated typedef
-type Hash32 [32]byte
-
-// XDRMaxSize implements the Sized interface for Hash32
-func (s Hash32) XDRMaxSize() int {
-	return 32
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Hash32) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Hash32) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Hash32)(nil)
-	_ encoding.BinaryUnmarshaler = (*Hash32)(nil)
-)
-
-// Hash64 generated typedef
-type Hash64 [64]byte
-
-// XDRMaxSize implements the Sized interface for Hash64
-func (s Hash64) XDRMaxSize() int {
-	return 64
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Hash64) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Hash64) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Hash64)(nil)
-	_ encoding.BinaryUnmarshaler = (*Hash64)(nil)
-)
-
 // StatusInfo generated typedef
 type StatusInfo string
 
