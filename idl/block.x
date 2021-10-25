@@ -25,10 +25,10 @@ namespace mazzaroth
     unsigned hyper consensusSequenceNumber;
 
     // The merkle root of the transaction merkle tree in this block
-    Hash txMerkleRoot;
+    Hash transactionsMerkleRoot;
 
     // The merkle root of the receipt merkle tree in this block
-    Hash txReceiptRoot;
+    Hash transactionsReceiptRoot;
 
     // The state root of the Mazzaroth statedb after all transactions have been executed
     Hash stateRoot;

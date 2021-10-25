@@ -15,7 +15,7 @@ func getXdr() xdr.Transaction {
 	return xdr.Transaction{
 		Signature: signature,
 		Signer: xdr.Authority{
-			Type:   xdr.AuthorityTypeNONE,
+			Type:   xdr.AuthorityTypeSELF,
 			Origin: &address,
 		},
 		Action: xdr.Action{
@@ -24,7 +24,9 @@ func getXdr() xdr.Transaction {
 			Category: xdr.ActionCategory{
 				Type: xdr.ActionCategoryTypeUPDATE,
 				Update: &xdr.Update{
-					Contract: contract,
+					Contract: &xdr.Contract{
+						ContractBytes: contract,
+					},
 				},
 			},
 		},

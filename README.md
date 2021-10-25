@@ -6,8 +6,7 @@
 
 Mazzaroth-xdr is a library that defines the core XDR data structures used by
 Mazzaroth. This includes the definitions of the blockchain, its underlying
-data structures and the inputs/outputs of all APIs for interacting with
-Mazzaroth.
+data structures and the objects stored in the StateDB.
 
 All objects are defined in the idl directory as `.x` files and the code for
 each language is generated.

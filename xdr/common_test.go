@@ -46,30 +46,6 @@ func Test_HashMarshal(t *testing.T) {
 	require.Equal(t, expected, b, `$ echo -n "%v" | xxd -p -c 256 # should look something like %v`, string(rawbytes), string(b))
 }
 
-func Test_Hash32Marshal(t *testing.T) {
-	var hash Hash32
-	rawbytes := bytes.Repeat([]byte{'a'}, 32)
-	copy(hash[:], rawbytes)
-	b, err := json.Marshal(hash)
-	require.NoError(t, err)
-	expected := []byte{'"'}
-	expected = append(expected, bytes.Repeat([]byte{'6', '1'}, 32)...)
-	expected = append(expected, '"')
-	require.Equal(t, expected, b, `$ echo -n "%v" | xxd -p -c 256 # should look something like %v`, string(rawbytes), string(b))
-}
-
-func Test_Hash64Marshal(t *testing.T) {
-	var hash Hash64
-	rawbytes := bytes.Repeat([]byte{'a'}, 64)
-	copy(hash[:], rawbytes)
-	b, err := json.Marshal(hash)
-	require.NoError(t, err)
-	expected := []byte{'"'}
-	expected = append(expected, bytes.Repeat([]byte{'6', '1'}, 64)...)
-	expected = append(expected, '"')
-	require.Equal(t, expected, b, `$ echo -n "%v" | xxd -p -c 256 # should look something like %v`, string(rawbytes), string(b))
-}
-
 func Test_IDUnmarshal(t *testing.T) {
 	st := fmt.Sprintf(`"%s"`, strings.Repeat("61", 32))
 	var id ID
@@ -94,23 +70,5 @@ func Test_HashUnmarshal(t *testing.T) {
 	err := json.Unmarshal([]byte(st), &hash)
 	require.NoError(t, err)
 	expected := bytes.Repeat([]byte{'a'}, 32)
-	require.Equal(t, expected, hash[:], `$ echo "%v" | xxd -r  -p -c 256 #should look like %v`, st, string(expected))
-}
-
-func Test_Hash32Unmarshal(t *testing.T) {
-	st := fmt.Sprintf(`"%s"`, strings.Repeat("61", 32))
-	var hash Hash32
-	err := json.Unmarshal([]byte(st), &hash)
-	require.NoError(t, err)
-	expected := bytes.Repeat([]byte{'a'}, 32)
-	require.Equal(t, expected, hash[:], `$ echo "%v" | xxd -r  -p -c 256 #should look like %v`, st, string(expected))
-}
-
-func Test_Hash64Unmarshal(t *testing.T) {
-	st := fmt.Sprintf(`"%s"`, strings.Repeat("61", 64))
-	var hash Hash64
-	err := json.Unmarshal([]byte(st), &hash)
-	require.NoError(t, err)
-	expected := bytes.Repeat([]byte{'a'}, 64)
 	require.Equal(t, expected, hash[:], `$ echo "%v" | xxd -r  -p -c 256 #should look like %v`, st, string(expected))
 }
