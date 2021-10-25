@@ -16,22 +16,22 @@ namespace mazzaroth
 
   enum UpdateType
   {
-    NONE = 0,
+    UNKNOWN = 0,
     CONTRACT = 1,
     CONFIG = 2,
-    PERMISSION = 3
+    ACCOUNT = 3
   };
 
   union Update switch (UpdateType Type)
   {
-    case NONE:
+    case UNKNOWN:
       void;
     case CONTRACT:
       Contract contract;
     case CONFIG:
       ChannelConfig channelConfig;
-    case PERMISSION:
-      Permission permission;
+    case ACCOUNT:
+      AccountUpdate account;
   };
 
   // An update transaction that provides a contract as a wasm binary.
@@ -50,29 +50,40 @@ namespace mazzaroth
     string version<100>;
   }
 
-  enum PermissionAction
+  enum AccountUpdateType
   {
-    REVOKE = 0,
-    GRANT = 1,
+    UNKNOWN = 0,
+    ALIAS = 1,
+    AUTHORIZATION = 2
   };
 
-  struct Permission
+  union AccountUpdate switch (AccountUpdateType Type)
   {
-    ID key;
+    case UNKNOWN:
+      void;
+    case ALIAS:
+      string alias;
+    case AUTHORIZATION:
+      Authorization authorization;
+  };
 
-    PermissionAction action;
+  struct Authorization
+  {
+    AuthorizedAccount account;
+
+    bool authorize;
   };
 
   enum ActionCategoryType
   {
-    NONE = 0,
+    UNKNOWN = 0,
     CALL = 1,
     UPDATE = 2
   };
 
   union ActionCategory switch (ActionCategoryType Type)
   {
-    case NONE:
+    case UNKNOWN:
       void;
     case CALL:
       Call call;
@@ -101,16 +112,20 @@ namespace mazzaroth
 
   enum AuthorityType
   {
-    NONE = 0,
+    UNKNOWN = 0,
 
-    PERMISSIONED = 1,
+    SELF = 1,
+
+    AUTHORIZED = 2
   };
 
   union Authority switch (AuthorityType Type)
   {
-    case NONE:
+    case UNKNOWN:
       void;
-    case PERMISSIONED:
+    case SELF:
+      void;
+    case AUTHORIZED:
       ID origin;
   };
 

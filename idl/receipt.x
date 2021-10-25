@@ -17,7 +17,8 @@ namespace mazzaroth
 
   enum ReceiptStatus
   {
-    FAILURE = 0,
-    SUCCESS = 1
+    UNKNOWN = 0,
+    FAILURE = 1,
+    SUCCESS = 2
   };
 }

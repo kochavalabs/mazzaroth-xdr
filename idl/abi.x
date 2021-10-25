@@ -2,27 +2,36 @@ namespace mazzaroth
 {
   struct Abi
   {
+    // SemVer version of this ABI Schema
+    // Will match the mazzaroth-xdr version used to generate ABI
+    string version;
+
     // Registered name of the account, separate from public key
     FunctionSignature functions<>;
   };
 
   struct FunctionSignature
   {
-    string functionType<>;
+    FunctionType functionType;
 
-    string name<>;
+    string functionName<>;
 
-    Parameter inputs<>;
+    Parameter parameters<>;
 
-    Parameter outputs<>;
+    Parameter returns<>;
+  }
+
+  enum FunctionType
+  {
+    UNKNOWN = 0,
+    READ = 1,
+    WRITE = 2
   }
 
   struct Parameter 
   {
-    string name<>;
+    string parameterName<>;
 
     string parameterType<>;
-
-    string codec<>;
   }
 }

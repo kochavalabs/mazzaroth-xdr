@@ -30,39 +30,49 @@ extern crate json;
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Abi {
+    pub version: String,
+
     #[array(var = 2147483647)]
     pub functions: Vec<FunctionSignature>,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct FunctionSignature {
-    #[array(var = 2147483647)]
-    pub functionType: String,
+    pub functionType: FunctionType,
 
     #[array(var = 2147483647)]
-    pub name: String,
+    pub functionName: String,
 
     #[array(var = 2147483647)]
-    pub inputs: Vec<Parameter>,
+    pub parameters: Vec<Parameter>,
 
     #[array(var = 2147483647)]
-    pub outputs: Vec<Parameter>,
+    pub returns: Vec<Parameter>,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Parameter {
     #[array(var = 2147483647)]
-    pub name: String,
+    pub parameterName: String,
 
     #[array(var = 2147483647)]
     pub parameterType: String,
-
-    #[array(var = 2147483647)]
-    pub codec: String,
 }
 
 // End struct section
 
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum FunctionType {
+    UNKNOWN = 0,
+    READ = 1,
+    WRITE = 2,
+}
+
+impl Default for FunctionType {
+    fn default() -> Self {
+        FunctionType::UNKNOWN
+    }
+}
 // Start union section
 
 // End union section
@@ -79,7 +89,20 @@ pub struct Parameter {
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Account {
     #[array(var = 32)]
-    pub permissionedKeys: Vec<ID>,
+    pub alias: String,
+
+    pub transactionCount: u64,
+
+    #[array(var = 32)]
+    pub authorizedAccounts: Vec<AuthorizedAccount>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct AuthorizedAccount {
+    pub key: ID,
+
+    #[array(var = 32)]
+    pub alias: String,
 }
 
 // End struct section
@@ -113,9 +136,9 @@ pub struct BlockHeader {
 
     pub consensusSequenceNumber: u64,
 
-    pub txMerkleRoot: Hash,
+    pub transactionsMerkleRoot: Hash,
 
-    pub txReceiptRoot: Hash,
+    pub transactionsReceiptRoot: Hash,
 
     pub stateRoot: Hash,
 
@@ -212,110 +235,6 @@ pub struct ChannelConfig {
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct DownloadRequest {
-    pub downloadRequestPayload: DownloadRequestPayload,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct BatchesRequest {
-    pub seqNum: u64,
-
-    pub id: String,
-
-    pub ip: String,
-
-    pub port: u64,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct DownloadResponse {
-    pub downloadStatus: DownloadStatus,
-
-    pub downloadResponsePayload: DownloadResponsePayload,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct DownloadHeight {
-    pub height: u64,
-
-    pub seqNum: u64,
-}
-
-// End struct section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum DownloadRequestType {
-    UNKNOWN = 0,
-    HEIGHT = 1,
-    BLOCK = 2,
-    BATCHES = 3,
-}
-
-impl Default for DownloadRequestType {
-    fn default() -> Self {
-        DownloadRequestType::UNKNOWN
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum DownloadStatus {
-    UNKNOWN = 0,
-    SUCCESS = 1,
-    FAILURE = 2,
-}
-
-impl Default for DownloadStatus {
-    fn default() -> Self {
-        DownloadStatus::UNKNOWN
-    }
-}
-// Start union section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum DownloadRequestPayload {
-    UNKNOWN(()),
-
-    HEIGHT(()),
-
-    BLOCK(u64),
-
-    BATCHES(BatchesRequest),
-}
-
-impl Default for DownloadRequestPayload {
-    fn default() -> Self {
-        DownloadRequestPayload::UNKNOWN(())
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum DownloadResponsePayload {
-    UNKNOWN(()),
-
-    HEIGHT(DownloadHeight),
-
-    BLOCK(Block),
-
-    BATCHES(()),
-}
-
-impl Default for DownloadResponsePayload {
-    fn default() -> Self {
-        DownloadResponsePayload::UNKNOWN(())
-    }
-}
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Receipt {
     pub status: ReceiptStatus,
 
@@ -331,460 +250,18 @@ pub struct Receipt {
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ReceiptStatus {
-    FAILURE = 0,
-    SUCCESS = 1,
+    UNKNOWN = 0,
+    FAILURE = 1,
+    SUCCESS = 2,
 }
 
 impl Default for ReceiptStatus {
     fn default() -> Self {
-        ReceiptStatus::FAILURE
+        ReceiptStatus::UNKNOWN
     }
 }
 // Start union section
 
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct StateStatus {
-    pub previousBlock: u64,
-
-    pub transactionCount: u64,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct BlockLookupRequest {
-    pub identifier: Identifier,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct BlockHeaderLookupRequest {
-    pub identifier: Identifier,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct BlockLookupResponse {
-    pub block: Block,
-
-    pub stateStatus: StateStatus,
-
-    pub status: BlockStatus,
-
-    pub statusInfo: StatusInfo,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct BlockHeaderLookupResponse {
-    pub header: BlockHeader,
-
-    pub stateStatus: StateStatus,
-
-    pub status: BlockStatus,
-
-    pub statusInfo: StatusInfo,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct TransactionLookupRequest {
-    pub transactionID: ID,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct TransactionLookupResponse {
-    pub transaction: Transaction,
-
-    pub stateStatus: StateStatus,
-
-    pub status: TransactionStatus,
-
-    pub statusInfo: StatusInfo,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct TransactionSubmitRequest {
-    pub transaction: Transaction,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct TransactionSubmitResponse {
-    pub transactionInfo: TransactionInfo,
-
-    pub status: TransactionStatus,
-
-    pub statusInfo: StatusInfo,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ReceiptLookupRequest {
-    pub transactionID: ID,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ReceiptLookupResponse {
-    pub receipt: Receipt,
-
-    pub stateStatus: StateStatus,
-
-    pub status: ReceiptLookupStatus,
-
-    pub statusInfo: StatusInfo,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct AccountInfoLookupRequest {
-    pub account: ID,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct AccountInfoLookupResponse {
-    pub accountInfo: Account,
-
-    pub stateStatus: StateStatus,
-
-    pub status: InfoLookupStatus,
-
-    pub statusInfo: StatusInfo,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ChannelInfoLookupRequest {
-    pub infoType: ChannelInfoType,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ChannelInfoLookupResponse {
-    pub channelInfo: ChannelInfo,
-
-    pub stateStatus: StateStatus,
-
-    pub status: InfoLookupStatus,
-
-    pub statusInfo: StatusInfo,
-}
-
-// End struct section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum IdentifierType {
-    NONE = 0,
-    NUMBER = 1,
-    HASH = 2,
-}
-
-impl Default for IdentifierType {
-    fn default() -> Self {
-        IdentifierType::NONE
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum BlockStatus {
-    UNKNOWN = 0,
-    CREATED = 1,
-    FUTURE = 2,
-    NOT_FOUND = 3,
-}
-
-impl Default for BlockStatus {
-    fn default() -> Self {
-        BlockStatus::UNKNOWN
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum TransactionType {
-    NONE = 0,
-    READ = 1,
-    WRITE = 2,
-}
-
-impl Default for TransactionType {
-    fn default() -> Self {
-        TransactionType::NONE
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum TransactionStatus {
-    UNKNOWN = 0,
-    ACCEPTED = 1,
-    REJECTED = 2,
-    CONFIRMED = 3,
-    NOT_FOUND = 4,
-}
-
-impl Default for TransactionStatus {
-    fn default() -> Self {
-        TransactionStatus::UNKNOWN
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ReceiptLookupStatus {
-    UNKNOWN = 0,
-    FOUND = 1,
-    NOT_FOUND = 2,
-}
-
-impl Default for ReceiptLookupStatus {
-    fn default() -> Self {
-        ReceiptLookupStatus::UNKNOWN
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ChannelInfoType {
-    NONE = 0,
-    CONTRACT = 1,
-    CONFIG = 2,
-}
-
-impl Default for ChannelInfoType {
-    fn default() -> Self {
-        ChannelInfoType::NONE
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum InfoLookupStatus {
-    UNKNOWN = 0,
-    FOUND = 1,
-    NOT_FOUND = 2,
-}
-
-impl Default for InfoLookupStatus {
-    fn default() -> Self {
-        InfoLookupStatus::UNKNOWN
-    }
-}
-// Start union section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum Identifier {
-    NONE(()),
-
-    NUMBER(u64),
-
-    HASH(Hash),
-}
-
-impl Default for Identifier {
-    fn default() -> Self {
-        Identifier::NONE(())
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum TransactionInfo {
-    NONE(()),
-
-    READ(Receipt),
-
-    WRITE(ID),
-}
-
-impl Default for TransactionInfo {
-    fn default() -> Self {
-        TransactionInfo::NONE(())
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ChannelInfo {
-    NONE(()),
-
-    CONTRACT(Contract),
-
-    CONFIG(ChannelConfig),
-}
-
-impl Default for ChannelInfo {
-    fn default() -> Self {
-        ChannelInfo::NONE(())
-    }
-}
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ReceiptSubscription {
-    pub transactionFilter: TransactionFilter,
-
-    pub receiptFilter: ReceiptFilter,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ReceiptSubscriptionResult {
-    pub receipt: Receipt,
-
-    pub transactionID: ID,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ReceiptValueFilter {
-    pub status: ValueFilter,
-
-    pub stateRoot: ValueFilter,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ActionFilter {
-    pub signature: ValueFilter,
-
-    pub signer: ValueFilter,
-
-    pub address: ValueFilter,
-
-    pub channelID: ValueFilter,
-
-    pub nonce: ValueFilter,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ContractFilter {
-    pub actionFilter: ActionFilter,
-
-    pub version: ValueFilter,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ConfigFilter {
-    pub actionFilter: ActionFilter,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct PermissionFilter {
-    pub actionFilter: ActionFilter,
-
-    pub key: ValueFilter,
-
-    pub action: ValueFilter,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct CallFilter {
-    pub actionFilter: ActionFilter,
-
-    pub function: ValueFilter,
-}
-
-// End struct section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ValueFilterType {
-    NONE = 0,
-    STRING = 1,
-    HASH32 = 2,
-    HASH64 = 3,
-    UHYPER = 4,
-    INT = 5,
-}
-
-impl Default for ValueFilterType {
-    fn default() -> Self {
-        ValueFilterType::NONE
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum TransactionFilterType {
-    NONE = 0,
-    GENERIC = 1,
-    CONTRACT = 2,
-    CONFIG = 3,
-    PERMISSION = 4,
-    CALL = 5,
-}
-
-impl Default for TransactionFilterType {
-    fn default() -> Self {
-        TransactionFilterType::NONE
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ReceiptFilterType {
-    NONE = 0,
-    RECEIPT = 1,
-}
-
-impl Default for ReceiptFilterType {
-    fn default() -> Self {
-        ReceiptFilterType::NONE
-    }
-}
-// Start union section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ValueFilter {
-    NONE(()),
-
-    STRING(String),
-
-    HASH32(Hash32),
-
-    HASH64(Hash64),
-
-    UHYPER(u64),
-
-    INT(i32),
-}
-
-impl Default for ValueFilter {
-    fn default() -> Self {
-        ValueFilter::NONE(())
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum TransactionFilter {
-    NONE(()),
-
-    GENERIC(ActionFilter),
-
-    CONTRACT(ContractFilter),
-
-    CONFIG(ConfigFilter),
-
-    PERMISSION(PermissionFilter),
-
-    CALL(CallFilter),
-}
-
-impl Default for TransactionFilter {
-    fn default() -> Self {
-        TransactionFilter::NONE(())
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ReceiptFilter {
-    NONE(()),
-
-    RECEIPT(ReceiptValueFilter),
-}
-
-impl Default for ReceiptFilter {
-    fn default() -> Self {
-        ReceiptFilter::NONE(())
-    }
-}
 // End union section
 
 // Namspace end mazzaroth
@@ -819,10 +296,10 @@ pub struct Contract {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Permission {
-    pub key: ID,
+pub struct Authorization {
+    pub account: AuthorizedAccount,
 
-    pub action: PermissionAction,
+    pub authorize: bool,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
@@ -851,76 +328,93 @@ pub struct Transaction {
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum UpdateType {
-    NONE = 0,
+    UNKNOWN = 0,
     CONTRACT = 1,
     CONFIG = 2,
-    PERMISSION = 3,
+    ACCOUNT = 3,
 }
 
 impl Default for UpdateType {
     fn default() -> Self {
-        UpdateType::NONE
+        UpdateType::UNKNOWN
     }
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum PermissionAction {
-    REVOKE = 0,
-    GRANT = 1,
+pub enum AccountUpdateType {
+    UNKNOWN = 0,
+    ALIAS = 1,
+    AUTHORIZATION = 2,
 }
 
-impl Default for PermissionAction {
+impl Default for AccountUpdateType {
     fn default() -> Self {
-        PermissionAction::REVOKE
+        AccountUpdateType::UNKNOWN
     }
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ActionCategoryType {
-    NONE = 0,
+    UNKNOWN = 0,
     CALL = 1,
     UPDATE = 2,
 }
 
 impl Default for ActionCategoryType {
     fn default() -> Self {
-        ActionCategoryType::NONE
+        ActionCategoryType::UNKNOWN
     }
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum AuthorityType {
-    NONE = 0,
-    PERMISSIONED = 1,
+    UNKNOWN = 0,
+    SELF = 1,
+    AUTHORIZED = 2,
 }
 
 impl Default for AuthorityType {
     fn default() -> Self {
-        AuthorityType::NONE
+        AuthorityType::UNKNOWN
     }
 }
 // Start union section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum Update {
-    NONE(()),
+    UNKNOWN(()),
 
     CONTRACT(Contract),
 
     CONFIG(ChannelConfig),
 
-    PERMISSION(Permission),
+    ACCOUNT(AccountUpdate),
 }
 
 impl Default for Update {
     fn default() -> Self {
-        Update::NONE(())
+        Update::UNKNOWN(())
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum AccountUpdate {
+    UNKNOWN(()),
+
+    ALIAS(String),
+
+    AUTHORIZATION(Authorization),
+}
+
+impl Default for AccountUpdate {
+    fn default() -> Self {
+        AccountUpdate::UNKNOWN(())
     }
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ActionCategory {
-    NONE(()),
+    UNKNOWN(()),
 
     CALL(Call),
 
@@ -929,20 +423,22 @@ pub enum ActionCategory {
 
 impl Default for ActionCategory {
     fn default() -> Self {
-        ActionCategory::NONE(())
+        ActionCategory::UNKNOWN(())
     }
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum Authority {
-    NONE(()),
+    UNKNOWN(()),
 
-    PERMISSIONED(ID),
+    SELF(()),
+
+    AUTHORIZED(ID),
 }
 
 impl Default for Authority {
     fn default() -> Self {
-        Authority::NONE(())
+        Authority::UNKNOWN(())
     }
 }
 // End union section
