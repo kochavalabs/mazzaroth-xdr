@@ -256,6 +256,576 @@ var (
 
 // Start struct section
 
+// End struct section
+
+// Start enum section
+
+// RequestType generated enum
+type RequestType int32
+
+const (
+
+	// RequestTypeUNKNOWN enum value 0
+	RequestTypeUNKNOWN RequestType = 0
+
+	// RequestTypeTRANSACTION enum value 1
+	RequestTypeTRANSACTION RequestType = 1
+)
+
+// RequestTypeMap generated enum map
+var RequestTypeMap = map[int32]string{
+
+	0: "RequestTypeUNKNOWN",
+
+	1: "RequestTypeTRANSACTION",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for RequestType
+func (s RequestType) ValidEnum(v int32) bool {
+	_, ok := RequestTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s RequestType) String() string {
+	name, _ := RequestTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s RequestType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *RequestType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*RequestType)(nil)
+	_ encoding.BinaryUnmarshaler = (*RequestType)(nil)
+)
+
+// ResponseType generated enum
+type ResponseType int32
+
+const (
+
+	// ResponseTypeUNKNOWN enum value 0
+	ResponseTypeUNKNOWN ResponseType = 0
+
+	// ResponseTypeTRANSACTION enum value 1
+	ResponseTypeTRANSACTION ResponseType = 1
+
+	// ResponseTypeTRANSACTIONLIST enum value 2
+	ResponseTypeTRANSACTIONLIST ResponseType = 2
+
+	// ResponseTypeRECEIPT enum value 3
+	ResponseTypeRECEIPT ResponseType = 3
+
+	// ResponseTypeRECEIPTLIST enum value 4
+	ResponseTypeRECEIPTLIST ResponseType = 4
+
+	// ResponseTypeBLOCK enum value 5
+	ResponseTypeBLOCK ResponseType = 5
+
+	// ResponseTypeBLOCKLIST enum value 6
+	ResponseTypeBLOCKLIST ResponseType = 6
+
+	// ResponseTypeBLOCKHEADER enum value 7
+	ResponseTypeBLOCKHEADER ResponseType = 7
+
+	// ResponseTypeBLOCKHEADERLIST enum value 8
+	ResponseTypeBLOCKHEADERLIST ResponseType = 8
+
+	// ResponseTypeCHANNEL enum value 9
+	ResponseTypeCHANNEL ResponseType = 9
+
+	// ResponseTypeCHANNELLIST enum value 10
+	ResponseTypeCHANNELLIST ResponseType = 10
+
+	// ResponseTypeACCOUNT enum value 11
+	ResponseTypeACCOUNT ResponseType = 11
+
+	// ResponseTypeHEIGHT enum value 12
+	ResponseTypeHEIGHT ResponseType = 12
+
+	// ResponseTypeABI enum value 13
+	ResponseTypeABI ResponseType = 13
+)
+
+// ResponseTypeMap generated enum map
+var ResponseTypeMap = map[int32]string{
+
+	0: "ResponseTypeUNKNOWN",
+
+	1: "ResponseTypeTRANSACTION",
+
+	2: "ResponseTypeTRANSACTIONLIST",
+
+	3: "ResponseTypeRECEIPT",
+
+	4: "ResponseTypeRECEIPTLIST",
+
+	5: "ResponseTypeBLOCK",
+
+	6: "ResponseTypeBLOCKLIST",
+
+	7: "ResponseTypeBLOCKHEADER",
+
+	8: "ResponseTypeBLOCKHEADERLIST",
+
+	9: "ResponseTypeCHANNEL",
+
+	10: "ResponseTypeCHANNELLIST",
+
+	11: "ResponseTypeACCOUNT",
+
+	12: "ResponseTypeHEIGHT",
+
+	13: "ResponseTypeABI",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ResponseType
+func (s ResponseType) ValidEnum(v int32) bool {
+	_, ok := ResponseTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s ResponseType) String() string {
+	name, _ := ResponseTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ResponseType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ResponseType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ResponseType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ResponseType)(nil)
+)
+
+// End enum section
+
+// Start union section
+
+// Request generated union
+type Request struct {
+	Type RequestType
+
+	Transaction *Transaction
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u Request) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of Request
+func (u Request) ArmForSwitch(sw int32) (string, bool) {
+	switch RequestType(sw) {
+
+	case RequestTypeUNKNOWN:
+		return "", true
+
+	case RequestTypeTRANSACTION:
+		return "Transaction", true
+	}
+	return "-", false
+}
+
+// NewRequest creates a new  Request.
+func NewRequest(aType RequestType, value interface{}) (result Request, err error) {
+	result.Type = aType
+	switch aType {
+
+	case RequestTypeUNKNOWN:
+
+	case RequestTypeTRANSACTION:
+
+		tv, ok := value.(Transaction)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Transaction = &tv
+
+	}
+	return
+}
+
+// MustTransaction retrieves the Transaction value from the union,
+// panicing if the value is not set.
+func (u Request) MustTransaction() Transaction {
+
+	val, ok := u.GetTransaction()
+	if !ok {
+		panic("arm Transaction is not set")
+	}
+
+	return val
+}
+
+// GetTransaction retrieves the Transaction value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Request) GetTransaction() (result Transaction, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Transaction" {
+		result = *u.Transaction
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u Request) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *Request) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Request)(nil)
+	_ encoding.BinaryUnmarshaler = (*Request)(nil)
+)
+
+// Response generated union
+type Response struct {
+	Type ResponseType
+
+	Transaction *Transaction
+
+	Transactions *[]Transaction
+
+	Channel *ChannelConfig
+
+	Channels *[]ChannelConfig
+
+	Account *Account
+
+	Height *BlockHeight
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u Response) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of Response
+func (u Response) ArmForSwitch(sw int32) (string, bool) {
+	switch ResponseType(sw) {
+
+	case ResponseTypeUNKNOWN:
+		return "", true
+
+	case ResponseTypeTRANSACTION:
+		return "Transaction", true
+
+	case ResponseTypeTRANSACTIONLIST:
+		return "Transactions", true
+
+	case ResponseTypeCHANNEL:
+		return "Channel", true
+
+	case ResponseTypeCHANNELLIST:
+		return "Channels", true
+
+	case ResponseTypeACCOUNT:
+		return "Account", true
+
+	case ResponseTypeHEIGHT:
+		return "Height", true
+	}
+	return "-", false
+}
+
+// NewResponse creates a new  Response.
+func NewResponse(aType ResponseType, value interface{}) (result Response, err error) {
+	result.Type = aType
+	switch aType {
+
+	case ResponseTypeUNKNOWN:
+
+	case ResponseTypeTRANSACTION:
+
+		tv, ok := value.(Transaction)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Transaction = &tv
+
+	case ResponseTypeTRANSACTIONLIST:
+
+		tv, ok := value.([]Transaction)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Transactions = &tv
+
+	case ResponseTypeCHANNEL:
+
+		tv, ok := value.(ChannelConfig)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Channel = &tv
+
+	case ResponseTypeCHANNELLIST:
+
+		tv, ok := value.([]ChannelConfig)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Channels = &tv
+
+	case ResponseTypeACCOUNT:
+
+		tv, ok := value.(Account)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Account = &tv
+
+	case ResponseTypeHEIGHT:
+
+		tv, ok := value.(BlockHeight)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Height = &tv
+
+	}
+	return
+}
+
+// MustTransaction retrieves the Transaction value from the union,
+// panicing if the value is not set.
+func (u Response) MustTransaction() Transaction {
+
+	val, ok := u.GetTransaction()
+	if !ok {
+		panic("arm Transaction is not set")
+	}
+
+	return val
+}
+
+// GetTransaction retrieves the Transaction value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetTransaction() (result Transaction, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Transaction" {
+		result = *u.Transaction
+		ok = true
+	}
+
+	return
+}
+
+// MustTransactions retrieves the Transactions value from the union,
+// panicing if the value is not set.
+func (u Response) MustTransactions() []Transaction {
+
+	val, ok := u.GetTransactions()
+	if !ok {
+		panic("arm Transactions is not set")
+	}
+
+	return val
+}
+
+// GetTransactions retrieves the Transactions value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetTransactions() (result []Transaction, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Transactions" {
+		result = *u.Transactions
+		ok = true
+	}
+
+	return
+}
+
+// MustChannel retrieves the Channel value from the union,
+// panicing if the value is not set.
+func (u Response) MustChannel() ChannelConfig {
+
+	val, ok := u.GetChannel()
+	if !ok {
+		panic("arm Channel is not set")
+	}
+
+	return val
+}
+
+// GetChannel retrieves the Channel value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetChannel() (result ChannelConfig, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Channel" {
+		result = *u.Channel
+		ok = true
+	}
+
+	return
+}
+
+// MustChannels retrieves the Channels value from the union,
+// panicing if the value is not set.
+func (u Response) MustChannels() []ChannelConfig {
+
+	val, ok := u.GetChannels()
+	if !ok {
+		panic("arm Channels is not set")
+	}
+
+	return val
+}
+
+// GetChannels retrieves the Channels value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetChannels() (result []ChannelConfig, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Channels" {
+		result = *u.Channels
+		ok = true
+	}
+
+	return
+}
+
+// MustAccount retrieves the Account value from the union,
+// panicing if the value is not set.
+func (u Response) MustAccount() Account {
+
+	val, ok := u.GetAccount()
+	if !ok {
+		panic("arm Account is not set")
+	}
+
+	return val
+}
+
+// GetAccount retrieves the Account value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetAccount() (result Account, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Account" {
+		result = *u.Account
+		ok = true
+	}
+
+	return
+}
+
+// MustHeight retrieves the Height value from the union,
+// panicing if the value is not set.
+func (u Response) MustHeight() BlockHeight {
+
+	val, ok := u.GetHeight()
+	if !ok {
+		panic("arm Height is not set")
+	}
+
+	return val
+}
+
+// GetHeight retrieves the Height value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetHeight() (result BlockHeight, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Height" {
+		result = *u.Height
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u Response) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *Response) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Response)(nil)
+	_ encoding.BinaryUnmarshaler = (*Response)(nil)
+)
+
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
 // Block generated struct
 type Block struct {
 	Header BlockHeader `json:"header"`
@@ -296,6 +866,8 @@ type BlockHeader struct {
 	StateRoot Hash `json:"stateRoot"`
 
 	PreviousHeader Hash `json:"previousHeader"`
+
+	Status BlockStatus `json:"status"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -316,9 +888,88 @@ var (
 	_ encoding.BinaryUnmarshaler = (*BlockHeader)(nil)
 )
 
+// BlockHeight generated struct
+type BlockHeight struct {
+	Height uint64 `json:"height"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s BlockHeight) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *BlockHeight) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*BlockHeight)(nil)
+	_ encoding.BinaryUnmarshaler = (*BlockHeight)(nil)
+)
+
 // End struct section
 
 // Start enum section
+
+// BlockStatus generated enum
+type BlockStatus int32
+
+const (
+
+	// BlockStatusUNKNOWN enum value 0
+	BlockStatusUNKNOWN BlockStatus = 0
+
+	// BlockStatusPENDING enum value 1
+	BlockStatusPENDING BlockStatus = 1
+
+	// BlockStatusFINALIZED enum value 2
+	BlockStatusFINALIZED BlockStatus = 2
+)
+
+// BlockStatusMap generated enum map
+var BlockStatusMap = map[int32]string{
+
+	0: "BlockStatusUNKNOWN",
+
+	1: "BlockStatusPENDING",
+
+	2: "BlockStatusFINALIZED",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for BlockStatus
+func (s BlockStatus) ValidEnum(v int32) bool {
+	_, ok := BlockStatusMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s BlockStatus) String() string {
+	name, _ := BlockStatusMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s BlockStatus) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *BlockStatus) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*BlockStatus)(nil)
+	_ encoding.BinaryUnmarshaler = (*BlockStatus)(nil)
+)
 
 // End enum section
 

@@ -9,8 +9,14 @@ exports.Parameter = Parameter;
 exports.FunctionType = FunctionType;
 exports.Account = Account;
 exports.AuthorizedAccount = AuthorizedAccount;
+exports.RequestType = RequestType;
+exports.ResponseType = ResponseType;
+exports.Request = Request;
+exports.Response = Response;
 exports.Block = Block;
 exports.BlockHeader = BlockHeader;
+exports.BlockHeight = BlockHeight;
+exports.BlockStatus = BlockStatus;
 exports.Signature = Signature;
 exports.ID = ID;
 exports.Hash = Hash;
@@ -108,17 +114,123 @@ function AuthorizedAccount() {
 // End typedef section
 
 // Start struct section
+
+// End struct section
+
+// Start enum section
+
+function RequestType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "UNKNOWN",
+        1: "TRANSACTION"
+
+    });
+}
+
+function ResponseType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "UNKNOWN",
+        1: "TRANSACTION",
+        2: "TRANSACTIONLIST",
+        3: "RECEIPT",
+        4: "RECEIPTLIST",
+        5: "BLOCK",
+        6: "BLOCKLIST",
+        7: "BLOCKHEADER",
+        8: "BLOCKHEADERLIST",
+        9: "CHANNEL",
+        10: "CHANNELLIST",
+        11: "ACCOUNT",
+        12: "HEIGHT",
+        13: "ABI"
+
+    });
+}
+
+// End enum section
+
+// Start union section
+
+
+function Request() {
+    return new _xdrJsSerialize2.default.Union(RequestType(), {
+
+        "UNKNOWN": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "TRANSACTION": () => {
+            return Transaction();
+        }
+
+    });
+}
+
+function Response() {
+    return new _xdrJsSerialize2.default.Union(ResponseType(), {
+
+        "UNKNOWN": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+
+        "TRANSACTION": () => {
+            return Transaction();
+        },
+
+        "TRANSACTIONLIST": () => {
+            return new _xdrJsSerialize2.default.VarArray(2147483647, Transaction);
+        },
+
+        "CHANNEL": () => {
+            return ChannelConfig();
+        },
+
+        "CHANNELLIST": () => {
+            return new _xdrJsSerialize2.default.VarArray(2147483647, ChannelConfig);
+        },
+
+        "ACCOUNT": () => {
+            return Account();
+        },
+
+        "HEIGHT": () => {
+            return BlockHeight();
+        }
+
+    });
+}
+
+// End union section
+
+// End namespace mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
 function Block() {
     return new _xdrJsSerialize2.default.Struct(["header", "transactions"], [BlockHeader(), new _xdrJsSerialize2.default.VarArray(2147483647, Transaction)]);
 }
 function BlockHeader() {
-    return new _xdrJsSerialize2.default.Struct(["blockHeight", "transactionHeight", "consensusSequenceNumber", "transactionsMerkleRoot", "transactionsReceiptRoot", "stateRoot", "previousHeader"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash()]);
+    return new _xdrJsSerialize2.default.Struct(["blockHeight", "transactionHeight", "consensusSequenceNumber", "transactionsMerkleRoot", "transactionsReceiptRoot", "stateRoot", "previousHeader", "status"], [new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Hash(), Hash(), Hash(), Hash(), BlockStatus()]);
+}
+function BlockHeight() {
+    return new _xdrJsSerialize2.default.Struct(["height"], [new _xdrJsSerialize2.default.UHyper()]);
 }
 
 // End struct section
 
 // Start enum section
 
+function BlockStatus() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "UNKNOWN",
+        1: "PENDING",
+        2: "FINALIZED"
+
+    });
+}
 
 // End enum section
 

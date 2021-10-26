@@ -35,5 +35,19 @@ namespace mazzaroth
 
     // The hash of the previous block header
     Hash previousHeader;
+
+    BlockStatus status;
   };
+
+  enum BlockStatus
+  {
+    UNKNOWN = 0,
+    PENDING = 1,
+    FINALIZED = 2
+  }
+
+  struct BlockHeight
+  {
+    unsigned hyper height;
+  }
 }

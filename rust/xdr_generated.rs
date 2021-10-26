@@ -120,6 +120,93 @@ pub struct AuthorizedAccount {
 
 // Start struct section
 
+// End struct section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum RequestType {
+    UNKNOWN = 0,
+    TRANSACTION = 1,
+}
+
+impl Default for RequestType {
+    fn default() -> Self {
+        RequestType::UNKNOWN
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ResponseType {
+    UNKNOWN = 0,
+    TRANSACTION = 1,
+    TRANSACTIONLIST = 2,
+    RECEIPT = 3,
+    RECEIPTLIST = 4,
+    BLOCK = 5,
+    BLOCKLIST = 6,
+    BLOCKHEADER = 7,
+    BLOCKHEADERLIST = 8,
+    CHANNEL = 9,
+    CHANNELLIST = 10,
+    ACCOUNT = 11,
+    HEIGHT = 12,
+    ABI = 13,
+}
+
+impl Default for ResponseType {
+    fn default() -> Self {
+        ResponseType::UNKNOWN
+    }
+}
+// Start union section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum Request {
+    UNKNOWN(()),
+
+    TRANSACTION(Transaction),
+}
+
+impl Default for Request {
+    fn default() -> Self {
+        Request::UNKNOWN(())
+    }
+}
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum Response {
+    UNKNOWN(()),
+
+    TRANSACTION(Transaction),
+
+    #[array(var = 2147483647)]
+    TRANSACTIONLIST(Vec<Transaction>),
+
+    CHANNEL(ChannelConfig),
+
+    #[array(var = 2147483647)]
+    CHANNELLIST(Vec<ChannelConfig>),
+
+    ACCOUNT(Account),
+
+    HEIGHT(BlockHeight),
+}
+
+impl Default for Response {
+    fn default() -> Self {
+        Response::UNKNOWN(())
+    }
+}
+// End union section
+
+// Namspace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Block {
     pub header: BlockHeader,
@@ -143,10 +230,29 @@ pub struct BlockHeader {
     pub stateRoot: Hash,
 
     pub previousHeader: Hash,
+
+    pub status: BlockStatus,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct BlockHeight {
+    pub height: u64,
 }
 
 // End struct section
 
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum BlockStatus {
+    UNKNOWN = 0,
+    PENDING = 1,
+    FINALIZED = 2,
+}
+
+impl Default for BlockStatus {
+    fn default() -> Self {
+        BlockStatus::UNKNOWN
+    }
+}
 // Start union section
 
 // End union section
