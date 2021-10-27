@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/kochavalabs/mazzaroth-xdr/xdr"
@@ -45,5 +46,20 @@ func BenchmarkXdrDeserialize(b *testing.B) {
 	bytes, _ := txXdr.MarshalBinary()
 	for i := 0; i < b.N; i++ {
 		txXdr.UnmarshalBinary(bytes)
+	}
+}
+
+func BenchmarkJSONSerialize(b *testing.B) {
+	txXdr := getXdr()
+	for i := 0; i < b.N; i++ {
+		json.Marshal(txXdr)
+	}
+}
+
+func BenchmarkJSONDeserialize(b *testing.B) {
+	txXdr := getXdr()
+	bytes, _ := json.Marshal(txXdr)
+	for i := 0; i < b.N; i++ {
+		json.Unmarshal(bytes, &xdr.Transaction{})
 	}
 }
