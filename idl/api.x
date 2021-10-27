@@ -55,6 +55,18 @@ namespace mazzaroth
       Transaction transaction;
     case TRANSACTIONLIST:
       Transaction transactions<>;
+    case RECEIPT:
+      Receipt receipt;
+    case RECEIPTLIST:
+      Receipt receipts<>;
+    case BLOCK:
+      Block block;
+    case BLOCKLIST:
+      Block blocks<>;
+    case BLOCKHEADER:
+      BlockHeader blockHeader;
+    case BLOCKHEADERLIST:
+      BlockHeader blockHeaders<>;
     case CHANNEL:
       ChannelConfig channel;
     case CHANNELLIST:
@@ -63,5 +75,7 @@ namespace mazzaroth
       Account account;
     case HEIGHT:
       BlockHeight height;
+    case ABI:
+      Abi abi;
   };
 }

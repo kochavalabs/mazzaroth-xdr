@@ -181,6 +181,30 @@ function Response() {
             return new _xdrJsSerialize2.default.VarArray(2147483647, Transaction);
         },
 
+        "RECEIPT": () => {
+            return Receipt();
+        },
+
+        "RECEIPTLIST": () => {
+            return new _xdrJsSerialize2.default.VarArray(2147483647, Receipt);
+        },
+
+        "BLOCK": () => {
+            return Block();
+        },
+
+        "BLOCKLIST": () => {
+            return new _xdrJsSerialize2.default.VarArray(2147483647, Block);
+        },
+
+        "BLOCKHEADER": () => {
+            return BlockHeader();
+        },
+
+        "BLOCKHEADERLIST": () => {
+            return new _xdrJsSerialize2.default.VarArray(2147483647, BlockHeader);
+        },
+
         "CHANNEL": () => {
             return ChannelConfig();
         },
@@ -195,6 +219,10 @@ function Response() {
 
         "HEIGHT": () => {
             return BlockHeight();
+        },
+
+        "ABI": () => {
+            return Abi();
         }
 
     });

@@ -5,6 +5,7 @@ package xdr
 import (
 	"bytes"
 	"encoding"
+	"encoding/json"
 	"fmt"
 	"io"
 
@@ -176,7 +177,7 @@ var (
 
 // End union section
 
-// Namspace end mazzaroth
+// Namespace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -247,7 +248,7 @@ var (
 
 // End union section
 
-// Namspace end mazzaroth
+// Namespace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -518,6 +519,56 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Request)(nil)
 )
 
+// MarshalJSON implements json.Marshaler.
+func (u Request) MarshalJSON() ([]byte, error) {
+	temp := struct {
+		Type int32       `json:"type"`
+		Data interface{} `json:"data"`
+	}{}
+
+	temp.Type = int32(u.Type)
+	temp.Data = ""
+	switch u.Type {
+	case RequestTypeUNKNOWN:
+	case RequestTypeTRANSACTION:
+		temp.Data = u.Transaction
+	default:
+		return nil, fmt.Errorf("invalid union type")
+	}
+
+	return json.Marshal(temp)
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (u *Request) UnmarshalJSON(data []byte) error {
+	temp := struct {
+		Type int32 `json:"type"`
+	}{}
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	u.Type = RequestType(temp.Type)
+	switch u.Type {
+	case RequestTypeUNKNOWN:
+
+	case RequestTypeTRANSACTION:
+		response := struct {
+			Transaction Transaction `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Transaction = &response.Transaction
+
+	default:
+		return fmt.Errorf("invalid union type")
+	}
+
+	return nil
+}
+
 // Response generated union
 type Response struct {
 	Type ResponseType
@@ -526,6 +577,18 @@ type Response struct {
 
 	Transactions *[]Transaction
 
+	Receipt *Receipt
+
+	Receipts *[]Receipt
+
+	Block *Block
+
+	Blocks *[]Block
+
+	BlockHeader *BlockHeader
+
+	BlockHeaders *[]BlockHeader
+
 	Channel *ChannelConfig
 
 	Channels *[]ChannelConfig
@@ -533,6 +596,8 @@ type Response struct {
 	Account *Account
 
 	Height *BlockHeight
+
+	Abi *Abi
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -555,6 +620,24 @@ func (u Response) ArmForSwitch(sw int32) (string, bool) {
 	case ResponseTypeTRANSACTIONLIST:
 		return "Transactions", true
 
+	case ResponseTypeRECEIPT:
+		return "Receipt", true
+
+	case ResponseTypeRECEIPTLIST:
+		return "Receipts", true
+
+	case ResponseTypeBLOCK:
+		return "Block", true
+
+	case ResponseTypeBLOCKLIST:
+		return "Blocks", true
+
+	case ResponseTypeBLOCKHEADER:
+		return "BlockHeader", true
+
+	case ResponseTypeBLOCKHEADERLIST:
+		return "BlockHeaders", true
+
 	case ResponseTypeCHANNEL:
 		return "Channel", true
 
@@ -566,6 +649,9 @@ func (u Response) ArmForSwitch(sw int32) (string, bool) {
 
 	case ResponseTypeHEIGHT:
 		return "Height", true
+
+	case ResponseTypeABI:
+		return "Abi", true
 	}
 	return "-", false
 }
@@ -596,6 +682,66 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 			return
 		}
 		result.Transactions = &tv
+
+	case ResponseTypeRECEIPT:
+
+		tv, ok := value.(Receipt)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Receipt = &tv
+
+	case ResponseTypeRECEIPTLIST:
+
+		tv, ok := value.([]Receipt)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Receipts = &tv
+
+	case ResponseTypeBLOCK:
+
+		tv, ok := value.(Block)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Block = &tv
+
+	case ResponseTypeBLOCKLIST:
+
+		tv, ok := value.([]Block)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Blocks = &tv
+
+	case ResponseTypeBLOCKHEADER:
+
+		tv, ok := value.(BlockHeader)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.BlockHeader = &tv
+
+	case ResponseTypeBLOCKHEADERLIST:
+
+		tv, ok := value.([]BlockHeader)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.BlockHeaders = &tv
 
 	case ResponseTypeCHANNEL:
 
@@ -636,6 +782,16 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 			return
 		}
 		result.Height = &tv
+
+	case ResponseTypeABI:
+
+		tv, ok := value.(Abi)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Abi = &tv
 
 	}
 	return
@@ -687,6 +843,162 @@ func (u Response) GetTransactions() (result []Transaction, ok bool) {
 
 	if armName == "Transactions" {
 		result = *u.Transactions
+		ok = true
+	}
+
+	return
+}
+
+// MustReceipt retrieves the Receipt value from the union,
+// panicing if the value is not set.
+func (u Response) MustReceipt() Receipt {
+
+	val, ok := u.GetReceipt()
+	if !ok {
+		panic("arm Receipt is not set")
+	}
+
+	return val
+}
+
+// GetReceipt retrieves the Receipt value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetReceipt() (result Receipt, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Receipt" {
+		result = *u.Receipt
+		ok = true
+	}
+
+	return
+}
+
+// MustReceipts retrieves the Receipts value from the union,
+// panicing if the value is not set.
+func (u Response) MustReceipts() []Receipt {
+
+	val, ok := u.GetReceipts()
+	if !ok {
+		panic("arm Receipts is not set")
+	}
+
+	return val
+}
+
+// GetReceipts retrieves the Receipts value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetReceipts() (result []Receipt, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Receipts" {
+		result = *u.Receipts
+		ok = true
+	}
+
+	return
+}
+
+// MustBlock retrieves the Block value from the union,
+// panicing if the value is not set.
+func (u Response) MustBlock() Block {
+
+	val, ok := u.GetBlock()
+	if !ok {
+		panic("arm Block is not set")
+	}
+
+	return val
+}
+
+// GetBlock retrieves the Block value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetBlock() (result Block, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Block" {
+		result = *u.Block
+		ok = true
+	}
+
+	return
+}
+
+// MustBlocks retrieves the Blocks value from the union,
+// panicing if the value is not set.
+func (u Response) MustBlocks() []Block {
+
+	val, ok := u.GetBlocks()
+	if !ok {
+		panic("arm Blocks is not set")
+	}
+
+	return val
+}
+
+// GetBlocks retrieves the Blocks value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetBlocks() (result []Block, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Blocks" {
+		result = *u.Blocks
+		ok = true
+	}
+
+	return
+}
+
+// MustBlockHeader retrieves the BlockHeader value from the union,
+// panicing if the value is not set.
+func (u Response) MustBlockHeader() BlockHeader {
+
+	val, ok := u.GetBlockHeader()
+	if !ok {
+		panic("arm BlockHeader is not set")
+	}
+
+	return val
+}
+
+// GetBlockHeader retrieves the BlockHeader value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetBlockHeader() (result BlockHeader, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "BlockHeader" {
+		result = *u.BlockHeader
+		ok = true
+	}
+
+	return
+}
+
+// MustBlockHeaders retrieves the BlockHeaders value from the union,
+// panicing if the value is not set.
+func (u Response) MustBlockHeaders() []BlockHeader {
+
+	val, ok := u.GetBlockHeaders()
+	if !ok {
+		panic("arm BlockHeaders is not set")
+	}
+
+	return val
+}
+
+// GetBlockHeaders retrieves the BlockHeaders value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetBlockHeaders() (result []BlockHeader, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "BlockHeaders" {
+		result = *u.BlockHeaders
 		ok = true
 	}
 
@@ -797,6 +1109,32 @@ func (u Response) GetHeight() (result BlockHeight, ok bool) {
 	return
 }
 
+// MustAbi retrieves the Abi value from the union,
+// panicing if the value is not set.
+func (u Response) MustAbi() Abi {
+
+	val, ok := u.GetAbi()
+	if !ok {
+		panic("arm Abi is not set")
+	}
+
+	return val
+}
+
+// GetAbi retrieves the Abi value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetAbi() (result Abi, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Abi" {
+		result = *u.Abi
+		ok = true
+	}
+
+	return
+}
+
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (u Response) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
@@ -815,9 +1153,203 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Response)(nil)
 )
 
+// MarshalJSON implements json.Marshaler.
+func (u Response) MarshalJSON() ([]byte, error) {
+	temp := struct {
+		Type int32       `json:"type"`
+		Data interface{} `json:"data"`
+	}{}
+
+	temp.Type = int32(u.Type)
+	temp.Data = ""
+	switch u.Type {
+	case ResponseTypeUNKNOWN:
+	case ResponseTypeTRANSACTION:
+		temp.Data = u.Transaction
+	case ResponseTypeTRANSACTIONLIST:
+		temp.Data = u.Transactions
+	case ResponseTypeRECEIPT:
+		temp.Data = u.Receipt
+	case ResponseTypeRECEIPTLIST:
+		temp.Data = u.Receipts
+	case ResponseTypeBLOCK:
+		temp.Data = u.Block
+	case ResponseTypeBLOCKLIST:
+		temp.Data = u.Blocks
+	case ResponseTypeBLOCKHEADER:
+		temp.Data = u.BlockHeader
+	case ResponseTypeBLOCKHEADERLIST:
+		temp.Data = u.BlockHeaders
+	case ResponseTypeCHANNEL:
+		temp.Data = u.Channel
+	case ResponseTypeCHANNELLIST:
+		temp.Data = u.Channels
+	case ResponseTypeACCOUNT:
+		temp.Data = u.Account
+	case ResponseTypeHEIGHT:
+		temp.Data = u.Height
+	case ResponseTypeABI:
+		temp.Data = u.Abi
+	default:
+		return nil, fmt.Errorf("invalid union type")
+	}
+
+	return json.Marshal(temp)
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (u *Response) UnmarshalJSON(data []byte) error {
+	temp := struct {
+		Type int32 `json:"type"`
+	}{}
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	u.Type = ResponseType(temp.Type)
+	switch u.Type {
+	case ResponseTypeUNKNOWN:
+
+	case ResponseTypeTRANSACTION:
+		response := struct {
+			Transaction Transaction `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Transaction = &response.Transaction
+
+	case ResponseTypeTRANSACTIONLIST:
+		response := struct {
+			Transactions []Transaction `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Transactions = &response.Transactions
+
+	case ResponseTypeRECEIPT:
+		response := struct {
+			Receipt Receipt `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Receipt = &response.Receipt
+
+	case ResponseTypeRECEIPTLIST:
+		response := struct {
+			Receipts []Receipt `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Receipts = &response.Receipts
+
+	case ResponseTypeBLOCK:
+		response := struct {
+			Block Block `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Block = &response.Block
+
+	case ResponseTypeBLOCKLIST:
+		response := struct {
+			Blocks []Block `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Blocks = &response.Blocks
+
+	case ResponseTypeBLOCKHEADER:
+		response := struct {
+			BlockHeader BlockHeader `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.BlockHeader = &response.BlockHeader
+
+	case ResponseTypeBLOCKHEADERLIST:
+		response := struct {
+			BlockHeaders []BlockHeader `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.BlockHeaders = &response.BlockHeaders
+
+	case ResponseTypeCHANNEL:
+		response := struct {
+			Channel ChannelConfig `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Channel = &response.Channel
+
+	case ResponseTypeCHANNELLIST:
+		response := struct {
+			Channels []ChannelConfig `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Channels = &response.Channels
+
+	case ResponseTypeACCOUNT:
+		response := struct {
+			Account Account `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Account = &response.Account
+
+	case ResponseTypeHEIGHT:
+		response := struct {
+			Height BlockHeight `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Height = &response.Height
+
+	case ResponseTypeABI:
+		response := struct {
+			Abi Abi `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Abi = &response.Abi
+
+	default:
+		return fmt.Errorf("invalid union type")
+	}
+
+	return nil
+}
+
 // End union section
 
-// Namspace end mazzaroth
+// Namespace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -977,7 +1509,7 @@ var (
 
 // End union section
 
-// Namspace end mazzaroth
+// Namespace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -1116,7 +1648,7 @@ var (
 
 // End union section
 
-// Namspace end mazzaroth
+// Namespace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -1160,7 +1692,7 @@ var (
 
 // End union section
 
-// Namspace end mazzaroth
+// Namespace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -1264,7 +1796,7 @@ var (
 
 // End union section
 
-// Namspace end mazzaroth
+// Namespace end mazzaroth
 // Namspace start mazzaroth
 
 // Start typedef section
@@ -1821,6 +2353,80 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Update)(nil)
 )
 
+// MarshalJSON implements json.Marshaler.
+func (u Update) MarshalJSON() ([]byte, error) {
+	temp := struct {
+		Type int32       `json:"type"`
+		Data interface{} `json:"data"`
+	}{}
+
+	temp.Type = int32(u.Type)
+	temp.Data = ""
+	switch u.Type {
+	case UpdateTypeUNKNOWN:
+	case UpdateTypeCONTRACT:
+		temp.Data = u.Contract
+	case UpdateTypeCONFIG:
+		temp.Data = u.ChannelConfig
+	case UpdateTypeACCOUNT:
+		temp.Data = u.Account
+	default:
+		return nil, fmt.Errorf("invalid union type")
+	}
+
+	return json.Marshal(temp)
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (u *Update) UnmarshalJSON(data []byte) error {
+	temp := struct {
+		Type int32 `json:"type"`
+	}{}
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	u.Type = UpdateType(temp.Type)
+	switch u.Type {
+	case UpdateTypeUNKNOWN:
+
+	case UpdateTypeCONTRACT:
+		response := struct {
+			Contract Contract `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Contract = &response.Contract
+
+	case UpdateTypeCONFIG:
+		response := struct {
+			ChannelConfig ChannelConfig `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.ChannelConfig = &response.ChannelConfig
+
+	case UpdateTypeACCOUNT:
+		response := struct {
+			Account AccountUpdate `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Account = &response.Account
+
+	default:
+		return fmt.Errorf("invalid union type")
+	}
+
+	return nil
+}
+
 // AccountUpdate generated union
 type AccountUpdate struct {
 	Type AccountUpdateType
@@ -1953,6 +2559,68 @@ var (
 	_ encoding.BinaryMarshaler   = (*AccountUpdate)(nil)
 	_ encoding.BinaryUnmarshaler = (*AccountUpdate)(nil)
 )
+
+// MarshalJSON implements json.Marshaler.
+func (u AccountUpdate) MarshalJSON() ([]byte, error) {
+	temp := struct {
+		Type int32       `json:"type"`
+		Data interface{} `json:"data"`
+	}{}
+
+	temp.Type = int32(u.Type)
+	temp.Data = ""
+	switch u.Type {
+	case AccountUpdateTypeUNKNOWN:
+	case AccountUpdateTypeALIAS:
+		temp.Data = u.Alias
+	case AccountUpdateTypeAUTHORIZATION:
+		temp.Data = u.Authorization
+	default:
+		return nil, fmt.Errorf("invalid union type")
+	}
+
+	return json.Marshal(temp)
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (u *AccountUpdate) UnmarshalJSON(data []byte) error {
+	temp := struct {
+		Type int32 `json:"type"`
+	}{}
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	u.Type = AccountUpdateType(temp.Type)
+	switch u.Type {
+	case AccountUpdateTypeUNKNOWN:
+
+	case AccountUpdateTypeALIAS:
+		response := struct {
+			Alias string `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Alias = &response.Alias
+
+	case AccountUpdateTypeAUTHORIZATION:
+		response := struct {
+			Authorization Authorization `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Authorization = &response.Authorization
+
+	default:
+		return fmt.Errorf("invalid union type")
+	}
+
+	return nil
+}
 
 // ActionCategory generated union
 type ActionCategory struct {
@@ -2087,6 +2755,68 @@ var (
 	_ encoding.BinaryUnmarshaler = (*ActionCategory)(nil)
 )
 
+// MarshalJSON implements json.Marshaler.
+func (u ActionCategory) MarshalJSON() ([]byte, error) {
+	temp := struct {
+		Type int32       `json:"type"`
+		Data interface{} `json:"data"`
+	}{}
+
+	temp.Type = int32(u.Type)
+	temp.Data = ""
+	switch u.Type {
+	case ActionCategoryTypeUNKNOWN:
+	case ActionCategoryTypeCALL:
+		temp.Data = u.Call
+	case ActionCategoryTypeUPDATE:
+		temp.Data = u.Update
+	default:
+		return nil, fmt.Errorf("invalid union type")
+	}
+
+	return json.Marshal(temp)
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (u *ActionCategory) UnmarshalJSON(data []byte) error {
+	temp := struct {
+		Type int32 `json:"type"`
+	}{}
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	u.Type = ActionCategoryType(temp.Type)
+	switch u.Type {
+	case ActionCategoryTypeUNKNOWN:
+
+	case ActionCategoryTypeCALL:
+		response := struct {
+			Call Call `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Call = &response.Call
+
+	case ActionCategoryTypeUPDATE:
+		response := struct {
+			Update Update `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Update = &response.Update
+
+	default:
+		return fmt.Errorf("invalid union type")
+	}
+
+	return nil
+}
+
 // Authority generated union
 type Authority struct {
 	Type AuthorityType
@@ -2184,7 +2914,60 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Authority)(nil)
 )
 
+// MarshalJSON implements json.Marshaler.
+func (u Authority) MarshalJSON() ([]byte, error) {
+	temp := struct {
+		Type int32       `json:"type"`
+		Data interface{} `json:"data"`
+	}{}
+
+	temp.Type = int32(u.Type)
+	temp.Data = ""
+	switch u.Type {
+	case AuthorityTypeUNKNOWN:
+	case AuthorityTypeSELF:
+	case AuthorityTypeAUTHORIZED:
+		temp.Data = u.Origin
+	default:
+		return nil, fmt.Errorf("invalid union type")
+	}
+
+	return json.Marshal(temp)
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (u *Authority) UnmarshalJSON(data []byte) error {
+	temp := struct {
+		Type int32 `json:"type"`
+	}{}
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	u.Type = AuthorityType(temp.Type)
+	switch u.Type {
+	case AuthorityTypeUNKNOWN:
+
+	case AuthorityTypeSELF:
+
+	case AuthorityTypeAUTHORIZED:
+		response := struct {
+			Origin ID `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Origin = &response.Origin
+
+	default:
+		return fmt.Errorf("invalid union type")
+	}
+
+	return nil
+}
+
 // End union section
 
-// Namspace end mazzaroth
+// Namespace end mazzaroth
 var fmtTest = fmt.Sprint("this is a dummy usage of fmt")

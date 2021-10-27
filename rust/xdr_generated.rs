@@ -181,6 +181,21 @@ pub enum Response {
     #[array(var = 2147483647)]
     TRANSACTIONLIST(Vec<Transaction>),
 
+    RECEIPT(Receipt),
+
+    #[array(var = 2147483647)]
+    RECEIPTLIST(Vec<Receipt>),
+
+    BLOCK(Block),
+
+    #[array(var = 2147483647)]
+    BLOCKLIST(Vec<Block>),
+
+    BLOCKHEADER(BlockHeader),
+
+    #[array(var = 2147483647)]
+    BLOCKHEADERLIST(Vec<BlockHeader>),
+
     CHANNEL(ChannelConfig),
 
     #[array(var = 2147483647)]
@@ -189,6 +204,8 @@ pub enum Response {
     ACCOUNT(Account),
 
     HEIGHT(BlockHeight),
+
+    ABI(Abi),
 }
 
 impl Default for Response {
