@@ -137,19 +137,20 @@ impl Default for RequestType {
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum ResponseType {
     UNKNOWN = 0,
-    TRANSACTION = 1,
-    TRANSACTIONLIST = 2,
-    RECEIPT = 3,
-    RECEIPTLIST = 4,
-    BLOCK = 5,
-    BLOCKLIST = 6,
-    BLOCKHEADER = 7,
-    BLOCKHEADERLIST = 8,
-    CHANNEL = 9,
-    CHANNELLIST = 10,
-    ACCOUNT = 11,
-    HEIGHT = 12,
-    ABI = 13,
+    TRANSACTIONID = 1,
+    TRANSACTION = 2,
+    TRANSACTIONLIST = 3,
+    RECEIPT = 4,
+    RECEIPTLIST = 5,
+    BLOCK = 6,
+    BLOCKLIST = 7,
+    BLOCKHEADER = 8,
+    BLOCKHEADERLIST = 9,
+    CHANNEL = 10,
+    CHANNELLIST = 11,
+    ACCOUNT = 12,
+    HEIGHT = 13,
+    ABI = 14,
 }
 
 impl Default for ResponseType {
@@ -175,6 +176,8 @@ impl Default for Request {
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum Response {
     UNKNOWN(()),
+
+    TRANSACTIONID(ID),
 
     TRANSACTION(Transaction),
 

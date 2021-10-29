@@ -130,19 +130,20 @@ function RequestType() {
 function ResponseType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
-        1: "TRANSACTION",
-        2: "TRANSACTIONLIST",
-        3: "RECEIPT",
-        4: "RECEIPTLIST",
-        5: "BLOCK",
-        6: "BLOCKLIST",
-        7: "BLOCKHEADER",
-        8: "BLOCKHEADERLIST",
-        9: "CHANNEL",
-        10: "CHANNELLIST",
-        11: "ACCOUNT",
-        12: "HEIGHT",
-        13: "ABI"
+        1: "TRANSACTIONID",
+        2: "TRANSACTION",
+        3: "TRANSACTIONLIST",
+        4: "RECEIPT",
+        5: "RECEIPTLIST",
+        6: "BLOCK",
+        7: "BLOCKLIST",
+        8: "BLOCKHEADER",
+        9: "BLOCKHEADERLIST",
+        10: "CHANNEL",
+        11: "CHANNELLIST",
+        12: "ACCOUNT",
+        13: "HEIGHT",
+        14: "ABI"
 
     });
 }
@@ -171,6 +172,10 @@ function Response() {
 
         "UNKNOWN": () => {
             return new _xdrJsSerialize2.default.Void();
+        },
+
+        "TRANSACTIONID": () => {
+            return ID();
         },
 
         "TRANSACTION": () => {

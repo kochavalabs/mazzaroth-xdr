@@ -19,31 +19,33 @@ namespace mazzaroth
   {
     UNKNOWN = 0,
 
-    TRANSACTION = 1,
+    TRANSACTIONID = 1,
 
-    TRANSACTIONLIST = 2,
+    TRANSACTION = 2,
 
-    RECEIPT = 3,
+    TRANSACTIONLIST = 3,
 
-    RECEIPTLIST = 4,
+    RECEIPT = 4,
 
-    BLOCK = 5,
+    RECEIPTLIST = 5,
 
-    BLOCKLIST = 6,
+    BLOCK = 6,
 
-    BLOCKHEADER = 7,
+    BLOCKLIST = 7,
 
-    BLOCKHEADERLIST = 8,
+    BLOCKHEADER = 8,
 
-    CHANNEL = 9,
+    BLOCKHEADERLIST = 9,
 
-    CHANNELLIST = 10,
+    CHANNEL = 10,
 
-    ACCOUNT = 11,
+    CHANNELLIST = 11,
 
-    HEIGHT = 12,
+    ACCOUNT = 12,
 
-    ABI = 13
+    HEIGHT = 13,
+
+    ABI = 14
 
   };
 
@@ -51,6 +53,8 @@ namespace mazzaroth
   {
     case UNKNOWN:
       void;
+    case TRANSACTIONID:
+      ID transactionID;
     case TRANSACTION:
       Transaction transaction;
     case TRANSACTIONLIST:
