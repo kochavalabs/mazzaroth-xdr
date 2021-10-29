@@ -320,44 +320,47 @@ const (
 	// ResponseTypeUNKNOWN enum value 0
 	ResponseTypeUNKNOWN ResponseType = 0
 
-	// ResponseTypeTRANSACTION enum value 1
-	ResponseTypeTRANSACTION ResponseType = 1
+	// ResponseTypeTRANSACTIONID enum value 1
+	ResponseTypeTRANSACTIONID ResponseType = 1
 
-	// ResponseTypeTRANSACTIONLIST enum value 2
-	ResponseTypeTRANSACTIONLIST ResponseType = 2
+	// ResponseTypeTRANSACTION enum value 2
+	ResponseTypeTRANSACTION ResponseType = 2
 
-	// ResponseTypeRECEIPT enum value 3
-	ResponseTypeRECEIPT ResponseType = 3
+	// ResponseTypeTRANSACTIONLIST enum value 3
+	ResponseTypeTRANSACTIONLIST ResponseType = 3
 
-	// ResponseTypeRECEIPTLIST enum value 4
-	ResponseTypeRECEIPTLIST ResponseType = 4
+	// ResponseTypeRECEIPT enum value 4
+	ResponseTypeRECEIPT ResponseType = 4
 
-	// ResponseTypeBLOCK enum value 5
-	ResponseTypeBLOCK ResponseType = 5
+	// ResponseTypeRECEIPTLIST enum value 5
+	ResponseTypeRECEIPTLIST ResponseType = 5
 
-	// ResponseTypeBLOCKLIST enum value 6
-	ResponseTypeBLOCKLIST ResponseType = 6
+	// ResponseTypeBLOCK enum value 6
+	ResponseTypeBLOCK ResponseType = 6
 
-	// ResponseTypeBLOCKHEADER enum value 7
-	ResponseTypeBLOCKHEADER ResponseType = 7
+	// ResponseTypeBLOCKLIST enum value 7
+	ResponseTypeBLOCKLIST ResponseType = 7
 
-	// ResponseTypeBLOCKHEADERLIST enum value 8
-	ResponseTypeBLOCKHEADERLIST ResponseType = 8
+	// ResponseTypeBLOCKHEADER enum value 8
+	ResponseTypeBLOCKHEADER ResponseType = 8
 
-	// ResponseTypeCHANNEL enum value 9
-	ResponseTypeCHANNEL ResponseType = 9
+	// ResponseTypeBLOCKHEADERLIST enum value 9
+	ResponseTypeBLOCKHEADERLIST ResponseType = 9
 
-	// ResponseTypeCHANNELLIST enum value 10
-	ResponseTypeCHANNELLIST ResponseType = 10
+	// ResponseTypeCHANNEL enum value 10
+	ResponseTypeCHANNEL ResponseType = 10
 
-	// ResponseTypeACCOUNT enum value 11
-	ResponseTypeACCOUNT ResponseType = 11
+	// ResponseTypeCHANNELLIST enum value 11
+	ResponseTypeCHANNELLIST ResponseType = 11
 
-	// ResponseTypeHEIGHT enum value 12
-	ResponseTypeHEIGHT ResponseType = 12
+	// ResponseTypeACCOUNT enum value 12
+	ResponseTypeACCOUNT ResponseType = 12
 
-	// ResponseTypeABI enum value 13
-	ResponseTypeABI ResponseType = 13
+	// ResponseTypeHEIGHT enum value 13
+	ResponseTypeHEIGHT ResponseType = 13
+
+	// ResponseTypeABI enum value 14
+	ResponseTypeABI ResponseType = 14
 )
 
 // ResponseTypeMap generated enum map
@@ -365,31 +368,33 @@ var ResponseTypeMap = map[int32]string{
 
 	0: "ResponseTypeUNKNOWN",
 
-	1: "ResponseTypeTRANSACTION",
+	1: "ResponseTypeTRANSACTIONID",
 
-	2: "ResponseTypeTRANSACTIONLIST",
+	2: "ResponseTypeTRANSACTION",
 
-	3: "ResponseTypeRECEIPT",
+	3: "ResponseTypeTRANSACTIONLIST",
 
-	4: "ResponseTypeRECEIPTLIST",
+	4: "ResponseTypeRECEIPT",
 
-	5: "ResponseTypeBLOCK",
+	5: "ResponseTypeRECEIPTLIST",
 
-	6: "ResponseTypeBLOCKLIST",
+	6: "ResponseTypeBLOCK",
 
-	7: "ResponseTypeBLOCKHEADER",
+	7: "ResponseTypeBLOCKLIST",
 
-	8: "ResponseTypeBLOCKHEADERLIST",
+	8: "ResponseTypeBLOCKHEADER",
 
-	9: "ResponseTypeCHANNEL",
+	9: "ResponseTypeBLOCKHEADERLIST",
 
-	10: "ResponseTypeCHANNELLIST",
+	10: "ResponseTypeCHANNEL",
 
-	11: "ResponseTypeACCOUNT",
+	11: "ResponseTypeCHANNELLIST",
 
-	12: "ResponseTypeHEIGHT",
+	12: "ResponseTypeACCOUNT",
 
-	13: "ResponseTypeABI",
+	13: "ResponseTypeHEIGHT",
+
+	14: "ResponseTypeABI",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -573,6 +578,8 @@ func (u *Request) UnmarshalJSON(data []byte) error {
 type Response struct {
 	Type ResponseType
 
+	TransactionID *ID
+
 	Transaction *Transaction
 
 	Transactions *[]Transaction
@@ -613,6 +620,9 @@ func (u Response) ArmForSwitch(sw int32) (string, bool) {
 
 	case ResponseTypeUNKNOWN:
 		return "", true
+
+	case ResponseTypeTRANSACTIONID:
+		return "TransactionID", true
 
 	case ResponseTypeTRANSACTION:
 		return "Transaction", true
@@ -662,6 +672,16 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 	switch aType {
 
 	case ResponseTypeUNKNOWN:
+
+	case ResponseTypeTRANSACTIONID:
+
+		tv, ok := value.(ID)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.TransactionID = &tv
 
 	case ResponseTypeTRANSACTION:
 
@@ -794,6 +814,32 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 		result.Abi = &tv
 
 	}
+	return
+}
+
+// MustTransactionID retrieves the TransactionID value from the union,
+// panicing if the value is not set.
+func (u Response) MustTransactionID() ID {
+
+	val, ok := u.GetTransactionID()
+	if !ok {
+		panic("arm TransactionID is not set")
+	}
+
+	return val
+}
+
+// GetTransactionID retrieves the TransactionID value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetTransactionID() (result ID, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "TransactionID" {
+		result = *u.TransactionID
+		ok = true
+	}
+
 	return
 }
 
@@ -1164,6 +1210,8 @@ func (u Response) MarshalJSON() ([]byte, error) {
 	temp.Data = ""
 	switch u.Type {
 	case ResponseTypeUNKNOWN:
+	case ResponseTypeTRANSACTIONID:
+		temp.Data = u.TransactionID
 	case ResponseTypeTRANSACTION:
 		temp.Data = u.Transaction
 	case ResponseTypeTRANSACTIONLIST:
@@ -1209,6 +1257,16 @@ func (u *Response) UnmarshalJSON(data []byte) error {
 	u.Type = ResponseType(temp.Type)
 	switch u.Type {
 	case ResponseTypeUNKNOWN:
+
+	case ResponseTypeTRANSACTIONID:
+		response := struct {
+			TransactionID ID `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.TransactionID = &response.TransactionID
 
 	case ResponseTypeTRANSACTION:
 		response := struct {
