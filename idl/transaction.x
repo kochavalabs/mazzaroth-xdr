@@ -71,7 +71,7 @@ namespace mazzaroth
   {
     AuthorizedAccount account;
 
-    bool authorize;
+    boolean authorize;
   };
 
   enum ActionCategoryType
