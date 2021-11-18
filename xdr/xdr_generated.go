@@ -190,7 +190,7 @@ var (
 type Account struct {
 	Alias string `xdrmaxsize:"32" json:"alias"`
 
-	TransactionCount uint64 `json:"transactionCount"`
+	TransactionCount uint64 `json:"transactionCount,string"`
 
 	AuthorizedAccounts []AuthorizedAccount `xdrmaxsize:"32" json:"authorizedAccounts"`
 }
@@ -1443,11 +1443,11 @@ var (
 
 // BlockHeader generated struct
 type BlockHeader struct {
-	BlockHeight uint64 `json:"blockHeight"`
+	BlockHeight uint64 `json:"blockHeight,string"`
 
-	TransactionHeight uint64 `json:"transactionHeight"`
+	TransactionHeight uint64 `json:"transactionHeight,string"`
 
-	ConsensusSequenceNumber uint64 `json:"consensusSequenceNumber"`
+	ConsensusSequenceNumber uint64 `json:"consensusSequenceNumber,string"`
 
 	TransactionsMerkleRoot Hash `json:"transactionsMerkleRoot"`
 
@@ -1480,7 +1480,7 @@ var (
 
 // BlockHeight generated struct
 type BlockHeight struct {
-	Height uint64 `json:"height"`
+	Height uint64 `json:"height,string"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1948,9 +1948,9 @@ type Action struct {
 
 	ChannelID ID `json:"channelID"`
 
-	Nonce uint64 `json:"nonce"`
+	Nonce uint64 `json:"nonce,string"`
 
-	BlockExpirationNumber uint64 `json:"blockExpirationNumber"`
+	BlockExpirationNumber uint64 `json:"blockExpirationNumber,string"`
 
 	Category ActionCategory `json:"category"`
 }
