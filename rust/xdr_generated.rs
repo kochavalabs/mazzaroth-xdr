@@ -146,11 +146,10 @@ pub enum ResponseType {
     BLOCKLIST = 7,
     BLOCKHEADER = 8,
     BLOCKHEADERLIST = 9,
-    CHANNEL = 10,
-    CHANNELLIST = 11,
-    ACCOUNT = 12,
-    HEIGHT = 13,
-    ABI = 14,
+    CONFIG = 10,
+    ACCOUNT = 11,
+    HEIGHT = 12,
+    ABI = 13,
 }
 
 impl Default for ResponseType {
@@ -199,10 +198,7 @@ pub enum Response {
     #[array(var = 2147483647)]
     BLOCKHEADERLIST(Vec<BlockHeader>),
 
-    CHANNEL(ChannelConfig),
-
-    #[array(var = 2147483647)]
-    CHANNELLIST(Vec<ChannelConfig>),
+    CONFIG(Config),
 
     ACCOUNT(Account),
 
@@ -251,7 +247,7 @@ pub struct BlockHeader {
 
     pub previousHeader: Hash,
 
-    pub status: BlockStatus,
+    pub status: Status,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
@@ -261,18 +257,6 @@ pub struct BlockHeight {
 
 // End struct section
 
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum BlockStatus {
-    UNKNOWN = 0,
-    PENDING = 1,
-    FINALIZED = 2,
-}
-
-impl Default for BlockStatus {
-    fn default() -> Self {
-        BlockStatus::UNKNOWN
-    }
-}
 // Start union section
 
 // End union section
@@ -314,29 +298,20 @@ pub struct StatusInfo {
 
 // End struct section
 
-// Start union section
-
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct ChannelConfig {
-    pub owner: ID,
-
-    #[array(var = 32)]
-    pub admins: Vec<ID>,
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum Status {
+    UNKNOWN = 0,
+    SUCCESS = 1,
+    FAILURE = 2,
+    PENDING = 3,
+    FINALIZED = 4,
 }
 
-// End struct section
-
+impl Default for Status {
+    fn default() -> Self {
+        Status::UNKNOWN
+    }
+}
 // Start union section
 
 // End union section
@@ -352,7 +327,7 @@ pub struct ChannelConfig {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Receipt {
-    pub status: ReceiptStatus,
+    pub status: Status,
 
     pub stateRoot: Hash,
 
@@ -364,18 +339,6 @@ pub struct Receipt {
 
 // End struct section
 
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ReceiptStatus {
-    UNKNOWN = 0,
-    FAILURE = 1,
-    SUCCESS = 2,
-}
-
-impl Default for ReceiptStatus {
-    fn default() -> Self {
-        ReceiptStatus::UNKNOWN
-    }
-}
 // Start union section
 
 // End union section
@@ -399,6 +362,14 @@ pub struct Call {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Config {
+    pub owner: ID,
+
+    #[array(var = 32)]
+    pub admins: Vec<ID>,
+}
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Contract {
     #[array(var = 2147483647)]
     pub contractBytes: Vec<u8>,
@@ -419,7 +390,7 @@ pub struct Authorization {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Action {
+pub struct Data {
     pub channelID: ID,
 
     pub nonce: u64,
@@ -431,13 +402,13 @@ pub struct Action {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Transaction {
-    pub signature: Signature,
-
     pub sender: ID,
 
     pub signer: ID,
 
-    pub action: Action,
+    pub signature: Signature,
+
+    pub data: Data,
 }
 
 // End struct section
@@ -494,7 +465,7 @@ pub enum Category {
 
     CONTRACT(Contract),
 
-    CONFIG(ChannelConfig),
+    CONFIG(Config),
 
     ACCOUNT(AccountUpdate),
 }

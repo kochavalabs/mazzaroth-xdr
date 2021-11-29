@@ -3,7 +3,7 @@ namespace mazzaroth
   struct Receipt
   {
     // Status failure or success
-    ReceiptStatus status;
+    Status status;
  
     // The state root after execution of the transaction
     Hash stateRoot;
@@ -13,12 +13,5 @@ namespace mazzaroth
 
     // Human readable information to help understand the receipt status.
     StatusInfo statusInfo;
-  };
-
-  enum ReceiptStatus
-  {
-    UNKNOWN = 0,
-    FAILURE = 1,
-    SUCCESS = 2
   };
 }

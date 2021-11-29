@@ -347,20 +347,17 @@ const (
 	// ResponseTypeBLOCKHEADERLIST enum value 9
 	ResponseTypeBLOCKHEADERLIST ResponseType = 9
 
-	// ResponseTypeCHANNEL enum value 10
-	ResponseTypeCHANNEL ResponseType = 10
+	// ResponseTypeCONFIG enum value 10
+	ResponseTypeCONFIG ResponseType = 10
 
-	// ResponseTypeCHANNELLIST enum value 11
-	ResponseTypeCHANNELLIST ResponseType = 11
+	// ResponseTypeACCOUNT enum value 11
+	ResponseTypeACCOUNT ResponseType = 11
 
-	// ResponseTypeACCOUNT enum value 12
-	ResponseTypeACCOUNT ResponseType = 12
+	// ResponseTypeHEIGHT enum value 12
+	ResponseTypeHEIGHT ResponseType = 12
 
-	// ResponseTypeHEIGHT enum value 13
-	ResponseTypeHEIGHT ResponseType = 13
-
-	// ResponseTypeABI enum value 14
-	ResponseTypeABI ResponseType = 14
+	// ResponseTypeABI enum value 13
+	ResponseTypeABI ResponseType = 13
 )
 
 // ResponseTypeMap generated enum map
@@ -386,15 +383,13 @@ var ResponseTypeMap = map[int32]string{
 
 	9: "ResponseTypeBLOCKHEADERLIST",
 
-	10: "ResponseTypeCHANNEL",
+	10: "ResponseTypeCONFIG",
 
-	11: "ResponseTypeCHANNELLIST",
+	11: "ResponseTypeACCOUNT",
 
-	12: "ResponseTypeACCOUNT",
+	12: "ResponseTypeHEIGHT",
 
-	13: "ResponseTypeHEIGHT",
-
-	14: "ResponseTypeABI",
+	13: "ResponseTypeABI",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -596,9 +591,7 @@ type Response struct {
 
 	BlockHeaders *[]BlockHeader
 
-	Channel *ChannelConfig
-
-	Channels *[]ChannelConfig
+	Config *Config
 
 	Account *Account
 
@@ -648,11 +641,8 @@ func (u Response) ArmForSwitch(sw int32) (string, bool) {
 	case ResponseTypeBLOCKHEADERLIST:
 		return "BlockHeaders", true
 
-	case ResponseTypeCHANNEL:
-		return "Channel", true
-
-	case ResponseTypeCHANNELLIST:
-		return "Channels", true
+	case ResponseTypeCONFIG:
+		return "Config", true
 
 	case ResponseTypeACCOUNT:
 		return "Account", true
@@ -763,25 +753,15 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 		}
 		result.BlockHeaders = &tv
 
-	case ResponseTypeCHANNEL:
+	case ResponseTypeCONFIG:
 
-		tv, ok := value.(ChannelConfig)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Channel = &tv
-
-	case ResponseTypeCHANNELLIST:
-
-		tv, ok := value.([]ChannelConfig)
+		tv, ok := value.(Config)
 
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.Channels = &tv
+		result.Config = &tv
 
 	case ResponseTypeACCOUNT:
 
@@ -1051,52 +1031,26 @@ func (u Response) GetBlockHeaders() (result []BlockHeader, ok bool) {
 	return
 }
 
-// MustChannel retrieves the Channel value from the union,
+// MustConfig retrieves the Config value from the union,
 // panicing if the value is not set.
-func (u Response) MustChannel() ChannelConfig {
+func (u Response) MustConfig() Config {
 
-	val, ok := u.GetChannel()
+	val, ok := u.GetConfig()
 	if !ok {
-		panic("arm Channel is not set")
+		panic("arm Config is not set")
 	}
 
 	return val
 }
 
-// GetChannel retrieves the Channel value from the union,
+// GetConfig retrieves the Config value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetChannel() (result ChannelConfig, ok bool) {
+func (u Response) GetConfig() (result Config, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "Channel" {
-		result = *u.Channel
-		ok = true
-	}
-
-	return
-}
-
-// MustChannels retrieves the Channels value from the union,
-// panicing if the value is not set.
-func (u Response) MustChannels() []ChannelConfig {
-
-	val, ok := u.GetChannels()
-	if !ok {
-		panic("arm Channels is not set")
-	}
-
-	return val
-}
-
-// GetChannels retrieves the Channels value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Response) GetChannels() (result []ChannelConfig, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Channels" {
-		result = *u.Channels
+	if armName == "Config" {
+		result = *u.Config
 		ok = true
 	}
 
@@ -1228,10 +1182,8 @@ func (u Response) MarshalJSON() ([]byte, error) {
 		temp.Data = u.BlockHeader
 	case ResponseTypeBLOCKHEADERLIST:
 		temp.Data = u.BlockHeaders
-	case ResponseTypeCHANNEL:
-		temp.Data = u.Channel
-	case ResponseTypeCHANNELLIST:
-		temp.Data = u.Channels
+	case ResponseTypeCONFIG:
+		temp.Data = u.Config
 	case ResponseTypeACCOUNT:
 		temp.Data = u.Account
 	case ResponseTypeHEIGHT:
@@ -1348,25 +1300,15 @@ func (u *Response) UnmarshalJSON(data []byte) error {
 		}
 		u.BlockHeaders = &response.BlockHeaders
 
-	case ResponseTypeCHANNEL:
+	case ResponseTypeCONFIG:
 		response := struct {
-			Channel ChannelConfig `json:"data"`
+			Config Config `json:"data"`
 		}{}
 		err := json.Unmarshal(data, &response)
 		if err != nil {
 			return err
 		}
-		u.Channel = &response.Channel
-
-	case ResponseTypeCHANNELLIST:
-		response := struct {
-			Channels []ChannelConfig `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Channels = &response.Channels
+		u.Config = &response.Config
 
 	case ResponseTypeACCOUNT:
 		response := struct {
@@ -1457,7 +1399,7 @@ type BlockHeader struct {
 
 	PreviousHeader Hash `json:"previousHeader"`
 
-	Status BlockStatus `json:"status"`
+	Status Status `json:"status"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1504,62 +1446,6 @@ var (
 // End struct section
 
 // Start enum section
-
-// BlockStatus generated enum
-type BlockStatus int32
-
-const (
-
-	// BlockStatusUNKNOWN enum value 0
-	BlockStatusUNKNOWN BlockStatus = 0
-
-	// BlockStatusPENDING enum value 1
-	BlockStatusPENDING BlockStatus = 1
-
-	// BlockStatusFINALIZED enum value 2
-	BlockStatusFINALIZED BlockStatus = 2
-)
-
-// BlockStatusMap generated enum map
-var BlockStatusMap = map[int32]string{
-
-	0: "BlockStatusUNKNOWN",
-
-	1: "BlockStatusPENDING",
-
-	2: "BlockStatusFINALIZED",
-}
-
-// ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for BlockStatus
-func (s BlockStatus) ValidEnum(v int32) bool {
-	_, ok := BlockStatusMap[v]
-	return ok
-}
-
-// String returns the name of `e`
-func (s BlockStatus) String() string {
-	name, _ := BlockStatusMap[int32(s)]
-	return name
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s BlockStatus) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *BlockStatus) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*BlockStatus)(nil)
-	_ encoding.BinaryUnmarshaler = (*BlockStatus)(nil)
-)
 
 // End enum section
 
@@ -1700,49 +1586,71 @@ var (
 
 // Start enum section
 
-// End enum section
+// Status generated enum
+type Status int32
 
-// Start union section
+const (
 
-// End union section
+	// StatusUNKNOWN enum value 0
+	StatusUNKNOWN Status = 0
 
-// Namespace end mazzaroth
-// Namspace start mazzaroth
+	// StatusSUCCESS enum value 1
+	StatusSUCCESS Status = 1
 
-// Start typedef section
+	// StatusFAILURE enum value 2
+	StatusFAILURE Status = 2
 
-// End typedef section
+	// StatusPENDING enum value 3
+	StatusPENDING Status = 3
 
-// Start struct section
+	// StatusFINALIZED enum value 4
+	StatusFINALIZED Status = 4
+)
 
-// ChannelConfig generated struct
-type ChannelConfig struct {
-	Owner ID `json:"owner"`
+// StatusMap generated enum map
+var StatusMap = map[int32]string{
 
-	Admins []ID `xdrmaxsize:"32" json:"admins"`
+	0: "StatusUNKNOWN",
+
+	1: "StatusSUCCESS",
+
+	2: "StatusFAILURE",
+
+	3: "StatusPENDING",
+
+	4: "StatusFINALIZED",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for Status
+func (s Status) ValidEnum(v int32) bool {
+	_, ok := StatusMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s Status) String() string {
+	name, _ := StatusMap[int32(s)]
+	return name
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ChannelConfig) MarshalBinary() ([]byte, error) {
+func (s Status) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ChannelConfig) UnmarshalBinary(inp []byte) error {
+func (s *Status) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ChannelConfig)(nil)
-	_ encoding.BinaryUnmarshaler = (*ChannelConfig)(nil)
+	_ encoding.BinaryMarshaler   = (*Status)(nil)
+	_ encoding.BinaryUnmarshaler = (*Status)(nil)
 )
-
-// End struct section
-
-// Start enum section
 
 // End enum section
 
@@ -1761,7 +1669,7 @@ var (
 
 // Receipt generated struct
 type Receipt struct {
-	Status ReceiptStatus `json:"status"`
+	Status Status `json:"status"`
 
 	StateRoot Hash `json:"stateRoot"`
 
@@ -1791,62 +1699,6 @@ var (
 // End struct section
 
 // Start enum section
-
-// ReceiptStatus generated enum
-type ReceiptStatus int32
-
-const (
-
-	// ReceiptStatusUNKNOWN enum value 0
-	ReceiptStatusUNKNOWN ReceiptStatus = 0
-
-	// ReceiptStatusFAILURE enum value 1
-	ReceiptStatusFAILURE ReceiptStatus = 1
-
-	// ReceiptStatusSUCCESS enum value 2
-	ReceiptStatusSUCCESS ReceiptStatus = 2
-)
-
-// ReceiptStatusMap generated enum map
-var ReceiptStatusMap = map[int32]string{
-
-	0: "ReceiptStatusUNKNOWN",
-
-	1: "ReceiptStatusFAILURE",
-
-	2: "ReceiptStatusSUCCESS",
-}
-
-// ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for ReceiptStatus
-func (s ReceiptStatus) ValidEnum(v int32) bool {
-	_, ok := ReceiptStatusMap[v]
-	return ok
-}
-
-// String returns the name of `e`
-func (s ReceiptStatus) String() string {
-	name, _ := ReceiptStatusMap[int32(s)]
-	return name
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s ReceiptStatus) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ReceiptStatus) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*ReceiptStatus)(nil)
-	_ encoding.BinaryUnmarshaler = (*ReceiptStatus)(nil)
-)
 
 // End enum section
 
@@ -1886,6 +1738,31 @@ func (s *Call) UnmarshalBinary(inp []byte) error {
 var (
 	_ encoding.BinaryMarshaler   = (*Call)(nil)
 	_ encoding.BinaryUnmarshaler = (*Call)(nil)
+)
+
+// Config generated struct
+type Config struct {
+	Owner ID `json:"owner"`
+
+	Admins []ID `xdrmaxsize:"32" json:"admins"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Config) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Config) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Config)(nil)
+	_ encoding.BinaryUnmarshaler = (*Config)(nil)
 )
 
 // Contract generated struct
@@ -1942,8 +1819,8 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Authorization)(nil)
 )
 
-// Action generated struct
-type Action struct {
+// Data generated struct
+type Data struct {
 	ChannelID ID `json:"channelID"`
 
 	Nonce uint64 `json:"nonce,string"`
@@ -1954,32 +1831,32 @@ type Action struct {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s Action) MarshalBinary() ([]byte, error) {
+func (s Data) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Action) UnmarshalBinary(inp []byte) error {
+func (s *Data) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*Action)(nil)
-	_ encoding.BinaryUnmarshaler = (*Action)(nil)
+	_ encoding.BinaryMarshaler   = (*Data)(nil)
+	_ encoding.BinaryUnmarshaler = (*Data)(nil)
 )
 
 // Transaction generated struct
 type Transaction struct {
-	Signature Signature `json:"signature"`
-
 	Sender ID `json:"sender"`
 
 	Signer ID `json:"signer"`
 
-	Action Action `json:"action"`
+	Signature Signature `json:"signature"`
+
+	Data Data `json:"data"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -2333,7 +2210,7 @@ type Category struct {
 
 	Contract *Contract
 
-	ChannelConfig *ChannelConfig
+	Config *Config
 
 	Account *AccountUpdate
 }
@@ -2359,7 +2236,7 @@ func (u Category) ArmForSwitch(sw int32) (string, bool) {
 		return "Contract", true
 
 	case CategoryTypeCONFIG:
-		return "ChannelConfig", true
+		return "Config", true
 
 	case CategoryTypeACCOUNT:
 		return "Account", true
@@ -2396,13 +2273,13 @@ func NewCategory(aType CategoryType, value interface{}) (result Category, err er
 
 	case CategoryTypeCONFIG:
 
-		tv, ok := value.(ChannelConfig)
+		tv, ok := value.(Config)
 
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.ChannelConfig = &tv
+		result.Config = &tv
 
 	case CategoryTypeACCOUNT:
 
@@ -2470,26 +2347,26 @@ func (u Category) GetContract() (result Contract, ok bool) {
 	return
 }
 
-// MustChannelConfig retrieves the ChannelConfig value from the union,
+// MustConfig retrieves the Config value from the union,
 // panicing if the value is not set.
-func (u Category) MustChannelConfig() ChannelConfig {
+func (u Category) MustConfig() Config {
 
-	val, ok := u.GetChannelConfig()
+	val, ok := u.GetConfig()
 	if !ok {
-		panic("arm ChannelConfig is not set")
+		panic("arm Config is not set")
 	}
 
 	return val
 }
 
-// GetChannelConfig retrieves the ChannelConfig value from the union,
+// GetConfig retrieves the Config value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Category) GetChannelConfig() (result ChannelConfig, ok bool) {
+func (u Category) GetConfig() (result Config, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "ChannelConfig" {
-		result = *u.ChannelConfig
+	if armName == "Config" {
+		result = *u.Config
 		ok = true
 	}
 
@@ -2556,7 +2433,7 @@ func (u Category) MarshalJSON() ([]byte, error) {
 	case CategoryTypeCONTRACT:
 		temp.Data = u.Contract
 	case CategoryTypeCONFIG:
-		temp.Data = u.ChannelConfig
+		temp.Data = u.Config
 	case CategoryTypeACCOUNT:
 		temp.Data = u.Account
 	default:
@@ -2601,13 +2478,13 @@ func (u *Category) UnmarshalJSON(data []byte) error {
 
 	case CategoryTypeCONFIG:
 		response := struct {
-			ChannelConfig ChannelConfig `json:"data"`
+			Config Config `json:"data"`
 		}{}
 		err := json.Unmarshal(data, &response)
 		if err != nil {
 			return err
 		}
-		u.ChannelConfig = &response.ChannelConfig
+		u.Config = &response.Config
 
 	case CategoryTypeACCOUNT:
 		response := struct {

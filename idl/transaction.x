@@ -14,6 +14,16 @@ namespace mazzaroth
     Argument arguments<>;
   };
 
+  // Config stores contract channel configuration in state and is 
+  // accessible through host contract host functions
+  struct Config
+  {
+    // Public Key ID of the channel owner. Only owner can change this to transfer ownership of channel
+    ID owner;
+    // Public Keys of IDs approved by owner able to modify channel
+    ID admins<32>;
+  };
+
   // An update transaction that provides a contract as a wasm binary.
   struct Contract
   {
@@ -72,14 +82,15 @@ namespace mazzaroth
     case CONTRACT:
       Contract contract;
     case CONFIG:
-      ChannelConfig channelConfig;
+      Config config;
     case ACCOUNT:
       AccountUpdate account;
   };
 
-  // The Action data of a transaction
+  // The data of a transaction
   // Set by the client to form a transaction
-  struct Action 
+  // This is marshaled to XDR bytes to sign
+  struct Data
   {
     ID channelID;
 
@@ -94,10 +105,6 @@ namespace mazzaroth
   // A transaction that calls a function on a user defined contract.
   struct Transaction
   {
-    // Byte array signature of the Transaction bytes signed by the Transaction 
-    // sender's private key.
-    Signature signature;
-
     // ID (public key) of the sender of the transaction
     ID sender;
 
@@ -106,7 +113,11 @@ namespace mazzaroth
     // authorized to sign on behalf of the sender through an authorization transaction
     ID signer;
 
-    // The action data for this transaction
-    Action action;
+    // Byte array signature of the Transaction bytes signed by the Transaction 
+    // sender's private key.
+    Signature signature;
+
+    // The transaction data
+    Data data;
   };
 }
