@@ -74,7 +74,7 @@ func HashFromHexString(hexString string) (Hash, error) {
 // IDFromPublicKey : from generic crypto.PublicKey interface{} we try to extract an ID
 func IDFromPublicKey(pk crypto.PublicKey) (ID, error) {
 	bbytes, ok := pk.(ed25519.PublicKey)
-	if ok == false {
+	if !ok {
 		return ID{}, errors.New("public key not a slice of bytes")
 	}
 	return IDFromSlice(bbytes)

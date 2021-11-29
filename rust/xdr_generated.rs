@@ -420,41 +420,27 @@ pub struct Authorization {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Action {
-    pub address: ID,
-
     pub channelID: ID,
 
     pub nonce: u64,
 
     pub blockExpirationNumber: u64,
 
-    pub category: ActionCategory,
+    pub category: Category,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Transaction {
     pub signature: Signature,
 
-    pub signer: Authority,
+    pub sender: ID,
+
+    pub signer: ID,
 
     pub action: Action,
 }
 
 // End struct section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum UpdateType {
-    UNKNOWN = 0,
-    CONTRACT = 1,
-    CONFIG = 2,
-    ACCOUNT = 3,
-}
-
-impl Default for UpdateType {
-    fn default() -> Self {
-        UpdateType::UNKNOWN
-    }
-}
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum AccountUpdateType {
@@ -470,48 +456,20 @@ impl Default for AccountUpdateType {
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ActionCategoryType {
+pub enum CategoryType {
     UNKNOWN = 0,
     CALL = 1,
-    UPDATE = 2,
+    CONTRACT = 2,
+    CONFIG = 3,
+    ACCOUNT = 4,
 }
 
-impl Default for ActionCategoryType {
+impl Default for CategoryType {
     fn default() -> Self {
-        ActionCategoryType::UNKNOWN
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum AuthorityType {
-    UNKNOWN = 0,
-    SELF = 1,
-    AUTHORIZED = 2,
-}
-
-impl Default for AuthorityType {
-    fn default() -> Self {
-        AuthorityType::UNKNOWN
+        CategoryType::UNKNOWN
     }
 }
 // Start union section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum Update {
-    UNKNOWN(()),
-
-    CONTRACT(Contract),
-
-    CONFIG(ChannelConfig),
-
-    ACCOUNT(AccountUpdate),
-}
-
-impl Default for Update {
-    fn default() -> Self {
-        Update::UNKNOWN(())
-    }
-}
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum AccountUpdate {
@@ -529,32 +487,21 @@ impl Default for AccountUpdate {
 }
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum ActionCategory {
+pub enum Category {
     UNKNOWN(()),
 
     CALL(Call),
 
-    UPDATE(Update),
+    CONTRACT(Contract),
+
+    CONFIG(ChannelConfig),
+
+    ACCOUNT(AccountUpdate),
 }
 
-impl Default for ActionCategory {
+impl Default for Category {
     fn default() -> Self {
-        ActionCategory::UNKNOWN(())
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum Authority {
-    UNKNOWN(()),
-
-    SELF(()),
-
-    AUTHORIZED(ID),
-}
-
-impl Default for Authority {
-    fn default() -> Self {
-        Authority::UNKNOWN(())
+        Category::UNKNOWN(())
     }
 }
 // End union section

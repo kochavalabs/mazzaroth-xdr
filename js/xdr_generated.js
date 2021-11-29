@@ -30,14 +30,10 @@ exports.Contract = Contract;
 exports.Authorization = Authorization;
 exports.Action = Action;
 exports.Transaction = Transaction;
-exports.UpdateType = UpdateType;
 exports.AccountUpdateType = AccountUpdateType;
-exports.ActionCategoryType = ActionCategoryType;
-exports.AuthorityType = AuthorityType;
-exports.Update = Update;
+exports.CategoryType = CategoryType;
 exports.AccountUpdate = AccountUpdate;
-exports.ActionCategory = ActionCategory;
-exports.Authority = Authority;
+exports.Category = Category;
 
 var _xdrJsSerialize = require("xdr-js-serialize");
 
@@ -383,25 +379,15 @@ function Authorization() {
     return new _xdrJsSerialize2.default.Struct(["account", "authorize"], [AuthorizedAccount(), new _xdrJsSerialize2.default.Bool()]);
 }
 function Action() {
-    return new _xdrJsSerialize2.default.Struct(["address", "channelID", "nonce", "blockExpirationNumber", "category"], [ID(), ID(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), ActionCategory()]);
+    return new _xdrJsSerialize2.default.Struct(["channelID", "nonce", "blockExpirationNumber", "category"], [ID(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Category()]);
 }
 function Transaction() {
-    return new _xdrJsSerialize2.default.Struct(["signature", "signer", "action"], [Signature(), Authority(), Action()]);
+    return new _xdrJsSerialize2.default.Struct(["signature", "sender", "signer", "action"], [Signature(), ID(), ID(), Action()]);
 }
 
 // End struct section
 
 // Start enum section
-
-function UpdateType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "UNKNOWN",
-        1: "CONTRACT",
-        2: "CONFIG",
-        3: "ACCOUNT"
-
-    });
-}
 
 function AccountUpdateType() {
     return new _xdrJsSerialize2.default.Enum({
@@ -412,20 +398,13 @@ function AccountUpdateType() {
     });
 }
 
-function ActionCategoryType() {
+function CategoryType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "CALL",
-        2: "UPDATE"
-
-    });
-}
-
-function AuthorityType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "UNKNOWN",
-        1: "SELF",
-        2: "AUTHORIZED"
+        2: "CONTRACT",
+        3: "CONFIG",
+        4: "ACCOUNT"
 
     });
 }
@@ -434,28 +413,6 @@ function AuthorityType() {
 
 // Start union section
 
-
-function Update() {
-    return new _xdrJsSerialize2.default.Union(UpdateType(), {
-
-        "UNKNOWN": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "CONTRACT": () => {
-            return Contract();
-        },
-
-        "CONFIG": () => {
-            return ChannelConfig();
-        },
-
-        "ACCOUNT": () => {
-            return AccountUpdate();
-        }
-
-    });
-}
 
 function AccountUpdate() {
     return new _xdrJsSerialize2.default.Union(AccountUpdateType(), {
@@ -475,8 +432,8 @@ function AccountUpdate() {
     });
 }
 
-function ActionCategory() {
-    return new _xdrJsSerialize2.default.Union(ActionCategoryType(), {
+function Category() {
+    return new _xdrJsSerialize2.default.Union(CategoryType(), {
 
         "UNKNOWN": () => {
             return new _xdrJsSerialize2.default.Void();
@@ -486,26 +443,16 @@ function ActionCategory() {
             return Call();
         },
 
-        "UPDATE": () => {
-            return Update();
-        }
-
-    });
-}
-
-function Authority() {
-    return new _xdrJsSerialize2.default.Union(AuthorityType(), {
-
-        "UNKNOWN": () => {
-            return new _xdrJsSerialize2.default.Void();
+        "CONTRACT": () => {
+            return Contract();
         },
 
-        "SELF": () => {
-            return new _xdrJsSerialize2.default.Void();
+        "CONFIG": () => {
+            return ChannelConfig();
         },
 
-        "AUTHORIZED": () => {
-            return ID();
+        "ACCOUNT": () => {
+            return AccountUpdate();
         }
 
     });

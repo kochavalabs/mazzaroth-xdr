@@ -1944,15 +1944,13 @@ var (
 
 // Action generated struct
 type Action struct {
-	Address ID `json:"address"`
-
 	ChannelID ID `json:"channelID"`
 
 	Nonce uint64 `json:"nonce,string"`
 
 	BlockExpirationNumber uint64 `json:"blockExpirationNumber,string"`
 
-	Category ActionCategory `json:"category"`
+	Category Category `json:"category"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1977,7 +1975,9 @@ var (
 type Transaction struct {
 	Signature Signature `json:"signature"`
 
-	Signer Authority `json:"signer"`
+	Sender ID `json:"sender"`
+
+	Signer ID `json:"signer"`
 
 	Action Action `json:"action"`
 }
@@ -2003,67 +2003,6 @@ var (
 // End struct section
 
 // Start enum section
-
-// UpdateType generated enum
-type UpdateType int32
-
-const (
-
-	// UpdateTypeUNKNOWN enum value 0
-	UpdateTypeUNKNOWN UpdateType = 0
-
-	// UpdateTypeCONTRACT enum value 1
-	UpdateTypeCONTRACT UpdateType = 1
-
-	// UpdateTypeCONFIG enum value 2
-	UpdateTypeCONFIG UpdateType = 2
-
-	// UpdateTypeACCOUNT enum value 3
-	UpdateTypeACCOUNT UpdateType = 3
-)
-
-// UpdateTypeMap generated enum map
-var UpdateTypeMap = map[int32]string{
-
-	0: "UpdateTypeUNKNOWN",
-
-	1: "UpdateTypeCONTRACT",
-
-	2: "UpdateTypeCONFIG",
-
-	3: "UpdateTypeACCOUNT",
-}
-
-// ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for UpdateType
-func (s UpdateType) ValidEnum(v int32) bool {
-	_, ok := UpdateTypeMap[v]
-	return ok
-}
-
-// String returns the name of `e`
-func (s UpdateType) String() string {
-	name, _ := UpdateTypeMap[int32(s)]
-	return name
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s UpdateType) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *UpdateType) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*UpdateType)(nil)
-	_ encoding.BinaryUnmarshaler = (*UpdateType)(nil)
-)
 
 // AccountUpdateType generated enum
 type AccountUpdateType int32
@@ -2121,369 +2060,75 @@ var (
 	_ encoding.BinaryUnmarshaler = (*AccountUpdateType)(nil)
 )
 
-// ActionCategoryType generated enum
-type ActionCategoryType int32
+// CategoryType generated enum
+type CategoryType int32
 
 const (
 
-	// ActionCategoryTypeUNKNOWN enum value 0
-	ActionCategoryTypeUNKNOWN ActionCategoryType = 0
+	// CategoryTypeUNKNOWN enum value 0
+	CategoryTypeUNKNOWN CategoryType = 0
 
-	// ActionCategoryTypeCALL enum value 1
-	ActionCategoryTypeCALL ActionCategoryType = 1
+	// CategoryTypeCALL enum value 1
+	CategoryTypeCALL CategoryType = 1
 
-	// ActionCategoryTypeUPDATE enum value 2
-	ActionCategoryTypeUPDATE ActionCategoryType = 2
+	// CategoryTypeCONTRACT enum value 2
+	CategoryTypeCONTRACT CategoryType = 2
+
+	// CategoryTypeCONFIG enum value 3
+	CategoryTypeCONFIG CategoryType = 3
+
+	// CategoryTypeACCOUNT enum value 4
+	CategoryTypeACCOUNT CategoryType = 4
 )
 
-// ActionCategoryTypeMap generated enum map
-var ActionCategoryTypeMap = map[int32]string{
+// CategoryTypeMap generated enum map
+var CategoryTypeMap = map[int32]string{
 
-	0: "ActionCategoryTypeUNKNOWN",
+	0: "CategoryTypeUNKNOWN",
 
-	1: "ActionCategoryTypeCALL",
+	1: "CategoryTypeCALL",
 
-	2: "ActionCategoryTypeUPDATE",
+	2: "CategoryTypeCONTRACT",
+
+	3: "CategoryTypeCONFIG",
+
+	4: "CategoryTypeACCOUNT",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for ActionCategoryType
-func (s ActionCategoryType) ValidEnum(v int32) bool {
-	_, ok := ActionCategoryTypeMap[v]
+// the Enum interface for CategoryType
+func (s CategoryType) ValidEnum(v int32) bool {
+	_, ok := CategoryTypeMap[v]
 	return ok
 }
 
 // String returns the name of `e`
-func (s ActionCategoryType) String() string {
-	name, _ := ActionCategoryTypeMap[int32(s)]
+func (s CategoryType) String() string {
+	name, _ := CategoryTypeMap[int32(s)]
 	return name
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s ActionCategoryType) MarshalBinary() ([]byte, error) {
+func (s CategoryType) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *ActionCategoryType) UnmarshalBinary(inp []byte) error {
+func (s *CategoryType) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ActionCategoryType)(nil)
-	_ encoding.BinaryUnmarshaler = (*ActionCategoryType)(nil)
-)
-
-// AuthorityType generated enum
-type AuthorityType int32
-
-const (
-
-	// AuthorityTypeUNKNOWN enum value 0
-	AuthorityTypeUNKNOWN AuthorityType = 0
-
-	// AuthorityTypeSELF enum value 1
-	AuthorityTypeSELF AuthorityType = 1
-
-	// AuthorityTypeAUTHORIZED enum value 2
-	AuthorityTypeAUTHORIZED AuthorityType = 2
-)
-
-// AuthorityTypeMap generated enum map
-var AuthorityTypeMap = map[int32]string{
-
-	0: "AuthorityTypeUNKNOWN",
-
-	1: "AuthorityTypeSELF",
-
-	2: "AuthorityTypeAUTHORIZED",
-}
-
-// ValidEnum validates a proposed value for this enum.  Implements
-// the Enum interface for AuthorityType
-func (s AuthorityType) ValidEnum(v int32) bool {
-	_, ok := AuthorityTypeMap[v]
-	return ok
-}
-
-// String returns the name of `e`
-func (s AuthorityType) String() string {
-	name, _ := AuthorityTypeMap[int32(s)]
-	return name
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s AuthorityType) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *AuthorityType) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*AuthorityType)(nil)
-	_ encoding.BinaryUnmarshaler = (*AuthorityType)(nil)
+	_ encoding.BinaryMarshaler   = (*CategoryType)(nil)
+	_ encoding.BinaryUnmarshaler = (*CategoryType)(nil)
 )
 
 // End enum section
 
 // Start union section
-
-// Update generated union
-type Update struct {
-	Type UpdateType
-
-	Contract *Contract
-
-	ChannelConfig *ChannelConfig
-
-	Account *AccountUpdate
-}
-
-// SwitchFieldName returns the field name in which this union's
-// discriminant is stored
-func (u Update) SwitchFieldName() string {
-	return "Type"
-}
-
-// ArmForSwitch returns which field name should be used for storing
-// the value for an instance of Update
-func (u Update) ArmForSwitch(sw int32) (string, bool) {
-	switch UpdateType(sw) {
-
-	case UpdateTypeUNKNOWN:
-		return "", true
-
-	case UpdateTypeCONTRACT:
-		return "Contract", true
-
-	case UpdateTypeCONFIG:
-		return "ChannelConfig", true
-
-	case UpdateTypeACCOUNT:
-		return "Account", true
-	}
-	return "-", false
-}
-
-// NewUpdate creates a new  Update.
-func NewUpdate(aType UpdateType, value interface{}) (result Update, err error) {
-	result.Type = aType
-	switch aType {
-
-	case UpdateTypeUNKNOWN:
-
-	case UpdateTypeCONTRACT:
-
-		tv, ok := value.(Contract)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Contract = &tv
-
-	case UpdateTypeCONFIG:
-
-		tv, ok := value.(ChannelConfig)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.ChannelConfig = &tv
-
-	case UpdateTypeACCOUNT:
-
-		tv, ok := value.(AccountUpdate)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Account = &tv
-
-	}
-	return
-}
-
-// MustContract retrieves the Contract value from the union,
-// panicing if the value is not set.
-func (u Update) MustContract() Contract {
-
-	val, ok := u.GetContract()
-	if !ok {
-		panic("arm Contract is not set")
-	}
-
-	return val
-}
-
-// GetContract retrieves the Contract value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Update) GetContract() (result Contract, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Contract" {
-		result = *u.Contract
-		ok = true
-	}
-
-	return
-}
-
-// MustChannelConfig retrieves the ChannelConfig value from the union,
-// panicing if the value is not set.
-func (u Update) MustChannelConfig() ChannelConfig {
-
-	val, ok := u.GetChannelConfig()
-	if !ok {
-		panic("arm ChannelConfig is not set")
-	}
-
-	return val
-}
-
-// GetChannelConfig retrieves the ChannelConfig value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Update) GetChannelConfig() (result ChannelConfig, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "ChannelConfig" {
-		result = *u.ChannelConfig
-		ok = true
-	}
-
-	return
-}
-
-// MustAccount retrieves the Account value from the union,
-// panicing if the value is not set.
-func (u Update) MustAccount() AccountUpdate {
-
-	val, ok := u.GetAccount()
-	if !ok {
-		panic("arm Account is not set")
-	}
-
-	return val
-}
-
-// GetAccount retrieves the Account value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Update) GetAccount() (result AccountUpdate, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Account" {
-		result = *u.Account
-		ok = true
-	}
-
-	return
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (u Update) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, u)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (u *Update) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), u)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Update)(nil)
-	_ encoding.BinaryUnmarshaler = (*Update)(nil)
-)
-
-// MarshalJSON implements json.Marshaler.
-func (u Update) MarshalJSON() ([]byte, error) {
-	temp := struct {
-		Type int32       `json:"type"`
-		Data interface{} `json:"data"`
-	}{}
-
-	temp.Type = int32(u.Type)
-	temp.Data = ""
-	switch u.Type {
-	case UpdateTypeUNKNOWN:
-	case UpdateTypeCONTRACT:
-		temp.Data = u.Contract
-	case UpdateTypeCONFIG:
-		temp.Data = u.ChannelConfig
-	case UpdateTypeACCOUNT:
-		temp.Data = u.Account
-	default:
-		return nil, fmt.Errorf("invalid union type")
-	}
-
-	return json.Marshal(temp)
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (u *Update) UnmarshalJSON(data []byte) error {
-	temp := struct {
-		Type int32 `json:"type"`
-	}{}
-	if err := json.Unmarshal(data, &temp); err != nil {
-		return err
-	}
-
-	u.Type = UpdateType(temp.Type)
-	switch u.Type {
-	case UpdateTypeUNKNOWN:
-
-	case UpdateTypeCONTRACT:
-		response := struct {
-			Contract Contract `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Contract = &response.Contract
-
-	case UpdateTypeCONFIG:
-		response := struct {
-			ChannelConfig ChannelConfig `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.ChannelConfig = &response.ChannelConfig
-
-	case UpdateTypeACCOUNT:
-		response := struct {
-			Account AccountUpdate `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Account = &response.Account
-
-	default:
-		return fmt.Errorf("invalid union type")
-	}
-
-	return nil
-}
 
 // AccountUpdate generated union
 type AccountUpdate struct {
@@ -2680,46 +2325,56 @@ func (u *AccountUpdate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// ActionCategory generated union
-type ActionCategory struct {
-	Type ActionCategoryType
+// Category generated union
+type Category struct {
+	Type CategoryType
 
 	Call *Call
 
-	Update *Update
+	Contract *Contract
+
+	ChannelConfig *ChannelConfig
+
+	Account *AccountUpdate
 }
 
 // SwitchFieldName returns the field name in which this union's
 // discriminant is stored
-func (u ActionCategory) SwitchFieldName() string {
+func (u Category) SwitchFieldName() string {
 	return "Type"
 }
 
 // ArmForSwitch returns which field name should be used for storing
-// the value for an instance of ActionCategory
-func (u ActionCategory) ArmForSwitch(sw int32) (string, bool) {
-	switch ActionCategoryType(sw) {
+// the value for an instance of Category
+func (u Category) ArmForSwitch(sw int32) (string, bool) {
+	switch CategoryType(sw) {
 
-	case ActionCategoryTypeUNKNOWN:
+	case CategoryTypeUNKNOWN:
 		return "", true
 
-	case ActionCategoryTypeCALL:
+	case CategoryTypeCALL:
 		return "Call", true
 
-	case ActionCategoryTypeUPDATE:
-		return "Update", true
+	case CategoryTypeCONTRACT:
+		return "Contract", true
+
+	case CategoryTypeCONFIG:
+		return "ChannelConfig", true
+
+	case CategoryTypeACCOUNT:
+		return "Account", true
 	}
 	return "-", false
 }
 
-// NewActionCategory creates a new  ActionCategory.
-func NewActionCategory(aType ActionCategoryType, value interface{}) (result ActionCategory, err error) {
+// NewCategory creates a new  Category.
+func NewCategory(aType CategoryType, value interface{}) (result Category, err error) {
 	result.Type = aType
 	switch aType {
 
-	case ActionCategoryTypeUNKNOWN:
+	case CategoryTypeUNKNOWN:
 
-	case ActionCategoryTypeCALL:
+	case CategoryTypeCALL:
 
 		tv, ok := value.(Call)
 
@@ -2729,15 +2384,35 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 		}
 		result.Call = &tv
 
-	case ActionCategoryTypeUPDATE:
+	case CategoryTypeCONTRACT:
 
-		tv, ok := value.(Update)
+		tv, ok := value.(Contract)
 
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.Update = &tv
+		result.Contract = &tv
+
+	case CategoryTypeCONFIG:
+
+		tv, ok := value.(ChannelConfig)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.ChannelConfig = &tv
+
+	case CategoryTypeACCOUNT:
+
+		tv, ok := value.(AccountUpdate)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Account = &tv
 
 	}
 	return
@@ -2745,7 +2420,7 @@ func NewActionCategory(aType ActionCategoryType, value interface{}) (result Acti
 
 // MustCall retrieves the Call value from the union,
 // panicing if the value is not set.
-func (u ActionCategory) MustCall() Call {
+func (u Category) MustCall() Call {
 
 	val, ok := u.GetCall()
 	if !ok {
@@ -2757,7 +2432,7 @@ func (u ActionCategory) MustCall() Call {
 
 // GetCall retrieves the Call value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetCall() (result Call, ok bool) {
+func (u Category) GetCall() (result Call, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
@@ -2769,26 +2444,78 @@ func (u ActionCategory) GetCall() (result Call, ok bool) {
 	return
 }
 
-// MustUpdate retrieves the Update value from the union,
+// MustContract retrieves the Contract value from the union,
 // panicing if the value is not set.
-func (u ActionCategory) MustUpdate() Update {
+func (u Category) MustContract() Contract {
 
-	val, ok := u.GetUpdate()
+	val, ok := u.GetContract()
 	if !ok {
-		panic("arm Update is not set")
+		panic("arm Contract is not set")
 	}
 
 	return val
 }
 
-// GetUpdate retrieves the Update value from the union,
+// GetContract retrieves the Contract value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u ActionCategory) GetUpdate() (result Update, ok bool) {
+func (u Category) GetContract() (result Contract, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "Update" {
-		result = *u.Update
+	if armName == "Contract" {
+		result = *u.Contract
+		ok = true
+	}
+
+	return
+}
+
+// MustChannelConfig retrieves the ChannelConfig value from the union,
+// panicing if the value is not set.
+func (u Category) MustChannelConfig() ChannelConfig {
+
+	val, ok := u.GetChannelConfig()
+	if !ok {
+		panic("arm ChannelConfig is not set")
+	}
+
+	return val
+}
+
+// GetChannelConfig retrieves the ChannelConfig value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Category) GetChannelConfig() (result ChannelConfig, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "ChannelConfig" {
+		result = *u.ChannelConfig
+		ok = true
+	}
+
+	return
+}
+
+// MustAccount retrieves the Account value from the union,
+// panicing if the value is not set.
+func (u Category) MustAccount() AccountUpdate {
+
+	val, ok := u.GetAccount()
+	if !ok {
+		panic("arm Account is not set")
+	}
+
+	return val
+}
+
+// GetAccount retrieves the Account value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Category) GetAccount() (result AccountUpdate, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Account" {
+		result = *u.Account
 		ok = true
 	}
 
@@ -2796,25 +2523,25 @@ func (u ActionCategory) GetUpdate() (result Update, ok bool) {
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (u ActionCategory) MarshalBinary() ([]byte, error) {
+func (u Category) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, u)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (u *ActionCategory) UnmarshalBinary(inp []byte) error {
+func (u *Category) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), u)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*ActionCategory)(nil)
-	_ encoding.BinaryUnmarshaler = (*ActionCategory)(nil)
+	_ encoding.BinaryMarshaler   = (*Category)(nil)
+	_ encoding.BinaryUnmarshaler = (*Category)(nil)
 )
 
 // MarshalJSON implements json.Marshaler.
-func (u ActionCategory) MarshalJSON() ([]byte, error) {
+func (u Category) MarshalJSON() ([]byte, error) {
 	temp := struct {
 		Type int32       `json:"type"`
 		Data interface{} `json:"data"`
@@ -2823,11 +2550,15 @@ func (u ActionCategory) MarshalJSON() ([]byte, error) {
 	temp.Type = int32(u.Type)
 	temp.Data = ""
 	switch u.Type {
-	case ActionCategoryTypeUNKNOWN:
-	case ActionCategoryTypeCALL:
+	case CategoryTypeUNKNOWN:
+	case CategoryTypeCALL:
 		temp.Data = u.Call
-	case ActionCategoryTypeUPDATE:
-		temp.Data = u.Update
+	case CategoryTypeCONTRACT:
+		temp.Data = u.Contract
+	case CategoryTypeCONFIG:
+		temp.Data = u.ChannelConfig
+	case CategoryTypeACCOUNT:
+		temp.Data = u.Account
 	default:
 		return nil, fmt.Errorf("invalid union type")
 	}
@@ -2836,7 +2567,7 @@ func (u ActionCategory) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
-func (u *ActionCategory) UnmarshalJSON(data []byte) error {
+func (u *Category) UnmarshalJSON(data []byte) error {
 	temp := struct {
 		Type int32 `json:"type"`
 	}{}
@@ -2844,11 +2575,11 @@ func (u *ActionCategory) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	u.Type = ActionCategoryType(temp.Type)
+	u.Type = CategoryType(temp.Type)
 	switch u.Type {
-	case ActionCategoryTypeUNKNOWN:
+	case CategoryTypeUNKNOWN:
 
-	case ActionCategoryTypeCALL:
+	case CategoryTypeCALL:
 		response := struct {
 			Call Call `json:"data"`
 		}{}
@@ -2858,165 +2589,35 @@ func (u *ActionCategory) UnmarshalJSON(data []byte) error {
 		}
 		u.Call = &response.Call
 
-	case ActionCategoryTypeUPDATE:
+	case CategoryTypeCONTRACT:
 		response := struct {
-			Update Update `json:"data"`
+			Contract Contract `json:"data"`
 		}{}
 		err := json.Unmarshal(data, &response)
 		if err != nil {
 			return err
 		}
-		u.Update = &response.Update
+		u.Contract = &response.Contract
 
-	default:
-		return fmt.Errorf("invalid union type")
-	}
-
-	return nil
-}
-
-// Authority generated union
-type Authority struct {
-	Type AuthorityType
-
-	Origin *ID
-}
-
-// SwitchFieldName returns the field name in which this union's
-// discriminant is stored
-func (u Authority) SwitchFieldName() string {
-	return "Type"
-}
-
-// ArmForSwitch returns which field name should be used for storing
-// the value for an instance of Authority
-func (u Authority) ArmForSwitch(sw int32) (string, bool) {
-	switch AuthorityType(sw) {
-
-	case AuthorityTypeUNKNOWN:
-		return "", true
-
-	case AuthorityTypeSELF:
-		return "", true
-
-	case AuthorityTypeAUTHORIZED:
-		return "Origin", true
-	}
-	return "-", false
-}
-
-// NewAuthority creates a new  Authority.
-func NewAuthority(aType AuthorityType, value interface{}) (result Authority, err error) {
-	result.Type = aType
-	switch aType {
-
-	case AuthorityTypeUNKNOWN:
-
-	case AuthorityTypeSELF:
-
-	case AuthorityTypeAUTHORIZED:
-
-		tv, ok := value.(ID)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Origin = &tv
-
-	}
-	return
-}
-
-// MustOrigin retrieves the Origin value from the union,
-// panicing if the value is not set.
-func (u Authority) MustOrigin() ID {
-
-	val, ok := u.GetOrigin()
-	if !ok {
-		panic("arm Origin is not set")
-	}
-
-	return val
-}
-
-// GetOrigin retrieves the Origin value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Authority) GetOrigin() (result ID, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Origin" {
-		result = *u.Origin
-		ok = true
-	}
-
-	return
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (u Authority) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, u)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (u *Authority) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), u)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Authority)(nil)
-	_ encoding.BinaryUnmarshaler = (*Authority)(nil)
-)
-
-// MarshalJSON implements json.Marshaler.
-func (u Authority) MarshalJSON() ([]byte, error) {
-	temp := struct {
-		Type int32       `json:"type"`
-		Data interface{} `json:"data"`
-	}{}
-
-	temp.Type = int32(u.Type)
-	temp.Data = ""
-	switch u.Type {
-	case AuthorityTypeUNKNOWN:
-	case AuthorityTypeSELF:
-	case AuthorityTypeAUTHORIZED:
-		temp.Data = u.Origin
-	default:
-		return nil, fmt.Errorf("invalid union type")
-	}
-
-	return json.Marshal(temp)
-}
-
-// UnmarshalJSON implements json.Unmarshaler.
-func (u *Authority) UnmarshalJSON(data []byte) error {
-	temp := struct {
-		Type int32 `json:"type"`
-	}{}
-	if err := json.Unmarshal(data, &temp); err != nil {
-		return err
-	}
-
-	u.Type = AuthorityType(temp.Type)
-	switch u.Type {
-	case AuthorityTypeUNKNOWN:
-
-	case AuthorityTypeSELF:
-
-	case AuthorityTypeAUTHORIZED:
+	case CategoryTypeCONFIG:
 		response := struct {
-			Origin ID `json:"data"`
+			ChannelConfig ChannelConfig `json:"data"`
 		}{}
 		err := json.Unmarshal(data, &response)
 		if err != nil {
 			return err
 		}
-		u.Origin = &response.Origin
+		u.ChannelConfig = &response.ChannelConfig
+
+	case CategoryTypeACCOUNT:
+		response := struct {
+			Account AccountUpdate `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Account = &response.Account
 
 	default:
 		return fmt.Errorf("invalid union type")
