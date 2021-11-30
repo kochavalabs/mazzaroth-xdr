@@ -1,6 +1,4 @@
 
-%#include "common.x"
-
 namespace mazzaroth
 {
   // A transaction that calls a function on a user defined contract.

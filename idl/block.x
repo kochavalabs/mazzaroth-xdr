@@ -1,5 +1,3 @@
-%#include "common.x"
-
 namespace mazzaroth
 {
 
