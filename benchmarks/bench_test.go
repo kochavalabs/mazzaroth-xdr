@@ -14,20 +14,16 @@ var channelID = [32]byte{3, 4, 5}
 
 func getXdr() xdr.Transaction {
 	return xdr.Transaction{
+		Sender:    address,
+		Signer:    address,
 		Signature: signature,
-		Signer: xdr.Authority{
-			Type:   xdr.AuthorityTypeSELF,
-			Origin: &address,
-		},
-		Action: xdr.Action{
+		Data: xdr.Data{
 			ChannelID: channelID,
 			Nonce:     4,
-			Category: xdr.ActionCategory{
-				Type: xdr.ActionCategoryTypeUPDATE,
-				Update: &xdr.Update{
-					Contract: &xdr.Contract{
-						ContractBytes: contract,
-					},
+			Category: xdr.Category{
+				Type: xdr.CategoryTypeCONTRACT,
+				Contract: &xdr.Contract{
+					ContractBytes: contract,
 				},
 			},
 		},

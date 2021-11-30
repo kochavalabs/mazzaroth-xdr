@@ -15,7 +15,7 @@ func Test_API_JSONMarshal(t *testing.T) {
 	}{
 		{ResponseTypeUNKNOWN, nil, `{"type":0,"data":""}`},
 		{ResponseTypeTRANSACTIONID, ID{}, `{"type":1,"data":"0000000000000000000000000000000000000000000000000000000000000000"}`},
-		{ResponseTypeTRANSACTION, Transaction{Data: Data{Nonce: 1}}, `{"type":2,"data":{"signature":"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","sender":"0000000000000000000000000000000000000000000000000000000000000000","signer":"0000000000000000000000000000000000000000000000000000000000000000","data":{"channelID":"0000000000000000000000000000000000000000000000000000000000000000","nonce":"1","blockExpirationNumber":"0","category":{"type":0,"data":""}}}}`},
+		{ResponseTypeTRANSACTION, Transaction{Data: Data{Nonce: 1}}, `{"type":2,"data":{"sender":"0000000000000000000000000000000000000000000000000000000000000000","signer":"0000000000000000000000000000000000000000000000000000000000000000","signature":"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","data":{"channelID":"0000000000000000000000000000000000000000000000000000000000000000","nonce":"1","blockExpirationNumber":"0","category":{"type":0,"data":""}}}}`},
 		{ResponseTypeTRANSACTIONLIST, []Transaction{}, `{"type":3,"data":[]}`},
 		{ResponseTypeRECEIPT, Receipt{}, `{"type":4,"data":{"status":0,"stateRoot":"0000000000000000000000000000000000000000000000000000000000000000","result":"","statusInfo":""}}`},
 		{ResponseTypeRECEIPTLIST, []Receipt{}, `{"type":5,"data":[]}`},
@@ -27,7 +27,7 @@ func Test_API_JSONMarshal(t *testing.T) {
 		{ResponseTypeACCOUNT, Account{}, `{"type":11,"data":{"alias":"","transactionCount":"0","authorizedAccounts":null}}`},
 		{ResponseTypeHEIGHT, BlockHeight{}, `{"type":12,"data":{"height":"0"}}`},
 		{ResponseTypeABI, Abi{}, `{"type":13,"data":{"version":"","functions":null}}`},
-		{ResponseTypeABI, Abi{Version: "1.0", Functions: []FunctionSignature{{FunctionName: "One"}, {FunctionName: "Two"}, {FunctionName: "Three"}, {FunctionName: "Four"}, {FunctionName: "Five"}}}, `{"type":14,"data":{"version":"1.0","functions":[{"functionType":0,"functionName":"One","parameters":null,"returns":null},{"functionType":0,"functionName":"Two","parameters":null,"returns":null},{"functionType":0,"functionName":"Three","parameters":null,"returns":null},{"functionType":0,"functionName":"Four","parameters":null,"returns":null},{"functionType":0,"functionName":"Five","parameters":null,"returns":null}]}}`},
+		{ResponseTypeABI, Abi{Version: "1.0", Functions: []FunctionSignature{{FunctionName: "One"}, {FunctionName: "Two"}, {FunctionName: "Three"}, {FunctionName: "Four"}, {FunctionName: "Five"}}}, `{"type":13,"data":{"version":"1.0","functions":[{"functionType":0,"functionName":"One","parameters":null,"returns":null},{"functionType":0,"functionName":"Two","parameters":null,"returns":null},{"functionType":0,"functionName":"Three","parameters":null,"returns":null},{"functionType":0,"functionName":"Four","parameters":null,"returns":null},{"functionType":0,"functionName":"Five","parameters":null,"returns":null}]}}`},
 	}
 
 	for i, tt := range tests {
@@ -56,7 +56,7 @@ func Test_API_JSONUnmarshal(t *testing.T) {
 	}{
 		{ResponseTypeUNKNOWN, `{"type":0,"data":""}`, Response{Type: ResponseTypeUNKNOWN}},
 		{ResponseTypeTRANSACTIONID, `{"type":1,"data":"0000000000000000000000000000000000000000000000000000000000000000"}`, Response{Type: ResponseTypeTRANSACTIONID, TransactionID: &ID{}}},
-		{ResponseTypeTRANSACTION, `{"type":2,"data":{"signature":"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","sender":"0000000000000000000000000000000000000000000000000000000000000000","signer":"0000000000000000000000000000000000000000000000000000000000000000","data":{"channelID":"0000000000000000000000000000000000000000000000000000000000000000","nonce":"1","blockExpirationNumber":"0","category":{"type":0,"data":""}}}}`,
+		{ResponseTypeTRANSACTION, `{"type":2,"data":{"sender":"0000000000000000000000000000000000000000000000000000000000000000","signer":"0000000000000000000000000000000000000000000000000000000000000000","signature":"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","data":{"channelID":"0000000000000000000000000000000000000000000000000000000000000000","nonce":"1","blockExpirationNumber":"0","category":{"type":0,"data":""}}}}`,
 			Response{Type: ResponseTypeTRANSACTION, Transaction: &Transaction{Data: Data{Nonce: 1}}}},
 		{ResponseTypeTRANSACTIONLIST, `{"type":3,"data":[{"type":1,"data":{"signature":"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","signer":{"type":0,"data":""},"data":{"address":"0000000000000000000000000000000000000000000000000000000000000000","channelID":"0000000000000000000000000000000000000000000000000000000000000000","nonce":"1","blockExpirationNumber":"0","category":{"type":0,"data":""}}}}]}`,
 			Response{Type: ResponseTypeTRANSACTIONLIST, Transactions: &[]Transaction{{}}}},
