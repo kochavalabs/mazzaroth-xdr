@@ -51,7 +51,8 @@ namespace mazzaroth
     CALL = 1,
     CONTRACT = 2,
     CONFIG = 3,
-    ACCOUNT = 4
+    ALIAS = 4,
+    AUTHORIZATION = 5
   };
 
   union Category switch (CategoryType Type)
@@ -64,7 +65,7 @@ namespace mazzaroth
       Contract contract;
     case CONFIG:
       Config config;
-    case ACCOUNT:
+    case ALIAS:
       string alias<32>;
     case AUTHORIZATION:
       Authorization authorization; 

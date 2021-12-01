@@ -29,9 +29,7 @@ exports.Contract = Contract;
 exports.Authorization = Authorization;
 exports.Data = Data;
 exports.Transaction = Transaction;
-exports.AccountUpdateType = AccountUpdateType;
 exports.CategoryType = CategoryType;
-exports.AccountUpdate = AccountUpdate;
 exports.Category = Category;
 
 var _xdrJsSerialize = require("xdr-js-serialize");
@@ -84,10 +82,10 @@ function FunctionType() {
 
 // Start struct section
 function Account() {
-    return new _xdrJsSerialize2.default.Struct(["alias", "transactionCount", "authorizedAccounts"], [new _xdrJsSerialize2.default.Str('', 32), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.VarArray(32, AuthorizedAccount)]);
+    return new _xdrJsSerialize2.default.Struct(["alias", "authorizedAccounts"], [new _xdrJsSerialize2.default.Str('', 32), new _xdrJsSerialize2.default.VarArray(32, AuthorizedAccount)]);
 }
 function AuthorizedAccount() {
-    return new _xdrJsSerialize2.default.Struct(["key", "alias"], [ID(), new _xdrJsSerialize2.default.Str('', 32)]);
+    return new _xdrJsSerialize2.default.Struct(["alias", "key"], [new _xdrJsSerialize2.default.Str('', 32), ID()]);
 }
 
 // End struct section
@@ -127,17 +125,15 @@ function ResponseType() {
         0: "UNKNOWN",
         1: "TRANSACTIONID",
         2: "TRANSACTION",
-        3: "TRANSACTIONLIST",
-        4: "RECEIPT",
-        5: "RECEIPTLIST",
-        6: "BLOCK",
-        7: "BLOCKLIST",
-        8: "BLOCKHEADER",
-        9: "BLOCKHEADERLIST",
-        10: "CONFIG",
-        11: "ACCOUNT",
-        12: "HEIGHT",
-        13: "ABI"
+        3: "RECEIPT",
+        4: "BLOCK",
+        5: "BLOCKLIST",
+        6: "BLOCKHEADER",
+        7: "BLOCKHEADERLIST",
+        8: "CONFIG",
+        9: "ACCOUNT",
+        10: "HEIGHT",
+        11: "ABI"
 
     });
 }
@@ -176,16 +172,8 @@ function Response() {
             return Transaction();
         },
 
-        "TRANSACTIONLIST": () => {
-            return new _xdrJsSerialize2.default.VarArray(2147483647, Transaction);
-        },
-
         "RECEIPT": () => {
             return Receipt();
-        },
-
-        "RECEIPTLIST": () => {
-            return new _xdrJsSerialize2.default.VarArray(2147483647, Receipt);
         },
 
         "BLOCK": () => {
@@ -312,7 +300,7 @@ function Status() {
 
 // Start struct section
 function Receipt() {
-    return new _xdrJsSerialize2.default.Struct(["status", "stateRoot", "result", "statusInfo"], [Status(), Hash(), new _xdrJsSerialize2.default.Str('', 2147483647), StatusInfo()]);
+    return new _xdrJsSerialize2.default.Struct(["transactionID", "status", "stateRoot", "result", "statusInfo"], [ID(), Status(), Hash(), new _xdrJsSerialize2.default.Str('', 2147483647), StatusInfo()]);
 }
 
 // End struct section
@@ -357,22 +345,14 @@ function Transaction() {
 
 // Start enum section
 
-function AccountUpdateType() {
-    return new _xdrJsSerialize2.default.Enum({
-        0: "UNKNOWN",
-        1: "ALIAS",
-        2: "AUTHORIZATION"
-
-    });
-}
-
 function CategoryType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "CALL",
         2: "CONTRACT",
         3: "CONFIG",
-        4: "ACCOUNT"
+        4: "ALIAS",
+        5: "AUTHORIZATION"
 
     });
 }
@@ -381,24 +361,6 @@ function CategoryType() {
 
 // Start union section
 
-
-function AccountUpdate() {
-    return new _xdrJsSerialize2.default.Union(AccountUpdateType(), {
-
-        "UNKNOWN": () => {
-            return new _xdrJsSerialize2.default.Void();
-        },
-
-        "ALIAS": () => {
-            return new _xdrJsSerialize2.default.Str('', 0);
-        },
-
-        "AUTHORIZATION": () => {
-            return Authorization();
-        }
-
-    });
-}
 
 function Category() {
     return new _xdrJsSerialize2.default.Union(CategoryType(), {
@@ -419,8 +381,12 @@ function Category() {
             return Config();
         },
 
-        "ACCOUNT": () => {
-            return AccountUpdate();
+        "ALIAS": () => {
+            return new _xdrJsSerialize2.default.Str('', 32);
+        },
+
+        "AUTHORIZATION": () => {
+            return Authorization();
         }
 
     });

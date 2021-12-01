@@ -23,27 +23,23 @@ namespace mazzaroth
 
     TRANSACTION = 2,
 
-    TRANSACTIONLIST = 3,
+    RECEIPT = 3,
 
-    RECEIPT = 4,
+    BLOCK = 4,
 
-    RECEIPTLIST = 5,
+    BLOCKLIST = 5,
 
-    BLOCK = 6,
+    BLOCKHEADER = 6,
 
-    BLOCKLIST = 7,
+    BLOCKHEADERLIST = 7,
 
-    BLOCKHEADER = 8,
+    CONFIG = 8,
 
-    BLOCKHEADERLIST = 9,
+    ACCOUNT = 9,
 
-    CONFIG = 10,
+    HEIGHT = 10,
 
-    ACCOUNT = 11,
-
-    HEIGHT = 12,
-
-    ABI = 13
+    ABI = 11
 
   };
 
