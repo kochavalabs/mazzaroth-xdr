@@ -40,7 +40,7 @@ namespace mazzaroth
 
   struct Authorization
   {
-    AuthorizedAccount account;
+    ID account;
 
     boolean authorize;
   };
@@ -51,7 +51,7 @@ namespace mazzaroth
     CALL = 1,
     CONTRACT = 2,
     CONFIG = 3,
-    ALIAS = 4,
+    ACCOUNT = 4,
     AUTHORIZATION = 5
   };
 
@@ -65,8 +65,8 @@ namespace mazzaroth
       Contract contract;
     case CONFIG:
       Config config;
-    case ALIAS:
-      string alias<32>;
+    case ACCOUNT:
+      Account account;
     case AUTHORIZATION:
       Authorization authorization; 
   };

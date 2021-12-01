@@ -90,17 +90,12 @@ impl Default for FunctionType {
 pub struct Account {
     #[array(var = 32)]
     pub alias: String,
-
-    #[array(var = 32)]
-    pub authorizedAccounts: Vec<AuthorizedAccount>,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct AuthorizedAccount {
-    #[array(var = 32)]
-    pub alias: String,
-
-    pub key: ID,
+pub struct Authorized {
+    #[array(var = 2147483647)]
+    pub accounts: Vec<ID>,
 }
 
 // End struct section
@@ -144,8 +139,9 @@ pub enum ResponseType {
     BLOCKHEADERLIST = 7,
     CONFIG = 8,
     ACCOUNT = 9,
-    HEIGHT = 10,
-    ABI = 11,
+    AUTHORIZED = 10,
+    HEIGHT = 11,
+    ABI = 12,
 }
 
 impl Default for ResponseType {
@@ -191,6 +187,8 @@ pub enum Response {
     CONFIG(Config),
 
     ACCOUNT(Account),
+
+    AUTHORIZED(Authorized),
 
     HEIGHT(BlockHeight),
 
@@ -376,7 +374,7 @@ pub struct Contract {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Authorization {
-    pub account: AuthorizedAccount,
+    pub account: ID,
 
     pub authorize: bool,
 }
@@ -411,7 +409,7 @@ pub enum CategoryType {
     CALL = 1,
     CONTRACT = 2,
     CONFIG = 3,
-    ALIAS = 4,
+    ACCOUNT = 4,
     AUTHORIZATION = 5,
 }
 
@@ -432,7 +430,7 @@ pub enum Category {
 
     CONFIG(Config),
 
-    ALIAS(String),
+    ACCOUNT(Account),
 
     AUTHORIZATION(Authorization),
 }

@@ -189,8 +189,6 @@ var (
 // Account generated struct
 type Account struct {
 	Alias string `xdrmaxsize:"32" json:"alias"`
-
-	AuthorizedAccounts []AuthorizedAccount `xdrmaxsize:"32" json:"authorizedAccounts"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -211,29 +209,27 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Account)(nil)
 )
 
-// AuthorizedAccount generated struct
-type AuthorizedAccount struct {
-	Alias string `xdrmaxsize:"32" json:"alias"`
-
-	Key ID `json:"key"`
+// Authorized generated struct
+type Authorized struct {
+	Accounts []ID `json:"accounts"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
-func (s AuthorizedAccount) MarshalBinary() ([]byte, error) {
+func (s Authorized) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
 	_, err := Marshal(b, s)
 	return b.Bytes(), err
 }
 
 // UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *AuthorizedAccount) UnmarshalBinary(inp []byte) error {
+func (s *Authorized) UnmarshalBinary(inp []byte) error {
 	_, err := Unmarshal(bytes.NewReader(inp), s)
 	return err
 }
 
 var (
-	_ encoding.BinaryMarshaler   = (*AuthorizedAccount)(nil)
-	_ encoding.BinaryUnmarshaler = (*AuthorizedAccount)(nil)
+	_ encoding.BinaryMarshaler   = (*Authorized)(nil)
+	_ encoding.BinaryUnmarshaler = (*Authorized)(nil)
 )
 
 // End struct section
@@ -345,11 +341,14 @@ const (
 	// ResponseTypeACCOUNT enum value 9
 	ResponseTypeACCOUNT ResponseType = 9
 
-	// ResponseTypeHEIGHT enum value 10
-	ResponseTypeHEIGHT ResponseType = 10
+	// ResponseTypeAUTHORIZED enum value 10
+	ResponseTypeAUTHORIZED ResponseType = 10
 
-	// ResponseTypeABI enum value 11
-	ResponseTypeABI ResponseType = 11
+	// ResponseTypeHEIGHT enum value 11
+	ResponseTypeHEIGHT ResponseType = 11
+
+	// ResponseTypeABI enum value 12
+	ResponseTypeABI ResponseType = 12
 )
 
 // ResponseTypeMap generated enum map
@@ -375,9 +374,11 @@ var ResponseTypeMap = map[int32]string{
 
 	9: "ResponseTypeACCOUNT",
 
-	10: "ResponseTypeHEIGHT",
+	10: "ResponseTypeAUTHORIZED",
 
-	11: "ResponseTypeABI",
+	11: "ResponseTypeHEIGHT",
+
+	12: "ResponseTypeABI",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -579,6 +580,8 @@ type Response struct {
 
 	Account *Account
 
+	Authorized *Authorized
+
 	Height *BlockHeight
 
 	Abi *Abi
@@ -624,6 +627,9 @@ func (u Response) ArmForSwitch(sw int32) (string, bool) {
 
 	case ResponseTypeACCOUNT:
 		return "Account", true
+
+	case ResponseTypeAUTHORIZED:
+		return "Authorized", true
 
 	case ResponseTypeHEIGHT:
 		return "Height", true
@@ -730,6 +736,16 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 			return
 		}
 		result.Account = &tv
+
+	case ResponseTypeAUTHORIZED:
+
+		tv, ok := value.(Authorized)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Authorized = &tv
 
 	case ResponseTypeHEIGHT:
 
@@ -989,6 +1005,32 @@ func (u Response) GetAccount() (result Account, ok bool) {
 	return
 }
 
+// MustAuthorized retrieves the Authorized value from the union,
+// panicing if the value is not set.
+func (u Response) MustAuthorized() Authorized {
+
+	val, ok := u.GetAuthorized()
+	if !ok {
+		panic("arm Authorized is not set")
+	}
+
+	return val
+}
+
+// GetAuthorized retrieves the Authorized value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Response) GetAuthorized() (result Authorized, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Authorized" {
+		result = *u.Authorized
+		ok = true
+	}
+
+	return
+}
+
 // MustHeight retrieves the Height value from the union,
 // panicing if the value is not set.
 func (u Response) MustHeight() BlockHeight {
@@ -1088,6 +1130,8 @@ func (u Response) MarshalJSON() ([]byte, error) {
 		temp.Data = u.Config
 	case ResponseTypeACCOUNT:
 		temp.Data = u.Account
+	case ResponseTypeAUTHORIZED:
+		temp.Data = u.Authorized
 	case ResponseTypeHEIGHT:
 		temp.Data = u.Height
 	case ResponseTypeABI:
@@ -1201,6 +1245,16 @@ func (u *Response) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.Account = &response.Account
+
+	case ResponseTypeAUTHORIZED:
+		response := struct {
+			Authorized Authorized `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Authorized = &response.Authorized
 
 	case ResponseTypeHEIGHT:
 		response := struct {
@@ -1680,7 +1734,7 @@ var (
 
 // Authorization generated struct
 type Authorization struct {
-	Account AuthorizedAccount `json:"account"`
+	Account ID `json:"account"`
 
 	Authorize bool `json:"authorize"`
 }
@@ -1782,8 +1836,8 @@ const (
 	// CategoryTypeCONFIG enum value 3
 	CategoryTypeCONFIG CategoryType = 3
 
-	// CategoryTypeALIAS enum value 4
-	CategoryTypeALIAS CategoryType = 4
+	// CategoryTypeACCOUNT enum value 4
+	CategoryTypeACCOUNT CategoryType = 4
 
 	// CategoryTypeAUTHORIZATION enum value 5
 	CategoryTypeAUTHORIZATION CategoryType = 5
@@ -1800,7 +1854,7 @@ var CategoryTypeMap = map[int32]string{
 
 	3: "CategoryTypeCONFIG",
 
-	4: "CategoryTypeALIAS",
+	4: "CategoryTypeACCOUNT",
 
 	5: "CategoryTypeAUTHORIZATION",
 }
@@ -1850,7 +1904,7 @@ type Category struct {
 
 	Config *Config
 
-	Alias *string
+	Account *Account
 
 	Authorization *Authorization
 }
@@ -1878,8 +1932,8 @@ func (u Category) ArmForSwitch(sw int32) (string, bool) {
 	case CategoryTypeCONFIG:
 		return "Config", true
 
-	case CategoryTypeALIAS:
-		return "Alias", true
+	case CategoryTypeACCOUNT:
+		return "Account", true
 
 	case CategoryTypeAUTHORIZATION:
 		return "Authorization", true
@@ -1924,15 +1978,15 @@ func NewCategory(aType CategoryType, value interface{}) (result Category, err er
 		}
 		result.Config = &tv
 
-	case CategoryTypeALIAS:
+	case CategoryTypeACCOUNT:
 
-		tv, ok := value.(string)
+		tv, ok := value.(Account)
 
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.Alias = &tv
+		result.Account = &tv
 
 	case CategoryTypeAUTHORIZATION:
 
@@ -2026,26 +2080,26 @@ func (u Category) GetConfig() (result Config, ok bool) {
 	return
 }
 
-// MustAlias retrieves the Alias value from the union,
+// MustAccount retrieves the Account value from the union,
 // panicing if the value is not set.
-func (u Category) MustAlias() string {
+func (u Category) MustAccount() Account {
 
-	val, ok := u.GetAlias()
+	val, ok := u.GetAccount()
 	if !ok {
-		panic("arm Alias is not set")
+		panic("arm Account is not set")
 	}
 
 	return val
 }
 
-// GetAlias retrieves the Alias value from the union,
+// GetAccount retrieves the Account value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Category) GetAlias() (result string, ok bool) {
+func (u Category) GetAccount() (result Account, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "Alias" {
-		result = *u.Alias
+	if armName == "Account" {
+		result = *u.Account
 		ok = true
 	}
 
@@ -2113,8 +2167,8 @@ func (u Category) MarshalJSON() ([]byte, error) {
 		temp.Data = u.Contract
 	case CategoryTypeCONFIG:
 		temp.Data = u.Config
-	case CategoryTypeALIAS:
-		temp.Data = u.Alias
+	case CategoryTypeACCOUNT:
+		temp.Data = u.Account
 	case CategoryTypeAUTHORIZATION:
 		temp.Data = u.Authorization
 	default:
@@ -2167,15 +2221,15 @@ func (u *Category) UnmarshalJSON(data []byte) error {
 		}
 		u.Config = &response.Config
 
-	case CategoryTypeALIAS:
+	case CategoryTypeACCOUNT:
 		response := struct {
-			Alias string `json:"data"`
+			Account Account `json:"data"`
 		}{}
 		err := json.Unmarshal(data, &response)
 		if err != nil {
 			return err
 		}
-		u.Alias = &response.Alias
+		u.Account = &response.Account
 
 	case CategoryTypeAUTHORIZATION:
 		response := struct {

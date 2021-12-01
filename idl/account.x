@@ -6,16 +6,10 @@ namespace mazzaroth
   {
     // Allow account holder to set their own alias
     string alias<32>;
-
-    // List of IDs with permission to act on behalf of this account
-    AuthorizedAccount authorizedAccounts<32>;
   };
 
-  struct AuthorizedAccount {
-    // Alias that we give to an authorized account
-    string alias<32>;
-    
-    // Public Key of the authorized account
-    ID key;
+  // Authorized stores the list of authorized IDs of a given account
+  struct Authorized {
+    ID accounts<>;
   }
 }

@@ -8,7 +8,7 @@ exports.FunctionSignature = FunctionSignature;
 exports.Parameter = Parameter;
 exports.FunctionType = FunctionType;
 exports.Account = Account;
-exports.AuthorizedAccount = AuthorizedAccount;
+exports.Authorized = Authorized;
 exports.RequestType = RequestType;
 exports.ResponseType = ResponseType;
 exports.Request = Request;
@@ -82,10 +82,10 @@ function FunctionType() {
 
 // Start struct section
 function Account() {
-    return new _xdrJsSerialize2.default.Struct(["alias", "authorizedAccounts"], [new _xdrJsSerialize2.default.Str('', 32), new _xdrJsSerialize2.default.VarArray(32, AuthorizedAccount)]);
+    return new _xdrJsSerialize2.default.Struct(["alias"], [new _xdrJsSerialize2.default.Str('', 32)]);
 }
-function AuthorizedAccount() {
-    return new _xdrJsSerialize2.default.Struct(["alias", "key"], [new _xdrJsSerialize2.default.Str('', 32), ID()]);
+function Authorized() {
+    return new _xdrJsSerialize2.default.Struct(["accounts"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
 
 // End struct section
@@ -132,8 +132,9 @@ function ResponseType() {
         7: "BLOCKHEADERLIST",
         8: "CONFIG",
         9: "ACCOUNT",
-        10: "HEIGHT",
-        11: "ABI"
+        10: "AUTHORIZED",
+        11: "HEIGHT",
+        12: "ABI"
 
     });
 }
@@ -198,6 +199,10 @@ function Response() {
 
         "ACCOUNT": () => {
             return Account();
+        },
+
+        "AUTHORIZED": () => {
+            return Authorized();
         },
 
         "HEIGHT": () => {
@@ -332,7 +337,7 @@ function Contract() {
     return new _xdrJsSerialize2.default.Struct(["contractBytes", "abi", "contractHash", "version"], [new _xdrJsSerialize2.default.VarOpaque(2147483647), Abi(), Hash(), new _xdrJsSerialize2.default.Str('', 100)]);
 }
 function Authorization() {
-    return new _xdrJsSerialize2.default.Struct(["account", "authorize"], [AuthorizedAccount(), new _xdrJsSerialize2.default.Bool()]);
+    return new _xdrJsSerialize2.default.Struct(["account", "authorize"], [ID(), new _xdrJsSerialize2.default.Bool()]);
 }
 function Data() {
     return new _xdrJsSerialize2.default.Struct(["channelID", "nonce", "blockExpirationNumber", "category"], [ID(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Category()]);
@@ -351,7 +356,7 @@ function CategoryType() {
         1: "CALL",
         2: "CONTRACT",
         3: "CONFIG",
-        4: "ALIAS",
+        4: "ACCOUNT",
         5: "AUTHORIZATION"
 
     });
@@ -381,8 +386,8 @@ function Category() {
             return Config();
         },
 
-        "ALIAS": () => {
-            return new _xdrJsSerialize2.default.Str('', 32);
+        "ACCOUNT": () => {
+            return Account();
         },
 
         "AUTHORIZATION": () => {
