@@ -2,6 +2,9 @@ namespace mazzaroth
 {
   struct Receipt
   {
+    // ID of the transaction the receipt belongs to
+    ID transactionID; 
+    
     // Status failure or success
     Status status;
  

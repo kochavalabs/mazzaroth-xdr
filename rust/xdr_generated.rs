@@ -90,19 +90,12 @@ impl Default for FunctionType {
 pub struct Account {
     #[array(var = 32)]
     pub alias: String,
-
-    pub transactionCount: u64,
-
-    #[array(var = 32)]
-    pub authorizedAccounts: Vec<AuthorizedAccount>,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct AuthorizedAccount {
-    pub key: ID,
-
-    #[array(var = 32)]
-    pub alias: String,
+pub struct Authorized {
+    #[array(var = 2147483647)]
+    pub accounts: Vec<ID>,
 }
 
 // End struct section
@@ -139,17 +132,16 @@ pub enum ResponseType {
     UNKNOWN = 0,
     TRANSACTIONID = 1,
     TRANSACTION = 2,
-    TRANSACTIONLIST = 3,
-    RECEIPT = 4,
-    RECEIPTLIST = 5,
-    BLOCK = 6,
-    BLOCKLIST = 7,
-    BLOCKHEADER = 8,
-    BLOCKHEADERLIST = 9,
-    CONFIG = 10,
-    ACCOUNT = 11,
-    HEIGHT = 12,
-    ABI = 13,
+    RECEIPT = 3,
+    BLOCK = 4,
+    BLOCKLIST = 5,
+    BLOCKHEADER = 6,
+    BLOCKHEADERLIST = 7,
+    CONFIG = 8,
+    ACCOUNT = 9,
+    AUTHORIZED = 10,
+    HEIGHT = 11,
+    ABI = 12,
 }
 
 impl Default for ResponseType {
@@ -180,13 +172,7 @@ pub enum Response {
 
     TRANSACTION(Transaction),
 
-    #[array(var = 2147483647)]
-    TRANSACTIONLIST(Vec<Transaction>),
-
     RECEIPT(Receipt),
-
-    #[array(var = 2147483647)]
-    RECEIPTLIST(Vec<Receipt>),
 
     BLOCK(Block),
 
@@ -201,6 +187,8 @@ pub enum Response {
     CONFIG(Config),
 
     ACCOUNT(Account),
+
+    AUTHORIZED(Authorized),
 
     HEIGHT(BlockHeight),
 
@@ -327,6 +315,8 @@ impl Default for Status {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Receipt {
+    pub transactionID: ID,
+
     pub status: Status,
 
     pub stateRoot: Hash,
@@ -384,7 +374,7 @@ pub struct Contract {
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Authorization {
-    pub account: AuthorizedAccount,
+    pub account: ID,
 
     pub authorize: bool,
 }
@@ -414,25 +404,13 @@ pub struct Transaction {
 // End struct section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum AccountUpdateType {
-    UNKNOWN = 0,
-    ALIAS = 1,
-    AUTHORIZATION = 2,
-}
-
-impl Default for AccountUpdateType {
-    fn default() -> Self {
-        AccountUpdateType::UNKNOWN
-    }
-}
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum CategoryType {
     UNKNOWN = 0,
     CALL = 1,
     CONTRACT = 2,
     CONFIG = 3,
     ACCOUNT = 4,
+    AUTHORIZATION = 5,
 }
 
 impl Default for CategoryType {
@@ -441,21 +419,6 @@ impl Default for CategoryType {
     }
 }
 // Start union section
-
-#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
-pub enum AccountUpdate {
-    UNKNOWN(()),
-
-    ALIAS(String),
-
-    AUTHORIZATION(Authorization),
-}
-
-impl Default for AccountUpdate {
-    fn default() -> Self {
-        AccountUpdate::UNKNOWN(())
-    }
-}
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
 pub enum Category {
@@ -467,7 +430,9 @@ pub enum Category {
 
     CONFIG(Config),
 
-    ACCOUNT(AccountUpdate),
+    ACCOUNT(Account),
+
+    AUTHORIZATION(Authorization),
 }
 
 impl Default for Category {

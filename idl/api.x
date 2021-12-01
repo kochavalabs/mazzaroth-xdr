@@ -23,27 +23,25 @@ namespace mazzaroth
 
     TRANSACTION = 2,
 
-    TRANSACTIONLIST = 3,
+    RECEIPT = 3,
 
-    RECEIPT = 4,
+    BLOCK = 4,
 
-    RECEIPTLIST = 5,
+    BLOCKLIST = 5,
 
-    BLOCK = 6,
+    BLOCKHEADER = 6,
 
-    BLOCKLIST = 7,
+    BLOCKHEADERLIST = 7,
 
-    BLOCKHEADER = 8,
+    CONFIG = 8,
 
-    BLOCKHEADERLIST = 9,
+    ACCOUNT = 9,
 
-    CONFIG = 10,
+    AUTHORIZED = 10,
 
-    ACCOUNT = 11,
+    HEIGHT = 11,
 
-    HEIGHT = 12,
-
-    ABI = 13
+    ABI = 12
 
   };
 
@@ -55,12 +53,8 @@ namespace mazzaroth
       ID transactionID;
     case TRANSACTION:
       Transaction transaction;
-    case TRANSACTIONLIST:
-      Transaction transactions<>;
     case RECEIPT:
       Receipt receipt;
-    case RECEIPTLIST:
-      Receipt receipts<>;
     case BLOCK:
       Block block;
     case BLOCKLIST:
@@ -73,6 +67,8 @@ namespace mazzaroth
       Config config;
     case ACCOUNT:
       Account account;
+    case AUTHORIZED:
+      Authorized authorized;
     case HEIGHT:
       BlockHeight height;
     case ABI:

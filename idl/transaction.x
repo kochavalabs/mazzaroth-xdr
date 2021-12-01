@@ -38,26 +38,9 @@ namespace mazzaroth
     string version<100>;
   }
 
-  enum AccountUpdateType
-  {
-    UNKNOWN = 0,
-    ALIAS = 1,
-    AUTHORIZATION = 2
-  };
-
-  union AccountUpdate switch (AccountUpdateType Type)
-  {
-    case UNKNOWN:
-      void;
-    case ALIAS:
-      string alias;
-    case AUTHORIZATION:
-      Authorization authorization;
-  };
-
   struct Authorization
   {
-    AuthorizedAccount account;
+    ID account;
 
     boolean authorize;
   };
@@ -68,7 +51,8 @@ namespace mazzaroth
     CALL = 1,
     CONTRACT = 2,
     CONFIG = 3,
-    ACCOUNT = 4
+    ACCOUNT = 4,
+    AUTHORIZATION = 5
   };
 
   union Category switch (CategoryType Type)
@@ -82,7 +66,9 @@ namespace mazzaroth
     case CONFIG:
       Config config;
     case ACCOUNT:
-      AccountUpdate account;
+      Account account;
+    case AUTHORIZATION:
+      Authorization authorization; 
   };
 
   // The data of a transaction
