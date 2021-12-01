@@ -55,12 +55,8 @@ namespace mazzaroth
       ID transactionID;
     case TRANSACTION:
       Transaction transaction;
-    case TRANSACTIONLIST:
-      Transaction transactions<>;
     case RECEIPT:
       Receipt receipt;
-    case RECEIPTLIST:
-      Receipt receipts<>;
     case BLOCK:
       Block block;
     case BLOCKLIST:
