@@ -1,5 +1,3 @@
-%#include "common.x"
-
 namespace mazzaroth
 {
 
@@ -36,15 +34,9 @@ namespace mazzaroth
     // The hash of the previous block header
     Hash previousHeader;
 
-    BlockStatus status;
+    // Unknown, Pending or Finalized
+    Status status;
   };
-
-  enum BlockStatus
-  {
-    UNKNOWN = 0,
-    PENDING = 1,
-    FINALIZED = 2
-  }
 
   struct BlockHeight
   {

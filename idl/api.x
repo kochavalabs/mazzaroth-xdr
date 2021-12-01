@@ -37,15 +37,13 @@ namespace mazzaroth
 
     BLOCKHEADERLIST = 9,
 
-    CHANNEL = 10,
+    CONFIG = 10,
 
-    CHANNELLIST = 11,
+    ACCOUNT = 11,
 
-    ACCOUNT = 12,
+    HEIGHT = 12,
 
-    HEIGHT = 13,
-
-    ABI = 14
+    ABI = 13
 
   };
 
@@ -71,10 +69,8 @@ namespace mazzaroth
       BlockHeader blockHeader;
     case BLOCKHEADERLIST:
       BlockHeader blockHeaders<>;
-    case CHANNEL:
-      ChannelConfig channel;
-    case CHANNELLIST:
-      ChannelConfig channels<>;
+    case CONFIG:
+      Config config;
     case ACCOUNT:
       Account account;
     case HEIGHT:

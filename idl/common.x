@@ -6,4 +6,13 @@ namespace mazzaroth
   typedef opaque Hash[32];
   typedef string Argument<>;
   typedef string StatusInfo<256>;
+
+  enum Status
+  {
+    UNKNOWN = 0,
+    SUCCESS = 1,
+    FAILURE = 2,
+    PENDING = 3,
+    FINALIZED = 4
+  }
 }
