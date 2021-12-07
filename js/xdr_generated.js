@@ -53,24 +53,20 @@ function FunctionSignature() {
 function Parameter() {
     return new _xdrJsSerialize2.default.Struct(["parameterName", "parameterType"], [new _xdrJsSerialize2.default.Str('', 2147483647), new _xdrJsSerialize2.default.Str('', 2147483647)]);
 }
-
 // End struct section
 
 // Start enum section
-
 function FunctionType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "READ",
         2: "WRITE"
-
     });
 }
 
 // End enum section
 
 // Start union section
-
 
 // End union section
 
@@ -87,16 +83,13 @@ function Account() {
 function Authorized() {
     return new _xdrJsSerialize2.default.Struct(["accounts"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
 }
-
 // End struct section
 
 // Start enum section
 
-
 // End enum section
 
 // Start union section
-
 
 // End union section
 
@@ -107,19 +100,15 @@ function Authorized() {
 // End typedef section
 
 // Start struct section
-
 // End struct section
 
 // Start enum section
-
 function RequestType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "TRANSACTION"
-
     });
 }
-
 function ResponseType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
@@ -135,7 +124,6 @@ function ResponseType() {
         10: "AUTHORIZED",
         11: "HEIGHT",
         12: "ABI"
-
     });
 }
 
@@ -143,79 +131,59 @@ function ResponseType() {
 
 // Start union section
 
-
 function Request() {
     return new _xdrJsSerialize2.default.Union(RequestType(), {
-
         "UNKNOWN": () => {
             return new _xdrJsSerialize2.default.Void();
         },
-
         "TRANSACTION": () => {
             return Transaction();
         }
-
     });
 }
-
 function Response() {
     return new _xdrJsSerialize2.default.Union(ResponseType(), {
-
         "UNKNOWN": () => {
             return new _xdrJsSerialize2.default.Void();
         },
-
         "TRANSACTIONID": () => {
             return ID();
         },
-
         "TRANSACTION": () => {
             return Transaction();
         },
-
         "RECEIPT": () => {
             return Receipt();
         },
-
         "BLOCK": () => {
             return Block();
         },
-
         "BLOCKLIST": () => {
             return new _xdrJsSerialize2.default.VarArray(2147483647, Block);
         },
-
         "BLOCKHEADER": () => {
             return BlockHeader();
         },
-
         "BLOCKHEADERLIST": () => {
             return new _xdrJsSerialize2.default.VarArray(2147483647, BlockHeader);
         },
-
         "CONFIG": () => {
             return Config();
         },
-
         "ACCOUNT": () => {
             return Account();
         },
-
         "AUTHORIZED": () => {
             return Authorized();
         },
-
         "HEIGHT": () => {
             return BlockHeight();
         },
-
         "ABI": () => {
             return Abi();
         }
-
     });
 }
-
 // End union section
 
 // End namespace mazzaroth
@@ -234,16 +202,13 @@ function BlockHeader() {
 function BlockHeight() {
     return new _xdrJsSerialize2.default.Struct(["height"], [new _xdrJsSerialize2.default.UHyper()]);
 }
-
 // End struct section
 
 // Start enum section
 
-
 // End enum section
 
 // Start union section
-
 
 // End union section
 
@@ -251,34 +216,27 @@ function BlockHeight() {
 // Namespace start mazzaroth
 
 // Start typedef section
-
 function Signature() {
     return new _xdrJsSerialize2.default.FixedOpaque(64);
 }
-
 function ID() {
     return new _xdrJsSerialize2.default.FixedOpaque(32);
 }
-
 function Hash() {
     return new _xdrJsSerialize2.default.FixedOpaque(32);
 }
-
 function Argument() {
     return new _xdrJsSerialize2.default.Str('', 2147483647);
 }
-
 function StatusInfo() {
     return new _xdrJsSerialize2.default.Str('', 256);
 }
 // End typedef section
 
 // Start struct section
-
 // End struct section
 
 // Start enum section
-
 function Status() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
@@ -286,14 +244,12 @@ function Status() {
         2: "FAILURE",
         3: "PENDING",
         4: "FINALIZED"
-
     });
 }
 
 // End enum section
 
 // Start union section
-
 
 // End union section
 
@@ -307,16 +263,13 @@ function Status() {
 function Receipt() {
     return new _xdrJsSerialize2.default.Struct(["transactionID", "status", "stateRoot", "result", "statusInfo"], [ID(), Status(), Hash(), new _xdrJsSerialize2.default.Str('', 2147483647), StatusInfo()]);
 }
-
 // End struct section
 
 // Start enum section
 
-
 // End enum section
 
 // Start union section
-
 
 // End union section
 
@@ -345,11 +298,9 @@ function Data() {
 function Transaction() {
     return new _xdrJsSerialize2.default.Struct(["sender", "signer", "signature", "data"], [ID(), ID(), Signature(), Data()]);
 }
-
 // End struct section
 
 // Start enum section
-
 function CategoryType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
@@ -358,7 +309,6 @@ function CategoryType() {
         3: "CONFIG",
         4: "ACCOUNT",
         5: "AUTHORIZATION"
-
     });
 }
 
@@ -366,37 +316,28 @@ function CategoryType() {
 
 // Start union section
 
-
 function Category() {
     return new _xdrJsSerialize2.default.Union(CategoryType(), {
-
         "UNKNOWN": () => {
             return new _xdrJsSerialize2.default.Void();
         },
-
         "CALL": () => {
             return Call();
         },
-
         "CONTRACT": () => {
             return Contract();
         },
-
         "CONFIG": () => {
             return Config();
         },
-
         "ACCOUNT": () => {
             return Account();
         },
-
         "AUTHORIZATION": () => {
             return Authorization();
         }
-
     });
 }
-
 // End union section
 
 // End namespace mazzaroth
