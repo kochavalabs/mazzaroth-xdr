@@ -21,6 +21,7 @@ exports.ID = ID;
 exports.Hash = Hash;
 exports.Argument = Argument;
 exports.StatusInfo = StatusInfo;
+exports.AuthAccount = AuthAccount;
 exports.Status = Status;
 exports.Receipt = Receipt;
 exports.Call = Call;
@@ -230,6 +231,9 @@ function Argument() {
 }
 function StatusInfo() {
     return new _xdrJsSerialize2.default.Str('', 256);
+}
+function AuthAccount() {
+    return Authorized();
 }
 // End typedef section
 

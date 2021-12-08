@@ -6,6 +6,7 @@ namespace mazzaroth
   typedef opaque Hash[32];
   typedef string Argument<>;
   typedef string StatusInfo<256>;
+  typedef Authorized AuthAccount;
 
   enum Status
   {
