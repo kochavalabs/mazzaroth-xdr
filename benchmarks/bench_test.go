@@ -17,7 +17,7 @@ func getXdr() xdr.Transaction {
 		Sender:    address,
 		Signer:    address,
 		Signature: signature,
-		Data: xdr.Data{
+		Data: &xdr.Data{
 			ChannelID: channelID,
 			Nonce:     4,
 			Category: xdr.Category{
