@@ -258,10 +258,6 @@ pub struct StatusInfo {
     #[array(var = 256)]
     pub t: String,
 }
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct AuthAccount {
-    pub t: Authorized,
-}
 // End typedef section
 
 // Start struct section

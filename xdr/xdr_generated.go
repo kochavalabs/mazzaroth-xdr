@@ -1411,27 +1411,6 @@ var (
 	_ encoding.BinaryUnmarshaler = (*StatusInfo)(nil)
 )
 
-// AuthAccount generated typedef
-type AuthAccount Authorized
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s AuthAccount) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *AuthAccount) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*AuthAccount)(nil)
-	_ encoding.BinaryUnmarshaler = (*AuthAccount)(nil)
-)
-
 // End typedef section
 
 // Start struct section
