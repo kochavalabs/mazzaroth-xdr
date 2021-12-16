@@ -35,13 +35,9 @@ namespace mazzaroth
 
     CONFIG = 8,
 
-    ACCOUNT = 9,
+    HEIGHT = 9,
 
-    AUTHORIZED = 10,
-
-    HEIGHT = 11,
-
-    ABI = 12
+    ABI = 10
 
   };
 
@@ -65,10 +61,6 @@ namespace mazzaroth
       BlockHeader blockHeaders<>;
     case CONFIG:
       Config config;
-    case ACCOUNT:
-      Account account;
-    case AUTHORIZED:
-      Authorized authorized;
     case HEIGHT:
       BlockHeight height;
     case ABI:

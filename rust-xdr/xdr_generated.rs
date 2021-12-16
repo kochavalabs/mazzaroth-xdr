@@ -1,7 +1,6 @@
 #![allow(non_snake_case)]
 #![allow(non_camel_case_types)]
-#[macro_use]
-extern crate xdr_rs_serialize_derive;
+
 #[allow(unused_imports)]
 use std::io::Write;
 #[allow(unused_imports)]
@@ -20,7 +19,7 @@ use xdr_rs_serialize::ser::{
 
 extern crate json;
 
-// Namspace start mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 
@@ -71,8 +70,8 @@ impl Default for FunctionType {
 
 // End union section
 
-// Namspace end mazzaroth
-// Namspace start mazzaroth
+// Namespace end mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 
@@ -158,8 +157,8 @@ impl Default for Response {
 }
 // End union section
 
-// Namspace end mazzaroth
-// Namspace start mazzaroth
+// Namespace end mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 
@@ -196,8 +195,8 @@ pub struct BlockHeight {
 
 // End union section
 
-// Namspace end mazzaroth
-// Namspace start mazzaroth
+// Namespace end mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 
@@ -249,8 +248,8 @@ impl Default for Status {
 
 // End union section
 
-// Namspace end mazzaroth
-// Namspace start mazzaroth
+// Namespace end mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 
@@ -273,8 +272,8 @@ pub struct Receipt {
 
 // End union section
 
-// Namspace end mazzaroth
-// Namspace start mazzaroth
+// Namespace end mazzaroth
+// Namespace start mazzaroth
 
 // Start typedef section
 
@@ -361,4 +360,4 @@ impl Default for Category {
 }
 // End union section
 
-// Namspace end mazzaroth
+// Namespace end mazzaroth

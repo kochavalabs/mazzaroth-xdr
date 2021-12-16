@@ -50,9 +50,7 @@ namespace mazzaroth
     UNKNOWN = 0,
     CALL = 1,
     CONTRACT = 2,
-    CONFIG = 3,
-    ACCOUNT = 4,
-    AUTHORIZATION = 5
+    CONFIG = 3
   };
 
   union Category switch (CategoryType Type)
@@ -65,10 +63,6 @@ namespace mazzaroth
       Contract contract;
     case CONFIG:
       Config config;
-    case ACCOUNT:
-      Account account;
-    case AUTHORIZATION:
-      Authorization authorization; 
   };
 
   // The data of a transaction
@@ -91,11 +85,6 @@ namespace mazzaroth
   {
     // ID (public key) of the sender of the transaction
     ID sender;
-
-    // Signer ID (public key) of the transaction signer
-    // This should either match the sender or be a key that has been
-    // authorized to sign on behalf of the sender through an authorization transaction
-    ID signer;
 
     // Byte array signature of the Transaction bytes signed by the Transaction 
     // sender's private key.
