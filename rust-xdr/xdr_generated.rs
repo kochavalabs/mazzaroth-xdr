@@ -1,6 +1,7 @@
 #![allow(non_snake_case)]
 #![allow(non_camel_case_types)]
-
+#[macro_use]
+extern crate xdr_rs_serialize_derive;
 #[allow(unused_imports)]
 use std::io::Write;
 #[allow(unused_imports)]
