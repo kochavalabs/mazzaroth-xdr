@@ -79,32 +79,6 @@ impl Default for FunctionType {
 // End typedef section
 
 // Start struct section
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Account {
-    #[array(var = 32)]
-    pub alias: String,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Authorized {
-    #[array(var = 2147483647)]
-    pub accounts: Vec<ID>,
-}
-// End struct section
-
-// Start union section
-
-// End union section
-
-// Namspace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
 // End struct section
 
 #[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
@@ -129,10 +103,8 @@ pub enum ResponseType {
     BLOCKHEADER = 6,
     BLOCKHEADERLIST = 7,
     CONFIG = 8,
-    ACCOUNT = 9,
-    AUTHORIZED = 10,
-    HEIGHT = 11,
-    ABI = 12,
+    HEIGHT = 9,
+    ABI = 10,
 }
 
 impl Default for ResponseType {
@@ -173,10 +145,6 @@ pub enum Response {
     BLOCKHEADERLIST(Vec<BlockHeader>),
 
     CONFIG(Config),
-
-    ACCOUNT(Account),
-
-    AUTHORIZED(Authorized),
 
     HEIGHT(BlockHeight),
 
@@ -356,7 +324,6 @@ pub struct Data {
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Transaction {
     pub sender: ID,
-    pub signer: ID,
     pub signature: Signature,
     pub data: Data,
 }
@@ -368,8 +335,6 @@ pub enum CategoryType {
     CALL = 1,
     CONTRACT = 2,
     CONFIG = 3,
-    ACCOUNT = 4,
-    AUTHORIZATION = 5,
 }
 
 impl Default for CategoryType {
@@ -387,10 +352,6 @@ pub enum Category {
     CONTRACT(Contract),
 
     CONFIG(Config),
-
-    ACCOUNT(Account),
-
-    AUTHORIZATION(Authorization),
 }
 
 impl Default for Category {

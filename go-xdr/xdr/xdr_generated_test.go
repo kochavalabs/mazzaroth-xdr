@@ -22,11 +22,9 @@ func Test_API_JSONMarshal(t *testing.T) {
 		{ResponseTypeBLOCKHEADER, BlockHeader{}, `{"type":6,"data":{"blockHeight":"0","transactionHeight":"0","consensusSequenceNumber":"0","transactionsMerkleRoot":"0000000000000000000000000000000000000000000000000000000000000000","transactionsReceiptRoot":"0000000000000000000000000000000000000000000000000000000000000000","stateRoot":"0000000000000000000000000000000000000000000000000000000000000000","previousHeader":"0000000000000000000000000000000000000000000000000000000000000000","status":0}}`},
 		{ResponseTypeBLOCKHEADERLIST, []*BlockHeader{}, `{"type":7,"data":[]}`},
 		{ResponseTypeCONFIG, Config{}, `{"type":8,"data":{"owner":"0000000000000000000000000000000000000000000000000000000000000000","admins":null}}`},
-		{ResponseTypeACCOUNT, Account{}, `{"type":9,"data":{"alias":""}}`},
-		{ResponseTypeAUTHORIZED, Authorized{}, `{"type":10,"data":{"accounts":null}}`},
-		{ResponseTypeHEIGHT, BlockHeight{}, `{"type":11,"data":{"height":"0"}}`},
-		{ResponseTypeABI, Abi{}, `{"type":12,"data":{"version":"","functions":null}}`},
-		{ResponseTypeABI, Abi{Version: "1.0", Functions: []*FunctionSignature{{FunctionName: "One"}, {FunctionName: "Two"}, {FunctionName: "Three"}, {FunctionName: "Four"}, {FunctionName: "Five"}}}, `{"type":12,"data":{"version":"1.0","functions":[{"functionType":0,"functionName":"One","parameters":null,"returns":null},{"functionType":0,"functionName":"Two","parameters":null,"returns":null},{"functionType":0,"functionName":"Three","parameters":null,"returns":null},{"functionType":0,"functionName":"Four","parameters":null,"returns":null},{"functionType":0,"functionName":"Five","parameters":null,"returns":null}]}}`},
+		{ResponseTypeHEIGHT, BlockHeight{}, `{"type":9,"data":{"height":"0"}}`},
+		{ResponseTypeABI, Abi{}, `{"type":10,"data":{"version":"","functions":null}}`},
+		{ResponseTypeABI, Abi{Version: "1.0", Functions: []*FunctionSignature{{FunctionName: "One"}, {FunctionName: "Two"}, {FunctionName: "Three"}, {FunctionName: "Four"}, {FunctionName: "Five"}}}, `{"type":10,"data":{"version":"1.0","functions":[{"functionType":0,"functionName":"One","parameters":null,"returns":null},{"functionType":0,"functionName":"Two","parameters":null,"returns":null},{"functionType":0,"functionName":"Three","parameters":null,"returns":null},{"functionType":0,"functionName":"Four","parameters":null,"returns":null},{"functionType":0,"functionName":"Five","parameters":null,"returns":null}]}}`},
 	}
 
 	for i, tt := range tests {
@@ -67,11 +65,9 @@ func Test_API_JSONUnmarshal(t *testing.T) {
 		{ResponseTypeBLOCKHEADERLIST, `{"type":7,"data":[{"type":1,"data":{"signature":"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","signer":{"type":0,"data":""},"data":{"address":"0000000000000000000000000000000000000000000000000000000000000000","channelID":"0000000000000000000000000000000000000000000000000000000000000000","nonce":"1","blockExpirationNumber":"0","category":{"type":0,"data":""}}}}]}`,
 			Response{Type: ResponseTypeBLOCKHEADERLIST, BlockHeaders: []*BlockHeader{{}}}},
 		{ResponseTypeCONFIG, `{"type":8,"data":{"owner":"0000000000000000000000000000000000000000000000000000000000000000","admins":null}}`, Response{Type: ResponseTypeCONFIG, Config: &Config{}}},
-		{ResponseTypeACCOUNT, `{"type":9,"data":{"alias":""}}`, Response{Type: ResponseTypeACCOUNT, Account: &Account{}}},
-		{ResponseTypeAUTHORIZED, `{"type":10,"data":{"accounts":null}}`, Response{Type: ResponseTypeAUTHORIZED, Authorized: &Authorized{}}},
-		{ResponseTypeHEIGHT, `{"type":11,"data":{"height":"0"}}`, Response{Type: ResponseTypeHEIGHT, Height: &BlockHeight{}}},
-		{ResponseTypeABI, `{"type":12,"data":{"version":"1.0","functions":[]}}`, Response{Type: ResponseTypeABI, Abi: &Abi{Version: "1.0", Functions: []*FunctionSignature{}}}},
-		{ResponseTypeABI, `{"type":12,"data":{"version":"1.0","functions":[{"functionName": "One"},{"functionName": "Two"},{"functionName": "Three"},{"functionName": "Four"},{"functionName": "Five"}]}}`, Response{Type: ResponseTypeABI, Abi: &Abi{Version: "1.0", Functions: []*FunctionSignature{{FunctionName: "One"}, {FunctionName: "Two"}, {FunctionName: "Three"}, {FunctionName: "Four"}, {FunctionName: "Five"}}}}},
+		{ResponseTypeHEIGHT, `{"type":9,"data":{"height":"0"}}`, Response{Type: ResponseTypeHEIGHT, Height: &BlockHeight{}}},
+		{ResponseTypeABI, `{"type":10,"data":{"version":"1.0","functions":[]}}`, Response{Type: ResponseTypeABI, Abi: &Abi{Version: "1.0", Functions: []*FunctionSignature{}}}},
+		{ResponseTypeABI, `{"type":10,"data":{"version":"1.0","functions":[{"functionName": "One"},{"functionName": "Two"},{"functionName": "Three"},{"functionName": "Four"},{"functionName": "Five"}]}}`, Response{Type: ResponseTypeABI, Abi: &Abi{Version: "1.0", Functions: []*FunctionSignature{{FunctionName: "One"}, {FunctionName: "Two"}, {FunctionName: "Three"}, {FunctionName: "Four"}, {FunctionName: "Five"}}}}},
 	}
 
 	for i, tt := range tests {

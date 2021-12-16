@@ -178,71 +178,6 @@ var (
 
 // Start struct section
 
-// Account generated struct
-type Account struct {
-	Alias string `xdrmaxsize:"32" json:"alias"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Account) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Account) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Account)(nil)
-	_ encoding.BinaryUnmarshaler = (*Account)(nil)
-)
-
-// Authorized generated struct
-type Authorized struct {
-	Accounts []ID `json:"accounts"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Authorized) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Authorized) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Authorized)(nil)
-	_ encoding.BinaryUnmarshaler = (*Authorized)(nil)
-)
-
-// End struct section
-
-// Start enum section
-
-// End enum section
-
-// Start union section
-
-// End union section
-
-// Namespace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
-
 // End struct section
 
 // Start enum section
@@ -316,14 +251,10 @@ const (
 	ResponseTypeBLOCKHEADERLIST ResponseType = 7
 	// ResponseTypeCONFIG enum value 8
 	ResponseTypeCONFIG ResponseType = 8
-	// ResponseTypeACCOUNT enum value 9
-	ResponseTypeACCOUNT ResponseType = 9
-	// ResponseTypeAUTHORIZED enum value 10
-	ResponseTypeAUTHORIZED ResponseType = 10
-	// ResponseTypeHEIGHT enum value 11
-	ResponseTypeHEIGHT ResponseType = 11
-	// ResponseTypeABI enum value 12
-	ResponseTypeABI ResponseType = 12
+	// ResponseTypeHEIGHT enum value 9
+	ResponseTypeHEIGHT ResponseType = 9
+	// ResponseTypeABI enum value 10
+	ResponseTypeABI ResponseType = 10
 )
 
 // ResponseTypeMap generated enum map
@@ -337,10 +268,8 @@ var ResponseTypeMap = map[int32]string{
 	6:  "ResponseTypeBLOCKHEADER",
 	7:  "ResponseTypeBLOCKHEADERLIST",
 	8:  "ResponseTypeCONFIG",
-	9:  "ResponseTypeACCOUNT",
-	10: "ResponseTypeAUTHORIZED",
-	11: "ResponseTypeHEIGHT",
-	12: "ResponseTypeABI",
+	9:  "ResponseTypeHEIGHT",
+	10: "ResponseTypeABI",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -530,10 +459,6 @@ type Response struct {
 
 	Config *Config
 
-	Account *Account
-
-	Authorized *Authorized
-
 	Height *BlockHeight
 
 	Abi *Abi
@@ -567,10 +492,6 @@ func (u Response) ArmForSwitch(sw int32) (string, bool) {
 		return "BlockHeaders", true
 	case ResponseTypeCONFIG:
 		return "Config", true
-	case ResponseTypeACCOUNT:
-		return "Account", true
-	case ResponseTypeAUTHORIZED:
-		return "Authorized", true
 	case ResponseTypeHEIGHT:
 		return "Height", true
 	case ResponseTypeABI:
@@ -650,22 +571,6 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 			return
 		}
 		result.Config = &tv
-	case ResponseTypeACCOUNT:
-		tv, ok := value.(Account)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Account = &tv
-	case ResponseTypeAUTHORIZED:
-		tv, ok := value.(Authorized)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Authorized = &tv
 	case ResponseTypeHEIGHT:
 		tv, ok := value.(BlockHeight)
 
@@ -894,58 +799,6 @@ func (u Response) GetConfig() (result *Config, ok bool) {
 	return
 }
 
-// MustAccount retrieves the Account value from the union,
-// panicing if the value is not set.
-func (u Response) MustAccount() *Account {
-
-	val, ok := u.GetAccount()
-	if !ok {
-		panic("arm Account is not set")
-	}
-
-	return val
-}
-
-// GetAccount retrieves the Account value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Response) GetAccount() (result *Account, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Account" {
-		result = u.Account
-		ok = true
-	}
-
-	return
-}
-
-// MustAuthorized retrieves the Authorized value from the union,
-// panicing if the value is not set.
-func (u Response) MustAuthorized() *Authorized {
-
-	val, ok := u.GetAuthorized()
-	if !ok {
-		panic("arm Authorized is not set")
-	}
-
-	return val
-}
-
-// GetAuthorized retrieves the Authorized value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Response) GetAuthorized() (result *Authorized, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Authorized" {
-		result = u.Authorized
-		ok = true
-	}
-
-	return
-}
-
 // MustHeight retrieves the Height value from the union,
 // panicing if the value is not set.
 func (u Response) MustHeight() *BlockHeight {
@@ -1043,10 +896,6 @@ func (u Response) MarshalJSON() ([]byte, error) {
 		temp.Data = u.BlockHeaders
 	case ResponseTypeCONFIG:
 		temp.Data = u.Config
-	case ResponseTypeACCOUNT:
-		temp.Data = u.Account
-	case ResponseTypeAUTHORIZED:
-		temp.Data = u.Authorized
 	case ResponseTypeHEIGHT:
 		temp.Data = u.Height
 	case ResponseTypeABI:
@@ -1142,24 +991,6 @@ func (u *Response) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.Config = &response.Config
-	case ResponseTypeACCOUNT:
-		response := struct {
-			Account Account `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Account = &response.Account
-	case ResponseTypeAUTHORIZED:
-		response := struct {
-			Authorized Authorized `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Authorized = &response.Authorized
 	case ResponseTypeHEIGHT:
 		response := struct {
 			Height BlockHeight `json:"data"`
@@ -1667,7 +1498,6 @@ var (
 // Transaction generated struct
 type Transaction struct {
 	Sender    ID        `json:"sender"`
-	Signer    ID        `json:"signer"`
 	Signature Signature `json:"signature"`
 	Data      *Data     `json:"data"`
 }
@@ -1706,10 +1536,6 @@ const (
 	CategoryTypeCONTRACT CategoryType = 2
 	// CategoryTypeCONFIG enum value 3
 	CategoryTypeCONFIG CategoryType = 3
-	// CategoryTypeACCOUNT enum value 4
-	CategoryTypeACCOUNT CategoryType = 4
-	// CategoryTypeAUTHORIZATION enum value 5
-	CategoryTypeAUTHORIZATION CategoryType = 5
 )
 
 // CategoryTypeMap generated enum map
@@ -1718,8 +1544,6 @@ var CategoryTypeMap = map[int32]string{
 	1: "CategoryTypeCALL",
 	2: "CategoryTypeCONTRACT",
 	3: "CategoryTypeCONFIG",
-	4: "CategoryTypeACCOUNT",
-	5: "CategoryTypeAUTHORIZATION",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -1765,10 +1589,6 @@ type Category struct {
 	Contract *Contract
 
 	Config *Config
-
-	Account *Account
-
-	Authorization *Authorization
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -1789,10 +1609,6 @@ func (u Category) ArmForSwitch(sw int32) (string, bool) {
 		return "Contract", true
 	case CategoryTypeCONFIG:
 		return "Config", true
-	case CategoryTypeACCOUNT:
-		return "Account", true
-	case CategoryTypeAUTHORIZATION:
-		return "Authorization", true
 	}
 	return "-", false
 }
@@ -1826,22 +1642,6 @@ func NewCategory(aType CategoryType, value interface{}) (result Category, err er
 			return
 		}
 		result.Config = &tv
-	case CategoryTypeACCOUNT:
-		tv, ok := value.(Account)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Account = &tv
-	case CategoryTypeAUTHORIZATION:
-		tv, ok := value.(Authorization)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Authorization = &tv
 	}
 	return
 }
@@ -1924,58 +1724,6 @@ func (u Category) GetConfig() (result *Config, ok bool) {
 	return
 }
 
-// MustAccount retrieves the Account value from the union,
-// panicing if the value is not set.
-func (u Category) MustAccount() *Account {
-
-	val, ok := u.GetAccount()
-	if !ok {
-		panic("arm Account is not set")
-	}
-
-	return val
-}
-
-// GetAccount retrieves the Account value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Category) GetAccount() (result *Account, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Account" {
-		result = u.Account
-		ok = true
-	}
-
-	return
-}
-
-// MustAuthorization retrieves the Authorization value from the union,
-// panicing if the value is not set.
-func (u Category) MustAuthorization() *Authorization {
-
-	val, ok := u.GetAuthorization()
-	if !ok {
-		panic("arm Authorization is not set")
-	}
-
-	return val
-}
-
-// GetAuthorization retrieves the Authorization value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Category) GetAuthorization() (result *Authorization, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Authorization" {
-		result = u.Authorization
-		ok = true
-	}
-
-	return
-}
-
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (u Category) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
@@ -2011,10 +1759,6 @@ func (u Category) MarshalJSON() ([]byte, error) {
 		temp.Data = u.Contract
 	case CategoryTypeCONFIG:
 		temp.Data = u.Config
-	case CategoryTypeACCOUNT:
-		temp.Data = u.Account
-	case CategoryTypeAUTHORIZATION:
-		temp.Data = u.Authorization
 	default:
 		return nil, fmt.Errorf("invalid union type")
 	}
@@ -2061,24 +1805,6 @@ func (u *Category) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.Config = &response.Config
-	case CategoryTypeACCOUNT:
-		response := struct {
-			Account Account `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Account = &response.Account
-	case CategoryTypeAUTHORIZATION:
-		response := struct {
-			Authorization Authorization `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Authorization = &response.Authorization
 	default:
 		return fmt.Errorf("invalid union type")
 	}
