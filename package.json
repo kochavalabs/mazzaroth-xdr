@@ -1,10 +1,10 @@
 {
   "name": "mazzaroth-xdr",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Serialization code for mazzaroth.",
   "main": "js-xdr/xdr_generated.js",
   "files": [
-    "js"
+    "js-xdr"
   ],
   "scripts": {
     "get-deps": "git clone  https://github.com/kochavalabs/xdr-codegen.git || true && npm install",
