@@ -1,17 +1,17 @@
 {
   "name": "mazzaroth-xdr",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Serialization code for mazzaroth.",
-  "main": "js/xdr_generated.js",
+  "main": "js-xdr/xdr_generated.js",
   "files": [
-    "js"
+    "js-xdr"
   ],
   "scripts": {
     "get-deps": "git clone  https://github.com/kochavalabs/xdr-codegen.git || true && npm install",
-    "clean": "rm -f ./xdr/xdr_generated.go && rm -rf ./js && mkdir js && cargo clean",
-    "build-go": "cargo run --manifest-path=xdr-codegen/Cargo.toml ./idl/*.x | gofmt > ./xdr/xdr_generated.go",
-    "build-rust": "cargo run --manifest-path=xdr-codegen/Cargo.toml ./idl/*.x --language rust | rustfmt > ./rust/xdr_generated.rs",
-    "build-js": "cargo run --manifest-path=xdr-codegen/Cargo.toml ./idl/*.x --language js > ./js/xdr_generated.js && babel js -d js",
+    "clean": "rm -f ./go-xdr/xdr_generated.go && rm -rf ./js-xdr && mkdir js-xdr && cargo clean",
+    "build-go": "cargo run --manifest-path=xdr-codegen/Cargo.toml ./idl/*.x | gofmt > ./go-xdr/xdr/xdr_generated.go",
+    "build-rust": "cargo run --manifest-path=xdr-codegen/Cargo.toml ./idl/*.x --language rust --macro | rustfmt > ./rust-xdr/xdr_generated.rs",
+    "build-js": "cargo run --manifest-path=xdr-codegen/Cargo.toml ./idl/*.x --language js > ./js-xdr/xdr_generated.js && babel js-xdr -d js-xdr",
     "build": "npm run clean && npm run get-deps && npm run build-js && npm run build-go && npm run build-rust",
     "lint": "./node_modules/.bin/markdownlint README.md",
     "write": "npm run build-js && node ./examples/write_file.js"

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/kochavalabs/mazzaroth-xdr/xdr"
+	"github.com/kochavalabs/mazzaroth-xdr/go-xdr/xdr"
 )
 
 var signature = [64]byte{1, 2, 3}
@@ -15,9 +15,8 @@ var channelID = [32]byte{3, 4, 5}
 func getXdr() xdr.Transaction {
 	return xdr.Transaction{
 		Sender:    address,
-		Signer:    address,
 		Signature: signature,
-		Data: &xdr.Data{
+		Data: xdr.Data{
 			ChannelID: channelID,
 			Nonce:     4,
 			Category: xdr.Category{

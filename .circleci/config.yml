@@ -40,7 +40,7 @@ jobs:
           command: npm install
       - run:
           name: clean
-          command: rm -rf ./js/*
+          command: rm -rf ./js-xdr/*
       - run:
           name: get deps
           command: npm run get-deps

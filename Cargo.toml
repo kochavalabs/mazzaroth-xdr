@@ -1,6 +1,6 @@
 [package]
 name = "mazzaroth-xdr"
-version = "0.7.1"
+version = "0.7.2"
 authors = ["Kochavalabs <dev@mazzaroth.io>"]
 description = "XDR objects used by Mazzaroth"
 license = "MIT"
@@ -21,4 +21,4 @@ xdr-rs-serialize-derive = "0.3.0"
 json = "0.12.0"
 
 [lib]
-path = "rust/xdr_generated.rs"
+path = "rust-xdr/xdr_generated.rs"

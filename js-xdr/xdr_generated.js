@@ -7,8 +7,6 @@ exports.Abi = Abi;
 exports.FunctionSignature = FunctionSignature;
 exports.Parameter = Parameter;
 exports.FunctionType = FunctionType;
-exports.Account = Account;
-exports.Authorized = Authorized;
 exports.RequestType = RequestType;
 exports.ResponseType = ResponseType;
 exports.Request = Request;
@@ -77,29 +75,6 @@ function FunctionType() {
 // End typedef section
 
 // Start struct section
-function Account() {
-    return new _xdrJsSerialize2.default.Struct(["alias"], [new _xdrJsSerialize2.default.Str('', 32)]);
-}
-function Authorized() {
-    return new _xdrJsSerialize2.default.Struct(["accounts"], [new _xdrJsSerialize2.default.VarArray(2147483647, ID)]);
-}
-// End struct section
-
-// Start enum section
-
-// End enum section
-
-// Start union section
-
-// End union section
-
-// End namespace mazzaroth
-// Namespace start mazzaroth
-
-// Start typedef section
-// End typedef section
-
-// Start struct section
 // End struct section
 
 // Start enum section
@@ -120,10 +95,8 @@ function ResponseType() {
         6: "BLOCKHEADER",
         7: "BLOCKHEADERLIST",
         8: "CONFIG",
-        9: "ACCOUNT",
-        10: "AUTHORIZED",
-        11: "HEIGHT",
-        12: "ABI"
+        9: "HEIGHT",
+        10: "ABI"
     });
 }
 
@@ -169,12 +142,6 @@ function Response() {
         },
         "CONFIG": () => {
             return Config();
-        },
-        "ACCOUNT": () => {
-            return Account();
-        },
-        "AUTHORIZED": () => {
-            return Authorized();
         },
         "HEIGHT": () => {
             return BlockHeight();
@@ -296,7 +263,7 @@ function Data() {
     return new _xdrJsSerialize2.default.Struct(["channelID", "nonce", "blockExpirationNumber", "category"], [ID(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Category()]);
 }
 function Transaction() {
-    return new _xdrJsSerialize2.default.Struct(["sender", "signer", "signature", "data"], [ID(), ID(), Signature(), Data()]);
+    return new _xdrJsSerialize2.default.Struct(["sender", "signature", "data"], [ID(), Signature(), Data()]);
 }
 // End struct section
 
@@ -306,9 +273,7 @@ function CategoryType() {
         0: "UNKNOWN",
         1: "CALL",
         2: "CONTRACT",
-        3: "CONFIG",
-        4: "ACCOUNT",
-        5: "AUTHORIZATION"
+        3: "CONFIG"
     });
 }
 
@@ -329,12 +294,6 @@ function Category() {
         },
         "CONFIG": () => {
             return Config();
-        },
-        "ACCOUNT": () => {
-            return Account();
-        },
-        "AUTHORIZATION": () => {
-            return Authorization();
         }
     });
 }

@@ -36,7 +36,7 @@ func Marshal(w io.Writer, v interface{}) (int, error) {
 type Abi struct {
 	Version string `json:"version"`
 
-	Functions []*FunctionSignature `json:"functions"`
+	Functions []FunctionSignature `json:"functions"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -62,9 +62,9 @@ type FunctionSignature struct {
 	FunctionType FunctionType `json:"functionType"`
 	FunctionName string       `json:"functionName"`
 
-	Parameters []*Parameter `json:"parameters"`
+	Parameters []Parameter `json:"parameters"`
 
-	Returns []*Parameter `json:"returns"`
+	Returns []Parameter `json:"returns"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -178,71 +178,6 @@ var (
 
 // Start struct section
 
-// Account generated struct
-type Account struct {
-	Alias string `xdrmaxsize:"32" json:"alias"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Account) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Account) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Account)(nil)
-	_ encoding.BinaryUnmarshaler = (*Account)(nil)
-)
-
-// Authorized generated struct
-type Authorized struct {
-	Accounts []ID `json:"accounts"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Authorized) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Authorized) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Authorized)(nil)
-	_ encoding.BinaryUnmarshaler = (*Authorized)(nil)
-)
-
-// End struct section
-
-// Start enum section
-
-// End enum section
-
-// Start union section
-
-// End union section
-
-// Namespace end mazzaroth
-// Namspace start mazzaroth
-
-// Start typedef section
-
-// End typedef section
-
-// Start struct section
-
 // End struct section
 
 // Start enum section
@@ -316,14 +251,10 @@ const (
 	ResponseTypeBLOCKHEADERLIST ResponseType = 7
 	// ResponseTypeCONFIG enum value 8
 	ResponseTypeCONFIG ResponseType = 8
-	// ResponseTypeACCOUNT enum value 9
-	ResponseTypeACCOUNT ResponseType = 9
-	// ResponseTypeAUTHORIZED enum value 10
-	ResponseTypeAUTHORIZED ResponseType = 10
-	// ResponseTypeHEIGHT enum value 11
-	ResponseTypeHEIGHT ResponseType = 11
-	// ResponseTypeABI enum value 12
-	ResponseTypeABI ResponseType = 12
+	// ResponseTypeHEIGHT enum value 9
+	ResponseTypeHEIGHT ResponseType = 9
+	// ResponseTypeABI enum value 10
+	ResponseTypeABI ResponseType = 10
 )
 
 // ResponseTypeMap generated enum map
@@ -337,10 +268,8 @@ var ResponseTypeMap = map[int32]string{
 	6:  "ResponseTypeBLOCKHEADER",
 	7:  "ResponseTypeBLOCKHEADERLIST",
 	8:  "ResponseTypeCONFIG",
-	9:  "ResponseTypeACCOUNT",
-	10: "ResponseTypeAUTHORIZED",
-	11: "ResponseTypeHEIGHT",
-	12: "ResponseTypeABI",
+	9:  "ResponseTypeHEIGHT",
+	10: "ResponseTypeABI",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -421,7 +350,7 @@ func NewRequest(aType RequestType, value interface{}) (result Request, err error
 
 // MustTransaction retrieves the Transaction value from the union,
 // panicing if the value is not set.
-func (u Request) MustTransaction() *Transaction {
+func (u Request) MustTransaction() Transaction {
 
 	val, ok := u.GetTransaction()
 	if !ok {
@@ -433,12 +362,12 @@ func (u Request) MustTransaction() *Transaction {
 
 // GetTransaction retrieves the Transaction value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Request) GetTransaction() (result *Transaction, ok bool) {
+func (u Request) GetTransaction() (result Transaction, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Transaction" {
-		result = u.Transaction
+		result = *u.Transaction
 		ok = true
 	}
 
@@ -522,17 +451,13 @@ type Response struct {
 
 	Block *Block
 
-	Blocks []*Block
+	Blocks *[]Block
 
 	BlockHeader *BlockHeader
 
-	BlockHeaders []*BlockHeader
+	BlockHeaders *[]BlockHeader
 
 	Config *Config
-
-	Account *Account
-
-	Authorized *Authorized
 
 	Height *BlockHeight
 
@@ -567,10 +492,6 @@ func (u Response) ArmForSwitch(sw int32) (string, bool) {
 		return "BlockHeaders", true
 	case ResponseTypeCONFIG:
 		return "Config", true
-	case ResponseTypeACCOUNT:
-		return "Account", true
-	case ResponseTypeAUTHORIZED:
-		return "Authorized", true
 	case ResponseTypeHEIGHT:
 		return "Height", true
 	case ResponseTypeABI:
@@ -618,13 +539,13 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 		result.Block = &tv
 	case ResponseTypeBLOCKLIST:
 
-		tv, ok := value.([]*Block)
+		tv, ok := value.([]Block)
 
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.Blocks = tv
+		result.Blocks = &tv
 	case ResponseTypeBLOCKHEADER:
 		tv, ok := value.(BlockHeader)
 
@@ -635,13 +556,13 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 		result.BlockHeader = &tv
 	case ResponseTypeBLOCKHEADERLIST:
 
-		tv, ok := value.([]*BlockHeader)
+		tv, ok := value.([]BlockHeader)
 
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.BlockHeaders = tv
+		result.BlockHeaders = &tv
 	case ResponseTypeCONFIG:
 		tv, ok := value.(Config)
 
@@ -650,22 +571,6 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 			return
 		}
 		result.Config = &tv
-	case ResponseTypeACCOUNT:
-		tv, ok := value.(Account)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Account = &tv
-	case ResponseTypeAUTHORIZED:
-		tv, ok := value.(Authorized)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Authorized = &tv
 	case ResponseTypeHEIGHT:
 		tv, ok := value.(BlockHeight)
 
@@ -714,7 +619,7 @@ func (u Response) GetTransactionID() (result ID, ok bool) {
 
 // MustTransaction retrieves the Transaction value from the union,
 // panicing if the value is not set.
-func (u Response) MustTransaction() *Transaction {
+func (u Response) MustTransaction() Transaction {
 
 	val, ok := u.GetTransaction()
 	if !ok {
@@ -726,12 +631,12 @@ func (u Response) MustTransaction() *Transaction {
 
 // GetTransaction retrieves the Transaction value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetTransaction() (result *Transaction, ok bool) {
+func (u Response) GetTransaction() (result Transaction, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Transaction" {
-		result = u.Transaction
+		result = *u.Transaction
 		ok = true
 	}
 
@@ -740,7 +645,7 @@ func (u Response) GetTransaction() (result *Transaction, ok bool) {
 
 // MustReceipt retrieves the Receipt value from the union,
 // panicing if the value is not set.
-func (u Response) MustReceipt() *Receipt {
+func (u Response) MustReceipt() Receipt {
 
 	val, ok := u.GetReceipt()
 	if !ok {
@@ -752,12 +657,12 @@ func (u Response) MustReceipt() *Receipt {
 
 // GetReceipt retrieves the Receipt value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetReceipt() (result *Receipt, ok bool) {
+func (u Response) GetReceipt() (result Receipt, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Receipt" {
-		result = u.Receipt
+		result = *u.Receipt
 		ok = true
 	}
 
@@ -766,7 +671,7 @@ func (u Response) GetReceipt() (result *Receipt, ok bool) {
 
 // MustBlock retrieves the Block value from the union,
 // panicing if the value is not set.
-func (u Response) MustBlock() *Block {
+func (u Response) MustBlock() Block {
 
 	val, ok := u.GetBlock()
 	if !ok {
@@ -778,12 +683,12 @@ func (u Response) MustBlock() *Block {
 
 // GetBlock retrieves the Block value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetBlock() (result *Block, ok bool) {
+func (u Response) GetBlock() (result Block, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Block" {
-		result = u.Block
+		result = *u.Block
 		ok = true
 	}
 
@@ -792,7 +697,7 @@ func (u Response) GetBlock() (result *Block, ok bool) {
 
 // MustBlocks retrieves the Blocks value from the union,
 // panicing if the value is not set.
-func (u Response) MustBlocks() []*Block {
+func (u Response) MustBlocks() []Block {
 
 	val, ok := u.GetBlocks()
 	if !ok {
@@ -804,12 +709,12 @@ func (u Response) MustBlocks() []*Block {
 
 // GetBlocks retrieves the Blocks value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetBlocks() (result []*Block, ok bool) {
+func (u Response) GetBlocks() (result []Block, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Blocks" {
-		result = u.Blocks
+		result = *u.Blocks
 		ok = true
 	}
 
@@ -818,7 +723,7 @@ func (u Response) GetBlocks() (result []*Block, ok bool) {
 
 // MustBlockHeader retrieves the BlockHeader value from the union,
 // panicing if the value is not set.
-func (u Response) MustBlockHeader() *BlockHeader {
+func (u Response) MustBlockHeader() BlockHeader {
 
 	val, ok := u.GetBlockHeader()
 	if !ok {
@@ -830,12 +735,12 @@ func (u Response) MustBlockHeader() *BlockHeader {
 
 // GetBlockHeader retrieves the BlockHeader value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetBlockHeader() (result *BlockHeader, ok bool) {
+func (u Response) GetBlockHeader() (result BlockHeader, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "BlockHeader" {
-		result = u.BlockHeader
+		result = *u.BlockHeader
 		ok = true
 	}
 
@@ -844,7 +749,7 @@ func (u Response) GetBlockHeader() (result *BlockHeader, ok bool) {
 
 // MustBlockHeaders retrieves the BlockHeaders value from the union,
 // panicing if the value is not set.
-func (u Response) MustBlockHeaders() []*BlockHeader {
+func (u Response) MustBlockHeaders() []BlockHeader {
 
 	val, ok := u.GetBlockHeaders()
 	if !ok {
@@ -856,12 +761,12 @@ func (u Response) MustBlockHeaders() []*BlockHeader {
 
 // GetBlockHeaders retrieves the BlockHeaders value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetBlockHeaders() (result []*BlockHeader, ok bool) {
+func (u Response) GetBlockHeaders() (result []BlockHeader, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "BlockHeaders" {
-		result = u.BlockHeaders
+		result = *u.BlockHeaders
 		ok = true
 	}
 
@@ -870,7 +775,7 @@ func (u Response) GetBlockHeaders() (result []*BlockHeader, ok bool) {
 
 // MustConfig retrieves the Config value from the union,
 // panicing if the value is not set.
-func (u Response) MustConfig() *Config {
+func (u Response) MustConfig() Config {
 
 	val, ok := u.GetConfig()
 	if !ok {
@@ -882,64 +787,12 @@ func (u Response) MustConfig() *Config {
 
 // GetConfig retrieves the Config value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetConfig() (result *Config, ok bool) {
+func (u Response) GetConfig() (result Config, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Config" {
-		result = u.Config
-		ok = true
-	}
-
-	return
-}
-
-// MustAccount retrieves the Account value from the union,
-// panicing if the value is not set.
-func (u Response) MustAccount() *Account {
-
-	val, ok := u.GetAccount()
-	if !ok {
-		panic("arm Account is not set")
-	}
-
-	return val
-}
-
-// GetAccount retrieves the Account value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Response) GetAccount() (result *Account, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Account" {
-		result = u.Account
-		ok = true
-	}
-
-	return
-}
-
-// MustAuthorized retrieves the Authorized value from the union,
-// panicing if the value is not set.
-func (u Response) MustAuthorized() *Authorized {
-
-	val, ok := u.GetAuthorized()
-	if !ok {
-		panic("arm Authorized is not set")
-	}
-
-	return val
-}
-
-// GetAuthorized retrieves the Authorized value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Response) GetAuthorized() (result *Authorized, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Authorized" {
-		result = u.Authorized
+		result = *u.Config
 		ok = true
 	}
 
@@ -948,7 +801,7 @@ func (u Response) GetAuthorized() (result *Authorized, ok bool) {
 
 // MustHeight retrieves the Height value from the union,
 // panicing if the value is not set.
-func (u Response) MustHeight() *BlockHeight {
+func (u Response) MustHeight() BlockHeight {
 
 	val, ok := u.GetHeight()
 	if !ok {
@@ -960,12 +813,12 @@ func (u Response) MustHeight() *BlockHeight {
 
 // GetHeight retrieves the Height value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetHeight() (result *BlockHeight, ok bool) {
+func (u Response) GetHeight() (result BlockHeight, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Height" {
-		result = u.Height
+		result = *u.Height
 		ok = true
 	}
 
@@ -974,7 +827,7 @@ func (u Response) GetHeight() (result *BlockHeight, ok bool) {
 
 // MustAbi retrieves the Abi value from the union,
 // panicing if the value is not set.
-func (u Response) MustAbi() *Abi {
+func (u Response) MustAbi() Abi {
 
 	val, ok := u.GetAbi()
 	if !ok {
@@ -986,12 +839,12 @@ func (u Response) MustAbi() *Abi {
 
 // GetAbi retrieves the Abi value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetAbi() (result *Abi, ok bool) {
+func (u Response) GetAbi() (result Abi, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Abi" {
-		result = u.Abi
+		result = *u.Abi
 		ok = true
 	}
 
@@ -1043,10 +896,6 @@ func (u Response) MarshalJSON() ([]byte, error) {
 		temp.Data = u.BlockHeaders
 	case ResponseTypeCONFIG:
 		temp.Data = u.Config
-	case ResponseTypeACCOUNT:
-		temp.Data = u.Account
-	case ResponseTypeAUTHORIZED:
-		temp.Data = u.Authorized
 	case ResponseTypeHEIGHT:
 		temp.Data = u.Height
 	case ResponseTypeABI:
@@ -1108,13 +957,13 @@ func (u *Response) UnmarshalJSON(data []byte) error {
 		u.Block = &response.Block
 	case ResponseTypeBLOCKLIST:
 		response := struct {
-			Blocks []*Block `json:"data"`
+			Blocks []Block `json:"data"`
 		}{}
 		err := json.Unmarshal(data, &response)
 		if err != nil {
 			return err
 		}
-		u.Blocks = response.Blocks
+		u.Blocks = &response.Blocks
 	case ResponseTypeBLOCKHEADER:
 		response := struct {
 			BlockHeader BlockHeader `json:"data"`
@@ -1126,13 +975,13 @@ func (u *Response) UnmarshalJSON(data []byte) error {
 		u.BlockHeader = &response.BlockHeader
 	case ResponseTypeBLOCKHEADERLIST:
 		response := struct {
-			BlockHeaders []*BlockHeader `json:"data"`
+			BlockHeaders []BlockHeader `json:"data"`
 		}{}
 		err := json.Unmarshal(data, &response)
 		if err != nil {
 			return err
 		}
-		u.BlockHeaders = response.BlockHeaders
+		u.BlockHeaders = &response.BlockHeaders
 	case ResponseTypeCONFIG:
 		response := struct {
 			Config Config `json:"data"`
@@ -1142,24 +991,6 @@ func (u *Response) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.Config = &response.Config
-	case ResponseTypeACCOUNT:
-		response := struct {
-			Account Account `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Account = &response.Account
-	case ResponseTypeAUTHORIZED:
-		response := struct {
-			Authorized Authorized `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Authorized = &response.Authorized
 	case ResponseTypeHEIGHT:
 		response := struct {
 			Height BlockHeight `json:"data"`
@@ -1198,9 +1029,9 @@ func (u *Response) UnmarshalJSON(data []byte) error {
 
 // Block generated struct
 type Block struct {
-	Header *BlockHeader `json:"header"`
+	Header BlockHeader `json:"header"`
 
-	Transactions []*Transaction `json:"transactions"`
+	Transactions []Transaction `json:"transactions"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1589,7 +1420,7 @@ var (
 // Contract generated struct
 type Contract struct {
 	ContractBytes []byte `json:"contractBytes"`
-	Abi           *Abi   `json:"abi"`
+	Abi           Abi    `json:"abi"`
 	ContractHash  Hash   `json:"contractHash"`
 	Version       string `xdrmaxsize:"100" json:"version"`
 }
@@ -1667,9 +1498,8 @@ var (
 // Transaction generated struct
 type Transaction struct {
 	Sender    ID        `json:"sender"`
-	Signer    ID        `json:"signer"`
 	Signature Signature `json:"signature"`
-	Data      *Data     `json:"data"`
+	Data      Data      `json:"data"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1706,10 +1536,6 @@ const (
 	CategoryTypeCONTRACT CategoryType = 2
 	// CategoryTypeCONFIG enum value 3
 	CategoryTypeCONFIG CategoryType = 3
-	// CategoryTypeACCOUNT enum value 4
-	CategoryTypeACCOUNT CategoryType = 4
-	// CategoryTypeAUTHORIZATION enum value 5
-	CategoryTypeAUTHORIZATION CategoryType = 5
 )
 
 // CategoryTypeMap generated enum map
@@ -1718,8 +1544,6 @@ var CategoryTypeMap = map[int32]string{
 	1: "CategoryTypeCALL",
 	2: "CategoryTypeCONTRACT",
 	3: "CategoryTypeCONFIG",
-	4: "CategoryTypeACCOUNT",
-	5: "CategoryTypeAUTHORIZATION",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -1765,10 +1589,6 @@ type Category struct {
 	Contract *Contract
 
 	Config *Config
-
-	Account *Account
-
-	Authorization *Authorization
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -1789,10 +1609,6 @@ func (u Category) ArmForSwitch(sw int32) (string, bool) {
 		return "Contract", true
 	case CategoryTypeCONFIG:
 		return "Config", true
-	case CategoryTypeACCOUNT:
-		return "Account", true
-	case CategoryTypeAUTHORIZATION:
-		return "Authorization", true
 	}
 	return "-", false
 }
@@ -1826,29 +1642,13 @@ func NewCategory(aType CategoryType, value interface{}) (result Category, err er
 			return
 		}
 		result.Config = &tv
-	case CategoryTypeACCOUNT:
-		tv, ok := value.(Account)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Account = &tv
-	case CategoryTypeAUTHORIZATION:
-		tv, ok := value.(Authorization)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Authorization = &tv
 	}
 	return
 }
 
 // MustCall retrieves the Call value from the union,
 // panicing if the value is not set.
-func (u Category) MustCall() *Call {
+func (u Category) MustCall() Call {
 
 	val, ok := u.GetCall()
 	if !ok {
@@ -1860,12 +1660,12 @@ func (u Category) MustCall() *Call {
 
 // GetCall retrieves the Call value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Category) GetCall() (result *Call, ok bool) {
+func (u Category) GetCall() (result Call, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Call" {
-		result = u.Call
+		result = *u.Call
 		ok = true
 	}
 
@@ -1874,7 +1674,7 @@ func (u Category) GetCall() (result *Call, ok bool) {
 
 // MustContract retrieves the Contract value from the union,
 // panicing if the value is not set.
-func (u Category) MustContract() *Contract {
+func (u Category) MustContract() Contract {
 
 	val, ok := u.GetContract()
 	if !ok {
@@ -1886,12 +1686,12 @@ func (u Category) MustContract() *Contract {
 
 // GetContract retrieves the Contract value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Category) GetContract() (result *Contract, ok bool) {
+func (u Category) GetContract() (result Contract, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Contract" {
-		result = u.Contract
+		result = *u.Contract
 		ok = true
 	}
 
@@ -1900,7 +1700,7 @@ func (u Category) GetContract() (result *Contract, ok bool) {
 
 // MustConfig retrieves the Config value from the union,
 // panicing if the value is not set.
-func (u Category) MustConfig() *Config {
+func (u Category) MustConfig() Config {
 
 	val, ok := u.GetConfig()
 	if !ok {
@@ -1912,64 +1712,12 @@ func (u Category) MustConfig() *Config {
 
 // GetConfig retrieves the Config value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Category) GetConfig() (result *Config, ok bool) {
+func (u Category) GetConfig() (result Config, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
 	if armName == "Config" {
-		result = u.Config
-		ok = true
-	}
-
-	return
-}
-
-// MustAccount retrieves the Account value from the union,
-// panicing if the value is not set.
-func (u Category) MustAccount() *Account {
-
-	val, ok := u.GetAccount()
-	if !ok {
-		panic("arm Account is not set")
-	}
-
-	return val
-}
-
-// GetAccount retrieves the Account value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Category) GetAccount() (result *Account, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Account" {
-		result = u.Account
-		ok = true
-	}
-
-	return
-}
-
-// MustAuthorization retrieves the Authorization value from the union,
-// panicing if the value is not set.
-func (u Category) MustAuthorization() *Authorization {
-
-	val, ok := u.GetAuthorization()
-	if !ok {
-		panic("arm Authorization is not set")
-	}
-
-	return val
-}
-
-// GetAuthorization retrieves the Authorization value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Category) GetAuthorization() (result *Authorization, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Authorization" {
-		result = u.Authorization
+		result = *u.Config
 		ok = true
 	}
 
@@ -2011,10 +1759,6 @@ func (u Category) MarshalJSON() ([]byte, error) {
 		temp.Data = u.Contract
 	case CategoryTypeCONFIG:
 		temp.Data = u.Config
-	case CategoryTypeACCOUNT:
-		temp.Data = u.Account
-	case CategoryTypeAUTHORIZATION:
-		temp.Data = u.Authorization
 	default:
 		return nil, fmt.Errorf("invalid union type")
 	}
@@ -2061,24 +1805,6 @@ func (u *Category) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.Config = &response.Config
-	case CategoryTypeACCOUNT:
-		response := struct {
-			Account Account `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Account = &response.Account
-	case CategoryTypeAUTHORIZATION:
-		response := struct {
-			Authorization Authorization `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Authorization = &response.Authorization
 	default:
 		return fmt.Errorf("invalid union type")
 	}
