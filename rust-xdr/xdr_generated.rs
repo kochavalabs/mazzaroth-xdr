@@ -102,7 +102,7 @@ pub enum ResponseType {
     BLOCKLIST = 5,
     BLOCKHEADER = 6,
     BLOCKHEADERLIST = 7,
-    CONFIG = 8,
+    CONTRACT = 8,
     HEIGHT = 9,
     ABI = 10,
 }
@@ -144,7 +144,7 @@ pub enum Response {
     #[array(var = 2147483647)]
     BLOCKHEADERLIST(Vec<BlockHeader>),
 
-    CONFIG(Config),
+    CONTRACT(Contract),
 
     HEIGHT(BlockHeight),
 
@@ -291,20 +291,14 @@ pub struct Call {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Config {
-    pub owner: ID,
-    #[array(var = 32)]
-    pub admins: Vec<ID>,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Contract {
-    #[array(var = 2147483647)]
-    pub contractBytes: Vec<u8>,
-    pub abi: Abi,
-    pub contractHash: Hash,
     #[array(var = 100)]
     pub version: String,
+    pub owner: ID,
+    pub abi: Abi,
+    pub contractHash: Hash,
+    #[array(var = 2147483647)]
+    pub contractBytes: Vec<u8>,
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
@@ -334,7 +328,6 @@ pub enum CategoryType {
     UNKNOWN = 0,
     CALL = 1,
     CONTRACT = 2,
-    CONFIG = 3,
 }
 
 impl Default for CategoryType {
@@ -350,8 +343,6 @@ pub enum Category {
     CALL(Call),
 
     CONTRACT(Contract),
-
-    CONFIG(Config),
 }
 
 impl Default for Category {

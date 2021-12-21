@@ -33,7 +33,7 @@ namespace mazzaroth
 
     BLOCKHEADERLIST = 7,
 
-    CONFIG = 8,
+    CONTRACT = 8,
 
     HEIGHT = 9,
 
@@ -59,8 +59,8 @@ namespace mazzaroth
       BlockHeader blockHeader;
     case BLOCKHEADERLIST:
       BlockHeader blockHeaders<>;
-    case CONFIG:
-      Config config;
+    case CONTRACT:
+      Contract Contract;
     case HEIGHT:
       BlockHeight height;
     case ABI:

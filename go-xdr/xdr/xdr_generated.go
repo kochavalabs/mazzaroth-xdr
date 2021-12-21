@@ -249,8 +249,8 @@ const (
 	ResponseTypeBLOCKHEADER ResponseType = 6
 	// ResponseTypeBLOCKHEADERLIST enum value 7
 	ResponseTypeBLOCKHEADERLIST ResponseType = 7
-	// ResponseTypeCONFIG enum value 8
-	ResponseTypeCONFIG ResponseType = 8
+	// ResponseTypeCONTRACT enum value 8
+	ResponseTypeCONTRACT ResponseType = 8
 	// ResponseTypeHEIGHT enum value 9
 	ResponseTypeHEIGHT ResponseType = 9
 	// ResponseTypeABI enum value 10
@@ -267,7 +267,7 @@ var ResponseTypeMap = map[int32]string{
 	5:  "ResponseTypeBLOCKLIST",
 	6:  "ResponseTypeBLOCKHEADER",
 	7:  "ResponseTypeBLOCKHEADERLIST",
-	8:  "ResponseTypeCONFIG",
+	8:  "ResponseTypeCONTRACT",
 	9:  "ResponseTypeHEIGHT",
 	10: "ResponseTypeABI",
 }
@@ -457,7 +457,7 @@ type Response struct {
 
 	BlockHeaders *[]BlockHeader
 
-	Config *Config
+	Contract *Contract
 
 	Height *BlockHeight
 
@@ -490,8 +490,8 @@ func (u Response) ArmForSwitch(sw int32) (string, bool) {
 		return "BlockHeader", true
 	case ResponseTypeBLOCKHEADERLIST:
 		return "BlockHeaders", true
-	case ResponseTypeCONFIG:
-		return "Config", true
+	case ResponseTypeCONTRACT:
+		return "Contract", true
 	case ResponseTypeHEIGHT:
 		return "Height", true
 	case ResponseTypeABI:
@@ -563,14 +563,14 @@ func NewResponse(aType ResponseType, value interface{}) (result Response, err er
 			return
 		}
 		result.BlockHeaders = &tv
-	case ResponseTypeCONFIG:
-		tv, ok := value.(Config)
+	case ResponseTypeCONTRACT:
+		tv, ok := value.(Contract)
 
 		if !ok {
 			err = fmt.Errorf("invalid value, must be [object]")
 			return
 		}
-		result.Config = &tv
+		result.Contract = &tv
 	case ResponseTypeHEIGHT:
 		tv, ok := value.(BlockHeight)
 
@@ -773,26 +773,26 @@ func (u Response) GetBlockHeaders() (result []BlockHeader, ok bool) {
 	return
 }
 
-// MustConfig retrieves the Config value from the union,
+// MustContract retrieves the Contract value from the union,
 // panicing if the value is not set.
-func (u Response) MustConfig() Config {
+func (u Response) MustContract() Contract {
 
-	val, ok := u.GetConfig()
+	val, ok := u.GetContract()
 	if !ok {
-		panic("arm Config is not set")
+		panic("arm Contract is not set")
 	}
 
 	return val
 }
 
-// GetConfig retrieves the Config value from the union,
+// GetContract retrieves the Contract value from the union,
 // returning ok if the union's switch indicated the value is valid.
-func (u Response) GetConfig() (result Config, ok bool) {
+func (u Response) GetContract() (result Contract, ok bool) {
 
 	armName, _ := u.ArmForSwitch(int32(u.Type))
 
-	if armName == "Config" {
-		result = *u.Config
+	if armName == "Contract" {
+		result = *u.Contract
 		ok = true
 	}
 
@@ -894,8 +894,8 @@ func (u Response) MarshalJSON() ([]byte, error) {
 		temp.Data = u.BlockHeader
 	case ResponseTypeBLOCKHEADERLIST:
 		temp.Data = u.BlockHeaders
-	case ResponseTypeCONFIG:
-		temp.Data = u.Config
+	case ResponseTypeCONTRACT:
+		temp.Data = u.Contract
 	case ResponseTypeHEIGHT:
 		temp.Data = u.Height
 	case ResponseTypeABI:
@@ -982,15 +982,15 @@ func (u *Response) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.BlockHeaders = &response.BlockHeaders
-	case ResponseTypeCONFIG:
+	case ResponseTypeCONTRACT:
 		response := struct {
-			Config Config `json:"data"`
+			Contract Contract `json:"data"`
 		}{}
 		err := json.Unmarshal(data, &response)
 		if err != nil {
 			return err
 		}
-		u.Config = &response.Config
+		u.Contract = &response.Contract
 	case ResponseTypeHEIGHT:
 		response := struct {
 			Height BlockHeight `json:"data"`
@@ -1392,37 +1392,14 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Call)(nil)
 )
 
-// Config generated struct
-type Config struct {
-	Owner ID `json:"owner"`
-
-	Admins []ID `xdrmaxsize:"32" json:"admins"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Config) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Config) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Config)(nil)
-	_ encoding.BinaryUnmarshaler = (*Config)(nil)
-)
-
 // Contract generated struct
 type Contract struct {
+	Version      string `xdrmaxsize:"100" json:"version"`
+	Owner        ID     `json:"owner"`
+	Abi          Abi    `json:"abi"`
+	ContractHash Hash   `json:"contractHash"`
+
 	ContractBytes []byte `json:"contractBytes"`
-	Abi           Abi    `json:"abi"`
-	ContractHash  Hash   `json:"contractHash"`
-	Version       string `xdrmaxsize:"100" json:"version"`
 }
 
 // MarshalBinary implements encoding.BinaryMarshaler.
@@ -1534,8 +1511,6 @@ const (
 	CategoryTypeCALL CategoryType = 1
 	// CategoryTypeCONTRACT enum value 2
 	CategoryTypeCONTRACT CategoryType = 2
-	// CategoryTypeCONFIG enum value 3
-	CategoryTypeCONFIG CategoryType = 3
 )
 
 // CategoryTypeMap generated enum map
@@ -1543,7 +1518,6 @@ var CategoryTypeMap = map[int32]string{
 	0: "CategoryTypeUNKNOWN",
 	1: "CategoryTypeCALL",
 	2: "CategoryTypeCONTRACT",
-	3: "CategoryTypeCONFIG",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -1587,8 +1561,6 @@ type Category struct {
 	Call *Call
 
 	Contract *Contract
-
-	Config *Config
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -1607,8 +1579,6 @@ func (u Category) ArmForSwitch(sw int32) (string, bool) {
 		return "Call", true
 	case CategoryTypeCONTRACT:
 		return "Contract", true
-	case CategoryTypeCONFIG:
-		return "Config", true
 	}
 	return "-", false
 }
@@ -1634,14 +1604,6 @@ func NewCategory(aType CategoryType, value interface{}) (result Category, err er
 			return
 		}
 		result.Contract = &tv
-	case CategoryTypeCONFIG:
-		tv, ok := value.(Config)
-
-		if !ok {
-			err = fmt.Errorf("invalid value, must be [object]")
-			return
-		}
-		result.Config = &tv
 	}
 	return
 }
@@ -1698,32 +1660,6 @@ func (u Category) GetContract() (result Contract, ok bool) {
 	return
 }
 
-// MustConfig retrieves the Config value from the union,
-// panicing if the value is not set.
-func (u Category) MustConfig() Config {
-
-	val, ok := u.GetConfig()
-	if !ok {
-		panic("arm Config is not set")
-	}
-
-	return val
-}
-
-// GetConfig retrieves the Config value from the union,
-// returning ok if the union's switch indicated the value is valid.
-func (u Category) GetConfig() (result Config, ok bool) {
-
-	armName, _ := u.ArmForSwitch(int32(u.Type))
-
-	if armName == "Config" {
-		result = *u.Config
-		ok = true
-	}
-
-	return
-}
-
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (u Category) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
@@ -1757,8 +1693,6 @@ func (u Category) MarshalJSON() ([]byte, error) {
 		temp.Data = u.Call
 	case CategoryTypeCONTRACT:
 		temp.Data = u.Contract
-	case CategoryTypeCONFIG:
-		temp.Data = u.Config
 	default:
 		return nil, fmt.Errorf("invalid union type")
 	}
@@ -1796,15 +1730,6 @@ func (u *Category) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.Contract = &response.Contract
-	case CategoryTypeCONFIG:
-		response := struct {
-			Config Config `json:"data"`
-		}{}
-		err := json.Unmarshal(data, &response)
-		if err != nil {
-			return err
-		}
-		u.Config = &response.Config
 	default:
 		return fmt.Errorf("invalid union type")
 	}

@@ -22,7 +22,6 @@ exports.StatusInfo = StatusInfo;
 exports.Status = Status;
 exports.Receipt = Receipt;
 exports.Call = Call;
-exports.Config = Config;
 exports.Contract = Contract;
 exports.Authorization = Authorization;
 exports.Data = Data;
@@ -94,7 +93,7 @@ function ResponseType() {
         5: "BLOCKLIST",
         6: "BLOCKHEADER",
         7: "BLOCKHEADERLIST",
-        8: "CONFIG",
+        8: "CONTRACT",
         9: "HEIGHT",
         10: "ABI"
     });
@@ -140,8 +139,8 @@ function Response() {
         "BLOCKHEADERLIST": () => {
             return new _xdrJsSerialize2.default.VarArray(2147483647, BlockHeader);
         },
-        "CONFIG": () => {
-            return Config();
+        "CONTRACT": () => {
+            return Contract();
         },
         "HEIGHT": () => {
             return BlockHeight();
@@ -250,11 +249,8 @@ function Receipt() {
 function Call() {
     return new _xdrJsSerialize2.default.Struct(["function", "arguments"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Argument)]);
 }
-function Config() {
-    return new _xdrJsSerialize2.default.Struct(["owner", "admins"], [ID(), new _xdrJsSerialize2.default.VarArray(32, ID)]);
-}
 function Contract() {
-    return new _xdrJsSerialize2.default.Struct(["contractBytes", "abi", "contractHash", "version"], [new _xdrJsSerialize2.default.VarOpaque(2147483647), Abi(), Hash(), new _xdrJsSerialize2.default.Str('', 100)]);
+    return new _xdrJsSerialize2.default.Struct(["version", "owner", "abi", "contractHash", "contractBytes"], [new _xdrJsSerialize2.default.Str('', 100), ID(), Abi(), Hash(), new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
 }
 function Authorization() {
     return new _xdrJsSerialize2.default.Struct(["account", "authorize"], [ID(), new _xdrJsSerialize2.default.Bool()]);
@@ -272,8 +268,7 @@ function CategoryType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "CALL",
-        2: "CONTRACT",
-        3: "CONFIG"
+        2: "CONTRACT"
     });
 }
 
@@ -291,9 +286,6 @@ function Category() {
         },
         "CONTRACT": () => {
             return Contract();
-        },
-        "CONFIG": () => {
-            return Config();
         }
     });
 }
