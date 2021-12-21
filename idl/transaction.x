@@ -12,30 +12,23 @@ namespace mazzaroth
     Argument arguments<>;
   };
 
-  // Config stores contract channel configuration in state and is 
-  // accessible through host contract host functions
-  struct Config
-  {
-    // Public Key ID of the channel owner. Only owner can change this to transfer ownership of channel
-    ID owner;
-    // Public Keys of IDs approved by owner able to modify channel
-    ID admins<32>;
-  };
-
   // An update transaction that provides a contract as a wasm binary.
   struct Contract
   {
-    // Contract binary bytes.
-    opaque contractBytes<>;
+    // Version number of the contract, specified by owner
+    string version<100>;
 
+     // Public Key ID of the channel owner. Only owner can change this to transfer ownership of channel
+    ID owner;
+   
     // Contract ABI
     Abi abi;
 
     // Sha3 256 Hash of the contract bytes, verified on execution
     Hash contractHash;
 
-    // Version number of the contract, specified by owner
-    string version<100>;
+    // Contract binary bytes.
+    opaque contractBytes<>;
   }
 
   struct Authorization
@@ -50,7 +43,6 @@ namespace mazzaroth
     UNKNOWN = 0,
     CALL = 1,
     CONTRACT = 2,
-    CONFIG = 3
   };
 
   union Category switch (CategoryType Type)
@@ -61,8 +53,6 @@ namespace mazzaroth
       Call call;
     case CONTRACT:
       Contract contract;
-    case CONFIG:
-      Config config;
   };
 
   // The data of a transaction
