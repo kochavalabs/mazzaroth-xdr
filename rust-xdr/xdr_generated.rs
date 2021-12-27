@@ -302,12 +302,6 @@ pub struct Contract {
 }
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Authorization {
-    pub account: ID,
-    pub authorize: bool,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Data {
     pub channelID: ID,
     pub nonce: u64,

@@ -23,7 +23,6 @@ exports.Status = Status;
 exports.Receipt = Receipt;
 exports.Call = Call;
 exports.Contract = Contract;
-exports.Authorization = Authorization;
 exports.Data = Data;
 exports.Transaction = Transaction;
 exports.CategoryType = CategoryType;
@@ -251,9 +250,6 @@ function Call() {
 }
 function Contract() {
     return new _xdrJsSerialize2.default.Struct(["version", "owner", "abi", "contractHash", "contractBytes"], [new _xdrJsSerialize2.default.Str('', 100), ID(), Abi(), Hash(), new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
-}
-function Authorization() {
-    return new _xdrJsSerialize2.default.Struct(["account", "authorize"], [ID(), new _xdrJsSerialize2.default.Bool()]);
 }
 function Data() {
     return new _xdrJsSerialize2.default.Struct(["channelID", "nonce", "blockExpirationNumber", "category"], [ID(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Category()]);
