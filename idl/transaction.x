@@ -42,7 +42,9 @@ namespace mazzaroth
   {
     UNKNOWN = 0,
     CALL = 1,
-    CONTRACT = 2,
+    DEPLOY = 2,
+    PAUSE = 3,
+    DELETE = 4
   };
 
   union Category switch (CategoryType Type)
@@ -51,8 +53,12 @@ namespace mazzaroth
       void;
     case CALL:
       Call call;
-    case CONTRACT:
+    case DEPLOY:
       Contract contract;
+    case PAUSE:
+      boolean pause;
+    case DELETE:
+      void;
   };
 
   // The data of a transaction

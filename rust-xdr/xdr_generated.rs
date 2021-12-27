@@ -327,7 +327,9 @@ pub struct Transaction {
 pub enum CategoryType {
     UNKNOWN = 0,
     CALL = 1,
-    CONTRACT = 2,
+    DEPLOY = 2,
+    PAUSE = 3,
+    DELETE = 4,
 }
 
 impl Default for CategoryType {
@@ -342,7 +344,11 @@ pub enum Category {
     UNKNOWN(()),
     CALL(Call),
 
-    CONTRACT(Contract),
+    DEPLOY(Contract),
+
+    PAUSE(bool),
+
+    DELETE(()),
 }
 
 impl Default for Category {
