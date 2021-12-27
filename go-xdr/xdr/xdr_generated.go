@@ -1509,15 +1509,21 @@ const (
 	CategoryTypeUNKNOWN CategoryType = 0
 	// CategoryTypeCALL enum value 1
 	CategoryTypeCALL CategoryType = 1
-	// CategoryTypeCONTRACT enum value 2
-	CategoryTypeCONTRACT CategoryType = 2
+	// CategoryTypeDEPLOY enum value 2
+	CategoryTypeDEPLOY CategoryType = 2
+	// CategoryTypePAUSE enum value 3
+	CategoryTypePAUSE CategoryType = 3
+	// CategoryTypeDELETE enum value 4
+	CategoryTypeDELETE CategoryType = 4
 )
 
 // CategoryTypeMap generated enum map
 var CategoryTypeMap = map[int32]string{
 	0: "CategoryTypeUNKNOWN",
 	1: "CategoryTypeCALL",
-	2: "CategoryTypeCONTRACT",
+	2: "CategoryTypeDEPLOY",
+	3: "CategoryTypePAUSE",
+	4: "CategoryTypeDELETE",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -1561,6 +1567,8 @@ type Category struct {
 	Call *Call
 
 	Contract *Contract
+
+	Pause *bool
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -1577,8 +1585,12 @@ func (u Category) ArmForSwitch(sw int32) (string, bool) {
 		return "", true
 	case CategoryTypeCALL:
 		return "Call", true
-	case CategoryTypeCONTRACT:
+	case CategoryTypeDEPLOY:
 		return "Contract", true
+	case CategoryTypePAUSE:
+		return "Pause", true
+	case CategoryTypeDELETE:
+		return "", true
 	}
 	return "-", false
 }
@@ -1596,7 +1608,7 @@ func NewCategory(aType CategoryType, value interface{}) (result Category, err er
 			return
 		}
 		result.Call = &tv
-	case CategoryTypeCONTRACT:
+	case CategoryTypeDEPLOY:
 		tv, ok := value.(Contract)
 
 		if !ok {
@@ -1604,6 +1616,15 @@ func NewCategory(aType CategoryType, value interface{}) (result Category, err er
 			return
 		}
 		result.Contract = &tv
+	case CategoryTypePAUSE:
+		tv, ok := value.(bool)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Pause = &tv
+	case CategoryTypeDELETE:
 	}
 	return
 }
@@ -1660,6 +1681,32 @@ func (u Category) GetContract() (result Contract, ok bool) {
 	return
 }
 
+// MustPause retrieves the Pause value from the union,
+// panicing if the value is not set.
+func (u Category) MustPause() bool {
+
+	val, ok := u.GetPause()
+	if !ok {
+		panic("arm Pause is not set")
+	}
+
+	return val
+}
+
+// GetPause retrieves the Pause value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Category) GetPause() (result bool, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Pause" {
+		result = *u.Pause
+		ok = true
+	}
+
+	return
+}
+
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (u Category) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
@@ -1691,8 +1738,11 @@ func (u Category) MarshalJSON() ([]byte, error) {
 	case CategoryTypeUNKNOWN:
 	case CategoryTypeCALL:
 		temp.Data = u.Call
-	case CategoryTypeCONTRACT:
+	case CategoryTypeDEPLOY:
 		temp.Data = u.Contract
+	case CategoryTypePAUSE:
+		temp.Data = u.Pause
+	case CategoryTypeDELETE:
 	default:
 		return nil, fmt.Errorf("invalid union type")
 	}
@@ -1721,7 +1771,7 @@ func (u *Category) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.Call = &response.Call
-	case CategoryTypeCONTRACT:
+	case CategoryTypeDEPLOY:
 		response := struct {
 			Contract Contract `json:"data"`
 		}{}
@@ -1730,6 +1780,16 @@ func (u *Category) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		u.Contract = &response.Contract
+	case CategoryTypePAUSE:
+		response := struct {
+			Pause bool `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Pause = &response.Pause
+	case CategoryTypeDELETE:
 	default:
 		return fmt.Errorf("invalid union type")
 	}

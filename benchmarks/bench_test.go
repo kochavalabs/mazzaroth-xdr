@@ -20,7 +20,7 @@ func getXdr() xdr.Transaction {
 			ChannelID: channelID,
 			Nonce:     4,
 			Category: xdr.Category{
-				Type: xdr.CategoryTypeCONTRACT,
+				Type: xdr.CategoryTypeDEPLOY,
 				Contract: &xdr.Contract{
 					ContractBytes: contract,
 				},

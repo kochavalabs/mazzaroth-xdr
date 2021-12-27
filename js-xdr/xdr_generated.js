@@ -268,7 +268,9 @@ function CategoryType() {
     return new _xdrJsSerialize2.default.Enum({
         0: "UNKNOWN",
         1: "CALL",
-        2: "CONTRACT"
+        2: "DEPLOY",
+        3: "PAUSE",
+        4: "DELETE"
     });
 }
 
@@ -284,8 +286,14 @@ function Category() {
         "CALL": () => {
             return Call();
         },
-        "CONTRACT": () => {
+        "DEPLOY": () => {
             return Contract();
+        },
+        "PAUSE": () => {
+            return new _xdrJsSerialize2.default.Bool();
+        },
+        "DELETE": () => {
+            return new _xdrJsSerialize2.default.Void();
         }
     });
 }
