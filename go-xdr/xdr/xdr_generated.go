@@ -1420,30 +1420,6 @@ var (
 	_ encoding.BinaryUnmarshaler = (*Contract)(nil)
 )
 
-// Authorization generated struct
-type Authorization struct {
-	Account   ID   `json:"account"`
-	Authorize bool `json:"authorize"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Authorization) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Authorization) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Authorization)(nil)
-	_ encoding.BinaryUnmarshaler = (*Authorization)(nil)
-)
-
 // Data generated struct
 type Data struct {
 	ChannelID ID `json:"channelID"`

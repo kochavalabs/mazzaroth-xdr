@@ -31,13 +31,6 @@ namespace mazzaroth
     opaque contractBytes<>;
   }
 
-  struct Authorization
-  {
-    ID account;
-
-    boolean authorize;
-  };
-
   enum CategoryType
   {
     UNKNOWN = 0,
