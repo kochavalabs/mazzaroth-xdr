@@ -14,15 +14,18 @@ exports.Response = Response;
 exports.Block = Block;
 exports.BlockHeader = BlockHeader;
 exports.BlockHeight = BlockHeight;
+exports.Call = Call;
+exports.Channel = Channel;
+exports.ConfigType = ConfigType;
+exports.Config = Config;
 exports.Signature = Signature;
 exports.ID = ID;
 exports.Hash = Hash;
 exports.Argument = Argument;
 exports.StatusInfo = StatusInfo;
 exports.Status = Status;
-exports.Receipt = Receipt;
-exports.Call = Call;
 exports.Contract = Contract;
+exports.Receipt = Receipt;
 exports.Data = Data;
 exports.Transaction = Transaction;
 exports.CategoryType = CategoryType;
@@ -181,6 +184,62 @@ function BlockHeight() {
 // Namespace start mazzaroth
 
 // Start typedef section
+// End typedef section
+
+// Start struct section
+function Call() {
+    return new _xdrJsSerialize2.default.Struct(["function", "arguments"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Argument)]);
+}
+// End struct section
+
+// Start enum section
+
+// End enum section
+
+// Start union section
+
+// End union section
+
+// End namespace mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
+function Channel() {
+    return new _xdrJsSerialize2.default.Struct(["channelID", "name", "configuration"], [ID(), new _xdrJsSerialize2.default.Str('', 32), new _xdrJsSerialize2.default.VarArray(2147483647, Config)]);
+}
+// End struct section
+
+// Start enum section
+function ConfigType() {
+    return new _xdrJsSerialize2.default.Enum({
+        0: "UNKNOWN",
+        1: "ADMIN"
+    });
+}
+
+// End enum section
+
+// Start union section
+
+function Config() {
+    return new _xdrJsSerialize2.default.Union(ConfigType(), {
+        "UNKNOWN": () => {
+            return new _xdrJsSerialize2.default.Void();
+        },
+        "ADMIN": () => {
+            return new _xdrJsSerialize2.default.VarArray(8, ID);
+        }
+    });
+}
+// End union section
+
+// End namespace mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
 function Signature() {
     return new _xdrJsSerialize2.default.FixedOpaque(64);
 }
@@ -225,6 +284,26 @@ function Status() {
 // End typedef section
 
 // Start struct section
+function Contract() {
+    return new _xdrJsSerialize2.default.Struct(["version", "abi", "contractHash", "contractBytes"], [new _xdrJsSerialize2.default.Str('', 100), Abi(), Hash(), new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
+}
+// End struct section
+
+// Start enum section
+
+// End enum section
+
+// Start union section
+
+// End union section
+
+// End namespace mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+// End typedef section
+
+// Start struct section
 function Receipt() {
     return new _xdrJsSerialize2.default.Struct(["transactionID", "status", "stateRoot", "result", "statusInfo"], [ID(), Status(), Hash(), new _xdrJsSerialize2.default.Str('', 2147483647), StatusInfo()]);
 }
@@ -245,12 +324,6 @@ function Receipt() {
 // End typedef section
 
 // Start struct section
-function Call() {
-    return new _xdrJsSerialize2.default.Struct(["function", "arguments"], [new _xdrJsSerialize2.default.Str('', 256), new _xdrJsSerialize2.default.VarArray(2147483647, Argument)]);
-}
-function Contract() {
-    return new _xdrJsSerialize2.default.Struct(["version", "owner", "abi", "contractHash", "contractBytes"], [new _xdrJsSerialize2.default.Str('', 100), ID(), Abi(), Hash(), new _xdrJsSerialize2.default.VarOpaque(2147483647)]);
-}
 function Data() {
     return new _xdrJsSerialize2.default.Struct(["channelID", "nonce", "blockExpirationNumber", "category"], [ID(), new _xdrJsSerialize2.default.UHyper(), new _xdrJsSerialize2.default.UHyper(), Category()]);
 }
@@ -266,7 +339,8 @@ function CategoryType() {
         1: "CALL",
         2: "DEPLOY",
         3: "PAUSE",
-        4: "DELETE"
+        4: "DELETE",
+        5: "CHANNEL"
     });
 }
 
@@ -290,6 +364,9 @@ function Category() {
         },
         "DELETE": () => {
             return new _xdrJsSerialize2.default.Void();
+        },
+        "CHANNEL": () => {
+            return Channel();
         }
     });
 }
