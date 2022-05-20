@@ -1,6 +1,6 @@
 {
   "name": "mazzaroth-xdr",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Serialization code for mazzaroth.",
   "main": "js-xdr/xdr_generated.js",
   "files": [
