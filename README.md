@@ -40,7 +40,3 @@ Then run the npm build script to generate the code for all languages:
 npm install
 npm run build
 ```
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
