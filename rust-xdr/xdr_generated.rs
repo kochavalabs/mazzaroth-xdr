@@ -201,6 +201,75 @@ pub struct BlockHeight {
 
 // Start typedef section
 
+// End typedef section
+
+// Start struct section
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Call {
+    #[array(var = 256)]
+    pub function: String,
+    #[array(var = 2147483647)]
+    pub arguments: Vec<Argument>,
+}
+// End struct section
+
+// Start union section
+
+// End union section
+
+// Namespace end mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Channel {
+    pub channelID: ID,
+    #[array(var = 32)]
+    pub name: String,
+    #[array(var = 2147483647)]
+    pub configuration: Vec<Config>,
+}
+// End struct section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum ConfigType {
+    UNKNOWN = 0,
+    ADMIN = 1,
+}
+
+impl Default for ConfigType {
+    fn default() -> Self {
+        ConfigType::UNKNOWN
+    }
+}
+// Start union section
+
+#[derive(PartialEq, Clone, Debug, XDROut, XDRIn)]
+pub enum Config {
+    UNKNOWN(()),
+
+    #[array(var = 8)]
+    ADMIN(Vec<ID>),
+}
+
+impl Default for Config {
+    fn default() -> Self {
+        Config::UNKNOWN(())
+    }
+}
+// End union section
+
+// Namespace end mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Signature {
     #[array(fixed = 64)]
@@ -259,6 +328,30 @@ impl Default for Status {
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
+pub struct Contract {
+    #[array(var = 100)]
+    pub version: String,
+    pub abi: Abi,
+    pub contractHash: Hash,
+    #[array(var = 2147483647)]
+    pub contractBytes: Vec<u8>,
+}
+// End struct section
+
+// Start union section
+
+// End union section
+
+// Namespace end mazzaroth
+// Namespace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Receipt {
     pub transactionID: ID,
     pub status: Status,
@@ -283,25 +376,6 @@ pub struct Receipt {
 // Start struct section
 
 #[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Call {
-    #[array(var = 256)]
-    pub function: String,
-    #[array(var = 2147483647)]
-    pub arguments: Vec<Argument>,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
-pub struct Contract {
-    #[array(var = 100)]
-    pub version: String,
-    pub owner: ID,
-    pub abi: Abi,
-    pub contractHash: Hash,
-    #[array(var = 2147483647)]
-    pub contractBytes: Vec<u8>,
-}
-
-#[derive(PartialEq, Clone, Default, Debug, XDROut, XDRIn)]
 pub struct Data {
     pub channelID: ID,
     pub nonce: u64,
@@ -324,6 +398,7 @@ pub enum CategoryType {
     DEPLOY = 2,
     PAUSE = 3,
     DELETE = 4,
+    CHANNEL = 5,
 }
 
 impl Default for CategoryType {
@@ -343,6 +418,7 @@ pub enum Category {
     PAUSE(bool),
 
     DELETE(()),
+    CHANNEL(Channel),
 }
 
 impl Default for Category {

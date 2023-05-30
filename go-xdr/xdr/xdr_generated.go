@@ -1122,6 +1122,277 @@ var (
 
 // Start typedef section
 
+// End typedef section
+
+// Start struct section
+
+// Call generated struct
+type Call struct {
+	Function string `xdrmaxsize:"256" json:"function"`
+
+	Arguments []Argument `json:"arguments"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Call) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Call) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Call)(nil)
+	_ encoding.BinaryUnmarshaler = (*Call)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+// End enum section
+
+// Start union section
+
+// End union section
+
+// Namespace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
+// Channel generated struct
+type Channel struct {
+	ChannelID ID     `json:"channelID"`
+	Name      string `xdrmaxsize:"32" json:"name"`
+
+	Configuration []Config `json:"configuration"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Channel) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Channel) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Channel)(nil)
+	_ encoding.BinaryUnmarshaler = (*Channel)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+// ConfigType generated enum
+type ConfigType int32
+
+const (
+	// ConfigTypeUNKNOWN enum value 0
+	ConfigTypeUNKNOWN ConfigType = 0
+	// ConfigTypeADMIN enum value 1
+	ConfigTypeADMIN ConfigType = 1
+)
+
+// ConfigTypeMap generated enum map
+var ConfigTypeMap = map[int32]string{
+	0: "ConfigTypeUNKNOWN",
+	1: "ConfigTypeADMIN",
+}
+
+// ValidEnum validates a proposed value for this enum.  Implements
+// the Enum interface for ConfigType
+func (s ConfigType) ValidEnum(v int32) bool {
+	_, ok := ConfigTypeMap[v]
+	return ok
+}
+
+// String returns the name of `e`
+func (s ConfigType) String() string {
+	name := ConfigTypeMap[int32(s)]
+	return name
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s ConfigType) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *ConfigType) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*ConfigType)(nil)
+	_ encoding.BinaryUnmarshaler = (*ConfigType)(nil)
+)
+
+// End enum section
+
+// Start union section
+
+// Config generated union
+type Config struct {
+	Type ConfigType
+
+	Admin *[]ID
+}
+
+// SwitchFieldName returns the field name in which this union's
+// discriminant is stored
+func (u Config) SwitchFieldName() string {
+	return "Type"
+}
+
+// ArmForSwitch returns which field name should be used for storing
+// the value for an instance of Config
+func (u Config) ArmForSwitch(sw int32) (string, bool) {
+	switch ConfigType(sw) {
+	case ConfigTypeUNKNOWN:
+		return "", true
+	case ConfigTypeADMIN:
+		return "Admin", true
+	}
+	return "-", false
+}
+
+// NewConfig creates a new Config.
+func NewConfig(aType ConfigType, value interface{}) (result Config, err error) {
+	result.Type = aType
+	switch aType {
+	case ConfigTypeUNKNOWN:
+	case ConfigTypeADMIN:
+
+		tv, ok := value.([]ID)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Admin = &tv
+	}
+	return
+}
+
+// MustAdmin retrieves the Admin value from the union,
+// panicing if the value is not set.
+func (u Config) MustAdmin() []ID {
+
+	val, ok := u.GetAdmin()
+	if !ok {
+		panic("arm Admin is not set")
+	}
+
+	return val
+}
+
+// GetAdmin retrieves the Admin value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Config) GetAdmin() (result []ID, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Admin" {
+		result = *u.Admin
+		ok = true
+	}
+
+	return
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (u Config) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, u)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (u *Config) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), u)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Config)(nil)
+	_ encoding.BinaryUnmarshaler = (*Config)(nil)
+)
+
+// MarshalJSON implements json.Marshaler.
+func (u Config) MarshalJSON() ([]byte, error) {
+	temp := struct {
+		Type int32       `json:"type"`
+		Data interface{} `json:"data"`
+	}{}
+
+	temp.Type = int32(u.Type)
+	temp.Data = ""
+	switch u.Type {
+	case ConfigTypeUNKNOWN:
+	case ConfigTypeADMIN:
+		temp.Data = u.Admin
+	default:
+		return nil, fmt.Errorf("invalid union type")
+	}
+
+	return json.Marshal(temp)
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (u *Config) UnmarshalJSON(data []byte) error {
+	temp := struct {
+		Type int32 `json:"type"`
+	}{}
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	u.Type = ConfigType(temp.Type)
+	switch u.Type {
+	case ConfigTypeUNKNOWN:
+	case ConfigTypeADMIN:
+		response := struct {
+			Admin []ID `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Admin = &response.Admin
+	default:
+		return fmt.Errorf("invalid union type")
+	}
+
+	return nil
+}
+
+// End union section
+
+// Namespace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
 // Signature generated typedef
 type Signature [64]byte
 
@@ -1321,6 +1592,52 @@ var (
 
 // Start struct section
 
+// Contract generated struct
+type Contract struct {
+	Version      string `xdrmaxsize:"100" json:"version"`
+	Abi          Abi    `json:"abi"`
+	ContractHash Hash   `json:"contractHash"`
+
+	ContractBytes []byte `json:"contractBytes"`
+}
+
+// MarshalBinary implements encoding.BinaryMarshaler.
+func (s Contract) MarshalBinary() ([]byte, error) {
+	b := new(bytes.Buffer)
+	_, err := Marshal(b, s)
+	return b.Bytes(), err
+}
+
+// UnmarshalBinary implements encoding.BinaryUnmarshaler.
+func (s *Contract) UnmarshalBinary(inp []byte) error {
+	_, err := Unmarshal(bytes.NewReader(inp), s)
+	return err
+}
+
+var (
+	_ encoding.BinaryMarshaler   = (*Contract)(nil)
+	_ encoding.BinaryUnmarshaler = (*Contract)(nil)
+)
+
+// End struct section
+
+// Start enum section
+
+// End enum section
+
+// Start union section
+
+// End union section
+
+// Namespace end mazzaroth
+// Namspace start mazzaroth
+
+// Start typedef section
+
+// End typedef section
+
+// Start struct section
+
 // Receipt generated struct
 type Receipt struct {
 	TransactionID ID         `json:"transactionID"`
@@ -1366,59 +1683,6 @@ var (
 // End typedef section
 
 // Start struct section
-
-// Call generated struct
-type Call struct {
-	Function string `xdrmaxsize:"256" json:"function"`
-
-	Arguments []Argument `json:"arguments"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Call) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Call) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Call)(nil)
-	_ encoding.BinaryUnmarshaler = (*Call)(nil)
-)
-
-// Contract generated struct
-type Contract struct {
-	Version      string `xdrmaxsize:"100" json:"version"`
-	Owner        ID     `json:"owner"`
-	Abi          Abi    `json:"abi"`
-	ContractHash Hash   `json:"contractHash"`
-
-	ContractBytes []byte `json:"contractBytes"`
-}
-
-// MarshalBinary implements encoding.BinaryMarshaler.
-func (s Contract) MarshalBinary() ([]byte, error) {
-	b := new(bytes.Buffer)
-	_, err := Marshal(b, s)
-	return b.Bytes(), err
-}
-
-// UnmarshalBinary implements encoding.BinaryUnmarshaler.
-func (s *Contract) UnmarshalBinary(inp []byte) error {
-	_, err := Unmarshal(bytes.NewReader(inp), s)
-	return err
-}
-
-var (
-	_ encoding.BinaryMarshaler   = (*Contract)(nil)
-	_ encoding.BinaryUnmarshaler = (*Contract)(nil)
-)
 
 // Data generated struct
 type Data struct {
@@ -1491,6 +1755,8 @@ const (
 	CategoryTypePAUSE CategoryType = 3
 	// CategoryTypeDELETE enum value 4
 	CategoryTypeDELETE CategoryType = 4
+	// CategoryTypeCHANNEL enum value 5
+	CategoryTypeCHANNEL CategoryType = 5
 )
 
 // CategoryTypeMap generated enum map
@@ -1500,6 +1766,7 @@ var CategoryTypeMap = map[int32]string{
 	2: "CategoryTypeDEPLOY",
 	3: "CategoryTypePAUSE",
 	4: "CategoryTypeDELETE",
+	5: "CategoryTypeCHANNEL",
 }
 
 // ValidEnum validates a proposed value for this enum.  Implements
@@ -1545,6 +1812,8 @@ type Category struct {
 	Contract *Contract
 
 	Pause *bool
+
+	Channel *Channel
 }
 
 // SwitchFieldName returns the field name in which this union's
@@ -1567,6 +1836,8 @@ func (u Category) ArmForSwitch(sw int32) (string, bool) {
 		return "Pause", true
 	case CategoryTypeDELETE:
 		return "", true
+	case CategoryTypeCHANNEL:
+		return "Channel", true
 	}
 	return "-", false
 }
@@ -1601,6 +1872,14 @@ func NewCategory(aType CategoryType, value interface{}) (result Category, err er
 		}
 		result.Pause = &tv
 	case CategoryTypeDELETE:
+	case CategoryTypeCHANNEL:
+		tv, ok := value.(Channel)
+
+		if !ok {
+			err = fmt.Errorf("invalid value, must be [object]")
+			return
+		}
+		result.Channel = &tv
 	}
 	return
 }
@@ -1683,6 +1962,32 @@ func (u Category) GetPause() (result bool, ok bool) {
 	return
 }
 
+// MustChannel retrieves the Channel value from the union,
+// panicing if the value is not set.
+func (u Category) MustChannel() Channel {
+
+	val, ok := u.GetChannel()
+	if !ok {
+		panic("arm Channel is not set")
+	}
+
+	return val
+}
+
+// GetChannel retrieves the Channel value from the union,
+// returning ok if the union's switch indicated the value is valid.
+func (u Category) GetChannel() (result Channel, ok bool) {
+
+	armName, _ := u.ArmForSwitch(int32(u.Type))
+
+	if armName == "Channel" {
+		result = *u.Channel
+		ok = true
+	}
+
+	return
+}
+
 // MarshalBinary implements encoding.BinaryMarshaler.
 func (u Category) MarshalBinary() ([]byte, error) {
 	b := new(bytes.Buffer)
@@ -1719,6 +2024,8 @@ func (u Category) MarshalJSON() ([]byte, error) {
 	case CategoryTypePAUSE:
 		temp.Data = u.Pause
 	case CategoryTypeDELETE:
+	case CategoryTypeCHANNEL:
+		temp.Data = u.Channel
 	default:
 		return nil, fmt.Errorf("invalid union type")
 	}
@@ -1766,6 +2073,15 @@ func (u *Category) UnmarshalJSON(data []byte) error {
 		}
 		u.Pause = &response.Pause
 	case CategoryTypeDELETE:
+	case CategoryTypeCHANNEL:
+		response := struct {
+			Channel Channel `json:"data"`
+		}{}
+		err := json.Unmarshal(data, &response)
+		if err != nil {
+			return err
+		}
+		u.Channel = &response.Channel
 	default:
 		return fmt.Errorf("invalid union type")
 	}

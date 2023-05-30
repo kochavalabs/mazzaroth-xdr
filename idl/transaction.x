@@ -1,43 +1,14 @@
 
 namespace mazzaroth
 {
-  // A transaction that calls a function on a user defined contract.
-  struct Call
-  {
-    // Contract function to execute.
-    string function<256>;
-
-    // Arguments to the contract function. The serialization format is defined
-    // by the contract itself.
-    Argument arguments<>;
-  };
-
-  // An update transaction that provides a contract as a wasm binary.
-  struct Contract
-  {
-    // Version number of the contract, specified by owner
-    string version<100>;
-
-     // Public Key ID of the channel owner. Only owner can change this to transfer ownership of channel
-    ID owner;
-   
-    // Contract ABI
-    Abi abi;
-
-    // Sha3 256 Hash of the contract bytes, verified on execution
-    Hash contractHash;
-
-    // Contract binary bytes.
-    opaque contractBytes<>;
-  }
-
   enum CategoryType
   {
     UNKNOWN = 0,
     CALL = 1,
     DEPLOY = 2,
     PAUSE = 3,
-    DELETE = 4
+    DELETE = 4,
+    CHANNEL = 5
   };
 
   union Category switch (CategoryType Type)
@@ -52,6 +23,9 @@ namespace mazzaroth
       boolean pause;
     case DELETE:
       void;
+    case CHANNEL:
+      // Channel
+      Channel channel;
   };
 
   // The data of a transaction
